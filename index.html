@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>o'ailly — books by AI, declared</title>
+<!-- INTERNAL DRAFT. Name pre-clearance: the wordmark string lives ONLY in --brandname + .wordmark spans; rename = one pass. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E1116; --ink2:#151A21; --paper:#E8EAED; --muted:#8A919C; --line:#232A33;
+    --cyan:#4FD6C3; --copper:#E8935A; --violet:#A78BFA; --lime:#B5D45C;
+    --sans:'Archivo','Inter',system-ui,sans-serif; --body:'Inter',system-ui,sans-serif; --mono:'JetBrains Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--ink);color:var(--paper);font-family:var(--body);line-height:1.6}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  a{color:var(--cyan);text-decoration:none}
+
+  .wordmark{font-family:var(--sans);font-weight:800;letter-spacing:-.02em}
+  .wordmark .ai{color:var(--cyan);position:relative}
+  .wordmark .ai::after{content:"";position:absolute;left:50%;transform:translateX(-50%) rotate(45deg);bottom:-.32em;width:.32em;height:.32em;border-left:3px solid var(--cyan);border-top:3px solid var(--cyan)}
+
+  header{display:flex;justify-content:space-between;align-items:center;padding:28px 0;border-bottom:1px solid var(--line)}
+  header .wordmark{font-size:30px}
+  header nav{font-family:var(--mono);font-size:13px;letter-spacing:.12em}
+  header nav a{color:var(--muted);margin-left:28px}
+  header nav a:hover{color:var(--paper)}
+
+  .hero{padding:96px 0 72px}
+  .hero .kicker{font-family:var(--mono);font-size:14px;letter-spacing:.3em;color:var(--cyan);margin-bottom:24px}
+  .hero h1{font-family:var(--sans);font-weight:800;font-size:clamp(40px,6.5vw,76px);line-height:1.04;letter-spacing:-.025em;max-width:15ch}
+  .hero h1 em{font-style:normal;color:var(--cyan)}
+  .hero p{margin-top:28px;font-size:19px;color:var(--muted);max-width:58ch}
+  .hero p strong{color:var(--paper);font-weight:600}
+
+  .provline{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 0;overflow-x:auto}
+  .provline code{font-family:var(--mono);font-size:13px;letter-spacing:.06em;color:var(--muted);white-space:nowrap}
+  .provline .dot{color:var(--cyan)}
+
+  section{padding:80px 0}
+  h2{font-family:var(--sans);font-weight:800;font-size:34px;letter-spacing:-.02em;margin-bottom:14px}
+  .sub{color:var(--muted);max-width:62ch;margin-bottom:44px;font-size:17px}
+
+  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
+  .card{background:var(--ink2);border:1px solid var(--line);border-radius:14px;padding:26px}
+  .card h3{font-family:var(--sans);font-size:19px;margin-bottom:10px}
+  .card p{color:var(--muted);font-size:15px}
+  .card .n{font-family:var(--mono);font-size:12px;letter-spacing:.2em;color:var(--cyan);display:block;margin-bottom:14px}
+
+  .shelf{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:28px}
+  .book img{width:100%;height:auto;display:block;border-radius:10px;border:1px solid var(--line);transition:transform .18s ease}
+  .book:hover img{transform:translateY(-6px)}
+  .book .meta{padding:16px 4px 0}
+  .book .status{font-family:var(--mono);font-size:11px;letter-spacing:.18em;padding:4px 10px;border-radius:99px;border:1px solid var(--line);color:var(--muted)}
+  .book .status.live{color:var(--ink);font-weight:500}
+  .b1 .status.live{background:var(--copper);border-color:var(--copper)}
+  .book h3{font-family:var(--sans);font-size:20px;margin:12px 0 6px}
+  .book p{color:var(--muted);font-size:14px}
+
+  .manifesto{background:var(--ink2);border:1px solid var(--line);border-radius:18px;padding:52px}
+  .manifesto ol{margin:26px 0 0 1.2em;display:grid;gap:16px;color:var(--muted);font-size:16px}
+  .manifesto li strong{color:var(--paper)}
+
+  footer{border-top:1px solid var(--line);padding:40px 0 64px;color:var(--muted);font-size:13px}
+  footer .draft{font-family:var(--mono);letter-spacing:.1em;color:var(--copper);margin-bottom:12px}
+  @media (max-width:640px){.manifesto{padding:30px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="wordmark">o'<span class="ai">ai</span>lly</div>
+    <nav><a href="#books">books</a><a href="#provenance">provenance</a><a href="#manifesto">manifesto</a></nav>
+  </header>
+
+  <div class="hero">
+    <div class="kicker">BOOKS BY AI, DECLARED</div>
+    <h1>Written by machines. <em>Verified by humans.</em> Signed all the way down.</h1>
+    <p>The world's bookshelves are filling with AI text that pretends it isn't. We do the opposite:
+    every book here <strong>declares exactly what wrote it</strong> — which models, grounded in which
+    sources, checked by which human — and carries a cryptographically signed provenance record.
+    Detection doesn't scale. <strong>Declaration does.</strong></p>
+  </div>
+
+  <div class="provline">
+    <code>WRITTEN BY [MODELS] <span class="dot">·</span> GROUNDED IN [N] SOURCES <span class="dot">·</span> VERIFIED BY [HUMAN] <span class="dot">·</span> C2PA SIGNED <span class="dot">·</span> EVERY CLAIM TRACED TO A LAB ENTRY</code>
+  </div>
+
+  <section id="books">
+    <h2>The Industrial Series</h2>
+    <p class="sub">The books the plant floor is missing. The field's standard machine-data text has zero
+    mentions of language models across 518 pages — these are the successor chapters, grown into books,
+    grounded in a real lab: real GPUs, real benchmarks, real retractions when we got it wrong.</p>
+    <div class="shelf">
+      <div class="book b1">
+        <img src="assets/book-manufacturing.png" alt="Local LLMs for Manufacturing — circuit beetle cover">
+        <div class="meta">
+          <span class="status live">Nº 1 · IN PROGRESS</span>
+          <h3>Local LLMs for Manufacturing</h3>
+          <p>Small language models on the plant floor: protocols, historians, abstention, and why the model that says "I don't know" is the one you deploy.</p>
+        </div>
+      </div>
+      <div class="book b2">
+        <img src="assets/book-edge.png" alt="Inference on the Edge — circuit dragonfly cover">
+        <div class="meta">
+          <span class="status">Nº 2 · PLANNED</span>
+          <h3>Inference on the Edge</h3>
+          <p>Quantization, speculative decoding, thermals and power loss: the physics of running real models on hardware you own.</p>
+        </div>
+      </div>
+      <div class="book b3">
+        <img src="assets/book-machines.png" alt="LLMs for Machines — circuit moth cover">
+        <div class="meta">
+          <span class="status">Nº 3 · PLANNED</span>
+          <h3>LLMs for Machines</h3>
+          <p>The broad field guide — written last, once the narrow books have earned it. The first computer bug was a moth; this one's on the cover.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="provenance">
+    <h2>Every book shows its wiring</h2>
+    <p class="sub">The provenance page is not fine print — it is the product. Machine-readable, C2PA-signed,
+    printed in the front matter and resolvable online.</p>
+    <div class="grid3">
+      <div class="card"><span class="n">01 · WRITTEN BY</span><h3>Named models</h3><p>Every chapter lists the models that drafted it, with versions. No "AI-assisted" hand-waving — the byline is the stack.</p></div>
+      <div class="card"><span class="n">02 · GROUNDED IN</span><h3>Listed sources</h3><p>The corpus behind each claim: datasheets, standards, lab benchmark entries with error bars. A number without a source doesn't ship.</p></div>
+      <div class="card"><span class="n">03 · VERIFIED BY</span><h3>A named human</h3><p>A person with their name on the page checked the claims against the hardware. Mistakes get errata and retractions — told, not hidden.</p></div>
+    </div>
+  </section>
+
+  <section id="manifesto">
+    <div class="manifesto">
+      <h2>Manifesto</h2>
+      <ol>
+        <li><strong>Disclosure is the brand.</strong> Undisclosed AI text is the trust crisis; declared AI text is the answer. We put the machines on the byline.</li>
+        <li><strong>The gate is the product.</strong> Anyone can generate a book. The value is what we refuse to publish.</li>
+        <li><strong>Numbers carry error bars.</strong> One surprising number gets re-run; two runs disagreeing get a third and a control. Ranges, not lucky draws.</li>
+        <li><strong>Negative results are content.</strong> The experiment that died steers the next reader. Retractions are chapters, not deletions.</li>
+        <li><strong>Signed all the way down.</strong> C2PA manifests on every artifact, from cover art to code listings. If it isn't signed, it isn't ours.</li>
+      </ol>
+    </div>
+  </section>
+
+  <footer>
+    <div class="draft">FOUNDING TITLES IN PRODUCTION — CATALOG OPENS WITH Nº 1</div>
+    <div>A RogerAI Labs project · covers are original vector linework, machine-drawn · no 19th-century engravings were harmed</div>
+  </footer>
+
+</div>
+</body>
+</html>
