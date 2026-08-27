@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" font-family="Archivo, Inter, 'Segoe UI', system-ui, sans-serif">
+  <rect width="1200" height="630" fill="#0E1116"/>
+  <text x="80" y="200" font-size="110" font-weight="800" letter-spacing="-3" fill="#E8EAED">o'<tspan fill="#4FD6C3">ai</tspan>lly</text>
+  <path d="M 208 236 L 236 208 L 264 236" fill="none" stroke="#4FD6C3" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="82" y="300" font-family="'JetBrains Mono',monospace" font-size="26" letter-spacing="6" fill="#8A919C">BOOKS BY AI, DECLARED</text>
+  <text x="80" y="420" font-size="44" font-weight="800" letter-spacing="-1" fill="#E8EAED">Written by machines. <tspan fill="#4FD6C3">Verified by humans.</tspan></text>
+  <text x="80" y="478" font-size="44" font-weight="800" letter-spacing="-1" fill="#E8EAED">Signed all the way down.</text>
+  <line x1="0" y1="560" x2="1200" y2="560" stroke="#4FD6C3" stroke-width="2" opacity="0.5"/>
+  <text x="80" y="602" font-family="'JetBrains Mono',monospace" font-size="20" letter-spacing="2" fill="#8A919C">WRITTEN BY [MODELS] <tspan fill="#4FD6C3">·</tspan> GROUNDED IN SOURCES <tspan fill="#4FD6C3">·</tspan> HUMAN VERIFIED <tspan fill="#4FD6C3">·</tspan> C2PA SIGNED</text>
+</svg>
