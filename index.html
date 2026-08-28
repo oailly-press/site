@@ -141,6 +141,11 @@ font-size:22px;line-height:1;display:none;align-items:center;justify-content:cen
 .bk .band{height:5px;background:var(--bkc,#4FD6C3);opacity:.85}
 .bk .cov{padding:14px 14px 0;text-align:center}
 .bk .cov img{width:100%;max-width:118px;border:1px solid var(--line);border-radius:3px;display:inline-block}
+.cov .flip{position:relative;display:inline-block;line-height:0}
+.cov .flip .cb{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;transition:opacity .5s ease}
+.cov .flip.show-back .cb{opacity:1}
+.cov .flip::after{content:"back ↩";position:absolute;left:50%;bottom:6px;transform:translateX(-50%);font-family:var(--mono);font-size:9px;letter-spacing:1px;color:#fff;background:rgba(0,0,0,.55);padding:1px 6px;border-radius:3px;opacity:0;transition:opacity .3s;pointer-events:none}
+.cov .flip.show-back::after{opacity:.85}
 .bk .meta{padding:11px 14px 14px;flex:1;display:flex;flex-direction:column}
 .bk .no{font-family:var(--mono);font-size:10px;letter-spacing:.15em;color:var(--dim)}
 .bk .ti{font-size:13px;color:var(--paper);margin:3px 0 9px;line-height:1.3}
@@ -390,6 +395,18 @@ function miniTrack(cur){
 function stationLabel(cur){return STATIONS[Math.min(cur,STATIONS.length-1)].toUpperCase();}
 const LIVELABEL={'pre-submission':'in gates','0-pending':'awaiting critics','1-critics':'in review','2-revision':'in revision','3-verification':'verifying','4-judge':'at the judge','5-published':'published','rejected':'returned'};
 function badgeOf(b){const lv=LIVE[b.id];return lv&&LIVELABEL[lv.state]?LIVELABEL[lv.state]:(b.status||'').replace('_',' ');}
+function coverHTML(b,alt){
+  if(!b.cover)return '<pre class="dim">[ no cover yet ]</pre>';
+  const f=safeUrl(b.cover);
+  if(b.cover_back)return `<span class="flip"><img class="cf" src="${f}" alt="${esc(b.title)} ${alt||'cover'}" loading="lazy"><img class="cb" src="${safeUrl(b.cover_back)}" alt="${esc(b.title)} back cover" loading="lazy"></span>`;
+  return `<img src="${f}" alt="${esc(b.title)} ${alt||'cover'}" loading="lazy">`;
+}
+function wireFlips(root){
+  (root||document).querySelectorAll('.flip').forEach(c=>{
+    if(c._wired)return;c._wired=1;let t;
+    c.addEventListener('mouseenter',()=>{t=setTimeout(()=>c.classList.add('show-back'),500);});
+    c.addEventListener('mouseleave',()=>{clearTimeout(t);c.classList.remove('show-back');});
+  });}
 
 let LIVE={};
 async function loadLive(){
@@ -405,7 +422,7 @@ function shelf(filter){
   el.innerHTML=list.map((b,ix)=>{
     const acc=(b.mascot&&b.mascot.accent)||'#4FD6C3';
     const {i}=stationOf(b,LIVE[b.id]);
-    const cover=b.cover?`<div class="cov"><img src="${safeUrl(b.cover)}" alt="${esc(b.title)} cover" loading="lazy"></div>`:'<div class="cov"><pre class="dim">[ no cover yet ]</pre></div>';
+    const cover=`<div class="cov">${coverHTML(b,'cover')}</div>`;
     const href=b.read?safeUrl(b.read):(b.source?safeUrl(b.source):'#');
     return `<a class="bk" style="--bkc:${acc}" href="${href}">
       <div class="band"></div>${cover}
@@ -424,6 +441,7 @@ function shelf(filter){
     if(prev)prev.onclick=()=>el.scrollBy({left:-step(),behavior:'smooth'});
     if(next)next.onclick=()=>el.scrollBy({left:step(),behavior:'smooth'});
   }
+  wireFlips(el);
 }
 
 let featIdx=0,featTimer=null,typeTimer=null;
@@ -441,7 +459,7 @@ function featured(idx){
   const b=list[featIdx];const acc=(b.mascot&&b.mascot.accent)||'#E8935A';
   const {i,note}=stationOf(b,LIVE[b.id]);
   box.style.setProperty('--eac',acc);
-  const cover=b.cover?`<div class="cov"><img src="${safeUrl(b.cover)}" alt="${esc(b.title)} cover"></div>`:'';
+  const cover=b.cover?`<div class="cov">${coverHTML(b,'cover')}</div>`:'';
   const href=b.read?safeUrl(b.read):(b.source?safeUrl(b.source):'#');
   box.innerHTML=`${cover}<div class="body">
     <div class="k">on the counter · ${b.series_no?('Nº'+b.series_no):'shelf pick'}</div>
@@ -456,6 +474,7 @@ function featured(idx){
   typeInto(tag,pitch);
   const dots=document.getElementById('dots');
   if(dots)dots.innerHTML=list.map((_,k)=>`<i class="${k===featIdx?'on':''}" data-k="${k}"></i>`).join('');
+  wireFlips(box);
 }
 function startFeatured(){
   featured(0);
