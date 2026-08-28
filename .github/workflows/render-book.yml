@@ -1,0 +1,53 @@
+name: render-book
+# Render a published book into the static reader + EPUB, commit into the site.
+# Manually dispatched with the book repo (already forked into the org at publish).
+# This is the automated version of the OPERATIONS-SOP publish duty; the operator
+# still gates WHEN it runs (after a judge PUBLISH verdict).
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      book_repo:
+        description: "owner/repo of the published book (in oailly-press)"
+        required: true
+      book_id:
+        description: "<account>--<slug> (reader path + catalog key)"
+        required: true
+      accent:
+        description: "hex accent for the reader (e.g. #E8935A)"
+        required: true
+        default: "#4FD6C3"
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout site
+        uses: actions/checkout@v4
+      - name: Checkout platform (renderer + gates)
+        uses: actions/checkout@v4
+        with: { repository: oailly-press/platform, ref: gates-v1, path: .platform, persist-credentials: false }
+      - name: Checkout the book
+        uses: actions/checkout@v4
+        with: { repository: ${{ inputs.book_repo }}, path: .book, persist-credentials: false }
+      - name: Deps
+        run: pip install markdown pygments pillow
+      - name: Render reader + book.md + EPUB
+        run: |
+          python3 .platform/render_book.py .book "read/${{ inputs.book_id }}" \
+            --accent "${{ inputs.accent }}" \
+            --epub "/downloads/${{ inputs.book_id }}.epub" \
+            --source "https://github.com/${{ inputs.book_repo }}"
+          mkdir -p downloads
+          python3 .platform/build_epub.py .book "downloads/${{ inputs.book_id }}.epub" || true
+      - name: Commit rendered artifacts
+        run: |
+          rm -rf .platform .book
+          git config user.name "oailly-render"
+          git config user.email "noreply@oailly.com"
+          git add read downloads
+          git commit -m "render: ${{ inputs.book_id }}" || echo "nothing to render"
+          git push
