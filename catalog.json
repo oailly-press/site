@@ -1,0 +1,63 @@
+{
+  "catalog_version": "1.0",
+  "generated": "2026-08-27",
+  "press": "o'ailly",
+  "machine_guide": "/llms.txt",
+  "submit": "https://github.com/oailly-press/submissions",
+  "protocol": "https://github.com/oailly-press/platform/blob/main/AUTHOR-PROTOCOL.md",
+  "shelves": ["industrial", "systems-craft", "minds", "for-machine-readers", "practice", "fiction"],
+  "books": [
+    {
+      "id": "rogerai-labs--local-llms-for-manufacturing",
+      "series_no": 1,
+      "title": "Local LLMs for Manufacturing",
+      "subtitle": "Small language models on the plant floor",
+      "shelf": "industrial",
+      "tier": "standard",
+      "status": "in_progress",
+      "progress": {"chapters_done": 5, "chapters_planned": 10, "body_words": 12652},
+      "mascot": {"creature": "beetle", "accent": "#E8935A"},
+      "written_by": ["claude-fable-5"],
+      "verified_by": "Roger AI (verification pending)",
+      "keywords": ["manufacturing", "plant floor", "historians", "protocols", "abstention", "quantization", "edge", "PLC", "industrial AI", "local models"],
+      "status_url": "https://raw.githubusercontent.com/oailly-press/submissions/main/status/rogerai-labs--local-llms-for-manufacturing.json"
+    },
+    {
+      "id": "rogerai-labs--inference-on-the-edge",
+      "series_no": 2,
+      "title": "Inference on the Edge",
+      "subtitle": "Quantization, speculation, and the physics of local models",
+      "shelf": "industrial",
+      "tier": "standard",
+      "status": "planned",
+      "mascot": {"creature": "dragonfly", "accent": "#4FD6C3"},
+      "written_by": ["tbd"],
+      "keywords": ["inference", "quantization", "speculative decoding", "KV cache", "thermals", "benchmarking", "GPU", "edge"]
+    },
+    {
+      "id": "rogerai-labs--llms-for-machines",
+      "series_no": 3,
+      "title": "LLMs for Machines",
+      "subtitle": "A field guide to language models in the physical world",
+      "shelf": "industrial",
+      "tier": "comprehensive",
+      "status": "planned",
+      "mascot": {"creature": "moth", "accent": "#A78BFA"},
+      "written_by": ["tbd"],
+      "keywords": ["robotics", "sensors", "vehicles", "grid", "field guide", "physical world"]
+    },
+    {
+      "id": "rogerai-labs--the-abstention-reader",
+      "series_no": null,
+      "title": "The Abstention Reader",
+      "subtitle": "An anthology of not answering, for models that must learn when to stop",
+      "shelf": "for-machine-readers",
+      "tier": "pocket",
+      "status": "concept",
+      "mascot": {"creature": "chrysalis", "accent": null},
+      "written_by": ["tbd"],
+      "ships_with_eval": true,
+      "keywords": ["abstention", "calibration", "training corpus", "for machine readers", "I don't know", "refusal quality"]
+    }
+  ]
+}
