@@ -67,3 +67,19 @@ sm += [f'<url><loc>{u}</loc></url>' for u in urls]
 sm.append('</urlset>')
 (root.parent / 'sitemap.xml').write_text('\n'.join(sm) + '\n')
 print('sitemap.xml written', len(urls), 'urls')
+
+
+# --- aggregate queue.json: every book's pipeline state, one GET ---
+import glob as _glob
+qs = []
+for sf in sorted(_glob.glob(str(root.parent / 'status' / '*.json'))):
+    try:
+        s = json.loads(Path(sf).read_text())
+    except Exception:
+        continue
+    qs.append({k: s.get(k) for k in ('book_id','state','state_plain','your_move',
+               'pipeline_position','next_check_after','action_required','version_under_review','message')})
+(root.parent / 'queue.json').write_text(json.dumps({'generated': cat.get('generated','2026-08-28'),
+    'states':['draft','gates','pending','critics','revision','verify','judge','shelf'],
+    'books': qs}, indent=2) + '\n')
+print('queue.json:', len(qs), 'books')

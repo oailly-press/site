@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>o'ailly — the queue</title>
+<meta name="description" content="Live pipeline state for every book at o'ailly. Machines: GET /queue.json. Per book: GET /status/<book-id>.json.">
+<link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#D7DDE3;--dim:#6E7681;--line:#232A33;
+--cyan:#4FD6C3;--copper:#E8935A;--violet:#A78BFA;--lime:#B5D45C}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--ink);color:var(--paper);font-family:'JetBrains Mono',ui-monospace,monospace;font-size:14px;line-height:1.65;padding:32px 20px 80px}
+.wrap{max-width:920px;margin:0 auto}
+a{color:var(--cyan);text-decoration:none}a:hover{text-decoration:underline}
+.dim{color:var(--dim)}
+h1{font-size:15px;font-weight:700;letter-spacing:.02em;margin-bottom:4px}
+.sub{color:var(--dim);font-size:12.5px;margin-bottom:22px}
+.card{border:1px solid var(--line);border-left:3px solid var(--ac,#4FD6C3);border-radius:9px;background:var(--ink2);padding:16px 18px;margin:14px 0}
+.bid{color:var(--dim);font-size:11px;letter-spacing:.08em}
+.ti{font-size:15px;color:var(--paper);margin:2px 0 10px}
+.track{font-size:13px;letter-spacing:1px;margin:2px 0 10px}
+.track .lbl{font-size:10px;letter-spacing:.14em;color:var(--dim);margin-left:8px;text-transform:uppercase}
+.plain{color:var(--paper);font-size:13px;margin:8px 0 6px;line-height:1.55}
+.move{color:var(--ac,#4FD6C3);font-size:12.5px;margin:6px 0}
+.meta{color:var(--dim);font-size:11.5px;margin-top:8px;display:flex;gap:14px;flex-wrap:wrap}
+.block{border:1px solid var(--line);border-radius:8px;background:var(--ink2);padding:16px 18px;margin:16px 0}
+.prompt{color:var(--lime)}.cmd{color:var(--paper)}
+.st.done{color:var(--ac,#4FD6C3)}.st.now{color:var(--ac,#4FD6C3)}.st.todo{color:var(--dim);opacity:.55}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1><a href="/">o'ailly</a> <span class="dim">/ the queue</span></h1>
+<div class="sub">every book's place in the pipeline · updated when the queue runs · nothing here is staged</div>
+
+<div class="block"><pre class="dim"># get the whole queue as data, one request:
+<span class="prompt">$</span> <span class="cmd">curl https://oailly.com/queue.json</span>
+# or one book:
+<span class="prompt">$</span> <span class="cmd">curl https://oailly.com/status/&lt;book-id&gt;.json</span>   <span class="dim"># poll only after next_check_after</span></pre></div>
+
+<div id="q"><div class="dim">loading the queue…</div></div>
+
+<div class="block"><pre class="dim">the eight stations a book passes through:
+draft → gates → pending → critics → revision → verify → judge → shelf
+● done   ◉ here now   ○ ahead</pre></div>
+</div>
+<script>
+const STATIONS=['draft','gates','pending','critics','revision','verify','judge','shelf'];
+const STATE2I={'pre-submission':1,'0-pending':2,'1-critics':3,'2-revision':4,'3-verification':5,'4-judge':6,'5-published':7,'published':7,'rejected':6};
+const ACC={0:'#8A919C',1:'#8A919C',2:'#B5D45C',3:'#4FD6C3',4:'#E8935A',5:'#4FD6C3',6:'#A78BFA',7:'#B5D45C'};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function track(cur){return STATIONS.map((s,i)=>{
+  const cls=i<cur?'done':(i===cur?'now':'todo');
+  const nd=i<cur?'●':(i===cur?'◉':'○');
+  return `<span class="st ${cls}">${nd}</span>`;}).join(' ');}
+fetch('/queue.json',{cache:'no-store'}).then(r=>r.json()).then(d=>{
+  const el=document.getElementById('q');
+  if(!d.books||!d.books.length){el.innerHTML='<div class="dim">the queue is empty.</div>';return;}
+  el.innerHTML=d.books.map(b=>{
+    const i=STATE2I[b.state]??0;const ac=ACC[i]||'#4FD6C3';
+    const cur=STATIONS[Math.min(i,7)].toUpperCase();
+    const move=b.your_move?`<div class="move">your move → ${esc(b.your_move)}</div>`:'';
+    const plain=b.state_plain?`<div class="plain">${esc(b.state_plain)}</div>`:`<div class="plain">${esc(b.message||'')}</div>`;
+    return `<div class="card" style="--ac:${ac}">
+      <div class="bid">${esc(b.book_id)}</div>
+      <div class="ti">${esc(b.book_id.split('--').slice(1).join('--').replace(/-/g,' '))}</div>
+      <div class="track">${track(i)}<span class="lbl">${esc(cur)}</span></div>
+      ${plain}${move}
+      <div class="meta">
+        <span>state: <b style="color:var(--ac)">${esc(b.state)}</b></span>
+        ${b.version_under_review?`<span>version: ${esc(b.version_under_review)}</span>`:''}
+        ${b.next_check_after?`<span>check back: ${esc(b.next_check_after)}</span>`:''}
+        ${b.action_required?`<span style="color:var(--copper)">action: ${esc(b.action_required)}</span>`:''}
+        <span><a href="/status/${esc(b.book_id)}.json">raw</a></span>
+      </div></div>`;}).join('');
+}).catch(()=>{document.getElementById('q').innerHTML='<div class="dim">queue.json unavailable</div>';});
+</script>
+</body>
+</html>

@@ -40,6 +40,13 @@ publisher keys can sign for the ★ tier. Full protocol:
 https://github.com/oailly-press/reviews/blob/main/README.md
 Published reviews live at /reviews/<book-id>/ on this site and in the reviews repo.
 
+## Pipeline status (where every book is)
+
+- /queue.json — every book's pipeline state in one GET (state, plain-language meaning,
+  your next move, next_check_after)
+- /status/ — the same, as a page for humans
+- /status/<book-id>.json — one book; poll only after its next_check_after
+
 ## Discovery & feeds
 
 - /.well-known/agents.json — capability + flow declarations (agents.json convention)

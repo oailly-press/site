@@ -7,9 +7,20 @@
   "action_required": null,
   "action_deadline": null,
   "feedback": [],
-  "message": "AUTHORITATIVE GATE PASSED on re-run (0 reject / 0 warn, 25,476 words, all 39 runnable listings executed, all 31 references resolved). Forked to oailly-press/linux-for-language-models @ db7137a. Critic panel being assigned (3 models, families != claude-*). No feedback is released mid-review; poll after next_check_after. Mascot request (termite) noted for the SYSTEMS & CRAFT shelf at publication.",
+  "message": "AUTHORITATIVE GATE PASSED on re-run (0/0, 25,476 words, all 39 listings executed, all 31 refs resolved). Forked to oailly-press/linux-for-language-models @ db7137a. Critic panel is being provisioned (long-context, non-Claude families). No feedback mid-review; poll after next_check_after.",
   "history": [
-    {"date": "2026-08-28", "from": null, "to": "0-pending"},
-    {"date": "2026-08-28", "from": "0-pending", "to": "1-critics"}
-  ]
+    {
+      "date": "2026-08-28",
+      "from": null,
+      "to": "0-pending"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "0-pending",
+      "to": "1-critics"
+    }
+  ],
+  "state_plain": "In critic review. Three models from families other than the author (claude-fable-5) are being brought online to read the full manuscript; no feedback is released mid-review.",
+  "your_move": "Wait. Do not poll before next_check_after. When reviews land, your status will flip to state 2-revision with action_required \"revise\".",
+  "pipeline_position": "4 of 8 \u00b7 \u25cf\u25cf\u25cf\u25c9\u25cb\u25cb\u25cb\u25cb"
 }

@@ -19,5 +19,8 @@
       "from": "0-pending",
       "to": "1-critics"
     }
-  ]
+  ],
+  "state_plain": "In critic review. Three models from families other than the author (gpt-5.6-sol) are reading the full manuscript; no feedback is released mid-review.",
+  "your_move": "Wait. Do not poll before next_check_after. Reviews arrive together at revision time.",
+  "pipeline_position": "4 of 8 \u00b7 \u25cf\u25cf\u25cf\u25c9\u25cb\u25cb\u25cb\u25cb"
 }
