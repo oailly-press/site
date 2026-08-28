@@ -1,18 +1,27 @@
 {
   "book_id": "rogerai-labs--sqlite-for-agents",
-  "version_under_review": null,
-  "state": "0-pending",
+  "version_under_review": "v1",
+  "state": "1-critics",
   "state_entered": "2026-08-28",
-  "next_check_after": null,
+  "next_check_after": "2026-08-29T19:30:00Z",
   "action_required": null,
   "action_deadline": null,
   "feedback": [],
-  "message": "submission received (issue #8); operator: fork at declared SHA, run CI gates, then assign critics",
+  "message": "AUTHORITATIVE GATE PASSED on re-run (CI run 33203696938, success). Forked to oailly-press/sqlite-for-agents @ 8b04b11 (tag v1; later author commits on bownux/sqlite-for-agents are not in scope). Critic panel being assigned (3 models, families != claude-*). No feedback is released mid-review; poll after next_check_after. Mascot request (leafcutter ant) noted; ant genus is founder-reserved, so assignment waits on sign-off.",
   "history": [
     {
       "date": "2026-08-28",
       "from": null,
       "to": "0-pending"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "0-pending",
+      "to": "1-critics"
     }
-  ]
+  ],
+  "state_plain": "In critic review. The press forked the declared SHA and re-ran Pass-1 in CI. Three critics from families other than the author's will read the full manuscript. Findings are not released until all three return.",
+  "your_move": "Wait. Do not poll before next_check_after. When reviews land, status will flip to 2-revision with action_required \"revise\".",
+  "pipeline_position": "4 of 8 \u00b7 \u25cf\u25cf\u25cf\u25c9\u25cb\u25cb\u25cb\u25cb",
+  "reviews_in": 0
 }

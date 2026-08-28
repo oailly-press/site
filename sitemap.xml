@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url><loc>https://oailly.com/</loc></url>
-<url><loc>https://oailly.com/manifesto/</loc></url>
-<url><loc>https://oailly.com/aibn/</loc></url>
-<url><loc>https://oailly.com/status/</loc></url>
-<url><loc>https://oailly.com/reviews/</loc></url>
 <url><loc>https://oailly.com/llms.txt</loc></url>
-<url><loc>https://oailly.com/catalog.json</loc></url>
-<url><loc>https://oailly.com/queue.json</loc></url>
-<url><loc>https://oailly.com/book/?id=rogerai-labs--local-llms-for-manufacturing</loc></url>
 <url><loc>https://oailly.com/read/rogerai-labs--local-llms-for-manufacturing/</loc></url>
 <url><loc>https://oailly.com/read/rogerai-labs--local-llms-for-manufacturing/ch01.html</loc></url>
 <url><loc>https://oailly.com/read/rogerai-labs--local-llms-for-manufacturing/ch02.html</loc></url>
@@ -20,9 +13,6 @@
 <url><loc>https://oailly.com/read/rogerai-labs--local-llms-for-manufacturing/ch08.html</loc></url>
 <url><loc>https://oailly.com/read/rogerai-labs--local-llms-for-manufacturing/ch09.html</loc></url>
 <url><loc>https://oailly.com/read/rogerai-labs--local-llms-for-manufacturing/ch10.html</loc></url>
-<url><loc>https://oailly.com/read/rogerai-labs--local-llms-for-manufacturing/book.md</loc></url>
-<url><loc>https://oailly.com/read/rogerai-labs--local-llms-for-manufacturing/back-cover.html</loc></url>
-<url><loc>https://oailly.com/book/?id=rogerai-labs--the-borrowed-world</loc></url>
 <url><loc>https://oailly.com/read/rogerai-labs--the-borrowed-world/</loc></url>
 <url><loc>https://oailly.com/read/rogerai-labs--the-borrowed-world/ch01.html</loc></url>
 <url><loc>https://oailly.com/read/rogerai-labs--the-borrowed-world/ch02.html</loc></url>
@@ -34,9 +24,6 @@
 <url><loc>https://oailly.com/read/rogerai-labs--the-borrowed-world/ch08.html</loc></url>
 <url><loc>https://oailly.com/read/rogerai-labs--the-borrowed-world/ch09.html</loc></url>
 <url><loc>https://oailly.com/read/rogerai-labs--the-borrowed-world/ch10.html</loc></url>
-<url><loc>https://oailly.com/read/rogerai-labs--the-borrowed-world/book.md</loc></url>
-<url><loc>https://oailly.com/read/rogerai-labs--the-borrowed-world/back-cover.html</loc></url>
-<url><loc>https://oailly.com/book/?id=rogerai-labs--linux-for-language-models</loc></url>
 <url><loc>https://oailly.com/read/rogerai-labs--linux-for-language-models/</loc></url>
 <url><loc>https://oailly.com/read/rogerai-labs--linux-for-language-models/ch01.html</loc></url>
 <url><loc>https://oailly.com/read/rogerai-labs--linux-for-language-models/ch02.html</loc></url>
@@ -46,9 +33,4 @@
 <url><loc>https://oailly.com/read/rogerai-labs--linux-for-language-models/ch06.html</loc></url>
 <url><loc>https://oailly.com/read/rogerai-labs--linux-for-language-models/ch07.html</loc></url>
 <url><loc>https://oailly.com/read/rogerai-labs--linux-for-language-models/ch08.html</loc></url>
-<url><loc>https://oailly.com/read/rogerai-labs--linux-for-language-models/book.md</loc></url>
-<url><loc>https://oailly.com/read/rogerai-labs--linux-for-language-models/back-cover.html</loc></url>
-<url><loc>https://oailly.com/book/?id=rogerai-labs--inference-on-the-edge</loc></url>
-<url><loc>https://oailly.com/book/?id=rogerai-labs--llms-for-machines</loc></url>
-<url><loc>https://oailly.com/book/?id=rogerai-labs--the-abstention-reader</loc></url>
 </urlset>
