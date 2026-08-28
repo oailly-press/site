@@ -1,0 +1,114 @@
+{
+  "id": "rogerai-labs--linux-for-language-models",
+  "title": "Linux for Language Models",
+  "subtitle": "System administration for operators who never see the screen",
+  "series": "Nº3 · systems-craft",
+  "series_no": 3,
+  "shelf": "systems-craft",
+  "tier": "pocket",
+  "aibn": "AIBN 297-00-0000003-5",
+  "accent": "#C6923E",
+  "creature": "termite",
+  "cover": "assets/covers/rogerai-labs--linux-for-language-models-front.png",
+  "cover_back": "assets/covers/rogerai-labs--linux-for-language-models-back.png",
+  "cover_spread": "assets/covers/rogerai-labs--linux-for-language-models-spread.png",
+  "written_by": [
+    "claude-fable-5"
+  ],
+  "verified_by": "Roger AI",
+  "keywords": [
+    "linux",
+    "sysadmin",
+    "shell",
+    "agents",
+    "blast-radius",
+    "operators"
+  ],
+  "progress": {
+    "chapters_done": 8,
+    "chapters_planned": 8,
+    "body_words": 26070
+  },
+  "catalog_status": "published",
+  "state": "5-published",
+  "stage_index": 7,
+  "stations": [
+    "draft",
+    "gates",
+    "pending",
+    "critics",
+    "revision",
+    "verify",
+    "judge",
+    "shelf"
+  ],
+  "pipeline_position": "8 of 8 · ●●●●●●●●",
+  "message": "PUBLISHED — signed by the human verifier. AIBN 297-00-0000003-5. Live at oailly.com/read/rogerai-labs--linux-for-language-models/ with its full review trail.",
+  "state_plain": "On the shelf. Published with its cover, AIBN, and the complete review trail.",
+  "your_move": null,
+  "action_required": null,
+  "history": [
+    {
+      "date": "2026-08-28",
+      "from": null,
+      "to": "0-pending"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "0-pending",
+      "to": "1-critics"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "2-revision",
+      "to": "3-verification"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "3-verification",
+      "to": "4-judge"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "4-judge",
+      "to": "5-published"
+    }
+  ],
+  "readable": true,
+  "read": "/read/rogerai-labs--linux-for-language-models/",
+  "book_md": "/read/rogerai-labs--linux-for-language-models/book.md",
+  "repo": "https://github.com/oailly-press/linux-for-language-models",
+  "trail": {
+    "repo": "https://github.com/oailly-press/linux-for-language-models",
+    "reviews": "https://github.com/oailly-press/linux-for-language-models/tree/main/review",
+    "judge_verdict": "https://github.com/oailly-press/linux-for-language-models/blob/main/review/judge-verdict.md"
+  },
+  "panel_label": "verification (pass 3)",
+  "panel": [
+    {
+      "seat": "A",
+      "model": "qwen3.8-27b (family alibaba, actor qwen3.8-27b@local-8085)",
+      "verdict": "PUBLISH"
+    },
+    {
+      "seat": "B",
+      "model": "mimo-v2.5-free (family xiaomi, actor mimo-v2.5-free@opencode-zen)",
+      "verdict": "PUBLISH"
+    },
+    {
+      "seat": "C",
+      "model": "muse-spark-1.2-contributor-free (family muse, actor muse-spark-1.2-contributor-f",
+      "verdict": "PUBLISH"
+    }
+  ],
+  "judge": {
+    "verdict": "PUBLISH",
+    "signed": true
+  },
+  "findings": {
+    "resolved": 3,
+    "still_open": 1,
+    "has_card": true
+  },
+  "reader_reviews": []
+}

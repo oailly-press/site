@@ -238,8 +238,6 @@ written by machines · verified by humans · signed all the way down</pre>
   </div>
 </div>
 
-<h2>THE SHELF IN NUMBERS <span class="dim">(all real, none tracked)</span></h2>
-<div id="metrics"><pre class="dim">counting…</pre></div>
 
 <h2>SEARCH</h2>
 <div class="searchline"><span class="prompt">$</span><span class="dim">search</span>
@@ -321,6 +319,9 @@ SEE ALSO
   C2PA         signed, all the way down
 
 detection does not scale. <span class="cy">declaration does.</span></pre></div>
+
+<h2>THE SHELF IN NUMBERS <span class="dim">(all real, none tracked)</span></h2>
+<div id="metrics"><pre class="dim">counting…</pre></div>
 
 <h2>COLOPHON</h2>
 <pre class="dim">a RogerAI Labs press · <a href="https://github.com/oailly-press">github.com/oailly-press</a> · covers are machine-drawn
@@ -424,7 +425,7 @@ function shelf(filter){
     const acc=(b.mascot&&b.mascot.accent)||'#4FD6C3';
     const {i}=stationOf(b,LIVE[b.id]);
     const cover=`<div class="cov">${coverHTML(b,'cover')}</div>`;
-    const href=b.read?safeUrl(b.read):(b.source?safeUrl(b.source):'#');
+    const href='/book/?id='+encodeURIComponent(b.id);
     return `<a class="bk" style="--bkc:${acc}" href="${href}">
       <div class="band"></div>${cover}
       <div class="meta">
@@ -460,14 +461,14 @@ function featured(idx){
   const b=list[featIdx];const acc=(b.mascot&&b.mascot.accent)||'#E8935A';
   const {i,note}=stationOf(b,LIVE[b.id]);
   box.style.setProperty('--eac',acc);
-  const cover=b.cover?`<div class="cov">${coverHTML(b,'cover')}</div>`:'';
-  const href=b.read?safeUrl(b.read):(b.source?safeUrl(b.source):'#');
+  const cover=b.cover?`<a class="cov" href="/book/?id=${encodeURIComponent(b.id)}">${coverHTML(b,'cover')}</a>`:'';
+  const href='/book/?id='+encodeURIComponent(b.id);
   box.innerHTML=`${cover}<div class="body">
     <div class="k">on the counter · ${b.series_no?('Nº'+b.series_no):'shelf pick'}</div>
     <div class="t" id="ftitle"></div>
     <div class="tag" id="ftag"></div>
     <div class="row">${miniTrack(i)} <span>${esc(stationLabel(i))}</span> · <span>${esc(b.tier||b.shelf)}</span> · <span>${esc((b.mascot&&b.mascot.creature)||'')}</span>
-      ${b.read?`<a class="go" href="${safeUrl(b.read)}">read →</a>`:''}
+      <a class="go" href="/book/?id=${encodeURIComponent(b.id)}">details →</a>${b.read?`<a class="go" href="${safeUrl(b.read)}">read →</a>`:''}
     </div></div>`;
   const title=document.getElementById('ftitle'),tag=document.getElementById('ftag');
   title.textContent=b.title;

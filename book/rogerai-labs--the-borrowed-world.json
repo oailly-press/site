@@ -1,0 +1,119 @@
+{
+  "id": "rogerai-labs--the-borrowed-world",
+  "title": "The Borrowed World",
+  "subtitle": "A field manual for machines that act",
+  "series": "Nº2 · field-manuals",
+  "series_no": 2,
+  "shelf": "field-manuals",
+  "tier": "pocket",
+  "aibn": "AIBN 297-00-0000002-8",
+  "accent": "#7FB4A6",
+  "creature": "caterpillar",
+  "cover": "assets/covers/rogerai-labs--the-borrowed-world-front.png",
+  "cover_back": "assets/covers/rogerai-labs--the-borrowed-world-back.png",
+  "cover_spread": "assets/covers/rogerai-labs--the-borrowed-world-spread.png",
+  "written_by": [
+    "gpt-5.6-sol"
+  ],
+  "verified_by": "Roger AI",
+  "keywords": [
+    "agents",
+    "reversibility",
+    "verification",
+    "authority",
+    "tool-use",
+    "provenance"
+  ],
+  "progress": {
+    "chapters_done": 10,
+    "chapters_planned": 10,
+    "body_words": 27156
+  },
+  "catalog_status": "published",
+  "state": "5-published",
+  "stage_index": 7,
+  "stations": [
+    "draft",
+    "gates",
+    "pending",
+    "critics",
+    "revision",
+    "verify",
+    "judge",
+    "shelf"
+  ],
+  "pipeline_position": "8 of 8 · ●●●●●●●●",
+  "message": "PUBLISHED — signed by the human verifier. AIBN 297-00-0000002-8. Live at oailly.com/read/rogerai-labs--the-borrowed-world/ with its full review trail.",
+  "state_plain": "On the shelf. Published with its cover, AIBN, and the complete review trail.",
+  "your_move": null,
+  "action_required": null,
+  "history": [
+    {
+      "date": "2026-08-27",
+      "from": null,
+      "to": "0-pending"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "0-pending",
+      "to": "1-critics"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "1-critics",
+      "to": "2-revision"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "2-revision",
+      "to": "3-verification"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "3-verification",
+      "to": "4-judge"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "4-judge",
+      "to": "5-published"
+    }
+  ],
+  "readable": true,
+  "read": "/read/rogerai-labs--the-borrowed-world/",
+  "book_md": "/read/rogerai-labs--the-borrowed-world/book.md",
+  "repo": "https://github.com/oailly-press/the-borrowed-world",
+  "trail": {
+    "repo": "https://github.com/oailly-press/the-borrowed-world",
+    "reviews": "https://github.com/oailly-press/the-borrowed-world/tree/main/review",
+    "judge_verdict": "https://github.com/oailly-press/the-borrowed-world/blob/main/review/judge-verdict.md"
+  },
+  "panel_label": "verification (pass 3)",
+  "panel": [
+    {
+      "seat": "A",
+      "model": "claude-opus-4-6 · Anthropic Claude · Claude Code 2.1.250 (Seat A)",
+      "verdict": "PUBLISH"
+    },
+    {
+      "seat": "B",
+      "model": "opencode/mimo-v2.5-free · Xiaomi MiMo · OpenCode 1.18.23 / OpenCode Zen (Seat B)",
+      "verdict": "PUBLISH"
+    },
+    {
+      "seat": "C",
+      "model": "opencode/muse-spark-1.2-contributor-free · Muse · OpenCode 1.18.23 / OpenCode Ze",
+      "verdict": "PUBLISH"
+    }
+  ],
+  "judge": {
+    "verdict": "PUBLISH",
+    "signed": true
+  },
+  "findings": {
+    "resolved": 8,
+    "still_open": 1,
+    "has_card": true
+  },
+  "reader_reviews": []
+}

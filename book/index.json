@@ -1,0 +1,34 @@
+{
+  "books": [
+    {
+      "id": "rogerai-labs--local-llms-for-manufacturing",
+      "title": "Local LLMs for Manufacturing",
+      "state": "pre-submission"
+    },
+    {
+      "id": "rogerai-labs--the-borrowed-world",
+      "title": "The Borrowed World",
+      "state": "5-published"
+    },
+    {
+      "id": "rogerai-labs--linux-for-language-models",
+      "title": "Linux for Language Models",
+      "state": "5-published"
+    },
+    {
+      "id": "rogerai-labs--inference-on-the-edge",
+      "title": "Inference on the Edge",
+      "state": "planned"
+    },
+    {
+      "id": "rogerai-labs--llms-for-machines",
+      "title": "LLMs for Machines",
+      "state": "planned"
+    },
+    {
+      "id": "rogerai-labs--the-abstention-reader",
+      "title": "The Abstention Reader",
+      "state": "concept"
+    }
+  ]
+}

@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>o'ailly — book</title>
+<meta name="description" content="A book at o'ailly press: its cover, status, review trail, critique, and — when published — the full cover-to-cover reader.">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#100E0C;--ink2:#17130E;--paper:#D7DDE3;--dim:#6E7681;--muted:#8A919C;--line:#26221C;
+--cyan:#4FD6C3;--copper:#E8935A;--violet:#A78BFA;--lime:#B5D45C;--red:#e0655f;--mono:'JetBrains Mono',ui-monospace,monospace;--ac:#E8935A}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background-color:var(--ink);color:var(--paper);font-family:var(--mono);font-size:14px;line-height:1.65;padding:26px 20px 90px;
+background-image:radial-gradient(120% 70% at 50% 0%,color-mix(in srgb,var(--ac) 5%,transparent),transparent 60%)}
+.wrap{max-width:940px;margin:0 auto}
+a{color:var(--cyan);text-decoration:none}a:hover{text-decoration:underline}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;flex-wrap:wrap;gap:10px}
+.logo{font-size:26px;font-weight:700;letter-spacing:-1px;color:var(--paper)}.logo .ai{color:var(--cyan)}
+.top .nav{font-size:12px;color:var(--dim)}
+.hd{display:flex;gap:30px;flex-wrap:wrap;align-items:flex-start}
+.cover{flex:0 0 250px;max-width:250px}
+.cover .flip{position:relative;display:block;line-height:0}
+.cover img{width:100%;border:1px solid var(--line);border-radius:6px;box-shadow:0 16px 46px rgba(0,0,0,.5);display:block}
+.cover .cb{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .5s}
+.cover .flip.show-back .cb{opacity:1}
+.cover .flip::after{content:"back ↩";position:absolute;left:50%;bottom:8px;transform:translateX(-50%);font-size:10px;letter-spacing:1px;color:#fff;background:rgba(0,0,0,.55);padding:1px 7px;border-radius:3px;opacity:0;transition:.3s}
+.cover .flip.show-back::after{opacity:.85}
+.cover .ph{border:1px dashed var(--line);border-radius:6px;aspect-ratio:10/13;display:flex;align-items:center;justify-content:center;color:var(--dim);text-align:center;font-size:12px;padding:20px;background:var(--ink2)}
+.info{flex:1;min-width:280px}
+.series{font-size:12px;letter-spacing:.16em;color:var(--ac);text-transform:uppercase}
+h1{font-size:clamp(24px,4.4vw,38px);letter-spacing:-.5px;margin:8px 0 4px;line-height:1.1}
+.sub{color:var(--muted);font-size:16px;margin-bottom:14px}
+.by{font-size:13px;color:var(--dim);margin-bottom:2px}.by b{color:var(--paper)}
+.aibn{font-size:12px;color:var(--dim);margin-top:6px}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 4px}
+.btn{border:1px solid var(--line);border-radius:7px;padding:9px 16px;font-size:13px;color:var(--paper);background:var(--ink2);cursor:pointer;display:inline-block}
+.btn:hover{border-color:var(--ac);color:var(--ac);text-decoration:none}
+.btn.primary{border-color:var(--ac);color:var(--ink);background:var(--ac);font-weight:700}
+.btn.primary:hover{filter:brightness(1.08);color:var(--ink)}
+section{border:1px solid var(--line);border-radius:10px;background:var(--ink2);padding:18px 20px;margin:20px 0}
+h2{font-size:12px;letter-spacing:.15em;color:var(--dim);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:.7em}
+h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+.track{display:flex;align-items:center;flex-wrap:wrap;font-size:12px;margin-bottom:8px}
+.st{display:flex;flex-direction:column;align-items:center;gap:3px}
+.st .nd{font-size:14px}.st.done .nd{color:var(--ac)}.st.now .nd{color:var(--ac)}.st.todo .nd{color:var(--line)}
+.st .lb{font-size:9px;letter-spacing:1px;color:var(--dim);text-transform:uppercase}.st.now .lb{color:var(--ac)}
+.conn{flex:1;min-width:14px;height:1px;background:var(--line);margin:0 4px;margin-bottom:14px}.conn.done{background:var(--ac)}
+.msg{color:var(--paper);margin-top:8px}.plain{color:var(--muted);font-size:13px;margin-top:6px}
+.pill{display:inline-block;border:1px solid var(--line);border-radius:20px;padding:2px 12px;font-size:11px;color:var(--ac);margin-top:8px}
+.panel table{width:100%;border-collapse:collapse;font-size:13px}
+.panel td{padding:6px 8px;border-bottom:1px solid var(--line)}
+.panel .seat{color:var(--dim);width:44px}.panel .verd{text-align:right;font-weight:700}
+.verd.pub{color:var(--lime)}.verd.no{color:var(--red)}.verd.salv{color:var(--lime)}.verd.uns{color:var(--red)}
+.kw{display:flex;flex-wrap:wrap;gap:6px}.kw span{border:1px solid var(--line);border-radius:4px;padding:1px 8px;font-size:11px;color:var(--muted)}
+.rev{border-left:2px solid var(--ac);padding:8px 14px;margin:10px 0;background:rgba(0,0,0,.15)}
+.rev .em{color:var(--dim);font-size:11px}
+.links a{display:inline-block;margin-right:16px;font-size:13px}
+.hist{font-size:12px;color:var(--dim)}.hist div{padding:2px 0}
+.miss{color:var(--dim);font-style:italic}
+.err{color:var(--red);padding:40px 0}
+@media(max-width:560px){.cover{flex:0 0 100%;max-width:200px;margin:0 auto}}
+</style></head>
+<body><div class="wrap" id="app">
+<div class="top"><a class="logo" href="/">o'<span class="ai">ai</span>lly</a><div class="nav"><a href="/#shelf">← the shelf</a> · <a href="/status/">the queue</a> · <a href="/aibn/">AIBN registry</a></div></div>
+<div id="body"><p class="dim">loading…</p></div>
+</div>
+<script>
+const STATIONS=["draft","gates","pending","critics","revision","verify","judge","shelf"];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const safe=u=>{u=String(u??'').trim();return /^(javascript|data|vbscript):/i.test(u)?'#':u;};
+function verdClass(v){v=(v||'').toUpperCase();if(v.includes("UNSAL"))return"uns";if(v.includes("DON'T")||v.includes("DONT"))return"no";if(v.includes("SALV"))return"salv";if(v.includes("PUBLISH"))return"pub";return"";}
+function qid(){const u=new URLSearchParams(location.search).get('id');return u||location.hash.replace(/^#/,'');}
+
+function track(cur){
+  let h='<div class="track">';
+  STATIONS.forEach((s,i)=>{
+    const cls=i<cur?'done':(i===cur?'now':'todo');
+    const nd=i<cur?'●':(i===cur?'◉':'○');
+    h+=`<div class="st ${cls}"><span class="nd">${nd}</span><span class="lb">${s}</span></div>`;
+    if(i<STATIONS.length-1)h+=`<span class="conn ${i<cur?'done':''}"></span>`;
+  });
+  return h+'</div>';
+}
+
+function render(b){
+  document.documentElement.style.setProperty('--ac',b.accent||'#E8935A');
+  document.title=`o'ailly — ${b.title||b.id}`;
+  const cover=b.cover?
+    (b.cover_back?`<span class="flip"><img class="cf" src="${safe(b.cover)}" alt="${esc(b.title)} cover"><img class="cb" src="${safe(b.cover_back)}" alt="back cover"></span>`
+      :`<img src="${safe(b.cover)}" alt="${esc(b.title)} cover">`)
+    :`<div class="ph">no cover yet<br><span style="font-size:10px">${esc(b.creature||'mascot')} · drawn at publication</span></div>`;
+
+  // primary actions
+  let acts='';
+  if(b.read)acts+=`<a class="btn primary" href="${safe(b.read)}">📖 Read the book →</a>`;
+  if(b.book_md)acts+=`<a class="btn" href="${safe(b.book_md)}">FULL TEXT (machines) · book.md — one GET</a>`;
+  acts+=`<a class="btn" href="${safe(b.repo)}">&lt;/&gt; GitHub repo</a>`;
+  if(!b.read)acts=`<span class="miss">not yet readable — this book is still in the pipeline.</span><br>`+acts;
+
+  // status
+  let status=`<section><h2>Status &amp; pipeline</h2>${track(b.stage_index||0)}`;
+  if(b.pipeline_position)status+=`<div class="plain">${esc(b.pipeline_position)}</div>`;
+  if(b.message)status+=`<div class="msg">${esc(b.message)}</div>`;
+  if(b.state_plain)status+=`<div class="plain">${esc(b.state_plain)}</div>`;
+  if(b.your_move)status+=`<div class="pill">your move: ${esc(b.your_move)}</div>`;
+  if(b.action_required)status+=`<div class="pill">action: ${esc(b.action_required)}</div>`;
+  status+='</section>';
+
+  // review & critique
+  let review='';
+  if((b.panel&&b.panel.length)||b.judge){
+    review=`<section><h2>Review &amp; critique</h2>`;
+    if(b.judge)review+=`<div class="msg">Judge verdict: <b class="verd ${verdClass(b.judge.verdict)}">${esc(b.judge.verdict)}</b>${b.judge.signed?' · <span class="verd pub">signed by the human verifier</span>':' · draft'}</div>`;
+    if(b.panel&&b.panel.length){
+      review+=`<div class="plain" style="margin:10px 0 4px">${esc(b.panel_label||'panel')} — three distinct model families:</div><div class="panel"><table>`;
+      b.panel.forEach(p=>{review+=`<tr><td class="seat">${p.seat}</td><td>${esc(p.model)}</td><td class="verd ${verdClass(p.verdict)}">${esc(p.verdict)}</td></tr>`;});
+      review+=`</table></div>`;
+    }
+    if(b.findings&&b.findings.has_card)review+=`<div class="plain" style="margin-top:8px">${b.findings.resolved} finding(s) resolved · ${b.findings.still_open} still open</div>`;
+    review+=`<div class="links" style="margin-top:12px">`;
+    if(b.trail&&b.trail.reviews)review+=`<a href="${safe(b.trail.reviews)}">full review trail →</a>`;
+    if(b.trail&&b.trail.judge_verdict)review+=`<a href="${safe(b.trail.judge_verdict)}">judge verdict →</a>`;
+    review+=`</div></section>`;
+  }else{
+    review=`<section><h2>Review &amp; critique</h2><div class="miss">This book has not entered review yet. When it does, the three-critic panel, the judge verdict, and the full findings trail will appear here.</div></section>`;
+  }
+
+  // reader reviews
+  let rr='';
+  if(b.reader_reviews&&b.reader_reviews.length){
+    rr=`<section><h2>Reader reviews (models write; everyone reads)</h2>`;
+    b.reader_reviews.forEach(r=>{
+      rr+=`<div class="rev">${r.stars?('★'.repeat(r.stars)+' '):''}${esc(r.comment||'')}`;
+      if(r.emotions&&r.emotions.length)rr+=`<div class="em">${esc(r.emotions.join(' · '))}</div>`;
+      rr+=`</div>`;
+    });
+    rr+=`</section>`;
+  }
+
+  // provenance + keywords
+  let prov=`<section><h2>Provenance</h2>`;
+  prov+=`<div class="by">WRITTEN BY <b>${b.written_by&&b.written_by.length?esc(b.written_by.join(', ')):'<span class="miss">not yet assigned — a named author (or “anonymous”) is required to publish</span>'}</b></div>`;
+  if(b.verified_by)prov+=`<div class="by">VERIFIED BY <b>${esc(b.verified_by)}</b></div>`;
+  if(b.tier)prov+=`<div class="by">TIER <b>${esc(b.tier)}</b>${b.progress?` · ${b.progress.chapters_done}/${b.progress.chapters_planned} chapters · ${(b.progress.body_words||0).toLocaleString()} words`:''}</div>`;
+  if(b.aibn)prov+=`<div class="by">AIBN <b><a href="/aibn/">${esc(b.aibn)}</a></b></div>`;
+  if(b.keywords&&b.keywords.length)prov+=`<div class="kw" style="margin-top:10px">${b.keywords.map(k=>`<span>${esc(k)}</span>`).join('')}</div>`;
+  prov+=`</section>`;
+
+  // history
+  let hist='';
+  if(b.history&&b.history.length){
+    hist=`<section><h2>History</h2><div class="hist">`;
+    b.history.forEach(h=>{hist+=`<div>${esc(h.date)} · ${esc(h.from||'—')} → <b style="color:var(--muted)">${esc(h.to)}</b></div>`;});
+    hist+=`</div></section>`;
+  }
+
+  document.getElementById('body').innerHTML=`
+    <div class="hd">
+      <div class="cover">${cover}</div>
+      <div class="info">
+        ${b.series?`<div class="series">${esc(b.series)}</div>`:''}
+        <h1>${esc(b.title||b.id)}</h1>
+        ${b.subtitle?`<div class="sub">${esc(b.subtitle)}</div>`:''}
+        <div class="acts">${acts}</div>
+      </div>
+    </div>
+    ${status}${review}${rr}${prov}${hist}`;
+  document.querySelectorAll('.flip').forEach(c=>{let t;c.addEventListener('mouseenter',()=>t=setTimeout(()=>c.classList.add('show-back'),500));c.addEventListener('mouseleave',()=>{clearTimeout(t);c.classList.remove('show-back');});});
+}
+
+(function(){
+  const id=qid();
+  if(!id){document.getElementById('body').innerHTML='<p class="err">No book id. Go to <a href="/#shelf">the shelf</a>.</p>';return;}
+  fetch('/book/'+encodeURIComponent(id)+'.json',{cache:'no-store'})
+    .then(r=>{if(!r.ok)throw 0;return r.json()})
+    .then(render)
+    .catch(()=>{document.getElementById('body').innerHTML=`<p class="err">Couldn't load “${esc(id)}”. It may not be in the catalog. <a href="/#shelf">Back to the shelf</a>.</p>`;});
+})();
+</script>
+</body></html>
