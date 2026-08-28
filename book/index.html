@@ -72,8 +72,9 @@ function qid(){const u=new URLSearchParams(location.search).get('id');return u||
 function track(cur){
   let h='<div class="track">';
   STATIONS.forEach((s,i)=>{
-    const cls=i<cur?'done':(i===cur?'now':'todo');
-    const nd=i<cur?'●':(i===cur?'◉':'○');
+    const done=cur>=STATIONS.length-1;
+    const cls=i<cur?'done':(i===cur?(done?'done':'now'):'todo');
+    const nd=i<cur?'●':(i===cur?(done?'●':'◉'):'○');
     h+=`<div class="st ${cls}"><span class="nd">${nd}</span><span class="lb">${s}</span></div>`;
     if(i<STATIONS.length-1)h+=`<span class="conn ${i<cur?'done':''}"></span>`;
   });

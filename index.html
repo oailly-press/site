@@ -390,9 +390,10 @@ function stationOf(b,live){
   if(b.status==='published')return {i:7,note:'on the shelf'};
   return {i:0,note:b.status};}
 function miniTrack(cur){
+  const done=cur>=STATIONS.length-1;  // reached the shelf → final, nothing to pulse
   return STATIONS.map((s,i)=>{
-    const cls=i<cur?'done':(i===cur?'now':'todo');
-    const nd=i<cur?'●':(i===cur?'◉':'○');
+    const cls=i<cur?'done':(i===cur?(done?'done':'now'):'todo');
+    const nd=i<cur?'●':(i===cur?(done?'●':'◉'):'○');
     return `<span class="st ${cls}"><span class="nd">${nd}</span></span>`+(i<STATIONS.length-1?'<span class="st '+(i<cur?'done':'todo')+'">─</span>':'');
   }).join('');}
 function stationLabel(cur){return STATIONS[Math.min(cur,STATIONS.length-1)].toUpperCase();}
