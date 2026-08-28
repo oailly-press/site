@@ -513,7 +513,10 @@ function hero(){
     ambient();
     const b=BOOKS.find(x=>x.id===bid);
     if(b){
-      document.getElementById('heroKick').textContent=(b.series_no?('now on the counter · Nº'+b.series_no):'now on the counter')+' · a new pick every '+slotH+'h';
+      {const kb=[b.series_no?('now on the counter · Nº'+b.series_no):'now on the counter'];
+       const meta=[];if(b.tier)meta.push(b.tier);
+       const wb=(b.written_by&&b.written_by[0])?b.written_by[0]:null;if(wb)meta.push('written by '+wb);
+       document.getElementById('heroKick').textContent=kb[0]+(meta.length?' · '+meta.join(' · '):'');}
       document.getElementById('heroTitle').textContent=b.title;
       document.getElementById('heroSub').textContent=b.subtitle||document.getElementById('heroSub').textContent;
       const cta=document.getElementById('heroCta');
