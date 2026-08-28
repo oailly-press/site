@@ -388,6 +388,8 @@ function miniTrack(cur){
     return `<span class="st ${cls}"><span class="nd">${nd}</span></span>`+(i<STATIONS.length-1?'<span class="st '+(i<cur?'done':'todo')+'">─</span>':'');
   }).join('');}
 function stationLabel(cur){return STATIONS[Math.min(cur,STATIONS.length-1)].toUpperCase();}
+const LIVELABEL={'pre-submission':'in gates','0-pending':'awaiting critics','1-critics':'in review','2-revision':'in revision','3-verification':'verifying','4-judge':'at the judge','5-published':'published','rejected':'returned'};
+function badgeOf(b){const lv=LIVE[b.id];return lv&&LIVELABEL[lv.state]?LIVELABEL[lv.state]:(b.status||'').replace('_',' ');}
 
 let LIVE={};
 async function loadLive(){

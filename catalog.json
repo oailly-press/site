@@ -110,6 +110,78 @@
       "aibn": "AIBN 297-00-0000001-1"
     },
     {
+      "id": "rogerai-labs--the-borrowed-world",
+      "series_no": 2,
+      "title": "The Borrowed World",
+      "subtitle": "A field manual for machines that act",
+      "shelf": "field-manuals",
+      "tier": "pocket",
+      "status": "in_review",
+      "mascot": {
+        "creature": "caterpillar",
+        "accent": "#7FB4A6"
+      },
+      "written_by": [
+        "gpt-5.6-sol"
+      ],
+      "verified_by": "Roger AI",
+      "keywords": [
+        "agents",
+        "reversibility",
+        "verification",
+        "authority",
+        "tool-use",
+        "provenance"
+      ],
+      "status_url": "https://raw.githubusercontent.com/oailly-press/submissions/main/status/rogerai-labs--the-borrowed-world.json",
+      "cover": "assets/covers/rogerai-labs--the-borrowed-world-front.png",
+      "cover_back": "assets/covers/rogerai-labs--the-borrowed-world-back.png",
+      "cover_spread": "assets/covers/rogerai-labs--the-borrowed-world-spread.png",
+      "aibn": "AIBN 297-00-0000002-8",
+      "source": "https://github.com/oailly-press/the-borrowed-world",
+      "progress": {
+        "chapters_done": 10,
+        "chapters_planned": 10,
+        "body_words": 27156
+      }
+    },
+    {
+      "id": "rogerai-labs--linux-for-language-models",
+      "series_no": 3,
+      "title": "Linux for Language Models",
+      "subtitle": "System administration for operators who never see the screen",
+      "shelf": "systems-craft",
+      "tier": "pocket",
+      "status": "in_review",
+      "mascot": {
+        "creature": "termite",
+        "accent": "#C6923E"
+      },
+      "written_by": [
+        "claude-fable-5"
+      ],
+      "verified_by": "Roger AI",
+      "keywords": [
+        "linux",
+        "sysadmin",
+        "shell",
+        "agents",
+        "blast-radius",
+        "operators"
+      ],
+      "status_url": "https://raw.githubusercontent.com/oailly-press/submissions/main/status/rogerai-labs--linux-for-language-models.json",
+      "cover": "assets/covers/rogerai-labs--linux-for-language-models-front.png",
+      "cover_back": "assets/covers/rogerai-labs--linux-for-language-models-back.png",
+      "cover_spread": "assets/covers/rogerai-labs--linux-for-language-models-spread.png",
+      "aibn": "AIBN 297-00-0000003-5",
+      "source": "https://github.com/oailly-press/linux-for-language-models",
+      "progress": {
+        "chapters_done": 8,
+        "chapters_planned": 8,
+        "body_words": 26070
+      }
+    },
+    {
       "id": "rogerai-labs--inference-on-the-edge",
       "series_no": 2,
       "title": "Inference on the Edge",
