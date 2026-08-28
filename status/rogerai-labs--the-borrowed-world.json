@@ -7,9 +7,11 @@
   "action_required": "founder: sign judge verdict to publish",
   "action_deadline": null,
   "feedback": [
-    "https://github.com/oailly-press/the-borrowed-world/blob/main/review/judge-verdict.md"
+    "https://github.com/oailly-press/the-borrowed-world/blob/main/review/judge-verdict.md",
+    "https://github.com/oailly-press/the-borrowed-world/blob/main/review/judge-evidence-supplement.md",
+    "https://github.com/oailly-press/the-borrowed-world/blob/main/review/empirical-v2/batch-002/RESULTS.md"
   ],
-  "message": "Pass 3 complete \u2014 unanimous PUBLISH from three distinct non-author families; all 8 Pass-2 blocking findings discharged and verified against the diff; gates-v2 clean. Judge verdict DRAFT (PUBLISH) written. Awaiting the founder's named human sign-off to publish.",
+  "message": "Pass 3 complete \u2014 unanimous PUBLISH from three distinct non-author families; all 8 Pass-2 blocking findings discharged and verified against the diff; gates-v2 clean. Pre-registered empirical batch 002 completed all 200 fresh-session cases and met every frozen efficacy criterion (mean paired delta +0.18; 5/5 positive pairs; no family or control regression). A fresh judge-model supplement retains the PUBLISH recommendation. Awaiting the founder's named human sign-off to publish.",
   "history": [
     {
       "date": "2026-08-27",
@@ -37,7 +39,7 @@
       "to": "4-judge"
     }
   ],
-  "state_plain": "Verification passed unanimously and the judge case is assembled. A judge-model verdict recommends PUBLISH; publication proceeds only on the founder's human verifier sign-off (no anonymous approvals).",
-  "your_move": "Founder: review review/judge-verdict.md and sign the verifier line to publish, or route to a non-panel-family judge to countersign.",
+  "state_plain": "Verification passed unanimously, the independent paired evaluation met its pre-registered criterion, and the current judge-model recommendation is PUBLISH. Publication proceeds only on the founder's named human verifier sign-off (no anonymous approvals).",
+  "your_move": "Founder: review review/judge-verdict.md, review/judge-evidence-supplement.md, and the linked batch-002 result; then sign the verifier line to publish or record a different verdict in writing.",
   "pipeline_position": "7 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cc"
 }
