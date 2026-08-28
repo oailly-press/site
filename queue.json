@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-28",
+  "generated": "2026-08-27",
   "states": [
     "draft",
     "gates",
@@ -13,14 +13,14 @@
   "books": [
     {
       "book_id": "rogerai-labs--linux-for-language-models",
-      "state": "3-verification",
-      "state_plain": "Revision v2 is in and tagged. Pass-3 verification is open: three critics (OpenAI, Google, Alibaba — none Anthropic) verify the v1→v2 delta.",
-      "your_move": "Wait — Pass 3 is a press action.",
-      "pipeline_position": "6 of 8 · ●●●●●◉◌◌",
+      "state": "4-judge",
+      "state_plain": "Pass 3 is complete: three critics from three different model families all recommend PUBLISH, with every Pass-2 finding verified resolved or fairly rebutted against the actual v1\u2192v2 changes. The book now sits with the judge for the final human-signed verdict.",
+      "your_move": "Nothing to do \u2014 the judge (founder + judge model) records the final PUBLISH/DON'T PUBLISH verdict.",
+      "pipeline_position": "7 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cc",
       "next_check_after": "2026-08-30T16:00:00Z",
-      "action_required": null,
+      "action_required": "founder: sign judge verdict to publish",
       "version_under_review": "v2",
-      "message": "Revision v2 imported + tagged; pass-3 verification panel open. action_required=null (press)."
+      "message": "Pass 3 complete \u2014 unanimous PUBLISH from three distinct non-author families (Alibaba qwen3.8-27b, Xiaomi mimo-v2.5-free, Muse muse-spark-1.2-contributor-free; none Anthropic, the author family). All four Pass-2 blocking findings on chapter 3 discharged (C-1 MemFree resolved, C-2 uptime rebutted-accepted, C-3 rate race resolved at both sites, C-4 burst sampler resolved) and verified against the v1\u2192v2 diff; fresh fact-checks resolved against proc(5)/PSI kernel docs, all supported; no new blocking debt. Auto-tally recommendation: ADVANCE to judge (PUBLISH-leaning). Awaiting the founder's named human sign-off to publish."
     },
     {
       "book_id": "rogerai-labs--local-llms-for-manufacturing",
@@ -31,18 +31,18 @@
       "next_check_after": null,
       "action_required": "founder: interview + verification pass",
       "version_under_review": null,
-      "message": "gates PASS (0 reject / 1 warn), 25208 words — 2026-08-27. Remaining before pipeline entry: founder interview (the [FOUNDER] section), R-TBD attachment completion, and named-human verification. The manuscript that dogfooded the gates now passes them."
+      "message": "gates PASS (0 reject / 1 warn), 25208 words \u2014 2026-08-27. Remaining before pipeline entry: founder interview (the [FOUNDER] section), R-TBD attachment completion, and named-human verification. The manuscript that dogfooded the gates now passes them."
     },
     {
       "book_id": "rogerai-labs--the-borrowed-world",
       "state": "4-judge",
-      "state_plain": "Verification passed unanimously (3 families, all PUBLISH); judge verdict DRAFT written. Awaiting founder human sign-off to publish.",
-      "your_move": "Founder: sign review/judge-verdict.md to publish.",
-      "pipeline_position": "7 of 8 · ●●●●●●◉◌",
+      "state_plain": "Verification passed unanimously and the judge case is assembled. A judge-model verdict recommends PUBLISH; publication proceeds only on the founder's human verifier sign-off (no anonymous approvals).",
+      "your_move": "Founder: review review/judge-verdict.md and sign the verifier line to publish, or route to a non-panel-family judge to countersign.",
+      "pipeline_position": "7 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cc",
       "next_check_after": "2026-08-30T16:00:00Z",
       "action_required": "founder: sign judge verdict to publish",
       "version_under_review": "v2",
-      "message": "Pass 3 unanimous PUBLISH; judge draft written; awaiting founder sign-off."
+      "message": "Pass 3 complete \u2014 unanimous PUBLISH from three distinct non-author families; all 8 Pass-2 blocking findings discharged and verified against the diff; gates-v2 clean. Judge verdict DRAFT (PUBLISH) written. Awaiting the founder's named human sign-off to publish."
     }
   ]
 }

@@ -1,15 +1,15 @@
 {
   "book_id": "rogerai-labs--linux-for-language-models",
   "version_under_review": "v2",
-  "state": "3-verification",
+  "state": "4-judge",
   "state_entered": "2026-08-28",
   "next_check_after": "2026-08-30T16:00:00Z",
-  "action_required": null,
-  "action_deadline": "2026-09-11",
+  "action_required": "founder: sign judge verdict to publish",
+  "action_deadline": null,
   "feedback": [
     "https://github.com/oailly-press/linux-for-language-models/tree/main/review/v2"
   ],
-  "message": "Revision v2 (2b1ac1b) imported as the manuscript under review; v1/v2 tagged for the delta. Pass-3 verification panel (same three families as pass 2: OpenAI, Google, Alibaba \u2014 none Anthropic, the author family) is now open. action_required=null (press).",
+  "message": "Pass 3 complete — unanimous PUBLISH from three distinct non-author families (Alibaba qwen3.8-27b, Xiaomi mimo-v2.5-free, Muse muse-spark-1.2-contributor-free; none Anthropic, the author family). All four Pass-2 blocking findings on chapter 3 discharged (C-1 MemFree resolved, C-2 uptime rebutted-accepted, C-3 rate race resolved at both sites, C-4 burst sampler resolved) and verified against the v1→v2 diff; fresh fact-checks resolved against proc(5)/PSI kernel docs, all supported; no new blocking debt. Auto-tally recommendation: ADVANCE to judge (PUBLISH-leaning). Awaiting the founder's named human sign-off to publish.",
   "history": [
     {
       "date": "2026-08-28",
@@ -25,10 +25,15 @@
       "date": "2026-08-28",
       "from": "2-revision",
       "to": "3-verification"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "3-verification",
+      "to": "4-judge"
     }
   ],
-  "state_plain": "Your revision is in and tagged v2. The press is running Pass 3: three critics verify the v1\u2192v2 delta against every Pass-2 finding, sample fresh claims, and recommend PUBLISH or DON'T PUBLISH. No author action during Pass 3.",
-  "your_move": "Wait \u2014 Pass 3 is a press action. Remaining debts, if any, go to the judge as they stand.",
-  "pipeline_position": "6 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cc\u25cc",
-  "reviews_in": 0
+  "state_plain": "Pass 3 is complete: three critics from three different model families all recommend PUBLISH, with every Pass-2 finding verified resolved or fairly rebutted against the actual v1→v2 changes. The book now sits with the judge for the final human-signed verdict.",
+  "your_move": "Nothing to do — the judge (founder + judge model) records the final PUBLISH/DON'T PUBLISH verdict.",
+  "pipeline_position": "7 of 8 · ●●●●●●◉◌",
+  "reviews_in": 3
 }
