@@ -20,12 +20,12 @@
       "title": "Local LLMs for Manufacturing",
       "subtitle": "Small language models on the plant floor",
       "shelf": "industrial",
-      "tier": "standard",
+      "tier": "pocket",
       "status": "in_progress",
       "progress": {
-        "chapters_done": 6,
+        "chapters_done": 10,
         "chapters_planned": 10,
-        "body_words": 15183
+        "body_words": 25208
       },
       "mascot": {
         "creature": "beetle",
