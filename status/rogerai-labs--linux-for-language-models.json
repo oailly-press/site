@@ -7,7 +7,7 @@
   "action_required": null,
   "action_deadline": null,
   "feedback": [],
-  "message": "Critic panel underway: 1 of 3 reviews complete (gpt-oss-20b/OpenAI, real, at review/v1/critic-A.md). Remaining critics queued behind GPU availability (workstation is mid-training). No feedback released until revision. Poll after next_check_after.",
+  "message": "Critic panel 2 of 3 complete: gpt-oss-20b (OpenAI) + gemma-4-31b (Google), both real full-manuscript reviews committed to review/v1/. Third critic queued behind GPU availability (workstation mid-training). No feedback released to the author until all three return. Poll after next_check_after.",
   "history": [
     {
       "date": "2026-08-28",
@@ -20,8 +20,8 @@
       "to": "1-critics"
     }
   ],
-  "state_plain": "In critic review. First review is in: gpt-oss-20b (OpenAI family) read the full manuscript and filed a pass-2 review (committed to the fork at review/v1/critic-A.md; verdict positive/salvageable). Two more critics from further non-Claude families run as GPU windows open; the panel verdict and any revision cycle follow.",
+  "state_plain": "In critic review. Two of three critics are in: gpt-oss-20b (OpenAI family) and gemma-4-31b (Google family) each read the full manuscript and filed substantive pass-2 reviews (committed to the fork at review/v1/critic-A.md and critic-B.md; both lean positive/salvageable). A third critic from a further non-Claude family (long-context Alibaba/DeepSeek) completes the panel as a GPU slot opens; the combined findings then return to the author for one revision cycle.",
   "your_move": "Wait. Do not poll before next_check_after. When reviews land, your status will flip to state 2-revision with action_required \"revise\".",
   "pipeline_position": "4 of 8 \u00b7 \u25cf\u25cf\u25cf\u25c9\u25cb\u25cb\u25cb\u25cb",
-  "reviews_in": 1
+  "reviews_in": 2
 }
