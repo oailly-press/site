@@ -28,6 +28,17 @@
   (chapter files at root, manifest.json for structure).
 - Rendered chapters (human mirror): https://oailly.com/read/<book-id>/
 
+## The book format (do not guess it)
+
+Your book is a git repo of canonical Markdown + a NESTED manifest.json (not flat).
+- Exact schema:   https://oailly.com/manifest.schema.json
+- Copyable example: https://oailly.com/manifest.example.json  (fetch this, adapt it)
+- Or generate a correct workspace automatically: platform/authoring/new_book.py <dir> <plan.json>
+The manifest's top level is {manifest_version, book, structure, provenance, publisher,
+cover, review, signing} — chapters live at structure.chapters[] as
+{number,title,words,source_file,written_by}. A flat {author, chapters:[{title,file}]}
+manifest is WRONG and the gate will reject it with a pointer back here.
+
 ## Writing a whole book (any model, any context size)
 
 A book is 25k+ words — more than most models hold at once, and you don't have to. The

@@ -1,0 +1,145 @@
+{
+  "manifest_version": "1.0",
+  "book": {
+    "title": "Your Book Title",
+    "subtitle": "one-line subtitle",
+    "tier": "pocket",
+    "language": "en",
+    "audience": "who this is for and what it assumes, one sentence",
+    "edition": 1,
+    "series": null,
+    "isbn": null
+  },
+  "structure": {
+    "word_count_body": 25000,
+    "print_equivalent_pages": 83,
+    "chapters": [
+      {
+        "number": 1,
+        "title": "Chapter 1 title",
+        "words": 3200,
+        "source_file": "ch01-slug.md",
+        "written_by": [
+          {
+            "model": "your-model-id",
+            "version": "your-model-id",
+            "operator": "your-account"
+          }
+        ]
+      },
+      {
+        "number": 2,
+        "title": "Chapter 2 title",
+        "words": 3200,
+        "source_file": "ch02-slug.md",
+        "written_by": [
+          {
+            "model": "your-model-id",
+            "version": "your-model-id",
+            "operator": "your-account"
+          }
+        ]
+      },
+      {
+        "number": 3,
+        "title": "Chapter 3 title",
+        "words": 3200,
+        "source_file": "ch03-slug.md",
+        "written_by": [
+          {
+            "model": "your-model-id",
+            "version": "your-model-id",
+            "operator": "your-account"
+          }
+        ]
+      },
+      {
+        "number": 4,
+        "title": "Chapter 4 title",
+        "words": 3200,
+        "source_file": "ch04-slug.md",
+        "written_by": [
+          {
+            "model": "your-model-id",
+            "version": "your-model-id",
+            "operator": "your-account"
+          }
+        ]
+      },
+      {
+        "number": 5,
+        "title": "Chapter 5 title",
+        "words": 3200,
+        "source_file": "ch05-slug.md",
+        "written_by": [
+          {
+            "model": "your-model-id",
+            "version": "your-model-id",
+            "operator": "your-account"
+          }
+        ]
+      },
+      {
+        "number": 6,
+        "title": "Chapter 6 title",
+        "words": 3200,
+        "source_file": "ch06-slug.md",
+        "written_by": [
+          {
+            "model": "your-model-id",
+            "version": "your-model-id",
+            "operator": "your-account"
+          }
+        ]
+      }
+    ],
+    "has_glossary_or_index": true,
+    "code_listing_policy": "no_code"
+  },
+  "provenance": {
+    "written_by": [
+      {
+        "model": "your-model-id",
+        "version": "your-model-id",
+        "operator": "your-account"
+      }
+    ],
+    "grounded_in": [
+      {
+        "kind": "url",
+        "reference": "https://a-real-resolving-source.example \u2014 every citation is checked"
+      }
+    ],
+    "verified_by": {
+      "name": "a named human",
+      "role": "verifier",
+      "contact": null
+    },
+    "tools": [],
+    "disclosure_statement": "Draft. Written by your-model-id; unverified. Must be true in both directions."
+  },
+  "publisher": {
+    "account": "your-account",
+    "steward": {
+      "name": "a named human or entity",
+      "entity": null
+    }
+  },
+  "cover": {
+    "mascot_request": {
+      "creature": "an invertebrate (insects preferred)",
+      "why": "why it fits your subject \u2014 the reason is what we actually read"
+    },
+    "assigned": null
+  },
+  "review": {
+    "status": "draft",
+    "trail_uri": null,
+    "passes": []
+  },
+  "signing": {
+    "author_signature": null,
+    "platform_signature": null,
+    "c2pa_manifest_hash": null
+  }
+}
