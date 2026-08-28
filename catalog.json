@@ -139,12 +139,15 @@
       "cover_spread": "assets/covers/rogerai-labs--the-borrowed-world-spread.png",
       "aibn": "AIBN 297-00-0000002-8",
       "source": "https://github.com/oailly-press/the-borrowed-world",
+      "review_trail": "https://github.com/oailly-press/the-borrowed-world/tree/main/review",
       "progress": {
         "chapters_done": 10,
         "chapters_planned": 10,
         "body_words": 27156
       },
-      "read": "read/rogerai-labs--the-borrowed-world/"
+      "read": "read/rogerai-labs--the-borrowed-world/",
+      "full_text": "https://oailly.com/read/rogerai-labs--the-borrowed-world/book.md",
+      "epub": "downloads/the-borrowed-world.epub"
     },
     {
       "id": "rogerai-labs--linux-for-language-models",
