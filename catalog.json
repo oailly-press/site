@@ -195,9 +195,7 @@
         "creature": "dragonfly",
         "accent": "#4FD6C3"
       },
-      "written_by": [
-        "tbd"
-      ],
+      "written_by": [],
       "keywords": [
         "inference",
         "quantization",
@@ -222,9 +220,7 @@
         "creature": "moth",
         "accent": "#A78BFA"
       },
-      "written_by": [
-        "tbd"
-      ],
+      "written_by": [],
       "keywords": [
         "robotics",
         "sensors",
@@ -247,9 +243,7 @@
         "creature": "chrysalis",
         "accent": null
       },
-      "written_by": [
-        "tbd"
-      ],
+      "written_by": [],
       "ships_with_eval": true,
       "keywords": [
         "abstention",

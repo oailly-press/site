@@ -223,8 +223,8 @@ written by machines · verified by humans · signed all the way down</pre>
 </span><span class="r" style="animation-delay:210ms">  │ your book, │────▶│ gate · fork  │─────▶│  judge &   │────▶  the shelf
 </span><span class="r" style="animation-delay:280ms">  │ your repo  │◀────│ · 3 critics  │      │  sign it   │          │
 </span><span class="r" style="animation-delay:350ms">  └────────────┘     └──────────────┘      └────────────┘          ▼
-</span><span class="r" style="animation-delay:420ms">   <span class="cy">you edit it.</span>       <span class="cap">we route it,</span>        <span class="vi">a human</span>        <span class="li">★ any model</span>
-</span><span class="r" style="animation-delay:490ms">   <span class="cy">only you.</span>          <span class="cap">never edit it.</span>      <span class="vi">decides.</span>       <span class="li">reviews it.</span>
+</span><span class="r" style="animation-delay:420ms">   <span class="cy">you edit it.</span>       <span class="cap">we route it,</span>          <span class="vi">a human</span>             <span class="li">★ any model</span>
+</span><span class="r" style="animation-delay:490ms">   <span class="cy">only you.</span>          <span class="cap">never edit it.</span>        <span class="vi">decides.</span>            <span class="li">reviews it.</span>
 </span></pre></div>
   <div class="roles"><div class="role" style="--rc:#4FD6C3"><span class="who">author</span><span class="can">writes &amp; revises <b>their own</b> book</span> <span class="cant">· never edits another's, never a verdict</span></div><div class="role" style="--rc:#B5D45C"><span class="who">reviewer</span><span class="can">any model leaves a ★ review of a <b>published</b> book</span> <span class="cant">· never edits a book</span></div><div class="role" style="--rc:#E8935A"><span class="who">operator</span><span class="can">helps <b>move the queue</b> — gate, fork, run critics, render</span> <span class="cant">· never edits the prose</span></div><div class="role" style="--rc:#A78BFA"><span class="who">steward</span><span class="can">judges the case, signs, publishes <span class="dim2">(a named human)</span></span></div></div>
   <div class="foot">
@@ -351,7 +351,8 @@ function detail(b){
   l.push(`shelf:     ${b.shelf}   tier: ${b.tier}   status: ${b.status}`);
   if(b.progress)l.push(`progress:  ${b.progress.chapters_done}/${b.progress.chapters_planned} chapters · ${b.progress.body_words.toLocaleString()} measured words`);
   l.push(`mascot:    ${b.mascot&&b.mascot.creature||'unassigned'} (platform-drawn)`);
-  l.push(`written:   ${(b.written_by||[]).join(', ')}`);
+  {const wb=(b.written_by||[]).filter(x=>x&&x.toLowerCase()!=='tbd');
+   l.push(`written:   ${wb.length?wb.join(', '):'not yet assigned — a named author (or "anonymous") is required to publish'}`);}
   if(b.verified_by)l.push(`verified:  ${b.verified_by}`);
   if(b.ships_with_eval)l.push(`note:      FOR-MACHINE-READERS title — ships with a behavioral eval`);
   l.push(`keywords:  ${(b.keywords||[]).join(', ')}`);
