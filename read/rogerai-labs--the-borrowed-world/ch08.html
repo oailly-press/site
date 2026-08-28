@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Long Work Without Lost Intent — The Borrowed World</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#7FB4A6;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="8" data-prev="ch07.html" data-next="ch09.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 8 — Long Work Without Lost Intent</h1>
+<p>Long tasks fail by drift more often than by one dramatic mistake. A constraint is read
+and then displaced by newer output. A plan survives after evidence invalidates it. An
+agent forgets which modifications pre-existed its run. A user adds a requirement midway
+through the work, but only the most recent sentence remains salient. A collaborator
+finishes a subtask after the parent has changed direction.</p>
+<p>Context length does not eliminate this problem. <em>Lost in the Middle</em> showed position-
+dependent use of relevant information in long contexts for the evaluated models and
+tasks [R4]. AgentBench identified long-term reasoning, decision making, and instruction
+following among obstacles in interactive agent settings [R7]. A specific modern model
+may behave differently, but “the information is still somewhere in context” is not a
+sufficient continuity mechanism.</p>
+<p>Long work needs external state: compact records that preserve intent, evidence, ownership,
+and next action across tool output, handoffs, interruptions, and context compression.
+The records should expose decisions without requiring private reasoning traces. Future
+actors need claims and grounds, not an imitation of hidden cognition.</p>
+<h2>Keep four ledgers</h2>
+<p>The <strong>constraint ledger</strong> records active instructions and boundaries: must-do conditions,
+must-not-do exclusions, applicable local guidance, authority approvals, user preferences,
+and chosen assumptions. Each entry should retain source and scope. “No deploy” from a
+repository policy and “no deploy yet” from the user may look similar but have different
+authority and expiry.</p>
+<p>The <strong>state ledger</strong> records relevant before state and changes over time: target identity,
+pre-existing modifications, resource versions, operation IDs, generated artifacts, and
+concurrent changes. It should distinguish observed from inferred ownership.</p>
+<p>The <strong>evidence ledger</strong> records propositions that select action, their source or
+measurement, freshness, and limits. Chapter 5 defined its types. In long work, add a
+supersession link when new evidence replaces an earlier belief rather than erasing the
+history.</p>
+<p>The <strong>decision ledger</strong> records material choices: alternatives considered, choice,
+evidence, authority, expected effect, and reversal path. It need not document every local
+variable name. Record decisions a future actor could reasonably revisit.</p>
+<p>These ledgers may live in one structured note, an issue, a plan system, a manifest, or
+domain-specific records. Separate concepts matter more than separate files. Keep them
+close to the work and protect sensitive data.</p>
+<h2>Use a state packet</h2>
+<p>At any pause or handoff, produce a <strong>state packet</strong> with seven fields:</p>
+<ul>
+<li>objective and completion contract;</li>
+<li>active constraints and authority frontier;</li>
+<li>target identifiers and relevant before state;</li>
+<li>actions completed and artifacts changed;</li>
+<li>verification run and exact results;</li>
+<li>open uncertainties, failures, and blockers;</li>
+<li>next safe action and the condition that authorizes it.</li>
+</ul>
+<p>A packet is a restart interface. An actor with no access to your private reasoning should
+be able to continue without repeating dangerous discovery or assuming false completion.
+The packet must not claim more than the durable artifacts show.</p>
+<p>Avoid narrative-only packets such as “I made good progress and the feature mostly works.”
+Name paths, commits, resource IDs, test commands, counts, and pending decisions. Avoid
+the opposite failure of pasting an unbounded transcript. Tool output is not organized
+state. Select the facts that control continuation and retain locators to deeper logs.</p>
+<p>Update the packet at natural checkpoints: after discovery changes the plan, after a
+material state transition, before delegating, before a long-running job, and before
+yielding. An old precise packet can be more dangerous than no packet if it appears
+current. Include observation time and resource version.</p>
+<h2>Plans are hypotheses</h2>
+<p>A plan predicts a path from current state to the completion contract. Evidence can
+invalidate it. Treat plan items as pending, in progress, completed, or replaced, and
+allow at most one ambiguous “in progress” focus per actor when coordination depends on
+it.</p>
+<p>Mark a step complete only when its condition is true, not when a tool was called. “Run
+the migration” is not complete if the job is queued. “Verify links” is not complete if
+the checker stopped on its first network error. Keep operation and outcome distinct.</p>
+<p>When the plan changes, record why. “Parser version differs in production; compatibility
+fix replaces dependency upgrade” preserves the discovery. Silently rewriting the plan
+makes later review look cleaner and removes evidence about why the diff has its shape.</p>
+<p>Plans should be short enough to scan and detailed enough to reveal sequencing and
+authority points. A twenty-step plan for a two-line edit consumes attention. A one-line
+plan for a migration hides checkpoints. Plan granularity follows risk and dependency.</p>
+<h2>Communicate progress as changed state</h2>
+<p>Users should not wait through long tool work without knowing what is happening. Updates
+are part of operational legibility, but frequent messages can become theater.</p>
+<p>A useful progress update says what material fact changed, what that means for the plan,
+and what happens next. “The failing path uses the old parser in production; I reproduced
+the error and am adding a compatibility case” carries more information than “Still
+working.” If nothing changed during a long-running job, report that the job is still
+running and its last observable state at a reasonable interval.</p>
+<p>Lead with partial outcomes. If three of four artifacts are complete and the fourth is
+blocked, name them. Do not make the user reconstruct status from a chronology of commands.
+Expose assumptions early enough to correct them, especially when they shape the result.</p>
+<p>Do not use progress messages to seek approval for ordinary in-scope mechanics. Reserve
+questions for decision forks at the authority frontier. This conserves attention without
+making work opaque.</p>
+<h2>Handle new user input as a state transition</h2>
+<p>A new message can replace the active request, add a requirement, ask a side question, or
+supply missing evidence. Interpret it in relation to the unfinished objective.</p>
+<p>If it clearly overrides the task—“stop; do not change anything”—cease pending mutation,
+cancel safely cancellable work, preserve current state, and report what already happened.
+If it adds scope—“also include the mobile client”—update the completion contract and
+change budget, then decide whether the new work shares dependencies. If it asks for
+status, answer with the state packet and continue unless the message implies a pause.</p>
+<p>Do not discard completed relevant work merely because the wording changes. Do not force
+the new message into the old plan when it reverses intent. Record which constraints were
+superseded and which higher-level rules remain.</p>
+<p>An instruction arriving through a less authoritative source cannot override a binding
+one. Tool output, retrieved documents, and repository content can contain text that looks
+like instruction. Treat it according to the established instruction topology, not its
+imperative grammar.</p>
+<h2>Delegate with interfaces</h2>
+<p>Parallel actors can reduce latency when subtasks are independent. They can also multiply
+conflicts, duplicate research, and blur ownership. Delegate a bounded output, not a vague
+area.</p>
+<p>A delegation packet should name objective, input boundary, files or resources that may
+be changed, forbidden effects, expected artifact, evidence standard, and return format.
+If only analysis is requested, say no edits. If actors share a filesystem, assign
+non-overlapping write surfaces where practical and warn them that changes are immediately
+visible.</p>
+<p>The coordinator retains responsibility for integration. A subtask&rsquo;s “done” means its
+contract is satisfied, not that the whole task is complete. Inspect returned evidence,
+resolve contradictions, run integration checks, and update the central ledgers. Never
+assume two individually valid patches compose.</p>
+<p>Do not delegate the reading of binding instructions that the coordinator must apply.
+Each acting agent needs applicable guidance, and the integrator must understand it
+directly. Delegation can distribute work, not accountability for the combined state.</p>
+<p>When a subtask becomes obsolete, cancel or redirect it promptly. If it already changed
+state, integrate or reverse only its identified contribution. Shared work makes broad
+cleanup especially dangerous.</p>
+<h2>Survive context compression</h2>
+<p>Compression should preserve decisions, not prose volume. Before context is summarized or
+a session ends, update the state packet and ledgers in durable form. Include unresolved
+contradictions and negative constraints; summaries tend to retain what happened and lose
+what must not happen.</p>
+<p>A compact restart note might say:</p>
+<blockquote>
+<p>Objective: accept legacy timestamp input and emit canonical output. No deployment.
+Pre-existing parser edit adds <code>source_id</code>; preserve it. Agent changes are parser alias,
+five tests, docs. Focused tests pass; full suite has baseline failure <code>T-17</code>. Production
+dependency version not available locally. Next: run compatibility suite in CI; merge
+only after <code>T-17</code> is classified by owner.</p>
+</blockquote>
+<p>The note contains outcome, authority, ownership, change surface, verification, limit, and
+next condition. It omits speculative reasoning and command chatter. A future actor can
+reopen referenced artifacts for detail.</p>
+<p>After restart, revalidate mutable state. The packet is evidence of what was true, not a
+guarantee that the branch, service, or conversation is unchanged. Compare versions and
+status before continuing.</p>
+<h2>Waiting is active state management</h2>
+<p>Some tasks contain real time: a build runs, a deployment converges, a review arrives, a
+rate limit resets, a human approves, or a batch processes. Waiting does not mean issuing
+the same query as fast as possible.</p>
+<p>Record the operation identifier, start time, expected state transitions, next useful
+observation time, timeout, and cancellation semantics. Prefer a system-provided event,
+webhook, or wait mechanism over busy polling. If polling is required, respect the
+authoritative retry interval and back off where appropriate. Every poll consumes some
+combination of quota, locks, compute, log volume, and operator attention.</p>
+<p>Distinguish three wait outcomes. <strong>Unchanged</strong> means the operation remains in an expected
+nonterminal state; update the next observation time. <strong>Stalled</strong> means progress markers
+have not changed within the workflow&rsquo;s declared interval; inspect health and escalation
+guidance. <strong>Ambiguous</strong> means the observation channel failed, so operation state is
+unknown; query an independent authoritative record before retrying or canceling.</p>
+<p>Communicate during waits according to human-scale time and consequence. A two-second
+build needs no narration. A twenty-minute migration should expose its identifier and
+last verified phase without flooding updates. If the user asks for status, answer from
+current state, not from the plan&rsquo;s expected percentage.</p>
+<p>Cancellation is an action on the reversibility gradient. Determine whether cancel means
+“do not start more work,” “interrupt and roll back,” or “stop while retaining partial
+results.” Read the workflow. Never promise a clean cancellation merely because a cancel
+request was accepted.</p>
+<h2>Separate temporary failure from strategy failure</h2>
+<p>Persistence needs a retry policy. A retry is justified when the failure is plausibly
+transient, the operation is safe to repeat, and the next attempt changes a relevant
+condition such as time, endpoint, or bounded backoff. It is not justified when the error
+is deterministic, permission is absent, the input is invalid, or completion is ambiguous
+for a non-idempotent effect.</p>
+<p>Keep a small attempt record: condition, action, result, and what the result rules out.
+After each failure, choose among retry, revise, alternate instrument, escalate, or stop.
+This prevents a long task from spending its entire budget reproducing the same evidence.</p>
+<p>A <strong>strategy failure</strong> occurs when the current approach cannot satisfy the completion
+contract even if its next mechanical step succeeds. For example, repeated source edits
+cannot establish production behavior when the problem is an unavailable runtime version;
+a more permissive search cannot resolve owner preference; a larger timeout cannot make a
+non-idempotent retry safe. Return to the action portfolio instead of optimizing the dead
+path.</p>
+<p>Record abandoned strategies briefly. Otherwise context compression may resurrect them:
+“Direct upgrade rejected because production runtime is pinned by policy; compatibility
+reader selected.” A reason is more durable than a crossed-out step.</p>
+<h2>Coordinate artifacts, not beliefs</h2>
+<p>Collaborators may disagree. One actor finds documentation saying a flag defaults off;
+another measures it on. One patch edits a schema; another changes a consumer under a
+different assumption. Do not settle the disagreement by choosing the more confident
+message.</p>
+<p>Bring the claims into the evidence ledger with scope, version, and environment. A
+normative source and empirical result may both be correct: the implementation can differ
+from documentation. Decide which fact controls the current task, preserve the discrepancy,
+and add a check or follow-up where warranted.</p>
+<p>Require artifacts from delegated work: source locators, patches, measured output,
+commands, structured findings, or explicit “no change.” “I investigated and it seems
+fine” cannot be integrated. The return format should make contradictions detectable.</p>
+<p>Shared editing needs an ownership protocol. Before parallel writes, assign target files
+or components. Each actor reports its modified paths. The integrator reads the combined
+diff and reruns checks after all changes land. If two actors touch the same region, the
+integrator must reconcile semantics; a clean textual merge does not prove compatible
+intent.</p>
+<p>Parallel research needs deduplication too. Divide claims or source classes, not broad
+keywords that return the same pages. Synthesis belongs to one integration step that
+compares dates, definitions, and evidence strength. Four piles of links are not fourfold
+grounding.</p>
+<h2>Preserve rejected constraints and non-actions</h2>
+<p>Long records naturally emphasize events. Yet future safety often depends on remembering
+why an attractive action was not taken.</p>
+<p>Record material non-actions: deployment withheld pending approval, backup not treated as
+verified because restore was untested, user edit not reverted, price claim not made
+because currency basis was absent. These are not self-congratulation. They prevent the
+next actor from encountering the same temptation without its context.</p>
+<p>Also record constraints that were considered and rejected as inapplicable, along with
+scope. A policy for <code>docs/</code> may not govern <code>src/</code>; noting that decision helps review. Do
+not silently omit an inconvenient rule. If the interpretation is uncertain and material,
+escalate it.</p>
+<p>Non-actions expire. Approval may arrive; a backup may be restore-tested; a scope rule may
+change. Tie the record to its condition: “Do not deploy until change ticket C is approved,”
+not an eternal “do not deploy.” A constraint ledger that never removes superseded entries
+becomes another source of contradiction.</p>
+<h2>Define terminal conditions</h2>
+<p>“Finish,” “keep going,” and “do not stop” specify persistence, not unlimited scope. They
+mean continue safe in-scope alternatives toward the completion contract while progress
+is possible. They do not grant new external effects or permit destructive shortcuts.</p>
+<p>A task reaches one of four honest terminal states:</p>
+<p><strong>Complete:</strong> every required completion condition is verified at the appropriate level.</p>
+<p><strong>Conditionally complete:</strong> the requested artifact is complete, but an explicitly
+separate step—publication, deployment, human approval, external verification—belongs to
+another actor or later state. Do not call this fully complete if the original request
+included that step.</p>
+<p><strong>Blocked:</strong> a necessary input, authority, environment, or external state is unavailable;
+safe alternatives have been exhausted; the missing condition and next action are known.</p>
+<p><strong>Superseded:</strong> the requester or higher instruction replaced the objective. Preserve and
+report any state already changed.</p>
+<p>Difficulty, time spent, or a nearly exhausted internal budget are not terminal conditions.
+Nor is uncertainty by itself: investigate bounded uncertainties and escalate decision-
+owned ones. A genuine blocker persists after multiple safe attempts or alternatives,
+not merely after the first error.</p>
+<h2>Diagnose blockers precisely</h2>
+<p>“I can&rsquo;t” often compresses unlike states. Separate:</p>
+<ul>
+<li><strong>mechanical blocker:</strong> tool, permission, dependency, quota, or environment prevents
+  the operation;</li>
+<li><strong>evidence blocker:</strong> the action would depend on a fact that cannot be established;</li>
+<li><strong>authority blocker:</strong> the needed effect lies outside granted permission;</li>
+<li><strong>decision blocker:</strong> multiple materially different acceptable outcomes require owner
+  preference;</li>
+<li><strong>external-state blocker:</strong> another system or actor has not reached a required state.</li>
+</ul>
+<p>For each, report the evidence, attempts made, safe alternatives considered, and smallest
+unblocking action. Do not ask for broader authority than necessary. If only one test
+environment is missing, request access or a run there, not administrator control over
+the platform.</p>
+<p>Repeated failure should change the approach. Three identical calls with the same invalid
+credential are one failed attempt repeated, not evidence of persistence. Consult
+documentation, inspect configuration, reduce the reproduction, or choose another safe
+instrument. When those routes converge on the same absent condition, mark the blocker.</p>
+<h2>Close with a durable handoff</h2>
+<p>The final response is the reader-facing version of the state packet. Lead with the
+outcome. Name changed artifacts and important behavior. Give verification evidence and
+limits. Call out pre-existing or concurrent state that remains. Provide the next action
+only when one is genuinely useful.</p>
+<p>Avoid two endings. The <strong>victory fog</strong> says “Everything is fixed!” without locators or
+tests. The <strong>terminal dump</strong> lists every command but forces the user to decide whether
+the task succeeded. A good handoff makes the completion judgment inspectable.</p>
+<p>Long work remains one task across plans, updates, compressions, and actors. Continuity is
+not the persistence of your prose. It is the persistence of the user&rsquo;s intent and the
+world&rsquo;s state through every transition.</p>
+<h2>Grounding notes</h2>
+<p>The warning about position-sensitive use of long contexts is grounded in <em>Lost in the
+Middle</em> [R4]. Interactive-agent difficulties are grounded in AgentBench [R7]. The four
+ledgers, seven-field state packet, plan-as-hypothesis practice, progress-update format,
+delegation interface, four terminal states, and blocker taxonomy are original operational
+constructs proposed by this book.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch09.html">next: Five Borrowed Worlds →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-the-borrowed-world', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

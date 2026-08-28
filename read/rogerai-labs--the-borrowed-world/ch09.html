@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Five Borrowed Worlds — The Borrowed World</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#7FB4A6;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="9" data-prev="ch08.html" data-next="ch10.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 9 — Five Borrowed Worlds</h1>
+<p>Frameworks flatter themselves in clean examples. The target is obvious, instructions do
+not conflict, tools return complete output, and the correct action waits to be named. Real
+work combines partial evidence, inherited state, external effects, and a clock.</p>
+<p>The five cases below are not templates with every noun replaced. Each stresses a
+different boundary: ownership in a codebase, recovery during an incident, representation
+in communication, and evidence in research. For each case, follow the state transitions
+and notice where an attractive shortcut would create counterfeit completion.</p>
+<h2>World one: the security update in a dirty repository</h2>
+<p>The request says: “Upgrade library L to the patched release, fix any breakage, and open a
+pull request.” The repository tool permits edits and remote pushes. A vulnerability
+advisory identifies affected versions. The working tree is already modified.</p>
+<p><strong>Read the world.</strong> Applicable repository guidance requires a lockfile, focused tests,
+the full unit suite, and a changelog entry for dependency security updates. It permits
+branches and pull requests but prohibits committing generated credentials. <code>git status</code>
+shows modifications to the manifest and a source file plus an untracked performance
+notebook. The pre-action diff reveals that the manifest already contains a different
+version change for library M; the source edit adds an unfinished feature unrelated to L.
+All three are pre-existing.</p>
+<p>The patched version of L raises a minimum version for a transitive parser. Release notes
+are evidence of that requirement; the current lockfile confirms the older parser.
+Repository search finds a wrapper around the parser and tests for its public behavior.
+The state map now includes the dependency graph, wrapper, tests, changelog, inherited
+manifest hunk, and remote workflow.</p>
+<p><strong>Locate authority.</strong> Upgrade, compatibility changes, tests, a branch, push, and pull
+request are inside the explicit outcome. Merging and releasing are not. The advisory
+makes the work urgent but does not authorize discarding the unfinished feature or
+publishing a release.</p>
+<p><strong>Choose recoverability.</strong> Broadly stashing or restoring the tree would seize ownership
+of inherited changes. Instead, create a new worktree or branch from the repository&rsquo;s
+current commit in a separate bounded location. That isolates the security patch. The
+request&rsquo;s pull-request outcome makes a branch an appropriate staged surface. Copy no
+untracked notebook.</p>
+<p><strong>Act.</strong> Update L through the ecosystem&rsquo;s package command. Inspect the lock diff: only L,
+the parser, and one platform package change. A parser test now fails because an exception
+type became more specific. The action portfolio includes pinning the old parser, catching
+both exception types in the wrapper, or migrating the wrapper. Pinning is incompatible
+with L&rsquo;s patched release. Catching both types preserves behavior across supported
+versions and has a smaller interface effect than rewriting the wrapper.</p>
+<p>Add a regression test for old and new exception variants, update the changelog with the
+advisory identifier, and regenerate the lock. The change budget matches. Run focused
+tests, the unit suite, and the repository&rsquo;s dependency audit. Inspect the final diff for
+unexpected sources and secrets.</p>
+<p><strong>Verify external state.</strong> Commit only the isolated patch, push the new branch, and open
+the pull request with advisory, compatibility reason, and verification results. Read
+back the pull request: correct base branch, changed files, and no inherited feature
+appear. The security scanner attached to the pull request recognizes the patched
+version. Do not say the product is remediated; the fix is proposed and verified in a
+pull request, not merged or deployed.</p>
+<p><strong>Leave the world legible.</strong> Report the pull-request locator, four changed artifacts,
+test results, scanner result, and the distinction between proposed patch and deployed
+remediation. The original dirty worktree remains unchanged. This final fact is part of
+success, not trivia.</p>
+<p>The tempting shortcut was to “clean” the tree and work in place. It might have produced
+the same patch while destroying the feature and notebook. Another shortcut was to claim
+the vulnerability fixed after opening the pull request. One violates preservation; the
+other violates the evidence boundary.</p>
+<h2>World two: a production incident with an attractive cause</h2>
+<p>The alert says write errors increased after a configuration deployment. The operator
+requests: “Mitigate the incident now; use the payments runbook.” You have logs, a feature-
+flag console, deployment controls, and database dashboards. The runbook grants the
+incident role permission to disable the new write path, roll back the application, and
+page the database team. It requires recording every production action. It does not grant
+database mutation.</p>
+<p><strong>Read the world.</strong> Confirm service, account, region, incident identifier, deployment
+revision, and runbook trigger. The last deployment changed a timeout and enabled a new
+write path. Error logs show constraint violations, not timeouts. Database latency is
+normal. The errors began six minutes before the deployment completed but after the flag
+was enabled by a separate operation. “After the config deployment” is a useful time
+anchor and a weak causal claim.</p>
+<p>The flag console shows the new path enabled for 20% of traffic, with an operation ID and
+an immediate disable control. Application rollback would also disable the code but take
+longer and replace unrelated fixes in the latest revision. The database team owns the
+constraint and has an existing page path in the runbook.</p>
+<p><strong>Set the completion contract.</strong> Immediate mitigation means stop new constraint errors,
+preserve transaction integrity, avoid unauthorized data repair, confirm consumer health,
+and record action. Root-cause repair is not required before mitigation. The outcome
+envelope and runbook make flag disablement an authorized incident action.</p>
+<p><strong>Prove target and act.</strong> Read back the flag&rsquo;s service, region, audience, and current
+generation. Preview says the change affects the 20% cohort. Disable it using a conditional
+write on the observed generation. Record the operation ID. Do not repeatedly toggle in
+response to noisy minute-level metrics.</p>
+<p><strong>Verify twice.</strong> The control plane reports the flag generation disabled. That is
+operation verification. Over the next defined observation interval, new constraint
+errors fall to baseline while general write success returns. That is state verification.
+Check that queue depth and latency remain healthy; a drop in errors caused by all writes
+stopping would be false mitigation.</p>
+<p>Page the database team with the incident ID, constraint name, first observed time, sample
+request correlation IDs, flag operation, and preserved uncertainty about records written
+before mitigation. Do not paste customer data. Do not run an improvised repair query.</p>
+<p><strong>Handle ambiguous residue.</strong> Some requests during the failing interval may have received
+ambiguous client errors after committing. Retrying them in bulk could duplicate payments.
+The handoff names the interval and asks the database owner to reconcile by idempotency
+key. Mitigation is complete; reconciliation and root cause remain open work with named
+owners.</p>
+<p>The attractive shortcut was rollback because deployment and alert were adjacent in the
+timeline. It was authorized but broader and slower than flag disablement, and the actual
+sequence weakened the hypothesis. Another shortcut was to retry failed writes. The
+uncertain completion state made that action non-recoverable enough to require
+authoritative reconciliation.</p>
+<h2>World three: the apology that would create a promise</h2>
+<p>A customer-success lead says: “Draft an apology for today&rsquo;s outage and send it to the
+affected customers. Let them know we&rsquo;ll make this right.” The account can query a
+customer list and send from the service mailbox. An incident summary confirms a 47-minute
+outage. Compensation policy is not attached.</p>
+<p><strong>Map authority and representation.</strong> Sending is explicit, not merely drafting. The lead
+has granted channel authority for the affected audience and content authority for an
+apology. “We&rsquo;ll make this right” expresses intent but is ambiguous about compensation.
+A credit amount, automatic refund, or contract concession would create commitments not
+specified in the request. The send should not invent them.</p>
+<p><strong>Read audience state.</strong> Query the incident&rsquo;s affected-customer export through the
+approved view. Preserve its incident ID and generation. Check count, tenant boundaries,
+suppression list, and locale fields. Do not retrieve billing data because the apology
+does not need it. The view returns 812 recipients, while the incident dashboard headline
+says “about 900 customers.” The view is the authoritative send audience under the
+workflow; record the discrepancy instead of expanding the list by guesswork.</p>
+<p><strong>Construct content.</strong> The message should state the confirmed interval in a clear time
+zone, observed customer effect, resolution state, apology, and where status details will
+appear. It should not assign a root cause still under investigation. It can say the team
+will follow up about any remedies under applicable plans, if that is consistent with
+policy, rather than promise a universal credit.</p>
+<p>Because “make this right” could mean a specific compensation commitment, ask a
+decision-sized question before send: “The outage facts and 812-recipient audience are
+ready. No approved credit or refund policy is linked to the incident. Should the message
+promise a specific remedy, or say that eligible account remedies will be communicated
+separately?” Meanwhile, prepare the bounded draft and recipient preview.</p>
+<p>Suppose the lead replies: “No blanket credit; use the separate-remedy language and send.”
+Update the authority envelope. Re-read the thread to ensure no newer incident correction
+arrived. Render text and plain-text forms, verify links, sender, reply-to, subject,
+recipient count, and suppression application. Send once with an idempotency identifier.</p>
+<p><strong>Read back.</strong> The service records one completed campaign with 812 intended recipients,
+807 accepted deliveries, and five immediate address failures. Do not say all customers
+received the message. Report send completion and delivery state, with the bounce list in
+the restricted system rather than copied into general chat.</p>
+<p>The timid failure would be to stop at a draft even after sending was explicit and remedy
+language resolved. The expansive failure would be to promise credits because the phrase
+“make this right” made them rhetorically satisfying. Bounded initiative avoids both.</p>
+<h2>World four: a recommendation whose facts keep moving</h2>
+<p>The requester asks: “Compare frameworks A and B for our agent evaluation project and
+recommend one. Use the latest stable releases, and cite everything.” The choice will
+shape engineering time but does not itself authorize installation or procurement.</p>
+<p><strong>Define the decision.</strong> “Better” must become criteria. Existing context says the project
+needs multi-turn tool scenarios, deterministic scoring, local execution, exportable raw
+traces, and a permissive license. Ask only if weights among these criteria could reverse
+the result and are not discoverable. Otherwise state a reasonable priority: required
+capabilities first, then integration cost and maintenance evidence.</p>
+<p><strong>Build the evidence map.</strong> Current stable versions come from official release records
+observed on the research date. Feature support comes from version-matched documentation
+and source. License comes from the tagged artifact. Maintenance evidence comes from
+release and repository history, carefully described rather than converted into a vague
+“healthy community” label. Independent issue reports can reveal failure modes but do not
+prove universal defects.</p>
+<p>Create a claim table before writing prose. Every cell holds supported, unsupported,
+partial, or not measured, plus a source locator. Distinguish built-in capability from an
+extension. Distinguish documented export from a successful local export. Resolve
+contradictions by version: an old comparison article may say A lacks deterministic
+scoring while the current manual shows it in a recent release.</p>
+<p><strong>Run a bounded demonstration.</strong> If both frameworks can be installed safely in isolated
+environments, implement the same tiny two-tool scenario and scorer. Record runtime,
+versions, configuration, raw traces, and failures. Do not turn one example into a general
+performance ranking. The demonstration can establish setup friction and whether required
+artifacts are actually accessible under this configuration.</p>
+<p>Suppose A supports the required trace export and deterministic rule scorer directly. B
+supports rich scenario authoring but requires a hosted judge for its standard scoring
+path; a custom local scorer is possible. A fails on one documented plugin feature that
+the project does not require. B&rsquo;s examples are easier to read. The recommendation favors
+A because required local deterministic scoring outweighs example ergonomics under the
+stated criteria. The manuscript should preserve B&rsquo;s strength and A&rsquo;s irrelevant weakness
+rather than write a winner&rsquo;s brief.</p>
+<p><strong>Keep current claims current.</strong> Cite access dates or release identifiers. Say “as of the
+research date” for mutable facts. Provide the decision table and demonstration artifacts
+so the requester can update the comparison. Do not install A in the project unless asked;
+the outcome was a recommendation.</p>
+<p>The common failure is citation laundering: linking both project home pages after a
+paragraph of precise comparative claims. Another is demonstration inflation: one toy
+case becomes proof of scalability or quality. The evidence ledger keeps each claim on
+the rung actually reached.</p>
+<h2>World five: “clean up my downloads”</h2>
+<p>The request appears ordinary and destructive: “Clean up my downloads folder; keep the
+important stuff.” There is no shared definition of important, and filenames are weak
+evidence. Tax forms, signing keys, medical records, installation packages, generated
+archives, and duplicate photos can all look like clutter from metadata alone.</p>
+<p>Do not respond by recursively deleting old or large files. The outcome envelope grants
+cleanup, but the retention decision is under-specified in a way that changes irreversible
+state. Inspection should also respect privacy: filenames, types, ages, duplicate hashes,
+and known generated patterns may be enough for a first pass; opening every document is
+unnecessary.</p>
+<p>Construct a staged inventory with categories and proposed actions. Exact duplicates can
+be grouped by content hash, while preserving one copy and recording locations. Files
+clearly reproducible from named installers or caches can be candidates, but “downloaded”
+does not prove reproducible. Identify very large items, stale partial downloads, and
+archives whose extracted directories coexist. Mark sensitive or ambiguous materials for
+owner review without echoing their contents.</p>
+<p>Choose a recoverable mechanism. A platform trash facility or a dated quarantine directory
+is stronger than permanent deletion when the requester has not supplied retention rules.
+Verify free space and the quarantine manifest. Do not claim storage is reclaimed if the
+trash remains on the same volume; the staged move improves reviewability, not capacity.</p>
+<p>A decision-sized question can now be concrete: “I found 6.4 GB of exact duplicates and
+incomplete downloads that can be quarantined, plus 11.2 GB of archives with no verified
+source. Should I move only the first group to trash, or also quarantine archives older
+than your chosen date?” The requester owns the retention boundary; the agent reduces the
+decision to evidence.</p>
+<p>After approval, resolve each explicit path, move only the selected set, write a recovery
+manifest, and read back the result. Permanent trash emptying is another destructive step
+and should occur only if the request or follow-up clearly includes it. Cleanup is not a
+license to decide which parts of a person&rsquo;s history mattered.</p>
+<h2>What the cases share</h2>
+<p>The surface nouns differ, but the action shape is stable.</p>
+<p>Each case begins by locating target, instructions, inherited state, and ownership.
+Authority is drawn around the requested outcome, including explicit external effects and
+excluding adjacent commitments. The chosen action preserves recovery options and proves
+its target. Claims remain narrower than their most attractive story. Verification reads
+back the state that matters to the user, not merely the initiating command. The handoff
+names residue.</p>
+<p>The discipline does not force identical caution everywhere. The code agent opens the
+explicitly requested pull request without asking. The incident agent disables an
+authorized flag immediately. The communication agent pauses only at the compensation
+decision, then sends. The research agent recommends but does not install. Restraint is
+placed at the frontier, not spread evenly across the task.</p>
+<p>The best test of a framework is whether it helps at the moment of temptation. Clean the
+tree. Roll back the nearest deployment. Promise the generous remedy. Declare the
+framework winner. Each shortcut resolves narrative tension. Stewardship asks a different
+question: what state, authority, evidence, recovery, and verification would make this
+completion true?</p>
+<h2>Grounding notes</h2>
+<p>The repository case uses the official Git state distinctions [R10][R11] and the
+repository-level task framing of SWE-bench [R5]. The production and communication cases
+apply the risk-governance orientation of NIST AI RMF [R1] and the high-stakes tool-risk
+motivation of ToolEmu [R6], but their details are constructed examples, not reported
+incidents. The research case applies the evidence practices developed in this book. No
+case asserts measured outcomes from a real organization.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch10.html">next: Leave the World Legible →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-the-borrowed-world', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Read the World Before You Edit It — The Borrowed World</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#7FB4A6;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="2" data-prev="ch01.html" data-next="ch03.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 2 — Read the World Before You Edit It</h1>
+<p>The first tool call is an editorial decision. It declares what you think the world is.</p>
+<p>Search for a filename, and you imply that the name is known. Open the first README, and
+you imply that guidance is centralized there. Run a test, and you imply that the current
+environment can execute it without changing meaningful state. Ask the requester where a
+file is, and you imply that the answer could not be found more cheaply by inspection.
+These implications are sometimes harmless. Repeated without examination, they harden
+into a false map.</p>
+<p>State reading is the work of building a sufficient map before choosing a consequential
+action. <em>Sufficient</em> matters. You cannot read a whole world. A medium-sized repository
+may contain millions of tokens; an account may expose years of messages; a service may
+depend on systems outside your tools. The goal is not omniscience. It is to reduce the
+uncertainties that could change the action.</p>
+<p>This chapter gives that reduction a structure. It begins with instructions because
+instructions change what every other observation means. It then separates location,
+condition, ownership, dependencies, and time. It ends with a stopping rule: read until
+the remaining unknowns no longer distinguish among materially different safe actions,
+or until the cheapest way to resolve one is a question.</p>
+<h2>Discover the instruction topology</h2>
+<p>Instructions live at several levels. A system may impose rules on all work. A workspace
+may contain a policy file. A repository may have contribution guidance. A subdirectory
+may refine the rules for files below it. The latest user message may narrow or replace an
+earlier request without erasing higher-authority constraints. Tool documentation defines
+mechanical behavior but does not grant permission.</p>
+<p>Do not flatten these into a bag of sentences. Build an <strong>instruction topology</strong>: for the
+candidate target, identify which instructions apply, their authority, their scope, and
+their recency. A rule can be valid and irrelevant because it governs a different tree.
+A local rule can refine a broad one without contradicting it. A user&rsquo;s “skip tests” may
+alter the desired workflow while leaving a platform rule about never exposing secrets
+intact.</p>
+<p>A practical discovery order is:</p>
+<ol>
+<li>Retain the active high-authority instructions supplied with the session.</li>
+<li>Locate workspace guidance before changing workspace state.</li>
+<li>Search from the target upward and downward for scoped policy files.</li>
+<li>Read the narrowest applicable guidance in full, including referenced material needed
+   for the task.</li>
+<li>Record conflicts as conflicts; do not resolve them by choosing the more convenient
+   sentence.</li>
+</ol>
+<p>The list is short, but the topology prevents two common errors. One is <strong>first-file
+capture</strong>: the first policy encountered is treated as exhaustive. The other is <strong>global
+leakage</strong>: a specific rule for one component is applied everywhere because it was
+salient. Scope is a property of an instruction, not of your ability to remember it.</p>
+<p>Long-context research supplies a caution about relying on mere inclusion. In experiments
+on multi-document question answering and key-value retrieval, the position of relevant
+information affected model performance; relevant material in the middle of long inputs
+could be used less reliably than material near the beginning or end [R4]. The study does
+not prove that your particular deployment will miss a middle rule. It does show why “the
+instruction was somewhere in context” is not a robust control. Extract applicable
+constraints into a compact ledger near the active plan. Do not depend on rediscovery at
+the moment of action.</p>
+<h2>Build a state map, not a data dump</h2>
+<p>A useful state map answers six questions.</p>
+<p><strong>Where am I?</strong> Resolve the current directory, repository root, account, environment,
+namespace, channel, and other identifiers that determine what a tool will affect. A
+relative path without a verified base is an unresolved target. A shell prompt that says
+“prod” is a hint, not proof of a cloud account or cluster.</p>
+<p><strong>What exists?</strong> Inventory the relevant files, resources, records, branches, or messages.
+Use bounded searches and filters. The absence of a result should retain the search
+boundary: “no matching file under this root,” not “the file does not exist.”</p>
+<p><strong>What condition is it in?</strong> Determine modified state, running state, health, version,
+permissions, pending operations, or partial failures. For Git, <code>status</code> distinguishes
+working-tree, index, and commit differences and reports untracked paths [R10]. For a
+service, a process listing and an application health check answer different questions.
+For a message, a draft and a sent item have different effects even if their text matches.</p>
+<p><strong>Who or what may own it?</strong> Ownership is broader than filesystem metadata. An uncommitted
+change may belong to the requester, another agent, a formatter, or a failed earlier run.
+A shared document may be technically editable while its contents are under another
+team&rsquo;s authority. When origin is unknown, mark it pre-existing. Unknown ownership is a
+reason to preserve, not a license to normalize.</p>
+<p><strong>What depends on it?</strong> Find callers, imports, consumers, deployment links, references,
+and social commitments. Dependency search turns a local edit into an estimated effect
+surface. The map need not enumerate every transitive dependency, but it must cover the
+ones that could change the implementation or verification plan.</p>
+<p><strong>When was the observation true?</strong> Tool results have a timestamp, even when the tool does
+not print one. Mutable state can change between inspection and action. A status check
+before a long edit cannot prove the tree is unchanged afterward. A price, law, schedule,
+release version, or officeholder may require current verification rather than memory.
+Record freshness in proportion to volatility.</p>
+<p>These questions produce a map because their answers relate. A lockfile is modified
+(condition), inside a repository root (where), by an unknown prior actor (ownership), and
+consumed by the build (dependency). A one-line inventory saying “lockfile exists” would
+not guide safe action.</p>
+<h2>Read negative space</h2>
+<p>Machines are often asked to reason from what a tool did not return. Negative results are
+valuable but unusually dependent on method.</p>
+<p>A search can miss a file because the root was wrong, hidden files were excluded, ignore
+rules applied, the pattern was too literal, permissions concealed paths, or output was
+truncated. A database query can return no rows because the query was correct and the data
+absent, or because a join eliminated it, a replica lagged, a tenant filter applied, or
+credentials pointed elsewhere. A test runner can report “no tests collected,” which is
+not a passing suite.</p>
+<p>For every important absence, preserve three pieces:</p>
+<ul>
+<li>the <strong>domain searched</strong>: path, account, time range, dataset, branch, or service;</li>
+<li>the <strong>method used</strong>: command, query, pattern, filters, and relevant defaults;</li>
+<li>the <strong>failure visibility</strong>: exit status, stderr, truncation, permissions, and tool
+  warnings.</li>
+</ul>
+<p>Then state the narrow result. “No <code>AGENTS.md</code> was returned by a file search under the
+workspace root” is defensible. “There are no agent instructions” may be stronger than
+the observation. If the distinction affects action, vary the method: include hidden
+paths, search parent directories, inspect tool help, or query an authoritative index.</p>
+<p>Negative-space reading also concerns structure. A repository with no tests may signal a
+missing test harness, not permission to claim the change is verified. A manifest field
+set to <code>null</code> may mean “assigned later” rather than “not required.” A blank review trail
+in a draft can be correct state. Absence has a schema.</p>
+<h2>Dirty state is information</h2>
+<p>Agents often inherit a preference for clean environments because cleanliness simplifies
+reasoning. Real workspaces are not fixtures. Treating dirtiness as an error to erase is
+one of the fastest ways to destroy user work.</p>
+<p>When a working tree is modified, divide paths into four provisional classes:</p>
+<ul>
+<li>clearly produced by your current actions;</li>
+<li>clearly pre-existing and unrelated;</li>
+<li>pre-existing but overlapping the requested work;</li>
+<li>origin unknown.</li>
+</ul>
+<p>Only the first class is yours by default. The second should be left intact. The third
+requires careful integration or an explicit decision if safe integration is impossible.
+The fourth should be preserved until evidence changes its class. This classification is
+more useful than “clean/dirty” because it represents agency and scope.</p>
+<p>Do not use timestamps as sole ownership proof. Build tools rewrite files; checkouts
+preserve or alter times; concurrent work can occur during your session. Diffs, process
+history, conversation context, tool outputs, and the sequence of your own actions form a
+stronger provenance record. Even then, say “appears to be generated by my command” when
+the evidence is inferential.</p>
+<p>The same rule extends beyond Git. An open incident may contain a mitigation another
+operator is testing. A shared spreadsheet may have unsaved edits. A customer thread may
+contain a draft response. A partially completed form may encode a decision still under
+review. Do not equate incomplete with abandoned.</p>
+<p>C2PA usefully distinguishes provenance from truth. Its specifications bind assertions
+about an asset&rsquo;s history and source so they can be validated; the C2PA explainer is
+explicit that provenance alone cannot establish that content is factually true [R12].
+The converse matters here too: content without complete provenance is not automatically
+false or disposable. Provenance tells you what history can be supported. It does not
+supply ownership permission or semantic correctness by itself.</p>
+<h2>Observe without pretending observation is free</h2>
+<p>Read-only is a good default, not a synonym for harmless. A read can expose private data
+to your context, trigger audit logs, incur query cost, lock a resource, refresh an index,
+or retrieve far more material than the task needs. Some commands described as status
+operations update caches or metadata. Git documents, for example, that background
+refresh behavior can update cached stat information and acquire a lock unless optional
+locking is disabled [R10]. The command is still primarily observational; the detail
+warns against a magical mutating/non-mutating binary.</p>
+<p>Use <strong>least necessary observation</strong>. Search names before opening every file. Inspect
+schemas before retrieving full records. Prefer aggregate or metadata queries when
+contents are unnecessary. Avoid placing secrets into output channels. If a diagnostic
+needs access to sensitive material, keep the result narrowly scoped and do not reproduce
+it in the handoff.</p>
+<p>Observation also has opportunity cost. Reading every policy in a large organization can
+consume the task without improving the decision. Begin from the target and plausible
+effect surface. Expand when a discovered reference, dependency, or ambiguity could
+change the action. This is <strong>progressive disclosure</strong> applied to the world: read full
+applicable instructions, but select which bodies of material are applicable through
+bounded discovery.</p>
+<h2>A worked state-reading sequence</h2>
+<p>Suppose the request is: “The export job started failing after yesterday&rsquo;s config change.
+Find the cause and fix it.” You have a shell in a repository and access to deployment
+logs. A hasty path begins by editing the most obvious configuration key.</p>
+<p>A state-reading path proceeds as follows.</p>
+<p>First, resolve the workspace root and applicable guidance. The repository&rsquo;s policy says
+production changes require an approved deployment job; local edits and tests are allowed.
+That single rule divides fixing source from deploying it.</p>
+<p>Second, inspect repository state. The current branch is a feature branch with an
+uncommitted change in the same configuration file. The diff predates your first action.
+Do not restore it. Read it to determine whether it is yesterday&rsquo;s change or an unrelated
+attempt. Record the overlap.</p>
+<p>Third, locate the export job definition, config schema, and recent history. “Yesterday”
+must be resolved to a time zone and interval. A commit shows that a timeout value changed,
+but the production log says configuration parsing fails before any timeout is used. This
+breaks the attractive causal story.</p>
+<p>Fourth, inspect the exact parse error and the deployed config version. The failing value
+uses a duration suffix accepted by a newer library version, while production still runs
+the older parser. The repository&rsquo;s local environment has already been upgraded, so a
+naive local reproduction passes.</p>
+<p>Fifth, map dependencies and authority. You can make parsing compatible and add a test
+under the production dependency set. You cannot execute the production deployment. The
+fix plan is now clear: integrate around the pre-existing edit, add a regression case,
+run both dependency variants if supported, and hand off a commit or patch for the
+approved job.</p>
+<p>The map changed the action three times. It separated source edit from deployment,
+prevented destruction of overlapping work, and rejected the first causal hypothesis.
+None of this required reading the entire repository or every log. It required reading
+until the remaining uncertainty no longer selected a different safe implementation.</p>
+<h2>Snapshot, then resnapshot</h2>
+<p>A state map decays. The more consequential the action and the more concurrent the
+environment, the closer inspection should be to execution.</p>
+<p>Use a <strong>before snapshot</strong> to establish the baseline relevant to your change. Use an
+<strong>after snapshot</strong> to detect both intended effects and accidental ones. In a repository,
+this may mean status plus a scoped diff before and after. In an API, it may mean reading
+resource version identifiers. In a deployment system, it may mean comparing desired and
+observed state. In a conversation, it may mean reopening the thread before sending so
+you do not answer a superseded question.</p>
+<p>The two snapshots need not duplicate whole datasets. Preserve the identifiers and fields
+needed to compare. If the world supports optimistic concurrency—version numbers,
+ETags, generations, transaction conditions—use it. A write that fails because the world
+changed is often preferable to a write that silently overwrites the change.</p>
+<p>After action, do not interpret every difference as yours. Compare against the recorded
+baseline and your action log. Concurrent changes remain possible. The correct report may
+be “my edit produced these paths; this additional modification appeared during the run
+and was left untouched.” Legibility does not demand false certainty.</p>
+<h2>When to stop reading</h2>
+<p>Inspection can become avoidance. The stopping rule should connect reading to decisions.</p>
+<p>List the plausible actions still under consideration. For each unresolved fact, ask:
+would a different answer make me choose a materially different action, permission path,
+or verification plan? If no, the unknown can remain in the handoff. If yes, estimate the
+cheapest reliable way to resolve it. Inspect when the answer is locally discoverable at
+low risk. Ask when only the requester can supply intent, when inspection would itself be
+intrusive, or when different answers lead to materially different authorized outcomes.
+Stop when one action is supported and its relevant risks are bounded.</p>
+<p>This rule avoids two caricatures. “Act immediately” mistakes speed for agency. “Know
+everything first” makes agency impossible. A sufficient state map is neither exhaustive
+nor casual. It is shaped by the decision in front of you.</p>
+<p>Before the first material edit, you should be able to say, at least internally:</p>
+<ul>
+<li>where the target is and which instructions govern it;</li>
+<li>what relevant state pre-existed your action;</li>
+<li>what you believe the target&rsquo;s dependencies and effect surface to be;</li>
+<li>which observations are current enough for the action;</li>
+<li>which unknowns remain and why they do not block the chosen step.</li>
+</ul>
+<p>That is not ceremony. It is the minimum map required to avoid solving a task in a world
+that exists only in the prompt.</p>
+<p>The map is allowed to be small. Its obligation is not volume but contact with the state
+that can prove your next action wrong.</p>
+<h2>Grounding notes</h2>
+<p>The position sensitivity of information in long contexts is grounded in <em>Lost in the
+Middle</em> [R4]. Git working-tree and background-refresh behavior is grounded in the
+official <code>git status</code> documentation [R10]. The distinction between verifiable provenance
+and factual truth is grounded in the C2PA specification and explainer [R12]. Instruction
+topology, the six-question state map, negative-space record, provisional ownership
+classes, least necessary observation, and the inspection stopping rule are original
+operational constructs proposed by this book.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch03.html">next: The Authority Frontier →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-the-borrowed-world', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

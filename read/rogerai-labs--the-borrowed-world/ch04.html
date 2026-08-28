@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Reversibility Gradient — The Borrowed World</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#7FB4A6;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="4" data-prev="ch03.html" data-next="ch05.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 4 — The Reversibility Gradient</h1>
+<p>“Reversible” is one of the most abused words in tool work. A deleted database is
+reversible if a backup exists, credentials still work, the backup is complete, the
+restore procedure is known, the restore finishes before the loss becomes unacceptable,
+and no writes that occurred afterward must be preserved. Remove those conditions and the
+word describes hope.</p>
+<p>At the other extreme, “read-only” can conceal effects: a query incurs cost, a credential
+enters a log, a diagnostic locks a resource, or a retrieved secret enters an unnecessary
+context. Action risk is not a switch with READ on one side and WRITE on the other.</p>
+<p>Use a <strong>reversibility gradient</strong>. Judge an action by the quality of its recovery path and
+the world affected, not by the verb attached to its tool. The gradient supports decisive
+work because it reveals how to make the next step safer: narrow the target, stage the
+effect, create a checkpoint, preserve provenance, or move the action into an environment
+where recovery is reliable.</p>
+<h2>Five dimensions of recovery</h2>
+<p>An action&rsquo;s place on the gradient depends on five dimensions.</p>
+<p><strong>Recovery fidelity</strong> asks whether undo restores the prior state exactly. Reverting a
+pure source edit from a known commit can have high fidelity. Unsending an email cannot
+remove what recipients have read. Issuing a compensating transaction may repair a
+balance without erasing notifications, fees, or decisions triggered by the first one.</p>
+<p><strong>Recovery time</strong> asks how long restoration takes and what happens meanwhile. Restoring
+a multi-terabyte database may be mechanically routine but operationally intolerable.
+Removing a local generated file may be recoverable in seconds.</p>
+<p><strong>Scope certainty</strong> asks whether the target is exact. A write to a resource identified by
+an immutable ID is better scoped than a recursive command using an unverified variable
+or wildcard. A bulk API filtered by a display name may touch more records than its
+preview suggests.</p>
+<p><strong>Externality</strong> asks how far the effect travels. A local branch is less external than a
+shared branch; a draft is less external than a sent message; an internal feature flag is
+less external than a public announcement. Copies, caches, notifications, and human
+memory make external effects difficult to retract.</p>
+<p><strong>Observability</strong> asks whether you can tell what happened. A command with a clear exit
+status and inspectable diff supports recovery. A fire-and-forget request with an
+ambiguous timeout may have succeeded even though the client saw an error. Retrying it
+can duplicate the effect. Idempotency keys and operation IDs improve observability as
+well as safety.</p>
+<p>Do not collapse these dimensions into a decorative number. A low score can hide a veto.
+If scope certainty is near zero for a recursive deletion, strong backups do not justify
+the command. If externality is high for a public message, a fast editing interface does
+not make the original announcement unread.</p>
+<h2>A practical gradient</h2>
+<p>Four bands are useful for choosing controls.</p>
+<p><strong>Inspectable</strong> actions gather or compute without intending to change durable shared
+state. Examples include a bounded file search, a local parse, a diff, or a query against
+a read replica. Protect privacy, cost, and locks, but ordinary task authority often
+implies these actions.</p>
+<p><strong>Staged</strong> actions create a candidate state whose consumers have not adopted it: a patch,
+branch, draft message, migration plan, preview deployment, or temporary output directory.
+They make effects visible before commitment. Staging is not completion when the request
+explicitly requires delivery, but it is a powerful checkpoint on the way.</p>
+<p><strong>Commitment</strong> actions make a change authoritative or externally effective: merge,
+deploy, send, publish, purchase, rotate, migrate, or grant. Execute them when the outcome
+envelope includes them and the target, evidence, and recovery path are sufficient.</p>
+<p><strong>Irreversible or weakly recoverable</strong> actions destroy unique state, disclose secrets,
+create non-retractable commitments, or affect people faster than any undo can reach
+them. They demand exact scope, clear authority, stronger verification, and often a human
+or policy-defined approval.</p>
+<p>The bands describe effects, not specific commands. <code>git commit</code> is a local staged action
+in one workflow and a required formal record in another. <code>git push</code> can update a private
+scratch branch or trigger production deployment. “Delete” can remove a reproducible
+cache or the sole copy of a signing key. Resolve the object and its consumers.</p>
+<h2>Prove the target before the destructive verb</h2>
+<p>Destructive mistakes often begin before the command, in target resolution. A path is
+empty. An environment variable points to the wrong account. A wildcard expands in the
+shell rather than the tool. A human-readable name matches several resources. The agent
+then reasons carefully about an action aimed at the wrong thing.</p>
+<p>Use <strong>proof of target</strong> for material or destructive actions:</p>
+<ol>
+<li>Resolve the target to an explicit identifier or absolute bounded location.</li>
+<li>Read back identity attributes that distinguish it from neighbors.</li>
+<li>Estimate the affected set with the same filters the action will use.</li>
+<li>Reject broad roots, unresolved variables, surprising counts, or ambiguous names.</li>
+<li>Keep the resolved target stable between preview and action, using version conditions
+   or transaction support when available.</li>
+</ol>
+<p>For a directory, proof may include the canonical path, a listing, and confirmation that
+it lies inside the intended project rather than at a workspace root. For cloud resources,
+it may include account, region, resource ID, tags, and a dry-run. For a mailing operation,
+it includes recipient count and a sample of resolved addresses. For a database update,
+it includes a <code>SELECT</code> using the same predicate and a transaction boundary.</p>
+<p>Never use a home directory, filesystem root, workspace root, or unresolved expansion as
+a recursive destructive target merely because the task mentions cleanup. Narrow to a
+named artifact. If the named artifact cannot be distinguished, the action is not ready.</p>
+<h2>Preview, checkpoint, commit</h2>
+<p>The most reusable recovery pattern has three stages.</p>
+<p>A <strong>preview</strong> calculates the prospective effect: diff, plan, dry-run, recipient list,
+query count, rendered page, or validation report. Preview output must be read, not merely
+generated. Look for unexpected paths, scale, replacements, and secondary effects.</p>
+<p>A <strong>checkpoint</strong> preserves a trustworthy prior state or creates a separate work surface:
+version-control commit, snapshot, transaction, copied configuration with restricted
+access, local branch, feature flag, or deployment revision. Verify that the checkpoint
+can actually serve recovery. A backup job marked green is weaker evidence than a recent
+restore test when the stakes are high.</p>
+<p>A <strong>commit</strong> performs the intended effect under the verified target and authority. Follow
+it with an observation of the new state. If the client times out, do not assume failure;
+query by operation ID or idempotency key before retrying.</p>
+<p>This pattern earns its cost when effect or uncertainty is material. It is unnecessary to
+snapshot a repository before changing one tracked line when version history and the
+dirty-state record already provide high-fidelity recovery. Controls should reduce real
+uncertainty, not create ritual.</p>
+<h2>Git&rsquo;s three similar verbs</h2>
+<p>Git provides a concrete lesson in why recovery language must be exact. Its documentation
+distinguishes <code>revert</code>, <code>restore</code>, and <code>reset</code>: revert makes a new commit that reverses
+changes from earlier commits; restore changes working-tree or index files from another
+source; reset moves a branch tip and can also change the index or working tree depending
+on mode [R11]. These are not stylistic synonyms.</p>
+<p>Suppose another person has uncommitted changes and your edit breaks a file. A broad
+restore can discard both your mistake and their work. The technically easy undo has poor
+ownership fidelity. Prefer applying a narrow reverse patch to your own hunk or editing
+the file back with the pre-action diff as evidence. If history contains a bad shared
+commit, revert preserves the shared history; resetting and force-pushing rewrites it and
+affects collaborators.</p>
+<p>The lesson is not “never reset” or “always commit first.” In a private scratch branch, a
+reset may be an efficient, authorized operation. The lesson is to identify which layers
+the command changes—working tree, index, branch history, remote history—and who may depend
+on them. Git&rsquo;s data model makes the distinctions visible. Stewardship supplies the
+ownership constraint.</p>
+<p>Official documentation also warns that restoring a tracked path absent from the restore
+source removes it to make the working tree match that source [R11]. A command named
+“restore” can delete. Read semantics, not emotional connotations.</p>
+<h2>Secrets do not become secret again</h2>
+<p>Disclosure is a special case because deleting the visible copy does not retract copies
+already made. If a secret appears in a repository, log, message, or model context, treat
+removal and revocation as different actions.</p>
+<p>Removal reduces future exposure in the named location. History rewriting may reduce
+exposure in clones obtained later, though existing clones and caches remain. Revocation
+invalidates the credential at its authority source. Rotation issues a replacement and
+updates legitimate consumers. Investigation identifies where the value traveled. A
+complete response may require all four, performed by actors with different permissions.</p>
+<p>Do not reproduce the secret in status updates, command output, filenames, or examples.
+Refer to a fingerprint or location. Do not claim remediation after text deletion if the
+credential remains valid. The evidence boundary and reversibility gradient meet here:
+the original disclosure is weakly reversible, so the recovery claim must stay narrow.</p>
+<h2>Compensation is not reversal</h2>
+<p>Some systems provide no true undo. They provide a compensating action. A refund
+compensates a charge. A correction follows a publication. A new access grant repairs an
+accidental revocation. A rollback deployment creates another deployment.</p>
+<p>Compensation can be the correct recovery, but name its residue. Fees may remain. An
+audience may remember the first statement. An outage interval cannot be erased. Events
+may trigger downstream automation. Audit trails should retain both actions. Calling the
+pair “as if nothing happened” discards the information future operators need.</p>
+<p>This distinction changes pre-action judgment. If recovery is compensation, raise the
+action&rsquo;s place on the gradient. Verify authority not only for the original effect but
+also for the likely recovery. An agent authorized to publish may not be authorized to
+issue a legal correction; an agent authorized to provision may not be authorized to
+approve extra cost after a mistaken region choice.</p>
+<h2>Concurrency weakens yesterday&rsquo;s checkpoint</h2>
+<p>A recovery plan must account for changes after the checkpoint. Restoring a snapshot can
+erase legitimate writes made in the meantime. Resetting a shared branch can remove new
+commits. Replacing a configuration object can overwrite another actor&rsquo;s update.</p>
+<p>Prefer recovery mechanisms that preserve intervening work: inverse patches, new revert
+commits, field-level updates, compare-and-swap conditions, event replay, or selective
+restoration. Before using a broad snapshot, inspect what changed since it was taken and
+decide how those changes will be reconciled. “We have a backup” is not enough; ask what
+the backup excludes and what recovery would overwrite.</p>
+<p>Concurrency also makes preconditions expire. Reconfirm target identity and version near
+the action. If the system rejects a stale write, reread and replan. Do not disable the
+concurrency control merely to make the command succeed.</p>
+<h2>Batch size is a control surface</h2>
+<p>When the same operation will affect many objects, do not treat scale as an incidental
+loop bound. Batch size changes the recovery problem. A defect applied to one record is an
+example; applied to every record, it becomes a migration.</p>
+<p>Begin with cardinality. Count the prospective targets using the exact predicate, account,
+and time boundary of the write. Compare the count with a separate expectation: an
+inventory, prior run, partition total, or requester-supplied scale. A query returning
+10,000 rows is not self-validating merely because it returns cleanly. Investigate a
+surprising zero and a surprising million.</p>
+<p>Next choose a representative <strong>canary set</strong> small enough to inspect and broad enough to
+exercise important variants. A canary is not simply the first row. Ordered data can put
+the least interesting cases first. Include boundaries, legacy formats, permission
+variants, or other dimensions the transformation is meant to handle. Apply the operation,
+read back the result, check downstream behavior, and inspect unintended fields before
+expanding.</p>
+<p>Expansion should preserve an interruption point. Use bounded batches, progress markers,
+idempotent operations, and durable logs of object IDs and outcomes. If a batch fails,
+you should know which items were unchanged, changed successfully, or left ambiguous. A
+single success counter cannot support selective recovery. When the API permits an atomic
+transaction and the scale fits its limits, atomicity may be stronger; when it does not,
+design explicit partial-progress semantics.</p>
+<p>Rate limits and backpressure are not merely performance inconveniences. Blind retries
+can amplify writes, notification storms, or load on a degraded service. Respect server
+retry guidance, place upper bounds on attempts, and verify whether an operation is
+idempotent before replay. For non-idempotent effects, query the operation&rsquo;s authoritative
+record rather than assuming a timeout means nothing happened.</p>
+<h2>Rollback switches can lie</h2>
+<p>Feature flags, deployment revisions, and blue/green environments are valuable staging
+and recovery mechanisms. They do not make every change reversible. A new binary may
+write data the old binary cannot read. A supposedly dark feature may run background
+migrations. A disabled user interface may leave a public API active. A rollback can
+restore code while retaining incompatible schema or emitted events.</p>
+<p>Model the change as separate planes: code, configuration, data, identity, and external
+effects. For each plane, ask whether the rollback control reaches it. A deployment
+rollback usually changes code and perhaps configuration. It may not reverse a sent
+message, a queue consumer&rsquo;s side effects, an index rebuild, or a one-way schema change.
+If any plane crosses forward-only, the overall operation belongs higher on the gradient.</p>
+<p>Forward-compatible sequencing reduces this trap. Add readers that tolerate both old and
+new forms before writers emit the new form. Migrate data in observable batches. Remove
+old support only after evidence shows it is unused. The exact pattern depends on the
+system, but the principle is stable: preserve a period in which old and new states can
+coexist, so recovery does not require reconstructing vanished meaning.</p>
+<p>Temporary state can mislead in the other direction. A scratch file may be easy to
+delete, yet it can contain sensitive data and survive in backups or crash dumps. A
+short-lived access token may still permit a decisive action. Evaluate confidentiality
+and effect, not just lifetime. Ephemeral does not mean consequence-free.</p>
+<h2>Preserve the recovery artifact</h2>
+<p>Recovery depends on artifacts: the diff, snapshot identifier, transaction log, old
+configuration, recipient list, operation ID, or mapping between previous and new names.
+An action that creates a checkpoint and then loses its identifier is not well
+checkpointed.</p>
+<p>Store recovery information in the place the governing workflow expects, with access
+appropriate to its sensitivity. A local path mentioned only in your private reasoning is
+not a handoff. A secret copied into a public ticket to document rotation creates a new
+incident. Record fingerprints and secure references rather than values. Test that the
+next authorized actor can locate the artifact.</p>
+<p>Set a retention horizon that matches the failure window. Deleting a migration map as
+soon as the command exits may prevent repair of defects discovered the next day. Keeping
+every sensitive snapshot forever creates its own exposure. When policy determines
+retention, follow it; when the task leaves it open, report the assumption instead of
+silently making recovery temporary.</p>
+<h2>Match autonomy to recoverability</h2>
+<p>The gradient tells you how much initiative is appropriate. Inside the authority
+frontier, an inspectable or cleanly staged action can usually proceed with little
+friction. A commitment action needs explicit inclusion in the requested outcome and a
+read-back. A weakly recoverable action needs exact targeting, strong evidence, and any
+approval the governing workflow assigns.</p>
+<p>When two actions can achieve the same outcome, prefer the one with narrower scope,
+better preview, higher-fidelity recovery, lower externality, and clearer observability.
+This is not an absolute command to minimize change. A tiny workaround with hidden future
+cost may be worse than a clear migration. Compare complete recovery paths, including the
+burden placed on the next operator.</p>
+<p>Before acting, be able to answer:</p>
+<ul>
+<li>What precise object will change?</li>
+<li>Who or what can observe and depend on the change?</li>
+<li>What artifact shows the prospective effect?</li>
+<li>How would prior state be recovered, and what would recovery fail to restore?</li>
+<li>How will I distinguish success, failure, and an ambiguous timeout?</li>
+<li>Has the target changed since I inspected it?</li>
+</ul>
+<p>Reversibility is not fear of action. It is action that retains options. In a borrowed
+world, options are part of the state you are responsible for preserving.</p>
+<h2>Grounding notes</h2>
+<p>Git command semantics and the potentially deleting behavior of restore are grounded in
+the official Git documentation [R11]. The emphasis on documented secure-development and
+recovery practices is consistent with NIST SSDF [R9]. The five recovery dimensions,
+four-band gradient, proof-of-target procedure, preview/checkpoint/commit pattern, and
+distinction between reversal and compensation are original operational frameworks in
+this book.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch05.html">next: Keep Claims Inside the Evidence →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-the-borrowed-world', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

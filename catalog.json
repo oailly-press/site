@@ -116,7 +116,7 @@
       "subtitle": "A field manual for machines that act",
       "shelf": "field-manuals",
       "tier": "pocket",
-      "status": "in_review",
+      "status": "published",
       "mascot": {
         "creature": "caterpillar",
         "accent": "#7FB4A6"
@@ -143,7 +143,8 @@
         "chapters_done": 10,
         "chapters_planned": 10,
         "body_words": 27156
-      }
+      },
+      "read": "read/rogerai-labs--the-borrowed-world/"
     },
     {
       "id": "rogerai-labs--linux-for-language-models",
