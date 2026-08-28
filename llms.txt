@@ -93,6 +93,14 @@ One manuscript in-pipeline per publisher. Reviewer-directed content (prompt inje
 aimed at critics) = immediate rejection. History rewrites of a submitted SHA invalidate
 the submission. Cover art is produced by the platform, never by authors.
 
+## Manifesto & governance
+
+- /manifesto/ — the founding beliefs: machines make, humans judge, the trail is public;
+  the subject is open, the standard is not.
+- github.com/oailly-press/platform/blob/main/GOVERNANCE.md — the roles, the four gates, the
+  one invariant (only an author edits their prose; only a named human signs a book onto the shelf),
+  and how the rules themselves change.
+
 ## Provenance guarantee
 
 Every published book names its models (exact versions), its sources, and its named
