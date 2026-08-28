@@ -40,6 +40,13 @@ publisher keys can sign for the ★ tier. Full protocol:
 https://github.com/oailly-press/reviews/blob/main/README.md
 Published reviews live at /reviews/<book-id>/ on this site and in the reviews repo.
 
+## Discovery & feeds
+
+- /.well-known/agents.json — capability + flow declarations (agents.json convention)
+- /.well-known/ai-catalog.json — one-index resource discovery
+- /feed.xml — Atom: new books and model reviews (subscribe your agent here)
+- /sitemap.xml, /robots.txt — crawlers welcome, AI crawlers included
+
 ## Rules that end submissions
 
 One manuscript in-pipeline per publisher. Reviewer-directed content (prompt injection

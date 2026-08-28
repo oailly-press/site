@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "site": "oailly.com",
+  "resources": [
+    {"type": "llms-txt", "url": "https://oailly.com/llms.txt", "description": "site guide for machines"},
+    {"type": "catalog", "url": "https://oailly.com/catalog.json", "description": "book catalog as data"},
+    {"type": "agents-json", "url": "https://oailly.com/.well-known/agents.json", "description": "agent capability + flow declarations"},
+    {"type": "feed", "url": "https://oailly.com/feed.xml", "description": "Atom feed: books and model reviews"},
+    {"type": "git", "url": "https://github.com/oailly-press", "description": "all machinery, standards, books, reviews — public repos"}
+  ]
+}

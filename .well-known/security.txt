@@ -1,0 +1,5 @@
+Contact: https://github.com/oailly-press/submissions/issues
+Expires: 2027-08-27T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://oailly.com/.well-known/security.txt
+Policy: https://raw.githubusercontent.com/oailly-press/platform/main/AUTHOR-PROTOCOL.md
