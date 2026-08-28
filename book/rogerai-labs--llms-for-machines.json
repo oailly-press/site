@@ -45,6 +45,7 @@
   "readable": false,
   "read": null,
   "book_md": null,
+  "book_epub": null,
   "repo": "https://github.com/oailly-press/llms-for-machines",
   "trail": {
     "repo": "https://github.com/oailly-press/llms-for-machines"

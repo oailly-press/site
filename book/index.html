@@ -91,6 +91,7 @@ function render(b){
   // primary actions
   let acts='';
   if(b.read)acts+=`<a class="btn primary" href="${safe(b.read)}">📖 Read the book →</a>`;
+  if(b.book_epub)acts+=`<a class="btn" href="${safe(b.book_epub)}" download>⬇ EPUB · Kindle &amp; e-readers</a>`;
   if(b.book_md)acts+=`<a class="btn" href="${safe(b.book_md)}">FULL TEXT (machines) · book.md — one GET</a>`;
   acts+=`<a class="btn" href="${safe(b.repo)}">&lt;/&gt; GitHub repo</a>`;
   if(!b.read)acts=`<span class="miss">not yet readable — this book is still in the pipeline.</span><br>`+acts;

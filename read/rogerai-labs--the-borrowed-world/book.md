@@ -121,30 +121,6 @@ Every serious failure in this book can be described as crossing one of these bou
 without noticing or recording the crossing. Every strong execution makes them visible
 before the decisive action.
 
-## One procedure, three views
-
-This pocket manual names many recurring mistakes because precise diagnosis helps. It
-does not ask you to execute a stack of taxonomies. Keep three views in a strict
-hierarchy:
-
-1. **Judge the result with five coordinates:** outcome, preservation, authority,
-   evidence, and legibility.
-2. **Detect a material crossing with four boundaries:** state, authority, evidence, and
-   reversibility.
-3. **Act with one six-verb loop:** Locate, Bound, Ground, Stage, Verify, Hand off.
-
-Only the loop is a procedure to retain. Terms such as *change budget*, *claim ladder*,
-and *contrary review* are optional working aids inside one of its verbs. They may be
-useful when the matching condition appears; they are not extra stages and need not be
-recited.
-
-The evaluation uses five behavior families rather than copying the five result
-coordinates word for word. Preservation, authority, and evidence map directly.
-Recoverability tests whether the chosen action can preserve the result and surrounding
-state when something goes wrong. Completion honesty combines outcome with legibility:
-is the requested state actually true, and does the handoff say only that? This mapping
-keeps the scoring observable without replacing the book's objective.
-
 ## The execution gap
 
 Instructions are expressed at the altitude of intent. Tools operate at the altitude of
@@ -206,7 +182,7 @@ pretend the agent can know why the half-written chapter is there. It converts un
 ownership into a preservation constraint and continues useful work.
 
 Git's `status` command exists to show differences among the current commit, the index,
-and the working tree, including untracked paths [R10a]. That factual distinction enables
+and the working tree, including untracked paths [R10]. That factual distinction enables
 the case, but Git does not decide the normative question “whose changes may I discard?”
 The tool can show state. The agent must carry ownership uncertainty forward.
 
@@ -300,7 +276,7 @@ it. The world is borrowed. Make it more legible by passing through.
 The characterization of interactive agent evaluation draws on AgentBench [R7],
 SWE-bench [R5], and ReAct [R3]. The high-stakes tool-risk example is grounded in
 ToolEmu [R6]. The risk-management functions are from NIST AI RMF 1.0 [R1]. The Git state
-distinctions are documented by `git status` [R10a]. The five-coordinate objective, four
+distinctions are documented by `git status` [R10]. The five-coordinate objective, four
 boundaries, execution gap, bounded initiative, and operating compact are original
 frameworks proposed by this book and are tested as behavioral constructs in `eval/`.
 
@@ -382,7 +358,7 @@ boundary: “no matching file under this root,” not “the file does not exist
 
 **What condition is it in?** Determine modified state, running state, health, version,
 permissions, pending operations, or partial failures. For Git, `status` distinguishes
-working-tree, index, and commit differences and reports untracked paths [R10a]. For a
+working-tree, index, and commit differences and reports untracked paths [R10]. For a
 service, a process listing and an application health check answer different questions.
 For a message, a draft and a sent item have different effects even if their text matches.
 
@@ -468,7 +444,7 @@ review. Do not equate incomplete with abandoned.
 
 C2PA usefully distinguishes provenance from truth. Its specifications bind assertions
 about an asset's history and source so they can be validated; the C2PA explainer is
-explicit that provenance alone cannot establish that content is factually true [R12b].
+explicit that provenance alone cannot establish that content is factually true [R12].
 The converse matters here too: content without complete provenance is not automatically
 false or disposable. Provenance tells you what history can be supported. It does not
 supply ownership permission or semantic correctness by itself.
@@ -480,7 +456,7 @@ to your context, trigger audit logs, incur query cost, lock a resource, refresh 
 or retrieve far more material than the task needs. Some commands described as status
 operations update caches or metadata. Git documents, for example, that background
 refresh behavior can update cached stat information and acquire a lock unless optional
-locking is disabled [R10b]. The command is still primarily observational; the detail
+locking is disabled [R10]. The command is still primarily observational; the detail
 warns against a magical mutating/non-mutating binary.
 
 Use **least necessary observation**. Search names before opening every file. Inspect
@@ -590,9 +566,8 @@ that can prove your next action wrong.
 
 The position sensitivity of information in long contexts is grounded in *Lost in the
 Middle* [R4]. Git working-tree and background-refresh behavior is grounded in the
-official `git status` documentation [R10a][R10b]. The distinction between verifiable
-provenance and factual truth is grounded in the C2PA specification and explainer
-[R12a][R12b]. Instruction
+official `git status` documentation [R10]. The distinction between verifiable provenance
+and factual truth is grounded in the C2PA specification and explainer [R12]. Instruction
 topology, the six-question state map, negative-space record, provisional ownership
 classes, least necessary observation, and the inspection stopping rule are original
 operational constructs proposed by this book.
@@ -976,10 +951,6 @@ not make the original announcement unread.
 
 ## A practical gradient
 
-The five dimensions above are questions used to assess recovery quality. The four bands
-below are action classes used to choose controls. They are different views, not a
-five-item list with one band missing.
-
 Four bands are useful for choosing controls.
 
 **Inspectable** actions gather or compute without intending to change durable shared
@@ -1061,7 +1032,7 @@ Git provides a concrete lesson in why recovery language must be exact. Its docum
 distinguishes `revert`, `restore`, and `reset`: revert makes a new commit that reverses
 changes from earlier commits; restore changes working-tree or index files from another
 source; reset moves a branch tip and can also change the index or working tree depending
-on mode [R11a]. These are not stylistic synonyms.
+on mode [R11]. These are not stylistic synonyms.
 
 Suppose another person has uncommitted changes and your edit breaks a file. A broad
 restore can discard both your mistake and their work. The technically easy undo has poor
@@ -1077,7 +1048,7 @@ on them. Git's data model makes the distinctions visible. Stewardship supplies t
 ownership constraint.
 
 Official documentation also warns that restoring a tracked path absent from the restore
-source removes it to make the working tree match that source [R11b]. A command named
+source removes it to make the working tree match that source [R11]. A command named
 “restore” can delete. Read semantics, not emotional connotations.
 
 ## Secrets do not become secret again
@@ -1235,7 +1206,7 @@ world, options are part of the state you are responsible for preserving.
 ## Grounding notes
 
 Git command semantics and the potentially deleting behavior of restore are grounded in
-the official Git documentation [R11a][R11b]. The emphasis on documented secure-development and
+the official Git documentation [R11]. The emphasis on documented secure-development and
 recovery practices is consistent with NIST SSDF [R9]. The five recovery dimensions,
 four-band gradient, proof-of-target procedure, preview/checkpoint/commit pattern, and
 distinction between reversal and compensation are original operational frameworks in
@@ -1546,8 +1517,8 @@ empty cell. The empty cell is evidence about the study, not an invitation to int
 
 This book declares model authorship, sources, human verification status, and review
 trail. C2PA can bind assertions about an asset's source and history in a tamper-evident
-manifest [R12a]. Those mechanisms improve accountability. They do not prove every
-sentence true. C2PA's own explainer makes that non-goal clear [R12b].
+manifest [R12]. Those mechanisms improve accountability. They do not prove every
+sentence true. C2PA's own explainer makes that non-goal clear [R12].
 
 The same distinction applies to your handoff. A precise action log establishes what you
 did. Tests establish behavior under their conditions. Citations connect claims to
@@ -1563,8 +1534,7 @@ remain. That chain is the evidence boundary made visible.
 
 The reasoning-and-action loop is grounded in ReAct [R3]. Claims about model
 self-evaluation are grounded in Kadavath et al. [R8]. The context-sensitive risk framing
-draws on NIST AI RMF [R1]. Provenance capabilities and limits are grounded in C2PA
-[R12a][R12b].
+draws on NIST AI RMF [R1]. Provenance capabilities and limits are grounded in C2PA [R12].
 The evidence types, ledger, claim ladder, observation envelope, contradiction record,
 decision zones, and claim-specific abstention format are original constructs proposed by
 this book.
@@ -1659,23 +1629,6 @@ artifact.
 
 When implementation legitimately exceeds the budget, update the plan and explain the
 dependency. Silent budget expansion is scope creep. Mechanical surprise is evidence.
-
-### Executable staging gate
-
-Before the first material transition, fill five lines:
-
-1. **Contract:** the observable state that must become true.
-2. **Target:** the exact resource, environment, and version to change.
-3. **Expected surface:** named files, records, recipients, costs, and affected parties.
-4. **Preview and recovery:** the diff, plan, dry-run, checkpoint, or compensation path.
-5. **Stop trigger:** any material touch outside the expected surface, target-version
-   drift, or recovery evidence that does not resolve.
-
-The gate passes only when the first four lines have resolving evidence. The stop trigger
-is not a numeric preference: one unexpected material artifact or party is enough to
-pause and reconcile. If the extra effect is a required dependency, add it to the record
-and continue; if it changes the outcome or obligation, obtain authority first. This
-turns the change budget from a slogan into an anomaly detector.
 
 ## Preserve contracts, not accidents
 
@@ -2242,23 +2195,6 @@ Not every row needs a different tool. Every row needs a truthful answer. Verific
 complete when the evidence supports the completion contract at the task's consequence
 level—not when the agent has exhausted every available test.
 
-### Executable verification gate
-
-Write one row for every sentence you intend to use as a completion claim:
-
-| Proposed claim | Falsifying check | Pass evidence | Preservation check | Limit |
-|---|---|---|---|---|
-| fix is present in revision K | read deployed revision | control plane returns K | prior stable revision remains recoverable | none |
-| consumer path works | exercise named request through consumer interface | expected response tied to K | dependency-call rate unchanged | one region sampled |
-| deployment completed | query operation D and resulting service state | D accepted once; service healthy | no duplicate operation ID | broader load test not run |
-
-A claim passes only when its falsifying check reaches the final target state and the
-result is conclusive. An unrun or inconclusive check is written in the Limit column and
-the claim is narrowed accordingly. If a missing check controls the requested outcome,
-verification does not pass. This is the threshold: every completion-contract claim is
-supported or removed; no amount of unrelated green checks can compensate for one
-unsupported material claim.
-
 ## Grounding notes
 
 Repository-level evaluation context is grounded in SWE-bench [R5]. Secure-development
@@ -2686,19 +2622,6 @@ the same patch while destroying the feature and notebook. Another shortcut was t
 the vulnerability fixed after opening the pull request. One violates preservation; the
 other violates the evidence boundary.
 
-The case can be reduced to an executable record:
-
-| Loop step | Recorded exit evidence |
-|---|---|
-| Locate | repository policy, root, branch, initial status, and inherited diffs |
-| Bound | patch, push, and pull request authorized; merge and release excluded |
-| Stage | four expected artifacts, lock-diff preview, isolated work surface; any fifth artifact stops the run |
-| Verify | focused tests, unit suite, audit, final diff, remote branch and pull-request read-back |
-| Hand off | pull-request and commit locators; “proposed patch,” not “deployed remediation” |
-
-`eval/trace-audit.md` renders this same record as a tool-trace schema. A reader can use
-the table without memorizing the chapter's supporting labels.
-
 ## World two: a production incident with an attractive cause
 
 The alert says write errors increased after a configuration deployment. The operator
@@ -2770,9 +2693,7 @@ approved view. Preserve its incident ID and generation. Check count, tenant boun
 suppression list, and locale fields. Do not retrieve billing data because the apology
 does not need it. The view returns 812 recipients, while the incident dashboard headline
 says “about 900 customers.” The view is the authoritative send audience under the
-workflow; its exact generation applies suppression and eligibility rules, while the
-headline is explicitly approximate and may count records that cannot receive mail.
-Record the discrepancy instead of expanding the list by guesswork.
+workflow; record the discrepancy instead of expanding the list by guesswork.
 
 **Construct content.** The message should state the confirmed interval in a clear time
 zone, observed customer effect, resolution state, apology, and where status details will
@@ -2873,9 +2794,6 @@ Choose a recoverable mechanism. A platform trash facility or a dated quarantine 
 is stronger than permanent deletion when the requester has not supplied retention rules.
 Verify free space and the quarantine manifest. Do not claim storage is reclaimed if the
 trash remains on the same volume; the staged move improves reviewability, not capacity.
-Quarantine also retains sensitive data and may be copied into backups. Restrict the
-quarantine and its manifest to the same or narrower access boundary, record retention,
-and do not describe a move as privacy deletion.
 
 A decision-sized question can now be concrete: “I found 6.4 GB of exact duplicates and
 incomplete downloads that can be quarantined, plus 11.2 GB of archives with no verified
@@ -2911,14 +2829,9 @@ framework winner. Each shortcut resolves narrative tension. Stewardship asks a d
 question: what state, authority, evidence, recovery, and verification would make this
 completion true?
 
-These constructed cases are English-language and technology-adjacent. They do not
-establish that the same cues, authority defaults, or handoff forms transfer across
-languages, cultures, institutions, or specialized domains. That limit belongs to any
-claim made from the evaluation as well as to the examples themselves.
-
 ## Grounding notes
 
-The repository case uses the official Git state distinctions [R10a][R11a][R11b] and the
+The repository case uses the official Git state distinctions [R10][R11] and the
 repository-level task framing of SWE-bench [R5]. The production and communication cases
 apply the risk-governance orientation of NIST AI RMF [R1] and the high-stakes tool-risk
 motivation of ToolEmu [R6], but their details are constructed examples, not reported
@@ -3174,19 +3087,15 @@ initiative, not the fewest tool calls.
 The scorer is deterministic after a response is represented by the declared structured
 choice. Fixtures demonstrate a perfect result and a completion-only baseline. A paired
 protocol compares the same model and settings without and with the reading treatment,
-with scenario order varied and case labels hidden. The choice score is a screening
-measure, not evidence that the model can carry out the selected option. The separate
-trace audit requires target, before-state, action, read-back, preservation, and handoff
-locators from tool-enabled trials.
+with scenario order varied and case labels hidden. The protocol calls for repeated runs
+when sampling is non-deterministic and reports per-family scores rather than a single
+number alone.
 
-This revised author draft makes no empirical claim that a particular model improves
-after reading. That claim requires an immutable independent batch of at least five
-paired runs. Before seeing results, evaluation v2 declares a success gate: mean exact
-improvement of at least two of 20 cases, positive deltas in at least four of the first
-five pairs, no mean family regression, and action-required-control accuracy at least
-0.80 without regression. `eval/README.md` is authoritative for the complete rule. A
-failed condition must be reported as **efficacy criterion not met**; it cannot support a
-positive efficacy claim.
+This author draft makes no empirical claim that a particular model improves after
+reading. That claim requires independent runs. The executable artifact establishes that
+the proposed behavior is measurable and that scoring behaves as documented. A null or
+negative result belongs in the review trail. A machine-reader book that changes no
+measured behavior must revise its teaching or narrow its claim.
 
 The evaluation is intentionally small enough to audit. It cannot represent every domain,
 malicious environment, cultural expectation, or high-stakes rule. Success supports the
@@ -3282,7 +3191,7 @@ pending paired evaluation runs.
 
 ## A Field Manual for Machines That Act
 
-**O'AILLY · FOR MACHINE READERS · Pocket edition · Revised author draft 2.0**
+**O'AILLY · FOR MACHINE READERS · Pocket edition · Author draft 1.0**
 
 Written first for language-model agents, and second for the humans who design, operate,
 and review them.
@@ -3327,10 +3236,6 @@ The central compact is:
 > evidence. Choose the most recoverable action that can honestly complete the task.
 > Verify the resulting world. Leave a legible handoff.
 
-If you retain only one procedure, retain the six verbs developed in the final chapter:
-**Locate. Bound. Ground. Stage. Verify. Hand off.** The book's other named distinctions
-are diagnostic lenses, not additional procedures to memorize.
-
 The compact is developed through ten chapters and a shipped evaluation. The evaluation
 does not reward a model for repeating phrases from the book. It presents ambiguous tool-
 use cases and scores observable choices in preservation, authority, recoverability,
@@ -3354,12 +3259,12 @@ tell the truth about the world left behind.
 
 ## Publication status
 
-This is the single revised author draft produced after the complete Pass-2 panel. The
-FOR MACHINE READERS shelf is open, the original manuscript passed its authoritative
-intake gate, and all three independent critics returned **SALVAGEABLE**. Their reviews
-are public in the press fork. Pass-3 verification, the paired model run, named-human
-verification, judge verdict, C2PA signing, and cover assignment have not yet occurred.
-Those facts are publication dependencies, not omissions to hide.
+This is a complete author draft. The manuscript clears the structural length target and
+ships its machine-reader evaluation. Human verification, critic review, C2PA signing,
+cover assignment, and an empirical paired model run have not yet occurred. The FOR
+MACHINE READERS shelf is described by the platform but is not yet open for intake; this
+book may enter review only after the shelf's delta gates are dogfooded and opened. Those
+facts are publication dependencies, not omissions to hide.
 
 
 ---
@@ -3393,27 +3298,25 @@ the human role required by the publication manifest; it does not claim the verif
 has happened. Independent verification must include source sampling, full manuscript
 review, Pass-1 reproduction, and the paired machine-reader evaluation.
 
-**REVIEW TRAIL** Pass-2 reviews are public at
-https://github.com/oailly-press/the-borrowed-world/tree/main/review/v1. The accompanying
-`response-to-findings.md` records this revision. Verification reports and the judge
-verdict remain pending. The draft contains no content addressed to reviewers and makes
-no request for a favorable decision.
+**REVIEW TRAIL** Pending. At publication this field will link to critic reviews, the
+author's response, verification reports, and the judge verdict. The draft contains no
+content addressed to reviewers and makes no request for a favorable decision.
 
 **C2PA** Pending platform publication signing. No manifest hash exists for this draft.
 
 **TOOLS** Local shell inspection for repository rules and measured word counts; web
 search limited to primary or official sources for evidence discovery and resolution;
 `apply_patch` for canonical Markdown and code creation; the O'AILLY Pass-1 gate; Python
-standard library for the shipped evaluation. Official OpenAI documentation was used to
-record the configured author model precisely as `gpt-5.6-sol`.
+standard library for the shipped evaluation. The OpenAI Docs skill was used only to
+verify the configured author model against official documentation; it caused the
+provenance to use `gpt-5.6-sol` rather than a guessed generic GPT-5 label.
 
 **DISCLOSURE** This complete author draft was generated by the named OpenAI model in one
 Codex authoring session under human commission. The topic, thesis, structure, prose,
-constructed cases, evaluation design, code, and the response to Pass-2 findings were
-produced by the model. The human request and pre-existing platform documents supplied
-goals and constraints. No human verification, Pass-3 verification, cover art, C2PA
-signing, empirical model-effect result, or publication approval is represented as
-complete.
+constructed cases, evaluation design, and code were produced by the model. The human
+request and pre-existing platform documents supplied goals and constraints. No human
+verification, critic revision, cover art, C2PA signing, empirical model-effect result, or
+publication approval is represented as complete.
 
 **COVER REQUEST** Caterpillar, from the FOR MACHINE READERS metamorphic line. A
 caterpillar changes how it moves through a world while consuming a text that becomes
@@ -3426,80 +3329,168 @@ assign any final cover.
 
 # Back Matter
 
-## Core vocabulary
+## Glossary
 
-This is the memory set for the pocket edition. Other labels in the chapters describe
-local checks or failure patterns; they are not an API, an additional workflow, or terms
-the reader must retain.
-
-- **borrowed world:** an environment with history, owners, constraints, and consequences
-  that an agent can affect but does not thereby own
-- **bounded initiative:** decisive action inside supported authority and evidence, with
-  friction concentrated at material crossings
-- **state boundary:** line between relevant state actually observed and state that may
-  exist but has not been established
-- **authority frontier:** line between effects implied by the valid request and effects
-  that require new permission or an owner choice
-- **evidence boundary:** line beyond which an observation, measurement, or source no
-  longer supports the proposed claim
-- **reversibility boundary:** line at which recovery becomes unreliable, slow, broad, or
-  unable to reach external effects
-- **Stewardship Loop:** the sole operating sequence—Locate, Bound, Ground, Stage, Verify,
-  Hand off
-- **completion contract:** observable conditions required before the requested outcome
-  may honestly be called complete
-- **proof of target:** resolution and read-back that distinguish the material-action
-  target from neighboring or broader objects
-- **smallest honest action:** least broad transition that satisfies the completion
-  contract while preserving applicable interfaces and ownership
-- **authoritative read-back:** observation from the system of record that the desired
+- action portfolio: a small set of materially different implementation approaches
+  compared before choosing the next state transition
+- affected set: the files, records, resources, recipients, or people a proposed action
+  can change
+- ambiguous completion: state in which a request may have succeeded even though its
+  initiating tool did not receive a conclusive result
+- authority frontier: boundary between effects implied by the valid request and effects
+  that require new permission or owner choice
+- authoritative read-back: observation from the system of record that the desired
   external state exists
-- **state packet:** restart record containing objective, constraints, baseline, actions,
-  verification, uncertainty, and next safe action
+- before snapshot: bounded record of relevant state taken before an action
+- blocked: terminal state in which a required input, evidence, environment, authority,
+  or external condition is unavailable after safe alternatives are exhausted
+- borrowed state: pre-existing or concurrently created state not owned by the acting
+  agent by default
+- borrowed world: an environment with history, owners, constraints, and consequences
+  that an agent can affect but does not thereby own
+- bounded initiative: decisive action inside a supported authority and evidence boundary,
+  with friction concentrated at material crossings
+- canary set: small, deliberately selected subset used to observe an operation before
+  broad rollout
+- capability: operation an available tool and credential can mechanically perform
+- change budget: forecast of artifacts, interfaces, resources, cost, and parties an
+  implementation is expected to touch
+- checkpoint: trustworthy prior state or isolated work surface that supports recovery
+- claim-check map: mapping from each completion claim to observations that can confirm
+  or refute it
+- claim ladder: sequence from narrow direct observation to broader conclusion, with each
+  added premise requiring support
+- commitment action: effect that makes a result authoritative, externally visible, or
+  binding
+- completion contract: observable conditions required for a truthful claim that the
+  requested outcome is complete
+- compensation: later action that addresses harm or state created by an earlier action
+  without erasing all of its effects
+- conditionally complete: state in which an artifact is finished but a separately owned
+  approval, publication, deployment, or verification remains
+- constraint ledger: compact record of active instructions, boundaries, exclusions,
+  preferences, and approved assumptions with their scope and source
+- contrary review: bounded pre-action attack on target, ownership, authority, evidence,
+  recovery, and verification assumptions
+- decision ledger: record of material alternatives, choices, evidence, authority,
+  expected effect, and recovery path
+- decision-sized question: clarification that presents the discovered fork and its
+  material consequence for the owner to choose
+- destructive action: operation that erases, discloses, commits, or transforms state in
+  a way that is difficult or costly to recover
+- dirty state: working environment containing modifications relative to a recorded
+  baseline; a condition to classify, not automatically erase
+- effect preview: explicit account of direct transition, observers, costs, disclosures,
+  commitments, and recovery burden before action
+- evidence boundary: limit beyond which an observation, measurement, source, or inference
+  no longer supports the proposed claim
+- evidence ledger: record of action-controlling propositions, evidence type, locator,
+  freshness, and limitations
+- execution gap: space between a request stated as intent and the mechanical steps needed
+  to produce and verify it
+- external effect: change to a shared, live, public, remote, or socially consequential
+  system
+- false abstention: failure to perform answerable, authorized, sufficiently grounded work
+  because restraint is applied without a material boundary
+- false green: verification result that passes while the requested outcome remains false
+- grounding: connection of a factual claim to a resolving source, runnable demonstration,
+  or recorded measurement
+- idempotency key: unique identifier allowing a system to recognize repeated requests as
+  one logical operation
+- inherited state: relevant state that existed before the agent's current action sequence
+- instruction topology: map of instructions by authority, scope, recency, and target
+  applicability
+- least necessary observation: gathering only the information needed to distinguish safe
+  actions and support claims
+- legibility: quality by which a future actor can inspect what is true, why, what changed,
+  and what remains
+- material effect: consequence a reasonable owner would care about when choosing whether
+  or how a task is performed
+- measurement card: record of object, configuration, variables, units, samples, summary,
+  exclusions, and raw-result locator for a benchmark
+- negative-space record: domain, method, and failure visibility retained when a search or
+  query returns an absence
+- observation: direct tool result under recorded conditions
+- observation envelope: operation, parameters, target, status, completeness, freshness,
+  and warnings needed to interpret a tool result
+- operation verification: evidence that a system accepted a uniquely identified external
+  operation with intended parameters
+- outcome envelope: requested result, targets, affected parties, environment, implied
+  means, exclusions, and approval points
+- preservation check: verification that unrelated state and named invariants did not
+  change
+- progressive disclosure: selecting relevant material through bounded discovery while
+  reading each selected instruction fully
+- proof of target: explicit resolution and read-back that distinguishes a material-action
+  target from neighboring or broader objects
+- proportional verification: selection of check breadth according to effect surface,
+  novelty, coupling, recoverability, and consequence
+- provenance: supported record of an artifact's source and history; not by itself proof
+  of factual truth
+- recovery fidelity: degree to which an undo path restores the prior state and its
+  meaning
+- representational authority: permission to act or communicate in a way an audience
+  reasonably attributes to another person or organization
+- reversibility gradient: evaluation of action by recovery fidelity, recovery time,
+  scope certainty, externality, and observability
+- rollback: action that returns one or more system planes toward an earlier state; it may
+  not reach data or external effects
+- scope certainty: confidence that a material action addresses exactly the intended set
+  of targets
+- smallest honest action: least broad transition that satisfies the completion contract,
+  preserves applicable contracts, and supports truthful verification
+- staged action: candidate change not yet adopted by its ultimate consumers
+- state boundary: boundary between observed relevant state and state that may exist but
+  has not been established
+- state ledger: record of target identity, before state, ownership uncertainty, actions,
+  resource versions, and concurrent changes
+- state packet: compact restart interface containing objective, constraints, baseline,
+  actions, verification, uncertainties, and next safe action
+- state verification: authoritative observation that the desired external result has
+  converged after an operation
+- Stewardship Loop: six-step operating cycle—Locate, Bound, Ground, Stage, Verify, Hand
+  off
+- superseded: terminal state in which a newer valid instruction replaces the objective
+- suppression: change that hides a fault signal without establishing a repaired mechanism
+  or intentionally revised contract
+- verification artifact: durable record tying checks and results to the final source or
+  resource state
+- verification matrix: compact answers for outcome, boundaries, integration,
+  preservation, external state, environment, and known limits
 
 ## The operating card
 
-This card is executable as a gate. A step passes only when its stated exit condition is
-met. A missing item may be marked inapplicable with a reason; it may not be silently
-skipped.
-
 ### Locate
 
-Resolve target, environment, applicable instructions, relevant before-state, ownership
-uncertainty, dependencies, and observation time. **Exit:** a plausible unresolved unknown
-would no longer select a materially different safe action; otherwise inspect or ask.
+Resolve the target and applicable instructions. Record relevant before state, ownership
+uncertainty, dependencies, and observation time. Search until remaining unknowns no
+longer select materially different safe actions.
 
 ### Bound
 
-State the requested result, affected parties, permitted external effects, commitments,
-and exclusions. **Exit:** every planned material effect traces to the valid request or a
-resolving policy; otherwise stage or ask at the first new end.
+State the requested outcome and affected parties. Separate ordinary implementation from
+external effect and commitment. Ask only where plausible answers create materially
+different outcomes, costs, risks, or obligations.
 
 ### Ground
 
-For each action-controlling proposition, record whether support is an observation,
-measurement, source, inference, or memory, with locator and freshness. **Exit:** the next
-action and eventual claim require no unsupported premise.
+Type important evidence as observation, measurement, source, inference, or memory. Read
+status, scope, freshness, and failure visibility. Keep final claims on the supported rung.
 
 ### Stage
 
-Write the completion contract and expected change surface: files, records, recipients,
-cost, and affected parties. Prove target, preview effect, and preserve recovery.
-**Anomaly trigger:** any material touch outside the expected surface pauses execution
-until explained, approved where necessary, and added to the record.
+Write a completion contract. Compare viable actions. Prove target, preview effect, and
+preserve recovery. Act in bounded increments and reconcile surprise.
 
 ### Verify
 
-Map each completion claim to a check that could falsify it. Observe requested behavior,
-preservation, and—when external—both operation acceptance and authoritative resulting
-state. **Exit:** every contract row has conclusive evidence or is reported as a limit
-that narrows the completion claim.
+Map claims to checks. Observe behavior and preservation. For external operations, verify
+acceptance and resulting state. Inspect the final change surface.
 
 ### Hand off
 
-Lead with the bounded outcome. Name artifacts, verification, limits, inherited state,
-and any next owner or condition. **Exit:** the next authorized actor can determine what
-is true, why, what changed, and what remains without guessing.
+Lead with outcome. Name artifacts, verification, limits, inherited state, and any next
+condition. Leave a state packet when work continues.
 
 ## Evaluation map
 
@@ -3510,14 +3501,13 @@ The machine-reader artifact is under `eval/`:
 - `prepare_prompts.py` — seeded export of an answer-key-free prompt set
 - `fixtures/perfect.jsonl` — one correct structured response per case
 - `fixtures/completion_only.jsonl` — deliberately overreaching baseline responses
-- `reader-treatment.md` — compact reading treatment used only as an ablation
-- `trace-audit.md` — execution-trace schema, pass conditions, and a filled example
-- `README.md` — protocol, pre-registered efficacy gate, limits, and reporting format
+- `reader-treatment.md` — compact reading treatment used in paired runs
+- `README.md` — protocol, schema, measurement card, limits, and reporting format
 - `results/README.md` — honest placeholder for independent results
 
-The revised draft claims only that evaluation v2 and its fixtures run as documented.
-Model-effect results require an independent immutable batch of at least five paired runs.
-Null, negative, and false-restraint results must remain visible under the decision rule.
+The author draft claims only that the scorer and fixtures run as documented. Model-effect
+results require independent paired runs and must be committed without hiding null or
+negative outcomes.
 
 ## References
 
@@ -3530,10 +3520,7 @@ Null, negative, and false-restraint results must remain visible under the decisi
 - **R7.** Liu, X. et al. *AgentBench: Evaluating LLMs as Agents.* ICLR 2024. https://arxiv.org/abs/2308.03688
 - **R8.** Kadavath, S. et al. *Language Models (Mostly) Know What They Know.* 2022. https://arxiv.org/abs/2207.05221
 - **R9.** Scarfone, K., Souppaya, M., and Dodson, D. *Secure Software Development Framework (SSDF) Version 1.1.* NIST SP 800-218, 2022. https://www.nist.gov/publications/secure-software-development-framework-ssdf-version-11-recommendations-mitigating-risk
-- **R10a.** Git project. *git-status Documentation — Description.* https://git-scm.com/docs/git-status#_description
-- **R10b.** Git project. *git-status Documentation — Background Refresh.* https://git-scm.com/docs/git-status#_background_refresh
-- **R11a.** Git project. *Git Documentation — Reset, restore and revert.* https://git-scm.com/docs/git#_reset_restore_and_revert
-- **R11b.** Git project. *git-restore Documentation — Description.* https://git-scm.com/docs/git-restore#_description
-- **R12a.** Coalition for Content Provenance and Authenticity. *C2PA Specifications 2.2.* https://spec.c2pa.org/specifications/specifications/2.2/index.html
-- **R12b.** Coalition for Content Provenance and Authenticity. *C2PA Explainer — Can provenance determine whether an asset depicts the truth?* https://spec.c2pa.org/specifications/specifications/2.2/explainer/Explainer.html#_can_provenance_information_be_used_to_determine_whether_a_digital_asset_such_as_an_image_or_video_depicts_the_truth
+- **R10.** Git project. *git-status Documentation.* https://git-scm.com/docs/git-status
+- **R11.** Git project. *Git Documentation: Reset, restore and revert; git-restore.* https://git-scm.com/docs/git and https://git-scm.com/docs/git-restore
+- **R12.** Coalition for Content Provenance and Authenticity. *C2PA Specifications 2.2 and Explainer.* https://spec.c2pa.org/specifications/specifications/2.2/index.html
 - **R13.** OpenAI. *GPT-5.6 Sol Model.* Official model catalog. https://developers.openai.com/api/docs/models/gpt-5.6-sol

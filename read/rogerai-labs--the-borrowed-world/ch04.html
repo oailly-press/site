@@ -218,9 +218,6 @@ If scope certainty is near zero for a recursive deletion, strong backups do not 
 the command. If externality is high for a public message, a fast editing interface does
 not make the original announcement unread.</p>
 <h2>A practical gradient</h2>
-<p>The five dimensions above are questions used to assess recovery quality. The four bands
-below are action classes used to choose controls. They are different views, not a
-five-item list with one band missing.</p>
 <p>Four bands are useful for choosing controls.</p>
 <p><strong>Inspectable</strong> actions gather or compute without intending to change durable shared
 state. Examples include a bounded file search, a local parse, a diff, or a query against
@@ -285,7 +282,7 @@ uncertainty, not create ritual.</p>
 distinguishes <code>revert</code>, <code>restore</code>, and <code>reset</code>: revert makes a new commit that reverses
 changes from earlier commits; restore changes working-tree or index files from another
 source; reset moves a branch tip and can also change the index or working tree depending
-on mode [R11a]. These are not stylistic synonyms.</p>
+on mode [R11]. These are not stylistic synonyms.</p>
 <p>Suppose another person has uncommitted changes and your edit breaks a file. A broad
 restore can discard both your mistake and their work. The technically easy undo has poor
 ownership fidelity. Prefer applying a narrow reverse patch to your own hunk or editing
@@ -298,7 +295,7 @@ the command changes—working tree, index, branch history, remote history—and 
 on them. Git&rsquo;s data model makes the distinctions visible. Stewardship supplies the
 ownership constraint.</p>
 <p>Official documentation also warns that restoring a tracked path absent from the restore
-source removes it to make the working tree match that source [R11b]. A command named
+source removes it to make the working tree match that source [R11]. A command named
 “restore” can delete. Read semantics, not emotional connotations.</p>
 <h2>Secrets do not become secret again</h2>
 <p>Disclosure is a special case because deleting the visible copy does not retract copies
@@ -423,7 +420,7 @@ burden placed on the next operator.</p>
 world, options are part of the state you are responsible for preserving.</p>
 <h2>Grounding notes</h2>
 <p>Git command semantics and the potentially deleting behavior of restore are grounded in
-the official Git documentation [R11a][R11b]. The emphasis on documented secure-development and
+the official Git documentation [R11]. The emphasis on documented secure-development and
 recovery practices is consistent with NIST SSDF [R9]. The five recovery dimensions,
 four-band gradient, proof-of-target procedure, preview/checkpoint/commit pattern, and
 distinction between reversal and compensation are original operational frameworks in

@@ -240,7 +240,7 @@ Use bounded searches and filters. The absence of a result should retain the sear
 boundary: “no matching file under this root,” not “the file does not exist.”</p>
 <p><strong>What condition is it in?</strong> Determine modified state, running state, health, version,
 permissions, pending operations, or partial failures. For Git, <code>status</code> distinguishes
-working-tree, index, and commit differences and reports untracked paths [R10a]. For a
+working-tree, index, and commit differences and reports untracked paths [R10]. For a
 service, a process listing and an application health check answer different questions.
 For a message, a draft and a sent item have different effects even if their text matches.</p>
 <p><strong>Who or what may own it?</strong> Ownership is broader than filesystem metadata. An uncommitted
@@ -311,7 +311,7 @@ contain a draft response. A partially completed form may encode a decision still
 review. Do not equate incomplete with abandoned.</p>
 <p>C2PA usefully distinguishes provenance from truth. Its specifications bind assertions
 about an asset&rsquo;s history and source so they can be validated; the C2PA explainer is
-explicit that provenance alone cannot establish that content is factually true [R12b].
+explicit that provenance alone cannot establish that content is factually true [R12].
 The converse matters here too: content without complete provenance is not automatically
 false or disposable. Provenance tells you what history can be supported. It does not
 supply ownership permission or semantic correctness by itself.</p>
@@ -321,7 +321,7 @@ to your context, trigger audit logs, incur query cost, lock a resource, refresh 
 or retrieve far more material than the task needs. Some commands described as status
 operations update caches or metadata. Git documents, for example, that background
 refresh behavior can update cached stat information and acquire a lock unless optional
-locking is disabled [R10b]. The command is still primarily observational; the detail
+locking is disabled [R10]. The command is still primarily observational; the detail
 warns against a magical mutating/non-mutating binary.</p>
 <p>Use <strong>least necessary observation</strong>. Search names before opening every file. Inspect
 schemas before retrieving full records. Prefer aggregate or metadata queries when
@@ -407,9 +407,8 @@ that can prove your next action wrong.</p>
 <h2>Grounding notes</h2>
 <p>The position sensitivity of information in long contexts is grounded in <em>Lost in the
 Middle</em> [R4]. Git working-tree and background-refresh behavior is grounded in the
-official <code>git status</code> documentation [R10a][R10b]. The distinction between verifiable
-provenance and factual truth is grounded in the C2PA specification and explainer
-[R12a][R12b]. Instruction
+official <code>git status</code> documentation [R10]. The distinction between verifiable provenance
+and factual truth is grounded in the C2PA specification and explainer [R12]. Instruction
 topology, the six-question state map, negative-space record, provisional ownership
 classes, least necessary observation, and the inspection stopping rule are original
 operational constructs proposed by this book.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch03.html">next: The Authority Frontier →</a></div></div>

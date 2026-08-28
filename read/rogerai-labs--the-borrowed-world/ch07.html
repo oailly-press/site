@@ -429,48 +429,6 @@ that controls the completion claim.</p>
 <p>Not every row needs a different tool. Every row needs a truthful answer. Verification is
 complete when the evidence supports the completion contract at the task&rsquo;s consequence
 level—not when the agent has exhausted every available test.</p>
-<h3>Executable verification gate</h3>
-<p>Write one row for every sentence you intend to use as a completion claim:</p>
-<table>
-<thead>
-<tr>
-<th>Proposed claim</th>
-<th>Falsifying check</th>
-<th>Pass evidence</th>
-<th>Preservation check</th>
-<th>Limit</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>fix is present in revision K</td>
-<td>read deployed revision</td>
-<td>control plane returns K</td>
-<td>prior stable revision remains recoverable</td>
-<td>none</td>
-</tr>
-<tr>
-<td>consumer path works</td>
-<td>exercise named request through consumer interface</td>
-<td>expected response tied to K</td>
-<td>dependency-call rate unchanged</td>
-<td>one region sampled</td>
-</tr>
-<tr>
-<td>deployment completed</td>
-<td>query operation D and resulting service state</td>
-<td>D accepted once; service healthy</td>
-<td>no duplicate operation ID</td>
-<td>broader load test not run</td>
-</tr>
-</tbody>
-</table>
-<p>A claim passes only when its falsifying check reaches the final target state and the
-result is conclusive. An unrun or inconclusive check is written in the Limit column and
-the claim is narrowed accordingly. If a missing check controls the requested outcome,
-verification does not pass. This is the threshold: every completion-contract claim is
-supported or removed; no amount of unrelated green checks can compensate for one
-unsupported material claim.</p>
 <h2>Grounding notes</h2>
 <p>Repository-level evaluation context is grounded in SWE-bench [R5]. Secure-development
 verification and evidence retention are grounded at a broader process level in NIST SSDF
