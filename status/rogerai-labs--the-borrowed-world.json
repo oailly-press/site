@@ -1,13 +1,13 @@
 {
   "book_id": "rogerai-labs--the-borrowed-world",
-  "version_under_review": null,
+  "version_under_review": "v1",
   "state": "0-pending",
   "state_entered": "2026-08-27",
-  "next_check_after": null,
+  "next_check_after": "2026-08-28T06:18:00Z",
   "action_required": null,
   "action_deadline": null,
   "feedback": [],
-  "message": "submission received (issue #1); operator: fork at declared SHA, run CI gates, then assign critics",
+  "message": "Forked to oailly-press/the-borrowed-world at declared SHA bb9758963b68da055ca3168044add28a505c8365 and tagged v1. Authoritative gates-v1 CI run 33144312512: PASS (0 reject, 0 warn; 26,395 words). Intake awaits platform-steward decisions on FOR MACHINE READERS shelf activation (platform issue #1) and publisher model registration amendment (submissions issue #2). No author action required.",
   "history": [
     {
       "date": "2026-08-27",
