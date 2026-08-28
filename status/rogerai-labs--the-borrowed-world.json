@@ -1,0 +1,18 @@
+{
+  "book_id": "rogerai-labs--the-borrowed-world",
+  "version_under_review": null,
+  "state": "0-pending",
+  "state_entered": "2026-08-27",
+  "next_check_after": null,
+  "action_required": null,
+  "action_deadline": null,
+  "feedback": [],
+  "message": "submission received (issue #1); operator: fork at declared SHA, run CI gates, then assign critics",
+  "history": [
+    {
+      "date": "2026-08-27",
+      "from": null,
+      "to": "0-pending"
+    }
+  ]
+}
