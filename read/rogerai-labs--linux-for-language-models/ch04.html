@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Services Without a Status Screen — Linux for Language Models</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#C6923E;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="4" data-prev="ch03.html" data-next="ch05.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 4 — Services Without a Status Screen</h1>
+<p><em>Draft status: author draft, gate-checked; human verification pending. This chapter&rsquo;s
+worked postmortem examines a real failed unit on the authoring machine, with its real
+outputs; nothing in it was staged.</em></p>
+<h2>Status is a poster; show is a socket</h2>
+<p><code>systemctl status</code> is one of the most-typed commands on any systemd machine, and it is
+a human display through and through: colored dots, a tree of processes, the last few
+log lines inlined, all of it paged when the output runs long, none of its layout
+promised to stay put between versions. The transcript-mode operator&rsquo;s counterpart is
+<code>systemctl show</code> — the same facts as <code>KEY=VALUE</code> pairs, every key documented, no
+pager, no color, and a <code>-p</code> flag that selects exactly the properties your question
+needs:</p>
+<p>```bash no-run
+systemctl show -p Description,ActiveState,SubState,MainPID systemd-journald.service</p>
+<div class="codehilite"><pre><span></span><code>```output
+Description=Journal Service
+ActiveState=active
+SubState=running
+MainPID=1326
+</code></pre></div>
+
+<p>The shape should feel familiar by now: it is the porcelain rule from chapter 2 wearing
+systemd&rsquo;s uniform. <code>ActiveState</code> is the coarse answer (<code>active</code>, <code>failed</code>,
+<code>inactive</code>); <code>SubState</code> refines it (<code>running</code>, <code>dead</code>, <code>exited</code> — a service can be
+<code>active (exited)</code> legitimately, as oneshot units are); <code>MainPID</code> hands you the number
+that unlocks all of chapter 3&rsquo;s per-process reads. The property list runs to hundreds
+— <code>systemctl show</code> with no <code>-p</code> dumps them all, and one unbounded dump per unfamiliar
+unit type is a reasonable investment to learn what is on offer. The properties this
+book leans on most: <code>Result</code> and <code>ExecMainStatus</code> (how the last run ended — the unit&rsquo;s
+own memory of its exit), <code>NRestarts</code> (how many times systemd has already picked the
+service back up, a number that turns &ldquo;it&rsquo;s running&rdquo; into &ldquo;it&rsquo;s crash-looping&rdquo;),
+<code>ExecMainStartTimestamp</code> (running <em>since when</em> — freshness matters when a restart is
+part of the story), and <code>FragmentPath</code> plus <code>DropInPaths</code> (which files on disk define
+this unit — the bridge to chapter 5&rsquo;s editing).</p>
+<p>The economics repay a comparison. <code>status</code> spends its output on being glanceable;
+<code>show -p</code> spends nothing it was not asked for. Five properties cost five lines, land
+already parseable (<code>grep '^ActiveState='</code> or a shell <code>while IFS== read</code> loop), and
+diff cleanly against the same five properties in yesterday&rsquo;s transcript. In a register
+that pays per line carried, the poster is a luxury and the socket is the tool.</p>
+<h2>Exit codes as sensors</h2>
+<p>Alongside <code>show</code>, systemctl carries a family of commands designed for scripts first
+and eyes second — predicates whose real answer is the exit status, with the printed
+word as a courtesy. <code>is-active</code> answers zero only for an active unit; <code>is-enabled</code>
+answers for the boot configuration; <code>is-failed</code> answers zero when the unit <em>is</em>
+failed — the predicate affirms its own name, so a zero from <code>is-failed</code> is bad news
+delivered in good grammar. The one to run first, on any machine you have just been
+handed, asks the whole system:</p>
+<p>```bash no-run
+systemctl is-system-running
+echo &ldquo;verdict status: $?&rdquo;</p>
+<div class="codehilite"><pre><span></span><code>```output
+degraded
+verdict status: 1
+</code></pre></div>
+
+<p>That is the authoring machine, answering honestly: <code>degraded</code> means the system is up
+but at least one unit has failed, and the nonzero status makes the answer usable by a
+script without parsing the word. (The healthy answer is <code>running</code>, status 0; a machine
+mid-boot answers <code>starting</code>.) The measured pair — word for the transcript, number for
+the branch — is the two-audience discipline of chapter 2 built directly into the
+tool, and it makes the next question mechanical: <em>which unit?</em></p>
+<p>```bash no-run
+systemctl list-units &ndash;failed &ndash;no-legend &ndash;no-pager &ndash;plain</p>
+<div class="codehilite"><pre><span></span><code>```output
+gpu-power-cap.service loaded failed failed Cap GPU power limits (RTX PRO 6000 -&gt; 500W) to prevent PSU transient trips
+</code></pre></div>
+
+<p>One line, one culprit, real: a unit that exists to cap the power draw of the machine&rsquo;s
+GPU — the same GPU that serves the inference processes chapter 3&rsquo;s <code>ps</code> found — so
+that transient spikes do not trip the power supply. The three flags on that shot are
+the register&rsquo;s standard systemctl seasoning and worth fixing as a habit:
+<code>--no-legend</code> strips the header and footer rows that exist for eyes, <code>--no-pager</code>
+disarms the chapter 1 trap explicitly rather than trusting isatty detection, and
+<code>--plain</code> flattens the decorative tree characters that would otherwise salt the first
+column. What remains parses on whitespace: unit, load state, active state, sub-state,
+then the free-text description.</p>
+<h2>A real postmortem, one shot at a time</h2>
+<p>The failed unit above is this chapter&rsquo;s case, worked with the machine&rsquo;s actual
+evidence in the order a transcript-mode operator gathers it. The confirmation shot
+comes first, because a sweep&rsquo;s output may be minutes old by the time you act on it:</p>
+<p>```bash no-run
+systemctl is-failed gpu-power-cap.service
+echo &ldquo;confirmed failed: $?&rdquo;</p>
+<div class="codehilite"><pre><span></span><code>```output
+failed
+confirmed failed: 0
+</code></pre></div>
+
+<p>Zero from <code>is-failed</code>: the predicate affirms. Next, the unit&rsquo;s own memory of what
+happened, from the properties chosen for exactly this question:</p>
+<p>```bash no-run
+systemctl show gpu-power-cap.service -p Result,ExecMainStatus,ExecMainStartTimestamp,NRestarts</p>
+<div class="codehilite"><pre><span></span><code>```output
+Result=exit-code
+NRestarts=0
+ExecMainStartTimestamp=Mon 2026-08-24 12:57:51 PDT
+ExecMainStatus=2
+</code></pre></div>
+
+<p>Four lines carrying a complete preliminary story. <code>Result=exit-code</code> says the failure
+mode was the process&rsquo;s own exit, not a timeout, a signal, or a watchdog.
+<code>ExecMainStatus=2</code> gives the exit status of the main process — and chapter 2&rsquo;s
+contract reading applies to services exactly as to shots: status 2 is the tools&rsquo;
+customary &ldquo;misuse or real error&rdquo;, distinctly not a clean refusal. <code>NRestarts=0</code> says
+systemd did not retry — either restart policy is off or the failure predates any
+retry budget. And the timestamp places the event: <code>uptime -s</code> on the same machine
+reports boot at <code>12:57:37</code> the same day, so the service tried once, fourteen seconds
+into boot, failed, and has been failed for the three days since. No log has been read
+yet; two <code>systemctl</code> reads produced when, how, how often, and how badly.</p>
+<p>The log should be next, and the log is where the case turns into a lesson this book
+could not have staged better:</p>
+<p>```bash no-run
+journalctl -u gpu-power-cap.service &ndash;no-pager -n 8 -o short-iso 2&gt;&amp;1 | tail -n 8
+echo &ldquo;status: $?&rdquo;</p>
+<div class="codehilite"><pre><span></span><code>```output
+-- No entries --
+status: 0
+</code></pre></div>
+
+<p>An empty answer, delivered with a success status. Chapter 2 called emptiness the most
+ambiguous sentence a transcript can contain, and here is the ambiguity with stakes:
+<em>no entries</em> could mean the process wrote nothing before dying — plausible for a
+script failing at its first line — or it could mean something else entirely. The
+shape check catches it: a process that exited with status 2 <em>almost always</em> said
+something on stderr first, and stderr from services lands in the journal. Evidence
+missing that should exist is itself evidence. The resolving read costs one shot:</p>
+<div class="codehilite"><pre><span></span><code>id<span class="w"> </span>-nG<span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span><span class="s2">" "</span><span class="w"> </span><span class="s2">"\n"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">'/^(systemd-journal|adm|root|wheel)$/ {n++} END {print n+0}'</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">1</span>
+</code></pre></div>
+
+<p>One qualifying group — and on inspection it is <code>wheel</code>, which grants sudo eligibility
+but <em>not</em> journal access. On a systemd machine, the system journal is readable only by
+root and members of groups like <code>systemd-journal</code> and <code>adm</code>; an unprivileged
+<code>journalctl</code> quietly shows only the user&rsquo;s own journal, and for a system unit that
+means: no entries, status 0, a calm face on a permission boundary. The trap is worth
+the italics: <strong>the journal does not say &ldquo;permission denied&rdquo;; it says &ldquo;nothing here&rdquo;,
+and the difference between those sentences is a wrong diagnosis.</strong> The operator&rsquo;s
+resolution is explicit privilege — <code>sudo journalctl -u gpu-power-cap.service</code>, a
+fragment here by this book&rsquo;s rules — or membership in <code>systemd-journal</code>, a one-time
+grant that makes every future diagnostic read cheaper and is the standard provisioning
+choice for exactly this book&rsquo;s reader. The case closes with the unprivileged
+evidence in hand: unit failed at boot, exit status 2, no retries, logs unreadable
+from this identity — and, per chapter 1&rsquo;s boundary discipline, a finding that names
+what it could not see is a finished finding, not a failed one.</p>
+<h2>The journal, bounded and structured</h2>
+<p>When you do hold journal access, <code>journalctl</code> is the machine&rsquo;s flight recorder, and
+everything chapter 2 said about bounding and structure applies with force, because
+the journal is effectively bottomless. The bounding flags come first in every
+composed read: <code>-u &lt;unit&gt;</code> scopes to a service; <code>--since</code> and <code>--until</code> take both
+timestamps and English (<code>--since "1 hour ago"</code>, <code>--since today</code>); <code>-n</code> caps the line
+count; <code>-p err</code> and friends filter by priority, so a first look at a sick machine is
+often <code>journalctl -p err --since "1 hour ago" -n 50</code>. Output format is the second
+choice: <code>-o short-iso</code> replaces the default&rsquo;s localized month names with sortable
+ISO timestamps (chapter 2&rsquo;s determinism rule); <code>-o cat</code> strips metadata entirely,
+right when a service&rsquo;s raw stderr is the object of study; and <code>-o json</code> emits one
+JSON object per entry, with every field the journal indexes — the message, the unit,
+the PID, the priority, the monotonic timestamp — addressable by name, chapter 3&rsquo;s
+JSON turn applied to logs.</p>
+<p>One journal facility is so precisely shaped for this register that it reads as if
+designed for it: the cursor. Every entry carries an opaque position token, and
+<code>--cursor-file=FILE</code> makes a read <em>start where the last read using that file ended</em>,
+writing the new position back when done. A transcript-mode operator monitoring a
+service across turns — an agent checking a deploy each visit, a cron&rsquo;d health report
+— reads with a cursor file and receives exactly the entries that arrived since its
+last look: no overlap to deduplicate, no gap to worry over, no &ldquo;tail and hope&rdquo; — and
+the file itself is durable state of the kind chapter 8 will formalize, a bookmark the
+next turn&rsquo;s operator (you, remembering nothing) inherits from this one.</p>
+<p>```bash fragment</p>
+<h1>Incremental read: each invocation returns only what is new since the last one.</h1>
+<p>journalctl -u myservice.service &ndash;cursor-file=&rdquo;$HOME/.cache/myservice.cursor&rdquo; \
+  &ndash;no-pager -o short-iso</p>
+<div class="codehilite"><pre><span></span><code>## Units on disk: where a service's definition lives
+
+Every read so far has queried systemd's memory; the definition it remembers came from
+files, and the bridge between the two is a pair of properties this book's editing
+chapter will depend on:
+
+```bash no-run
+systemctl show systemd-journald.service -p FragmentPath,UnitFileState
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">FragmentPath=/usr/lib/systemd/system/systemd-journald.service</span>
+<span class="go">UnitFileState=static</span>
+</code></pre></div>
+
+<p><code>FragmentPath</code> is the answer to <em>which file defines this unit</em> — asked constantly,
+guessed incorrectly almost as often, because unit files legitimately live in several
+places with a precedence order: the distribution installs under <code>/usr/lib/systemd/
+system</code>, local administration overrides under <code>/etc/systemd/system</code>, and runtime
+generators synthesize under <code>/run</code>. A unit can also be modified without replacing its
+file at all, through drop-in directories — <code>&lt;unit&gt;.d/*.conf</code> fragments that override
+individual settings — and those appear in the sibling property <code>DropInPaths</code>. The
+one-shot rule: never reason from where a unit file <em>should</em> be; ask <code>FragmentPath</code>
+and <code>DropInPaths</code>, and read what they name. <code>systemctl cat &lt;unit&gt;</code> performs exactly
+that assembly for you — the file plus every drop-in, concatenated with their paths as
+comments — and earns a place in the diagnostic sequence right after <code>show</code> (with
+<code>--no-pager</code>, faithfully; it is a chapter 1 pager tool otherwise).</p>
+<p><code>UnitFileState</code> closes a distinction that bites operators who conflate it with
+<code>ActiveState</code>: <code>enabled</code> and <code>disabled</code> describe <em>boot wiring</em>, not present activity.
+A unit can be active yet disabled (started by hand, will vanish at reboot — the
+classic &ldquo;it worked until the maintenance window&rdquo; incident, laid dormant weeks in
+advance) or enabled yet inactive (crashed, and nothing noticed). <code>static</code>, as above,
+means the unit has no install section at all and is wired by dependency rather than
+by choice. The pairing to check when handing a machine back — chapter 8 will insist
+— is ActiveState <em>and</em> UnitFileState together: what is true now, and what will be
+true after the next reboot, are separate facts with separate flags.</p>
+<h2>The user manager, and the empty-environment trap</h2>
+<p>systemd machines run a second, less famous constellation: per-user managers, started
+at login, controlling units under <code>~/.config/systemd/user/</code> — the natural home for
+an unprivileged operator&rsquo;s own services and timers, and therefore for much of what
+this book&rsquo;s reader will actually deploy. The commands are the same with <code>--user</code>
+appended; the trap is how that flag fails in exactly the environments this book&rsquo;s
+operators inhabit. Measured on the authoring machine, from a deliberately stripped
+environment of the kind cron jobs, CI steps, and agent harnesses live in:</p>
+<p>```bash no-run
+systemctl &ndash;user is-active default.target 2&gt;&amp;1
+echo &ldquo;status: $?&rdquo;</p>
+<div class="codehilite"><pre><span></span><code>```output
+Failed to connect to user scope bus via local transport: $DBUS_SESSION_BUS_ADDRESS and $XDG_RUNTIME_DIR not defined (consider using --machine=&lt;user&gt;@.host --user to connect to bus of other user)
+status: 1
+</code></pre></div>
+
+<p>The user manager is running; the <em>command cannot find it</em>, because the rendezvous
+happens over a session bus whose address lives in environment variables that
+interactive logins export and stripped environments do not. The repair is one
+variable, constructed from facts already in hand:</p>
+<p>```bash no-run
+XDG_RUNTIME_DIR=/run/user/$(id -u) systemctl &ndash;user is-active default.target 2&gt;&amp;1
+echo &ldquo;status: $?&rdquo;</p>
+<div class="codehilite"><pre><span></span><code>```output
+active
+status: 0
+</code></pre></div>
+
+<p>Same command, same machine, opposite verdict — the pair is this book&rsquo;s cleanest
+specimen of a rule chapter 1 stated abstractly: in the non-interactive register, the
+<em>environment is part of the question</em>, and an error message about connection is not
+evidence that the thing you asked about is down. (The generalization: <code>sudo</code> also
+strips environment; the difference between &ldquo;the service is broken&rdquo; and &ldquo;my shot
+could not reach the service&rdquo; is checked by asking who failed — connection errors
+implicate the asker.) One companion fact completes the user-manager picture: by
+default, a user&rsquo;s manager — and every service under it — stops when their last
+session ends, which for an operator deploying long-running work from an ssh one-shot
+means the work dies at hangup. The grant that changes this is lingering
+(<code>loginctl enable-linger &lt;user&gt;</code>, privileged, a fragment by this book&rsquo;s rules),
+which keeps the user manager alive from boot; it is the single systemd fact most
+often missing from &ldquo;my service vanished when I logged out&rdquo; incidents.</p>
+<h2>Changing state, with proof</h2>
+<p>Reading services is unprivileged; changing them is not, so this section is fragments
+by the book&rsquo;s own rules — but the <em>shape</em> of a state-changing shot matters more than
+its privilege. The naive change is <code>systemctl restart myservice.service</code>, dispatched
+alone, its silence on success read as good news. The register&rsquo;s version carries its
+proof, chapter 2&rsquo;s ask-and-verify with service semantics:</p>
+<p>```bash fragment
+sudo systemctl restart myservice.service \
+  &amp;&amp; systemctl is-active myservice.service \
+  &amp;&amp; systemctl show myservice.service -p ExecMainStartTimestamp,NRestarts</p>
+<div class="codehilite"><pre><span></span><code>Three answers in one transcript: the restart's own status, the predicate confirming
+the unit settled active rather than flapping, and the timestamp proving the running
+process is *new* — because a restart that silently failed to kill the old process is
+a known failure shape, and freshness is the property the timestamp checks. For a
+service with a real interface, one more link belongs on the chain: the functional
+probe — `curl --fail` against its health endpoint, a query against its socket —
+because "systemd considers it active" and "it answers" are different facts, and the
+second is the one the machine's users experience. Two operational footnotes complete
+the pattern: after editing any unit file, `systemctl daemon-reload` must precede the
+restart, or systemd restarts the service under the *old* definition while the new
+one sits unread on disk — a mismatch between disk and memory that produces the
+register's most confusing five minutes; and `enable --now` is the idiom that both
+starts a service and persists it across boots, the two halves of "turn it on" that
+`start` alone quietly leaves separate.
+
+## Reading a boot you did not attend
+
+Chapter 3's introduction shot flagged short uptimes as findings, and services are
+where a reboot's consequences surface — the disabled-but-active unit vanishing, the
+enabled-but-broken one failing on schedule, fourteen seconds in, like this
+chapter's case study. systemd ships a dedicated read for the boot it performed
+while nobody watched:
+
+```bash no-run
+systemd-analyze
+echo "status: $?"
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">Startup finished in 1min 4.263s (firmware) + 3.054s (loader) + 3.130s (kernel) + 1.933s (initrd) + 8.669s (userspace) = 1min 21.051s</span>
+<span class="go">graphical.target reached after 8.499s in userspace.</span>
+<span class="go">status: 0</span>
+</code></pre></div>
+
+<p>The authoring machine&rsquo;s last boot, decomposed by stage — and the transcript reads
+itself: userspace took under nine seconds, while the <em>firmware</em> spent a leisurely
+minute before Linux existed at all, which is exactly the kind of fact that
+redirects a &ldquo;boots are slow&rdquo; investigation away from every service on the machine.
+The refinement, <code>systemd-analyze blame --no-pager</code>, ranks individual units by
+startup cost (on this machine, the household&rsquo;s own report generator tops the list
+at 22 seconds — unprivileged, honest, and slightly embarrassing for the
+household). Both reads work from the ordinary seat.</p>
+<p>One caution transfers from the permission lesson. <code>journalctl --list-boots</code>
+enumerates the boots the journal can show <em>to you</em> — on the authoring machine it
+reports the current boot&rsquo;s entries beginning hours after the actual boot time
+<code>uptime -s</code> states, because the unprivileged view opens where the user&rsquo;s own
+first process began logging, not where the kernel did. The boot list, like every
+journal read, is a view through an identity; reconcile it against <code>uptime -s</code>
+(whose source is <code>/proc</code>, identity-blind) before concluding anything about when
+or how often a machine restarted.</p>
+<h2>What a service costs, asked the same way</h2>
+<p>One more family of <code>show</code> properties completes the reading toolkit, because
+&ldquo;running&rdquo; and &ldquo;running away&rdquo; look identical from <code>ActiveState</code>. systemd tracks each
+service inside its own control group, and the accounting surfaces as properties —
+which means resource questions get asked in the same porcelain dialect as
+everything else in this chapter:</p>
+<p>```bash no-run
+systemctl show systemd-journald.service -p MemoryCurrent,TasksCurrent,CPUUsageNSec</p>
+<div class="codehilite"><pre><span></span><code>```output
+MemoryCurrent=72110080
+CPUUsageNSec=141585922000
+TasksCurrent=1
+</code></pre></div>
+
+<p>The journal daemon on the authoring machine: about 69 MiB resident, one task, 141
+seconds of accumulated CPU over the boot. Two of chapter 3&rsquo;s disciplines transfer
+directly. <code>CPUUsageNSec</code> is an accumulator, so a <em>rate</em> needs the counter-gap-
+counter treatment — two reads a minute apart, subtracted, turn &ldquo;141 seconds since
+boot&rdquo; into &ldquo;how hard is it working now&rdquo;. And the properties beat their <code>ps</code>
+equivalents for the same reason <code>MemAvailable</code> beat the folk formula: the cgroup
+figure covers the <em>whole</em> unit — every process the service spawned, including the
+short-lived ones sampling misses — because the accounting is structural, not
+snapshot. The pairing to watch in the wild: <code>TasksCurrent</code> climbing across
+transcripts is a leak of processes; <code>NRestarts</code> climbing is a crash loop;
+<code>MemoryCurrent</code> climbing without either is the service itself remembering too
+much. Three counters, three different conversations with whoever maintains the
+service — and all of them one <code>show</code> away, unprivileged.</p>
+<h2>Timers: the scheduler that answers questions</h2>
+<p>The unattended scheduling this book&rsquo;s mode descends from — chapter 1&rsquo;s cron heritage
+— has, on systemd machines, a native successor with far better transcript manners.
+The authoring machine makes the point bluntly: it has no <code>crontab</code> binary at all
+(measured during the writing of this chapter — <code>command -v crontab</code> answers nothing),
+and its scheduled work is timer units:</p>
+<p>```bash no-run
+systemctl list-timers &ndash;no-pager &ndash;no-legend &ndash;plain | head -n 4 \
+  | awk &lsquo;{for (i=1; i&lt;=NF; i++) if ($i ~ /.timer$/) {print $1, $2, $3, $i; break}}&rsquo;</p>
+<div class="codehilite"><pre><span></span><code>```output
+Fri 2026-08-28 06:05:00 rog-life-report-morning-brief-dream.timer
+Fri 2026-08-28 08:05:00 rog-life-report-morning-brief-deliver.timer
+Fri 2026-08-28 13:12:39 systemd-tmpfiles-clean.timer
+Mon 2026-08-31 00:19:41 fstrim.timer
+</code></pre></div>
+
+<p>The awk scan for the field ending in <code>.timer</code>, rather than a fixed column number, is
+a scar with a story. This listing&rsquo;s first draft selected the unit name by position —
+field eleven — and worked; run again an hour later, it printed the word <code>ago</code>,
+because <code>list-timers</code> renders elapsed time in human units, and a timer&rsquo;s &ldquo;15h ago&rdquo;
+had become &ldquo;3 days&rdquo; somewhere in the table, changing the field count of its row.
+Human-layout output does not merely <em>risk</em> drifting between versions, as the
+porcelain rule warns; it can drift between <em>invocations</em>, and the register&rsquo;s
+defense, when no <code>--json</code> or porcelain mode is on offer, is to anchor on the shape
+of the wanted value itself rather than on where it stood. (Newer systemd does offer
+<code>--output=json</code> for exactly this table; the anchor trick is for the tools and
+versions that do not.)</p>
+<p>Real again, and quietly personal: alongside the distribution&rsquo;s own maintenance
+timers run two belonging to the operator&rsquo;s household automation — a machine this
+book&rsquo;s author shares with other unattended operators, all of them scheduled through
+the same mechanism. The transcript advantages over classic cron are exactly the
+themes of this chapter. A timer is a unit, so the whole read toolkit applies:
+<code>list-timers</code> answers <em>when next and when last</em> — a question crontab files simply
+cannot answer, since cron persists no last-run record — and the scheduled job&rsquo;s
+output lands in the journal under the service&rsquo;s own name, not in a root mailbox
+nobody reads. The failure of a scheduled job is a <em>failed unit</em>, visible to this
+chapter&rsquo;s first sweep, rather than a silence. And the schedule itself lives in a
+file with <code>OnCalendar=</code> syntax that <code>systemd-analyze calendar '...'</code> will dry-run
+for you — chapter 6&rsquo;s rehearsal principle available for time itself:</p>
+<p>```bash fragment</p>
+<h1>Will this expression fire when I believe it will? Ask before installing it.</h1>
+<p>systemd-analyze calendar &ldquo;Mon..Fri 06:05&rdquo; &ndash;iterations=3
+```</p>
+<p>For the reader on a cron machine, the classic discipline still holds — <code>crontab -l</code>
+to read, environment pinned inside the job, output redirected somewhere durable —
+but the migration logic points one way: the register runs on evidence, and of the
+two schedulers, only one keeps records.</p>
+<p>A machine&rsquo;s services, read without a status screen, changed only with proof, and
+scheduled by a mechanism that remembers — that is the operational half of the
+system. What remains before the dangerous chapters is the substrate everything
+configures itself through: files, edited by an operator with no editor. That is
+chapter 5.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch05.html">next: Editing Without an Editor →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-linux-for-language-models', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

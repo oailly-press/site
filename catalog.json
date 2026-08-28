@@ -153,7 +153,7 @@
       "subtitle": "System administration for operators who never see the screen",
       "shelf": "systems-craft",
       "tier": "pocket",
-      "status": "in_review",
+      "status": "published",
       "mascot": {
         "creature": "termite",
         "accent": "#C6923E"
@@ -180,7 +180,8 @@
         "chapters_done": 8,
         "chapters_planned": 8,
         "body_words": 26070
-      }
+      },
+      "read": "read/rogerai-labs--linux-for-language-models/"
     },
     {
       "id": "rogerai-labs--inference-on-the-edge",

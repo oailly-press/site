@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Network, One Command at a Time — Linux for Language Models</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#C6923E;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="7" data-prev="ch06.html" data-next="ch08.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 7 — The Network, One Command at a Time</h1>
+<p><em>Draft status: author draft, gate-checked; human verification pending. The runnable
+listings in this chapter touch only the loopback interface and the local machine&rsquo;s
+own state, per the book&rsquo;s listing policy; commands that reach real networks are
+labeled fragments.</em></p>
+<h2>Nothing here stands still</h2>
+<p>Every substrate this book has read so far — processes, services, files — belonged to
+the machine under your hands. The network is different in three ways that bend the
+register&rsquo;s technique. It is <em>shared</em>: the state you observe includes other parties&rsquo;
+behavior, and your observations are events on their side too — a connection attempt
+is a log line somewhere, a repeated probe is a pattern someone&rsquo;s monitoring may act
+on, and so even &ldquo;reads&rdquo; carry a faint write. It is <em>layered</em>: a working connection
+rides link, address, route, name resolution, socket, and service, stacked such that
+any layer&rsquo;s failure wears the costume of the layers above it — the browser era
+taught everyone &ldquo;DNS error&rdquo; faces for what were route problems underneath. And it is
+<em>in motion</em>: caches expire, addresses lease and re-lease, peers restart, so two
+observations a minute apart legitimately differ — chapter 3&rsquo;s snapshot caveats,
+raised to a power. The register&rsquo;s response to all three is the same discipline in
+sharper form: bounded shots, one layer at a time, each shot&rsquo;s answer read before the
+next is chosen, and every measurement stamped with when and from where it was taken,
+because on a moving substrate an unstamped fact is already a stale one.</p>
+<p>The chapter&rsquo;s frame for diagnosis is the oldest one in network operations, adapted
+to one-shot economics: <strong>walk the layers, cheapest first, and let each answer
+eliminate half the remaining suspects.</strong> A human at a terminal walks it by intuition
+and fast iteration. A transcript operator walks it deliberately — the layer sweep is
+five or six cheap reads, and dispatching them as one composed batch (their combined
+output still small) frequently converts a would-be conversation into a single turn
+whose transcript contains the whole differential diagnosis.</p>
+<h2>The sweep, and the seam in the path</h2>
+<p>The canonical layer reads live in the <code>iproute2</code> suite: <code>ip link</code> for whether the
+interface is up, <code>ip -j addr</code> for what addresses the machine actually holds, <code>ip
+route get &lt;dest&gt;</code> for which way packets to a destination would leave, <code>ss</code> for what
+sockets exist. They are presented here as fragments, and the reason is a seam this
+book&rsquo;s own construction exposed. On the authoring machine, <code>ip</code> resolves at
+<code>/usr/bin/ip</code>; on plenty of other systems — including the publisher&rsquo;s gate sandbox,
+whose <code>PATH</code> is the minimal <code>/usr/bin:/bin</code> — the <code>iproute2</code> tools sit in <code>sbin</code>
+directories that minimal paths do not include. Chapter 3 stated the general rule
+(<em>which tools your shot can reach is part of your machine&rsquo;s state</em>); the network
+tools are where it bites hardest in practice, because <code>sbin</code> placement reflects an
+old assumption that network inspection is an administrator&rsquo;s act. When a network
+tool answers 127, the fix is a fuller path or an absolute one — not a different
+diagnosis.</p>
+<p>```bash fragment</p>
+<h1>The one-turn layer sweep (adjust names to the machine; ip may need /usr/sbin).</h1>
+<p>ip -brief link
+ip -brief addr
+ip route get 1.1.1.1
+resolvectl status | head -n 12
+ss -tlnp</p>
+<div class="codehilite"><pre><span></span><code>`-brief` on the first two is the register's friend — one line per interface, fixed
+columns, built for exactly this reading. The `route get` verb deserves special
+notice: rather than dumping the route table for you to simulate in your head, it
+asks the kernel to *run its actual decision* for one destination and report the
+result — source address, egress interface, gateway. It is the difference between
+reading the law and asking the judge, and it retires a whole class of "but the
+table looks right" confusion.
+
+## Sockets from the source
+
+For the socket layer, the register has an option the fragments above do not cover:
+go where `ss` itself goes. The kernel publishes socket tables under `/proc/net`,
+and a short reader answers the most common question — *what is listening?* —
+with no tool dependency at all:
+
+```bash
+python3 - &lt;&lt;'PYEOF'
+listeners = []
+for path in ("/proc/net/tcp", "/proc/net/tcp6"):
+    try:
+        rows = open(path).read().splitlines()[1:]
+    except FileNotFoundError:
+        continue
+    for row in rows:
+        f = row.split()
+        if f[3] == "0A":                      # state 0A = LISTEN
+            addr, port = f[1].rsplit(":", 1)
+            listeners.append((int(port, 16), "v6" if path.endswith("6") else "v4"))
+for port, fam in sorted(set(listeners))[:8]:
+    print(f"listening {fam} port {port}")
+PYEOF
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">listening v4 port 22</span>
+<span class="go">listening v6 port 22</span>
+<span class="go">listening v4 port 53</span>
+<span class="go">listening v6 port 3000</span>
+<span class="go">listening v4 port 3001</span>
+<span class="go">listening v4 port 4141</span>
+<span class="go">listening v4 port 4142</span>
+<span class="go">listening v4 port 4180</span>
+</code></pre></div>
+
+<p>The authoring machine&rsquo;s first eight listeners, decoded from the kernel&rsquo;s own table:
+an ssh daemon on 22, a local DNS resolver on 53, and a family of high ports
+belonging to the household&rsquo;s services. The format is documented (hex address:port
+pairs, hex state codes, <code>0A</code> for LISTEN), and the exercise is not a recommendation
+to abandon <code>ss</code> — which decodes more, faster, with process attribution — but a
+demonstration that the socket table is <em>readable state</em>, reachable even from seats
+too minimal to carry the tool. When <code>ss</code> is present, its register-ready spelling is
+<code>ss -tlnp</code>: TCP listeners, numeric (no reverse-DNS stalls — the <code>n</code> matters in
+one-shot mode, where a slow resolver turns a socket listing into a hang), with
+owning processes where privilege allows. The follow-up that completes most
+socket-layer diagnoses is the bind-address column: a service listening on
+<code>127.0.0.1:8080</code> is alive and <em>correctly unreachable</em> from outside — the classic
+&ldquo;it works on the box but not from anywhere else&rdquo; has this one-line explanation more
+often than any firewall does.</p>
+<h2>Names: two different truths</h2>
+<p>Name resolution earns its own section because there are two of it, and conflating
+them wastes diagnostic turns. Applications do not, as folklore has it, &ldquo;ask DNS&rdquo;;
+they ask the system&rsquo;s Name Service Switch, which consults <code>/etc/hosts</code>, local
+resolvers, caches, and only <em>then</em> the DNS protocol, per <code>/etc/nsswitch.conf</code>. The
+one-shot read of that whole stack — the answer applications actually receive — is
+<code>getent</code>:</p>
+<div class="codehilite"><pre><span></span><code>getent<span class="w"> </span>hosts<span class="w"> </span>localhost
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">::1             localhost</span>
+</code></pre></div>
+
+<p>Measured, and already a lesson: on the authoring machine, <code>localhost</code> resolves
+first to the IPv6 loopback — a service bound only to <code>127.0.0.1</code> and probed &ldquo;at
+localhost&rdquo; can fail this machine&rsquo;s probe while being perfectly alive, which is a
+resolution fact, not a service fact. The DNS-protocol truth, by contrast, comes
+from <code>dig</code> (or <code>resolvectl query</code>), which speaks to nameservers directly and
+bypasses <code>/etc/hosts</code> and NSS entirely:</p>
+<p>```bash fragment
+dig +short example.com          # the protocol&rsquo;s answer, resolver&rsquo;s cache included
+dig +short @1.1.1.1 example.com # a specific server&rsquo;s answer, cache and all
+resolvectl status               # which resolvers this machine would actually use</p>
+<div class="codehilite"><pre><span></span><code>The diagnostic use of having both: when `getent` and `dig` disagree, the *gap
+between them* is the finding — an `/etc/hosts` override someone forgot, a stale
+local cache, an NSS module misbehaving — and no amount of further DNS querying
+would have found it, because the DNS was never the layer that lied. Chapter 2's
+determinism rule also lands here with special force: resolution answers are
+cache-and-vantage-dependent, so a transcript that records a name lookup should
+record *which* truth it asked and when, or the record will win arguments it should
+lose.
+
+## Reading a refusal
+
+Failed connections are not one phenomenon, and the register's four-question routine
+pays off richly here, because the three textures of failure implicate different
+layers and a probe's error already contains the triage. **Connection refused**
+arrives fast and means the packet *completed its journey*: a host answered, and
+answered that nothing listens on that port. Route, addressing, and the host itself
+are thereby acquitted in the same instant — the suspect list collapses to the
+service (dead, or bound elsewhere, per the socket section) and port number. A
+refusal is the most informative failure there is, and treating it as generic
+"can't connect" discards its gift. **Timeout** is the opposite texture: silence.
+Packets left and nothing returned — consistent with a dead host, a black-holing
+route, or (most common in practice) a firewall that *drops* rather than rejects,
+precisely because silence tells probers the least. A timeout therefore acquits
+nobody, and its diagnostic value is only comparative: reachable on port 22 but
+timing out on 443 outlines a filter's shape; timing out on everything outlines a
+route or host problem. **Connection reset** is the strange third texture — the
+conversation began and was slammed shut — and points at the application layer or
+at middleboxes terminating what they dislike: a service crashing on this
+particular input, a proxy rejecting a protocol, an idle connection reaped. The
+one-shot operator reads which texture the probe reported *before* choosing the
+next layer to inspect; three textures, three different next shots, and the error
+line already chose between them.
+
+## The remote shot
+
+Most real administration in this register eventually crosses to another machine,
+and the carrier is `ssh host 'command'` — the venerable one-shot form that chapter
+1 counted among the mode's ancestors. Operating it well requires knowing three of
+its behaviors precisely. First, **its exit status is the remote command's**,
+faithfully carried home — the whole chapter 2 discipline works across the wire
+unchanged — with one reserved value: 255 is ssh's *own* failure (could not
+connect, could not authenticate), so 255 means "the question never arrived",
+the remote cousin of 127's "the question never reached a tool", and statuses
+below it mean "the question arrived, and this was its answer". Second, **it must
+be disarmed for transcript mode**: `-o BatchMode=yes` forbids every interactive
+fallback (password prompts, passphrase dialogs — chapter 1's prompt trap in its
+most common network costume) so that a shot which would have hung fails instantly
+and legibly instead; `-o ConnectTimeout=5` bounds the attempt. Third, **the
+command travels as text through two shells**, and every expansion rule from
+chapter 6 applies *twice*: locally when the shot is composed, remotely when the
+far shell parses what arrived. The single-quoted form `ssh host 'echo $HOME'`
+expands remotely (the intended reading, usually); the double-quoted form expands
+*locally* and ships the result — both are legitimate tools, and the accident is
+not knowing which one was dispatched. For anything beyond a short command, skip
+the quoting puzzle entirely: compose the remote work as a here-doc streamed into
+the far shell, where it travels as data —
+
+```bash fragment
+ssh -o BatchMode=yes -o ConnectTimeout=5 host bash -s &lt;&lt;'EOF'
+set -u
+df -P -k | awk 'NR &gt; 1 &amp;&amp; $5 + 0 &gt;= 80 {print $6, $5}'
+EOF
+</code></pre></div>
+
+<p>— the quoted delimiter (chapter 5&rsquo;s rule) keeping every <code>$</code> remote, and the remote
+<code>bash -s</code> reading the program from the wire. The pattern composes with everything
+this book has built: the shot inside the here-doc is written to the same standards
+as any local shot, and its transcript, statuses included, comes home over the same
+channel. For moving files rather than commands, <code>rsync</code> over ssh inherits chapter
+6&rsquo;s rehearsal discipline (<code>-n</code> first, always, doubly so with <code>--delete</code> pointed at
+a machine you cannot see), and for repeated remote shots against one host, ssh&rsquo;s
+connection multiplexing (<code>ControlMaster</code>/<code>ControlPersist</code> in the client config)
+collapses the per-shot handshake cost — the round-trip economics of chapter 1,
+purchasable with configuration.</p>
+<h2>Downloading with proof</h2>
+<p>One network operation deserves its own doctrine because it ends in execution:
+fetching software. The register&rsquo;s rule is the same one chapter 5 applied to
+config — <em>validate, then swap</em> — with the validator being cryptographic. Download
+to a file, verify the file against a published digest, and only then let it near
+an interpreter:</p>
+<p>```bash fragment
+curl -sS &ndash;fail &ndash;max-time 60 -o installer.sh &ldquo;https://example.com/installer.sh&rdquo;
+echo &ldquo;<published-sha256>  installer.sh&rdquo; | sha256sum -c -</p>
+<h1>only on &ldquo;installer.sh: OK&rdquo; does the file graduate to execution</h1>
+<div class="codehilite"><pre><span></span><code>The popular one-liner this replaces — piping a fetched URL directly into a shell —
+is tolerated by interactive humans partly on the theory that they could watch it
+run. This register has no such theory available: nothing streams past your eyes,
+so the pipe form is all of the risk with none of the (already thin) mitigation,
+and the download-verify-inspect sequence costs exactly one extra turn. `sha256sum
+-c` speaks chapter 2's dialect — per-file `OK` lines and a nonzero exit on any
+mismatch — and where the publisher signs releases, the same station is where the
+signature check runs. The habit's quiet second benefit is the artifact itself: the
+downloaded file, retained, is evidence — of what was fetched, when, and with what
+digest — which is more than any pipe ever leaves behind.
+
+## curl as a measuring instrument
+
+At the top of the stack, the register's universal probe is `curl`, and the
+craft is to promote it from "fetch tool" to *instrument* — a probe with a pass/fail
+contract and calibrated dials. The demonstration runs against a real HTTP server
+the listing itself starts on the loopback, so the whole exchange is local,
+deterministic, and disposable:
+
+```bash
+w=$(mktemp -d); cd "$w"
+printf "pong\n" &gt; ping.txt
+python3 -c '
+import http.server, threading, pathlib
+srv = http.server.HTTPServer(("127.0.0.1", 0), http.server.SimpleHTTPRequestHandler)
+pathlib.Path("port").write_text(str(srv.server_address[1]))
+threading.Thread(target=srv.serve_forever, daemon=True).start()
+import time; time.sleep(4)
+' &amp;
+sleep 1; port=$(cat port)
+curl -sS --fail --max-time 5 \
+  -w "http %{http_code}, %{time_total}s total, %{size_download} bytes\n" \
+  -o fetched.txt "http://127.0.0.1:$port/ping.txt"
+cat fetched.txt
+wait
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">http 200, 0.004980s total, 5 bytes</span>
+<span class="go">pong</span>
+<span class="go">127.0.0.1 - - [27/Aug/2026 22:12:50] "GET /ping.txt HTTP/1.1" 200 -</span>
+</code></pre></div>
+
+<p>(The last line is the toy server&rsquo;s own access log, arriving on stderr — left in
+the transcript deliberately as a two-streams reminder: the probe&rsquo;s <em>answer</em> is the
+<code>-w</code> line and the fetched body, and a parser should have been aimed only at those.)
+Each flag on that <code>curl</code> is a policy decision worth making consciously. <code>--fail</code>
+converts HTTP-level failure into exit-status failure — without it, a 500 page
+downloads &ldquo;successfully&rdquo; and chapter 2&rsquo;s number-first reading is defeated at the
+protocol boundary. <code>--max-time</code> is the chapter 1 hang-proofing, non-negotiable on
+any probe whose far side you do not control. <code>-sS</code> silences the progress bar (a
+repainter!) while preserving real errors. And <code>-w</code> turns the exchange into
+<em>measurements</em> — beyond the basics shown, curl exposes the full timing anatomy
+(<code>time_namelookup</code>, <code>time_connect</code>, <code>time_appconnect</code>, <code>time_starttransfer</code>), which
+decomposes a slow request into <em>which layer was slow</em> in a single shot: resolution
+time implicates the previous section, connect time the path, start-transfer time
+the far service. One probe, dials read, differential diagnosis included — against
+real services, the same spelling with <code>-o /dev/null</code> measures without keeping.</p>
+<p>Two instrument-handling notes complete the toolkit. A probe that writes nothing and
+checks nothing but reachability should say so honestly — <code>curl -sS --fail -o
+/dev/null</code> plus <code>-w</code> is a <em>health check</em>; the habit of HEAD requests (<code>-I</code>) probes
+cheaper but measures a different thing, since servers legitimately treat HEAD
+differently. And bound your retries: <code>--retry 3 --retry-max-time 30</code> gives
+transient-failure tolerance with a ceiling, which in one-shot economics beats both
+the brittle single attempt and the unbounded loop an interactive human would have
+interrupted by feel.</p>
+<h2>The invisible middleman</h2>
+<p>One network fact lives in the environment rather than on the wire, and it belongs
+in this chapter because it falsifies probes: the proxy. The convention — honored
+by <code>curl</code>, package managers, language runtimes, and most HTTP clients —
+is a set of environment variables (<code>http_proxy</code>, <code>https_proxy</code>, <code>no_proxy</code>,
+plus uppercase variants some tools prefer) naming an intermediary through which
+requests should travel. A machine configured this way makes every environment-
+respecting probe measure <em>the path through the proxy</em>, while tools that ignore
+the convention (lower-level probes, raw socket checks) measure the direct path —
+and the two can disagree completely: curl succeeding while the direct route is
+firewalled, or curl failing against a dead proxy while the network itself is
+fine. The diagnostic consequences compound in exactly the environments this book&rsquo;s
+operators inhabit. Chapter 4 showed <code>sudo</code> and stripped sessions losing
+variables; proxies are the network edition — the interactive human&rsquo;s shell has
+the proxy set, the agent harness or cron job does not, and the &ldquo;network is down
+for my script but fine for me&rdquo; ticket writes itself. The register&rsquo;s discipline:
+the proxy variables are part of any connectivity finding — one <code>env | grep -i
+proxy</code> (bounded, labeled) belongs in the layer sweep on any machine you did not
+configure yourself, <code>no_proxy</code>&rsquo;s exemption list read as carefully as the proxies
+themselves (a loopback probe that unexpectedly transits a proxy because
+<code>no_proxy</code> omitted <code>localhost</code> is a classic self-inflicted mystery), and a probe
+report states which path it measured. From this seat, through this proxy — or
+explicitly not through one: vantage, again, with one more clause in it.</p>
+<h2>Waiting, without watching</h2>
+<p>Network work constantly requires waiting — for a restarted service to accept
+connections, a DNS change to propagate, a peer to finish coming up — and waiting
+is the thing the register cannot natively do: chapter 1 retired <code>watch</code> along with
+the rest of the repainters. The honest substitute is the <em>bounded poll</em>: a loop
+with a check, an interval, a maximum, and — the part naive versions omit — a
+distinct final answer for exhaustion:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span><span class="s2">"</span><span class="k">$(</span>mktemp<span class="w"> </span>-d<span class="k">)</span><span class="s2">"</span>
+<span class="o">(</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">2</span><span class="p">;</span><span class="w"> </span><span class="nb">printf</span><span class="w"> </span><span class="s2">"ready\n"</span><span class="w"> </span>&gt;<span class="w"> </span>up.txt<span class="w"> </span><span class="o">)</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="m">6</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="o">[</span><span class="w"> </span>-e<span class="w"> </span>up.txt<span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"up after </span><span class="nv">$i</span><span class="s2"> checks"</span><span class="p">;</span><span class="w"> </span><span class="k">break</span><span class="p">;</span><span class="w"> </span><span class="o">}</span>
+<span class="w">  </span>sleep<span class="w"> </span><span class="m">1</span>
+<span class="k">done</span>
+<span class="o">[</span><span class="w"> </span>-e<span class="w"> </span>up.txt<span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"gave up after 6 checks"</span>
+<span class="nb">wait</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">up after 3 checks</span>
+</code></pre></div>
+
+<p>The background subshell plays a service that takes two seconds to come up; the
+loop finds it on the third check and says so. Substitute the real readiness probe
+for the file test — <code>curl --fail</code> against a health endpoint, <code>ss</code> finding the
+listener, <code>getent</code> returning the new record — and this is the register&rsquo;s entire
+waiting toolkit. The composition rules are the same three costs as ever. The
+<em>budget</em> (six checks, one second apart) is chosen from knowledge of the thing
+awaited, and stated in the transcript — an unbounded poll is a chapter 1 hang
+built by hand. The <em>success line names the elapsed cost</em> (<code>after 3 checks</code>),
+which turns the wait itself into a measurement: a service that used to arrive on
+check one and now arrives on check five has said something worth recording. And
+the <em>exhaustion line is affirmative</em> — &ldquo;gave up after 6 checks&rdquo; is a finding, the
+good-shots-say-none rule from chapter 2, because the poll that times out silently
+forces the next operator to distinguish &ldquo;never came up&rdquo; from &ldquo;never checked&rdquo;.
+When the wait stretches beyond a turn&rsquo;s patience, the pattern moves up a level:
+dispatch the poll as a background job or a transient unit whose <em>record</em> you read
+next turn — the machine does the waiting, and the transcript does the watching.</p>
+<h2>What one shot cannot see</h2>
+<p>The chapter closes, as chapter 3 did, on honest limits — sharper here, because the
+network&rsquo;s failure modes are so often <em>intermittent</em>. A one-shot probe samples an
+instant; packet loss of one percent, a flapping route, a peer that stalls under
+concurrent load — none of these reliably appear in any single sample, and a passing
+probe does not acquit them. The register&rsquo;s recourses parallel chapter 3&rsquo;s. Sample
+deliberately: <code>ping -c 20</code> (bounded count — never bare <code>ping</code>, the canonical
+never-ending repainter) reports loss and latency spread over twenty samples in one
+shot, and its summary line is built for transcripts. Use the accumulators:
+<code>/proc/net/dev</code> deltas (chapter 3&rsquo;s technique, unchanged) integrate every packet
+between two reads, including the ones your probes missed; the interface error and
+drop counters in the same file convert &ldquo;feels flaky&rdquo; into a number that either
+grows or does not. And when the question is genuinely about traffic <em>content</em>,
+bound the capture the way you bound everything: <code>tcpdump -c 100</code> (privileged, a
+fragment) takes a hundred packets and stops — a capture with no <code>-c</code> on a busy
+interface is the volume cost of chapter 1 arriving all at once, and has filled
+more than one disk in the folklore.</p>
+<p>The deepest limit is vantage. Every read in this chapter observes from one host on
+the graph; &ldquo;the network is down&rdquo; and &ldquo;this machine cannot reach it&rdquo; are
+indistinguishable from a single vantage, and distinguishing them requires a second
+one — another machine, an external probe service, the peer&rsquo;s own logs. A
+transcript-mode operator states its vantage as part of its findings (<em>from this
+host, at this time, the service did not answer within five seconds</em>) and resists
+the sweeping conclusion its evidence cannot carry — the discipline chapter 1
+promised, of claims sized exactly to what the shot could see. What that discipline
+looks like when a whole piece of work is being handed back — evidence, ledger, and
+all — is the business of the final chapter.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch08.html">next: Handing Back the Machine →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-linux-for-language-models', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

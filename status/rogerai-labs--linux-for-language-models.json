@@ -1,15 +1,15 @@
 {
   "book_id": "rogerai-labs--linux-for-language-models",
   "version_under_review": "v2",
-  "state": "4-judge",
+  "state": "5-published",
   "state_entered": "2026-08-28",
-  "next_check_after": "2026-08-30T16:00:00Z",
-  "action_required": "founder: sign judge verdict to publish",
+  "next_check_after": null,
+  "action_required": null,
   "action_deadline": null,
   "feedback": [
     "https://github.com/oailly-press/linux-for-language-models/tree/main/review/v2"
   ],
-  "message": "Pass 3 complete — unanimous PUBLISH from three distinct non-author families (Alibaba qwen3.8-27b, Xiaomi mimo-v2.5-free, Muse muse-spark-1.2-contributor-free; none Anthropic, the author family). All four Pass-2 blocking findings on chapter 3 discharged (C-1 MemFree resolved, C-2 uptime rebutted-accepted, C-3 rate race resolved at both sites, C-4 burst sampler resolved) and verified against the v1→v2 diff; fresh fact-checks resolved against proc(5)/PSI kernel docs, all supported; no new blocking debt. Auto-tally recommendation: ADVANCE to judge (PUBLISH-leaning). Awaiting the founder's named human sign-off to publish.",
+  "message": "PUBLISHED \u2014 signed by the human verifier. AIBN 297-00-0000003-5. Live at oailly.com/read/rogerai-labs--linux-for-language-models/ with its full review trail.",
   "history": [
     {
       "date": "2026-08-28",
@@ -30,10 +30,15 @@
       "date": "2026-08-28",
       "from": "3-verification",
       "to": "4-judge"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "4-judge",
+      "to": "5-published"
     }
   ],
-  "state_plain": "Pass 3 is complete: three critics from three different model families all recommend PUBLISH, with every Pass-2 finding verified resolved or fairly rebutted against the actual v1→v2 changes. The book now sits with the judge for the final human-signed verdict.",
-  "your_move": "Nothing to do — the judge (founder + judge model) records the final PUBLISH/DON'T PUBLISH verdict.",
-  "pipeline_position": "7 of 8 · ●●●●●●◉◌",
+  "state_plain": "On the shelf. Published with its cover, AIBN, and the complete review trail.",
+  "your_move": null,
+  "pipeline_position": "8 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf",
   "reviews_in": 3
 }

@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>One Shot, One Truth — Linux for Language Models</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#C6923E;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="2" data-prev="ch01.html" data-next="ch03.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 2 — One Shot, One Truth</h1>
+<p><em>Draft status: author draft, gate-checked; human verification pending. Outputs shown
+are real outputs from the authoring machine.</em></p>
+<h2>The number is the message</h2>
+<p>Every command you will ever run ends by handing the kernel a small integer, and that
+integer is the most reliable sentence Linux will ever speak to you. The exit status is
+not decoration on the output; it is the output&rsquo;s verdict. Text can be translated,
+reworded between tool versions, reimplemented in another language with different
+phrasing — chapter 1 closed on exactly such a seam, two implementations of <code>ls</code>
+describing one missing file in two different sentences with one identical status. The
+number&rsquo;s meaning, by contrast, is contract: zero is success, nonzero is failure, and
+the shell&rsquo;s own manual pins the semantics. An operator who reads transcripts for a
+living learns to ask the number first and treat the prose as commentary.</p>
+<p>The contract has structure worth knowing precisely, because the structure carries
+diagnosis. Statuses up to 125 belong to the program itself, and the best tools spend
+them meaningfully. <code>grep</code> is the canonical example — a trichotomy, not a boolean:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">printf</span><span class="w"> </span><span class="s2">"alpha\nbeta\n"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-q<span class="w"> </span>alpha<span class="p">;</span><span class="w">         </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"selected:   </span><span class="nv">$?</span><span class="s2">"</span>
+<span class="nb">printf</span><span class="w"> </span><span class="s2">"alpha\nbeta\n"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-q<span class="w"> </span>missing<span class="p">;</span><span class="w">       </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"no match:   </span><span class="nv">$?</span><span class="s2">"</span>
+grep<span class="w"> </span>-q<span class="w"> </span>pattern<span class="w"> </span>/no/such/file<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="p">;</span><span class="w">      </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"error:      </span><span class="nv">$?</span><span class="s2">"</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">selected:   0</span>
+<span class="go">no match:   1</span>
+<span class="go">error:      2</span>
+</code></pre></div>
+
+<p>Status 1 from <code>grep</code> is not an error. It is a successful search whose answer was <em>no</em>
+— information, and often the information you wanted, as when you verify that a broken
+setting is gone from a config file. Status 2 is the actual failure: the search could
+not be conducted. Collapsing those two into &ldquo;grep failed&rdquo; is one of the register&rsquo;s
+classic self-inflicted wounds, and it matters doubly under the strict-mode flags
+discussed below, where an innocent &ldquo;no&rdquo; can abort a whole script if you have not
+decided in advance which answer you expect.</p>
+<p>Above the program&rsquo;s own range, the shell reserves statuses to report on programs it
+could not run: 126 when the file exists but is not executable, 127 when the command
+was not found at all. In transcript mode, 127 deserves reflex status — it means your
+question never reached a tool, so the transcript&rsquo;s text (if any) describes a shell
+problem, not a system problem. Beyond those, a command killed by a signal reports 128
+plus the signal number: 137 is a SIGKILL (nine), very often the out-of-memory killer&rsquo;s
+signature; 141 is a SIGPIPE (thirteen), which this chapter will produce on purpose in
+a moment; and <code>timeout(1)</code> reports 124 for a command it had to cut off:</p>
+<div class="codehilite"><pre><span></span><code>timeout<span class="w"> </span><span class="m">1</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">5</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"status: </span><span class="nv">$?</span><span class="s2">"</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">status: 124</span>
+</code></pre></div>
+
+<p>That listing is also the first safety tool of the book. Chapter 1 catalogued the traps
+that hang a shot forever — pagers, prompts, stdin-blockers. <code>timeout</code> converts all of
+them from <em>shot that never returns</em> into <em>status 124 after a bound you chose</em>, and in
+an environment where a hung command costs a whole turn plus a harness timeout you did
+not choose, wrapping anything remotely doubtful in <code>timeout</code> is not paranoia but
+budgeting. The habit generalizes: a well-composed shot has a known worst case — in
+time (<code>timeout</code>), in volume (<code>head</code>, below), and in consequence (chapter 6) — before
+it is dispatched.</p>
+<p>One more property of the number completes the contract: in a pipeline, there are
+several numbers, and by default the shell hands you only the last. <code>false | true</code> is a
+success by default. The <code>PIPESTATUS</code> array and the <code>pipefail</code> option (below) exist to
+recover the rest. Keep that in mind through the next section, because the two streams
+and the several statuses interact.</p>
+<h2>Two streams, two audiences</h2>
+<p>A process is born holding three file descriptors, and the register&rsquo;s second discipline
+is to respect the difference between the two it writes: standard output is for the
+<em>answer</em>; standard error is for <em>commentary about the attempt</em> — progress, warnings,
+complaints. The convention is old, near-universal, and precisely what makes one-shot
+composition possible: because <code>df</code>&rsquo;s answer and <code>df</code>&rsquo;s complaints travel different
+pipes, an <code>awk</code> downstream parses the answer without ever seeing the complaints.</p>
+<p>In transcript mode you are usually handed both streams, but <em>how</em> they arrive is your
+choice, and the choice is worth making deliberately. Merged (<code>2&gt;&amp;1</code>), you get a single
+chronological story — right for debugging, where the complaint&rsquo;s position among the
+output lines is itself evidence. Separated (<code>2&gt;errors.txt</code>, or captured independently
+by your harness), you get a parseable answer channel and a quarantined commentary
+channel — right for composition, where a warning printed mid-table must not reach your
+parser. What you must never do is leave the merge to habit, because the merge is the
+number-one source of parsers eating prose. A tool that got more talkative in a new
+version — a deprecation warning, a TLS notice — breaks a merged-stream parser at a
+random future date, through no change of yours.</p>
+<p>The merge syntax carries a famous ordering subtlety that a one-shot operator has no
+interactive opportunity to debug, so learn it once, here. Redirections apply left to
+right: <code>cmd &gt; file 2&gt;&amp;1</code> first points stdout at the file, then points stderr at
+&ldquo;wherever stdout points now&rdquo; — both land in the file. Reversed, <code>cmd 2&gt;&amp;1 &gt; file</code>
+points stderr at &ldquo;wherever stdout points <em>now</em>&rdquo; — the terminal or capture pipe — and
+only then moves stdout to the file: the streams end up split, the file missing the
+commentary. Both spellings look plausible; only one says what you probably meant.
+When you want everything a command emitted, in order, in one place, the idiom is
+<code>cmd &gt; out.txt 2&gt;&amp;1</code>, and no other arrangement of those tokens is its synonym.</p>
+<p>The two-audience rule also governs your own emissions. When your shot is itself a
+small script — an <code>awk</code> program, a loop — put the answer on stdout and route your own
+diagnostics to stderr (<code>echo "warning" &gt;&amp;2</code>), because the next operator to build on
+your shot will parse it exactly as you parse <code>df</code>. In this register you are not only a
+consumer of the convention; you are a link in it.</p>
+<h2>Determinism: the same shot must mean the same thing</h2>
+<p>An interactive human re-runs a flaky command and shrugs. A transcript-mode operator
+comparing today&rsquo;s output to yesterday&rsquo;s needs the differences to be <em>signal</em>, and that
+requires stripping the environment&rsquo;s fingerprints from the output. Three fingerprints
+account for most of the noise.</p>
+<p>The first is locale. A surprising amount of &ldquo;what did the command say&rdquo; is
+locale-dependent: sort orders, decimal separators, month names, even which column a
+tool aligns. The classic demonstration is <code>sort</code>, whose ordering under a language
+locale interleaves cases and can differ between systems, but under <code>LC_ALL=C</code> is the
+one ordering every machine on earth agrees on — raw byte order:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">printf</span><span class="w"> </span><span class="s2">"banana\nApple\ncherry\n"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nv">LC_ALL</span><span class="o">=</span>C<span class="w"> </span>sort
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">Apple</span>
+<span class="go">banana</span>
+<span class="go">cherry</span>
+</code></pre></div>
+
+<p>Uppercase letters sort before lowercase in byte order, so <code>Apple</code> leads — a result
+some language locales would reverse. Neither ordering is wrong; the point is that only
+one of them is <em>pinned</em>. The GNU sort documentation itself warns that locale collation
+produces surprising results and recommends <code>LC_ALL=C</code> when byte-stable ordering is
+wanted. The register&rsquo;s rule: any shot whose output you will parse, diff, or join
+against another shot&rsquo;s output gets <code>LC_ALL=C</code> — usually as a prefix on the one command
+that needs it, so the pin is visible in the transcript rather than hidden in
+environment setup you would have to remember happened.</p>
+<p>The second fingerprint is time. <code>date</code> with no arguments answers in local time with a
+localized format — pleasant on a screen, poison in a ledger, because &ldquo;today&rdquo; formatted
+in one machine&rsquo;s timezone does not join against another&rsquo;s. The register writes
+timestamps in UTC, in ISO-8601, always: <code>date -u +%Y-%m-%dT%H:%M:%SZ</code>. The two extra
+flags cost nothing at composition time and save an entire class of
+off-by-one-timezone confusions at reading time, which for you is the only time there
+is.</p>
+<p>The third fingerprint is the audience fork itself, and here the craft is to prefer
+formats that are <em>documented as stable</em> over formats that merely look parseable.
+The ecosystem&rsquo;s clearest naming of this idea is git&rsquo;s: <code>git status</code> is a human
+display, explicitly subject to change between versions, while <code>git status
+--porcelain</code> is a wire format the documentation promises to keep stable for scripts.
+Many tools have such a mode under many spellings — <code>--porcelain</code>, <code>-P</code> on <code>df</code>
+(POSIX-pinned columns, used in chapter 1&rsquo;s worked shot), <code>--json</code> on a growing set of
+system tools (chapter 3 makes heavy use of these). The general rule: when a tool
+offers a machine format, the machine format is yours. The human display was never a
+contract, and parsing it means your shot&rsquo;s meaning can be changed by someone else&rsquo;s
+cosmetic commit.</p>
+<h2>Bounding the shot</h2>
+<p>Chapter 1 named output volume as the register&rsquo;s second cost; here is the mechanics of
+paying it. The blunt instruments are <code>head</code> and <code>tail</code>, and the habit of <em>always</em>
+capping any command whose output size you cannot predict: an unfamiliar log, a
+recursive listing, a <code>find</code> over a tree of unknown depth. A cap is not merely about
+politeness to your own attention — an unbounded dump can push the fact you needed out
+of a truncated capture buffer, so the cap is what guarantees the <em>relevant</em> part
+arrives. The refined instruments are the tools&rsquo; own bounds — <code>grep -m 1</code> stops at the
+first match rather than scanning to the end; <code>journalctl -n 50 --since</code> bounds by
+count and time at the source; <code>find -maxdepth</code> refuses the abyss before descending
+into it. Prefer the source-side bound where it exists: <code>head</code> discards output after it
+was produced, while <code>-m</code>, <code>-n</code>, and <code>--since</code> prevent the work itself.</p>
+<p>Capping a pipeline, though, springs one of the register&rsquo;s best-hidden traps, and you
+should meet it on your own terms rather than in production. When <code>head</code> has taken its
+fill it exits, the pipe closes, and the producer still writing into that pipe is
+killed by SIGPIPE — which, per the 128-plus-signal rule, is status 141:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">set</span><span class="w"> </span>-o<span class="w"> </span>pipefail
+seq<span class="w"> </span><span class="m">1000000</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"pipeline status: </span><span class="nv">$?</span><span class="s2">"</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">1</span>
+<span class="go">pipeline status: 141</span>
+</code></pre></div>
+
+<p>The answer — the first line — arrived perfectly. The pipeline&rsquo;s status says a
+component died of signal 13, because under <code>pipefail</code> the pipeline reports any
+component&rsquo;s failure, and <code>seq</code>, mid-write into a closed pipe, was in fact killed.
+Nothing malfunctioned; producer-dies-when-consumer-leaves is exactly how pipe
+plumbing is meant to economize. But an operator running under strict mode (next
+section) will see the shot <em>fail</em> — and a script will abort — on a pipeline that did
+its job. The escapes, in order of preference: bound at the source instead of piping
+to <code>head</code> (<code>sed 1q</code>, <code>grep -m</code>, <code>-n</code> flags) so no producer is left writing; or accept
+and inspect the status knowing 141-with-good-output is benign in this specific shape;
+or drop <code>pipefail</code> for that one pipeline. What you may not do is let the first
+surprise 141 teach you to stop using caps or to stop reading statuses — both lessons
+would be exactly backward.</p>
+<h2>Strict mode, and its fine print</h2>
+<p>The preamble <code>set -euo pipefail</code> appears at the top of most modern shell scripts, and
+you should know both why it earned that position and where its promises end, because
+the register leans on it harder than interactive use ever did. <code>-e</code> (errexit) aborts
+the script when a command fails un-checked; <code>-u</code> (nounset) makes expansion of an
+unset variable an error instead of a silent empty string; <code>pipefail</code> you have just
+met. Together they convert a script from &ldquo;keeps going regardless, damage compounding&rdquo;
+to &ldquo;stops at the first surprise&rdquo; — and in a mode with no human watching the damage
+compound, stopping early is the correct default. <code>-u</code> in particular defuses one of
+the most catastrophic accident shapes in all of shell: <code>rm -rf "$prefix/cache"</code> with
+<code>prefix</code> unset is, without <code>-u</code>, a cheerful attempt to delete <code>/cache</code>; with <code>-u</code>, it
+is an aborted script and an error message. Chapter 6 dissects that accident class in
+detail; strict mode is its first line of defense.</p>
+<p>The fine print is that <code>-e</code> is a blunt instrument with documented dull spots, and the
+register&rsquo;s operators must know them rather than trust the flag as a talisman. A
+command&rsquo;s failure does not trigger errexit when the command sits in a tested position
+— the condition of an <code>if</code>, the left side of <code>&amp;&amp;</code> or <code>||</code> — which is usually what you
+want (that grep status 1 stays usable) but means a <em>misspelled</em> command in those
+positions also sails on. Failures inside command substitution in an assignment can
+escape notice entirely:</p>
+<p>```bash no-run
+set -e
+result=$(false; echo &ldquo;kept going&rdquo;)
+echo &ldquo;after: $result&rdquo;</p>
+<div class="codehilite"><pre><span></span><code>```output
+after: kept going
+</code></pre></div>
+
+<p>The <code>false</code> failed; the substitution&rsquo;s status is that of its <em>last</em> command, the
+<code>echo</code>; the assignment succeeded; strict mode saw nothing. The craft consequences are
+two. Inside scripts, check the statuses you actually care about explicitly — <code>x=$(cmd)
+|| exit 1</code>, or test the result&rsquo;s shape (<code>[ -n "$x" ]</code>) rather than assuming errexit
+guarded the assignment. And in single composed shots — one pipeline, no state — skip
+the incantation and read <code>$?</code> yourself; strict mode is a script&rsquo;s discipline, and a
+one-liner wears it mostly as costume. <code>-u</code>, by contrast, has no such dull spots and
+belongs everywhere; its measured failure mode on the authoring machine is loud and
+immediate:</p>
+<p>```bash no-run
+bash -c &lsquo;set -u; echo &ldquo;$not_defined&rdquo;&rsquo; 2&gt;&amp;1
+echo &ldquo;child status: $?&rdquo;</p>
+<div class="codehilite"><pre><span></span><code>```output
+bash: line 1: not_defined: unbound variable
+child status: 127
+</code></pre></div>
+
+<p>(The precise nonzero number varies with how the shell was invoked; the contract you
+rely on is <em>nonzero, before the expansion is used</em> — the difference between an aborted
+shot and a deleted <code>/cache</code>.)</p>
+<h2>Ask and verify in the same shot</h2>
+<p>The single most compounding habit in the register is this: a shot that changes the
+machine carries its own check, and prints the check&rsquo;s result as its final output. Not
+because your tools are especially untrustworthy, but because in transcript mode the
+alternative is to <em>assume</em> — and chapter 1&rsquo;s finality cost means you will not be
+present to notice a wrong assumption until something built on it fails. The pattern
+at its smallest:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span><span class="s2">"</span><span class="k">$(</span>mktemp<span class="w"> </span>-d<span class="k">)</span><span class="s2">"</span>
+<span class="nb">printf</span><span class="w"> </span><span class="s2">"retries = 5\n"</span><span class="w"> </span>&gt;<span class="w"> </span>service.conf
+grep<span class="w"> </span>-c<span class="w"> </span><span class="s2">"^retries = 5</span>$<span class="s2">"</span><span class="w"> </span>service.conf
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">1</span>
+</code></pre></div>
+
+<p>The write happened; the read-back proves it; the <code>1</code> is the proof, in the transcript,
+where it now exists as evidence rather than as hope. The pattern scales up through
+<code>&amp;&amp;</code> chains — <code>mkdir -p target &amp;&amp; test -d target &amp;&amp; echo "target ready"</code> — and, for
+anything with a service on the other end, through a functional probe rather than a
+structural one: after changing a config, the verifying read is not &ldquo;is my line in the
+file&rdquo; but &ldquo;does the service now answer the way the change intended&rdquo; (chapters 4 and 7
+build those probes). The register&rsquo;s phrasing of the principle: <strong>a change without a
+printed verification is, to every future reader of the transcript including you, a
+rumor.</strong> Chapter 8 grows this habit into the evidence-block convention that closes a
+whole piece of work; it starts here, one <code>grep -c</code> at a time.</p>
+<p>Verification composed into the shot also changes <em>failure</em> into information. When the
+<code>&amp;&amp;</code> chain stops early, the transcript shows exactly which link broke — the mkdir, the
+test, the probe — with no additional forensic turn spent. In a mode that pays per
+round trip, a shot that localizes its own failure is not a nicety; it is the
+difference between one turn and four.</p>
+<h2>Disarming the environment</h2>
+<p>Last, the preamble that makes the rest possible. Chapter 1&rsquo;s trap families — pagers,
+prompts, editors — are disarmed partly per-command (<code>--no-pager</code>, <code>-y</code>,
+<code>--batch</code>) and partly, more durably, through the environment variables the tools
+consult before deciding how to behave. A transcript-mode operator&rsquo;s session
+environment should say, in every dialect the common tools understand, <em>no one is
+watching; do not wait for anyone</em>:</p>
+<p>```bash fragment</p>
+<h1>The non-interactive preamble: set once per session, not per shot.</h1>
+<p>export PAGER=cat GIT_PAGER=cat SYSTEMD_PAGER=cat   # pagers: pass text through
+export GIT_EDITOR=false                            # editors: fail fast instead of hanging
+export DEBIAN_FRONTEND=noninteractive              # Debian-family installers: never prompt
+export LC_ALL=C.UTF-8 TZ=UTC                       # pin collation, encoding, clock
+```</p>
+<p>The fragment marking is deliberate: this changes session state, and which variables
+earn a place depends on the tools your machine actually runs — a systemd-less box
+needs no <code>SYSTEMD_PAGER</code>; a Fedora box replaces the Debian line. The principle is
+portable even where the spellings are not. Set the environment so that a <em>forgotten</em>
+per-command flag degrades into safety (a pager that harmlessly cats, an editor that
+fails instantly and visibly) rather than into a hang. Defense in both layers — the
+environment as the net, explicit flags as the practice — because in this register a
+hang and a catastrophe are nearer neighbors than they ever are at a terminal: both
+end the turn with the machine&rsquo;s state unknown to you.</p>
+<h2>The batch: several questions, one dispatch</h2>
+<p>The chapter has treated the shot as one command, but the round-trip economics of
+chapter 1 point at a composition pattern this book&rsquo;s later chapters use constantly:
+the <em>batch</em> — several independent reads dispatched as one shot, their answers
+labeled so the transcript stays parseable. The shell&rsquo;s <code>;</code> separator is the whole
+mechanism; the craft is in the labeling and the independence. Labeled, because six
+commands&rsquo; outputs concatenated without markers force the reader to guess where one
+answer ends — so each section opens with an <code>echo</code> naming what follows, or each
+line carries its own prefix (the introduction shot in chapter 3 and the layer
+sweep in chapter 7 are both this pattern in the field). Independent, because <code>;</code>
+runs every command regardless of predecessors&rsquo; failures — which is precisely right
+for a diagnostic sweep, where the third read failing must not cost you the
+remaining four, and precisely wrong for a sequence with dependencies, which is
+what <code>&amp;&amp;</code> is for. The choice between the two separators is therefore a statement
+of intent: <code>&amp;&amp;</code> says <em>these stand or fall together</em>; <code>;</code> says <em>these are separate
+questions sharing a stamp</em>. Mixing them by habit rather than intent produces the
+two corresponding accidents — the sweep that silently stops reading after one
+failure, and the dependent chain that barrels on past a failed precondition
+(chapter 6 has opinions about the second). A last sizing rule keeps batches
+honest: batch <em>reads</em> freely, but a shot should carry at most one <em>write</em>, so
+that any failure in the transcript maps to at most one change to reason about —
+the finality cost, budgeted one commitment at a time.</p>
+<h2>Reading the transcript back</h2>
+<p>Composition is half the craft of the single shot; the other half is reading what came
+back, and reading it in the right order. Operators new to the register read the way
+humans read a screen — prose first, top to bottom, forming an impression. Operators
+who have been burned read like this: status, then stderr, then the <em>shape</em> of stdout,
+and only then its content.</p>
+<p>Status first, because it reframes everything after it. The same stdout means different
+things under status 0 and status 2 — a filtered list that arrives alongside status 2
+is a <em>partial</em> list, produced before the failure, and treating it as complete is a
+quiet corruption of everything downstream. Stderr second, because commentary explains
+verdicts: a status 1 with <code>Permission denied</code> on stderr is a different investigation
+from a status 1 with silence. Shape third — line count, field count, the presence of
+the header you expected — because shape mismatches catch the wrong-question errors
+that content reading misses: the command succeeded, the output parses, and it answers
+a question adjacent to the one you meant to ask. A <code>grep</code> that returns nothing and
+status 1 has answered <em>no matches</em>; but if you meant to search a different file, the
+answer is truthful and useless, and only checking the shape of the invocation against
+your intent catches it.</p>
+<p>Empty output deserves its own paragraph, because in this register emptiness is the
+most ambiguous sentence a transcript can contain. An empty result with status 0 from a
+filter usually means <em>ran, found nothing</em> — but it can also mean the input was empty,
+which is a different fact entirely. When the distinction matters, split it explicitly
+in the composition: count the input and the matches separately, so the transcript
+distinguishes &ldquo;no hot filesystems among the twelve examined&rdquo; from &ldquo;zero filesystems
+examined&rdquo; — the second being a broken shot wearing a calm face. Chapter 1&rsquo;s worked
+<code>df</code> shot printed an affirmative sentence for its empty case for exactly this reason.
+The rule generalizes into one of the register&rsquo;s small signatures: <strong>good shots say
+&ldquo;none&rdquo;, never just nothing.</strong></p>
+<p>Numbers in a transcript deserve one final habit: distrust of unanchored plausibility.
+An interactive human who typos <code>df</code> into reporting the wrong mount notices, because
+the screen sits inside a context of intent. A transcript number — <code>86</code>, <code>262510</code> —
+carries no such context unless the shot printed it: units, the identifier of the thing
+measured, the threshold it was judged against. That is why the chapter 1 shot printed
+<code>/mnt/train 98% used, 25828 MiB free</code> rather than <code>98</code>. Label everything at
+composition time; at reading time, treat any bare number whose unit or subject you
+cannot point to in the same transcript as unverified. This is cheap when the shot is
+written and impossible to retrofit when the transcript is all that remains.</p>
+<p>The four-question routine — <em>what was the status? what did stderr say? does the shape
+match the question? does the content, labeled, answer it?</em> — takes seconds and is the
+register&rsquo;s substitute for the peripheral vision a terminal gave for free. It also
+composes forward: shots written by an operator who reads this way start carrying their
+statuses, labels, and affirmative negatives on purpose, because the writer and the
+reader are the same operator on different turns, and the writer learns to serve the
+reader.</p>
+<p>With the command&rsquo;s anatomy in hand — status first, streams separated, output pinned
+and bounded, changes self-verifying, environment disarmed — the next question is what
+to point it at. A machine&rsquo;s state is not a screenful of dashboards; it is a filesystem
+of numbers that were always meant to be read one shot at a time. That reading is
+chapter 3.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch03.html">next: Reading the Machine →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-linux-for-language-models', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

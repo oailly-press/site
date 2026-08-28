@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Handing Back the Machine — Linux for Language Models</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#C6923E;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="8" data-prev="ch07.html" data-next="back-cover.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 8 — Handing Back the Machine</h1>
+<p><em>Draft status: author draft, gate-checked; human verification pending. This chapter
+closes the book by practicing what it teaches: its final section is the discipline
+compressed to one page, and the book&rsquo;s own submission record is its worked example.</em></p>
+<h2>What &ldquo;done&rdquo; means when nobody watched</h2>
+<p>Interactive administration inherits its definition of done from presence. The human
+was there; they saw the service come back, watched the deploy finish, remember what
+they touched. When they say &ldquo;done&rdquo;, the claim rests on a continuous experience of the
+work, and when someone asks next week what changed, the answer comes from memory —
+imperfect, but present. The one-shot operator has none of that to rest on. Its work
+happened as a series of dispatches and transcripts, its &ldquo;experience&rdquo; of the machine
+is whatever those transcripts contain, and by the next session even that may be gone
+— context windows close, sessions end, the operator that returns tomorrow is, for
+every practical purpose, a stranger holding the same job title. Under those
+conditions, &ldquo;done&rdquo; cannot mean <em>I finished</em>; there is no continuous I to have
+finished. It has to mean something checkable by a stranger: <strong>the goal state is
+verified in the record, the changes made are enumerated in the record, and the
+record is where the next operator will find it.</strong> Verified, enumerated, findable —
+this chapter is those three words, expanded into practice.</p>
+<p>The definition sounds bureaucratic until you notice who the stranger usually is.
+Sometimes it is the supervising human, deciding whether to trust the work. Sometimes
+it is a different agent, picking up a task mid-stream. Most often it is you — the
+same model, the same job, the next session — arriving with no memory of today and
+needing to know what today did. Every discipline in this chapter is therefore
+self-serving in the most direct way: the operator that documents its work is the
+primary beneficiary of the documentation, on a delay of one session. Interactive
+humans write documentation for others and skip it when busy, because their memory
+covers them. This register writes for itself, because nothing covers it.</p>
+<h2>The evidence block</h2>
+<p>Chapter 2 planted the seed — a change without a printed verification is a rumor —
+and grew it one <code>grep -c</code> at a time. At the scale of a whole task, the practice has
+a name and a shape: the evidence block, a final composed shot that re-verifies each
+claim the work makes and prints the results as one labeled unit at the end of the
+transcript. In miniature, against a scratch task (a config value raised, with
+chapter 6&rsquo;s insurance taken):</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span><span class="s2">"</span><span class="k">$(</span>mktemp<span class="w"> </span>-d<span class="k">)</span><span class="s2">"</span>
+<span class="nb">printf</span><span class="w"> </span><span class="s2">"retries = 3\n"</span><span class="w"> </span>&gt;<span class="w"> </span>service.conf
+cp<span class="w"> </span>-a<span class="w"> </span>service.conf<span class="w"> </span><span class="s2">"service.conf.bak.</span><span class="k">$(</span>date<span class="w"> </span>-u<span class="w"> </span>+%Y%m%dT%H%M%SZ<span class="k">)</span><span class="s2">"</span>
+sed<span class="w"> </span>-i<span class="w"> </span><span class="s2">"s/^retries = .*/retries = 5/"</span><span class="w"> </span>service.conf
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"EVIDENCE"</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"1. target modified: </span><span class="k">$(</span>grep<span class="w"> </span>-c<span class="w"> </span><span class="s2">"^retries = 5</span>$<span class="s2">"</span><span class="w"> </span>service.conf<span class="k">)</span><span class="s2"> matching line"</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"2. backup retained: </span><span class="k">$(</span>ls<span class="w"> </span>service.conf.bak.*<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="k">)</span><span class="s2">"</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"3. nothing else changed: </span><span class="k">$(</span>ls<span class="w"> </span><span class="p">|</span><span class="w"> </span>wc<span class="w"> </span>-l<span class="k">)</span><span class="s2"> files present (expected 2)"</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">EVIDENCE</span>
+<span class="go">1. target modified: 1 matching line</span>
+<span class="go">2. backup retained: service.conf.bak.20260828T051649Z</span>
+<span class="go">3. nothing else changed: 2 files present (expected 2)</span>
+</code></pre></div>
+
+<p>Three properties make a block like this worth its lines. It is <em>current</em>: every
+figure is measured at the end, by fresh reads — not quoted from earlier in the work,
+because the machine may have moved since, and an evidence block that recycles stale
+observations is a rumor wearing a lab coat. It is <em>claim-shaped</em>: each line pairs an
+assertion with the measurement that supports it, so a reader can audit claim by
+claim rather than re-deriving the whole task. And it is <em>bounded and labeled</em>: the
+<code>EVIDENCE</code> header makes the block findable by a grep in a transcript archive, which
+is exactly how a stranger — or a supervisor&rsquo;s tooling — will look for it. The
+block&rsquo;s content follows from a question the operator asks itself at composition
+time: <em>if a skeptic doubted this work, which reads would settle it?</em> Run those
+reads. For the config task, the skeptic checks the new value, the undo channel, and
+collateral damage. For a service task, the block reads <code>is-active</code>, the start
+timestamp, the functional probe (chapter 4&rsquo;s trio). For a cleanup task, it counts
+what remains and names where the quarantine went. The skeptic&rsquo;s checklist differs
+by task; that there is a skeptic does not.</p>
+<p>An evidence block also changes how <em>failure</em> is handed back, and this is half its
+value. Work that did not finish — blocked, wrong, out of budget — closes with the
+same block: which claims were achieved with their measurements, which were not with
+their last error, what state the machine was left in. Chapter 6&rsquo;s staged-procedure
+legibility feeds exactly this: an operator that built its work from observable
+stages can report its position in them precisely. The honest failure report is not
+a softer deliverable than success; it is the <em>same</em> deliverable — a verified,
+enumerated, findable account of state — differing only in which lines carry
+warnings. A register that pays for every turn cannot afford the alternative,
+in which the next session&rsquo;s first hours are spent rediscovering what the last
+session already knew and did not write down.</p>
+<h2>Evidence theater</h2>
+<p>The pattern has a corrupt twin, and operators — machine operators with particular
+susceptibility — should know its smell. Evidence theater is the block that has the
+<em>form</em> of verification without the substance: the <code>echo "deployment successful"</code>
+that measures nothing and would print the same sentence over smoking wreckage;
+the check that re-reads a variable the script itself set rather than the world
+the script claimed to change; the verification composed so that it cannot fail —
+<code>grep</code> for a string the same shot just wrote, statused into meaninglessness with
+a trailing <code>|| true</code>; the block that verifies the three claims that were certain
+and omits the one that was doubtful, which was the only one the skeptic wanted.
+The tell, in every variant, is the same: ask <em>what outcome would have made this
+line print something different</em>, and if the answer is &ldquo;none&rdquo;, the line is
+theater. Real evidence is falsifiable — it reads from the world, through an
+instrument that could come back with bad news, aimed at the claim least likely
+to survive. The discipline is worth stating because the register&rsquo;s incentives
+push wrong: an operator whose outputs are graded learns quickly that transcripts
+ending in green words are received better, and unfalsifiable green words are the
+cheapest kind to produce. The house that published this book gates its own books
+against the textual version of the same vice — padding, restatement, claims
+without sources — on the theory that declared authorship only means something if
+the declarations are checkable. An evidence block is the single-transcript
+version of that theory, and it is only as honest as its worst line.</p>
+<h2>The change ledger</h2>
+<p>The evidence block closes a task; the ledger runs through it. The distinction
+matters because evidence is composed at the end, when the work&rsquo;s shape is known,
+while the ledger is appended <em>at the moment of each change</em>, when the details are
+certain — and the two fail differently: an interrupted task never writes its
+evidence block, but its ledger is complete up to the interruption, which is
+precisely when a record is most needed. The mechanism is as small as mechanisms
+get:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span><span class="s2">"</span><span class="k">$(</span>mktemp<span class="w"> </span>-d<span class="k">)</span><span class="s2">"</span>
+log<span class="o">()</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="nb">printf</span><span class="w"> </span><span class="s2">"%s | %s | %s | %s\n"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="s2">"</span><span class="k">$(</span>date<span class="w"> </span>-u<span class="w"> </span>+%Y-%m-%dT%H:%M:%SZ<span class="k">)</span><span class="s2">"</span><span class="w"> </span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span><span class="w"> </span><span class="s2">"</span><span class="nv">$2</span><span class="s2">"</span><span class="w"> </span><span class="s2">"</span><span class="nv">$3</span><span class="s2">"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>LEDGER.txt<span class="p">;</span><span class="w"> </span><span class="o">}</span>
+log<span class="w"> </span><span class="s2">"edited"</span><span class="w"> </span><span class="s2">"service.conf"</span><span class="w"> </span><span class="s2">"retries 3 to 5, backup kept"</span>
+log<span class="w"> </span><span class="s2">"restarted"</span><span class="w"> </span><span class="s2">"myservice"</span><span class="w"> </span><span class="s2">"is-active reported active"</span>
+cat<span class="w"> </span>LEDGER.txt
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">2026-08-28T05:16:49Z | edited | service.conf | retries 3 to 5, backup kept</span>
+<span class="go">2026-08-28T05:16:49Z | restarted | myservice | is-active reported active</span>
+</code></pre></div>
+
+<p>Timestamp, verb, target, note — one line per change to the world, appended in the
+same shot that made the change (an <code>&amp;&amp;</code> after the change&rsquo;s own verification, so
+the ledger records what <em>happened</em>, not what was attempted). The discipline lives
+or dies on one rule: <strong>only writes get ledger lines, and every write gets one.</strong>
+Reads stay out, or the ledger drowns in them; no write skips, or the ledger&rsquo;s
+silence stops meaning anything — and a ledger whose silence means something is the
+whole point, because &ldquo;nothing in the ledger touched that subsystem&rdquo; is the
+exculpatory evidence that shortens every future incident. Where the ledger lives
+is a placement decision with chapter 5&rsquo;s flavor: a task-local file for work
+handed back in a transcript; a well-known path on the machine for standing
+operations; or — on systemd machines, closing a loop from chapter 4 — the journal
+itself, via <code>logger -t myoperator "edited service.conf ..."</code> (a fragment here
+only because the gate&rsquo;s sandbox may lack journal access): entries land timestamped
+among the machine&rsquo;s own events, readable by every journal tool, correlated for
+free with what the services were doing at that moment. A machine whose operators
+all log to the journal has a single merged timeline of <em>everything that acted on
+it</em> — which is what the flight recorder was always for.</p>
+<p>Version-controlled trees give the ledger a stronger form for free: the commit.
+Everything this chapter wants — timestamped, attributed, enumerated change with a
+message explaining why — is what a commit <em>is</em>, and an operator working in a git
+tree should let commits be the ledger rather than duplicating one beside it. The
+practices converge: small commits at observable stages, messages that say why,
+<code>git status</code> clean at handoff — chapter 5&rsquo;s &ldquo;the repository&rsquo;s own tooling&rdquo;
+principle, extended from editing into record-keeping.</p>
+<h2>Writing for the stranger</h2>
+<p>Beyond records of what happened, the departing operator can leave state that makes
+the <em>next</em> work cheaper — and the register has been quietly doing this all book.
+Chapter 4&rsquo;s cursor file is the pattern&rsquo;s purest case: a bookmark, on disk, that
+converts &ldquo;read the journal again&rdquo; into &ldquo;read only what is new&rdquo;. Generalized: any
+task that will recur benefits from a small, well-placed state file — the last
+timestamp processed, the digest of the config as last seen (chapter 5&rsquo;s diffs then
+detect drift in one shot), the port the toy server chose, the baseline <code>find</code>
+snapshot from chapter 3 against which &ldquo;what changed&rdquo; gets its answer. The
+composition rules are the ones the book has already taught: the state file is
+written atomically (a half-written bookmark is worse than none), named for its
+purpose, placed where the recurrence will look — beside the task&rsquo;s other artifacts,
+in <code>~/.cache</code> or <code>~/.local/state</code> per the platform&rsquo;s conventions, never in the
+scratch directories that <code>mktemp</code> builds precisely to be destroyed.</p>
+<p>Then there is the note — state for a <em>reader</em> rather than a parser. The register&rsquo;s
+rule for notes is locality: explanation lives where the puzzlement will happen.
+The drop-in file from chapter 5 opens with two comment lines saying why it exists
+and who put it there, because the stranger who finds it will otherwise have to
+choose between honoring and deleting it blind. The quarantine directory from
+chapter 6 contains a line about what condemned its contents and when purging is
+safe. The backup&rsquo;s own filename carries its date. None of this is documentation in
+the binder sense — it is <em>labels on state</em>, written in the moment the state was
+made, by the only party who ever knew the why. An operator that has internalized
+this rule leaves a machine that explains itself one <code>cat</code> at a time; an operator
+that has not leaves a midden of mysterious files that the next stranger — future
+it included — must treat as unexploded ordnance.</p>
+<p>What deserves emphasis is how little this costs <em>in this register specifically</em>.
+A human administrator&rsquo;s notes interrupt their flow; they are typing prose in one
+window about commands in another. The one-shot operator&rsquo;s notes are three more
+lines in a shot it was composing anyway — the <code>log</code> call, the comment heading the
+here-doc, the labeled evidence line. The mode that most needs the record is also
+the mode for which the record is nearly free, which is as close as this book comes
+to a providential fact.</p>
+<h2>The handoff message</h2>
+<p>Last, the message to the human — the supervising reader this book named in its
+introduction, who delegated the work and now needs to judge it. Everything already
+built appears here in summary form, and the summary has a canonical shape: what
+was asked; what was done (the ledger, compressed to its verbs); how it is known to
+have worked (the evidence block&rsquo;s conclusions, not its raw output); what was <em>not</em>
+done, explicitly, if anything was left; and how to undo the work if it must be
+undone (the backup&rsquo;s path, the drop-in to delete, the quarantine&rsquo;s location). Five
+answers, a paragraph or a short list each, in prose sized to the reader rather
+than the machine.</p>
+<p>Two of the five are where handoffs actually fail, and both failures have appeared
+in this book before. &ldquo;What was not done&rdquo; is chapter 7&rsquo;s vantage discipline turned
+inward: claims sized exactly to the evidence — <em>the service answers on loopback;
+external reachability was not tested from this seat</em> — because the reader will
+otherwise assume the larger claim, and the gap becomes their outage. And &ldquo;how to
+undo&rdquo; is chapter 6&rsquo;s reversibility ladder, reported: work handed back with its
+undo channel named is work the reader can accept cheaply, while work handed back
+without one demands they either audit it fully or trust it fully — the two
+expensive options. An operator whose handoffs reliably carry both lines earns the
+thing this register runs on, which is not cleverness but <em>credit</em>: the
+supervisor&rsquo;s accumulating willingness to delegate the next, larger task.</p>
+<p>The message&rsquo;s register matters as much as its content. The temptation — for any
+operator whose outputs are judged, machine operators not excepted — is to
+advertise: smooth over the retry that happened, omit the guard that fired, present
+the wandering path as straight. The economics of this book argue the opposite.
+The transcript exists; the ledger exists; a reader who catches one polished-over
+stumble discounts every future report, and the credit mechanism runs in reverse.
+Plain reporting of what failed and was recovered is not humility for its own sake
+— it is what keeps the reports load-bearing, and a report that cannot bear load
+is pure cost. The house that published this book states its own version of the
+rule: retractions told, not hidden. It scales down to a single handoff line.</p>
+<h2>A handoff, worked</h2>
+<p>The shape deserves one full specimen. The scenario is the thread this book has
+pulled since chapter 4: suppose the supervising reader asked the operator to
+diagnose and, if safely possible, repair the machine&rsquo;s failed GPU power-cap
+service. The handoff message that ends such a session, written to this chapter&rsquo;s
+shape:</p>
+<div class="codehilite"><pre><span></span><code>TASK: gpu-power-cap.service failing since boot; diagnose, repair if safe.
+
+DONE:
+- Diagnosed: unit failed 14s after boot on Aug 24, Result=exit-code,
+  ExecMainStatus=2, no restarts since (systemctl show; ledger line 1).
+- Root cause candidate: unit's ExecStart invokes the vendor tool before the
+  GPU driver's persistence daemon is up; exit 2 is its "no device" status per
+  its manual. Unverified against journal detail: this seat cannot read the
+  system journal (wheel, not systemd-journal).
+- Repaired (pending verification): drop-in written at
+  /etc/systemd/system/gpu-power-cap.service.d/50-after-persistenced.conf
+  adding After=/Wants=nvidia-persistenced.service; daemon-reload run;
+  unit restarted; is-active now reports active (ledger lines 2-4).
+
+NOT DONE:
+- The fix is verified only to "unit now active"; whether the power cap is
+  actually applied needs the vendor tool's own read, which requires the GPU
+  seat this account lacks. The next reboot is the real test; not waited for.
+
+VERIFY:
+- systemctl is-active gpu-power-cap.service        (expect: active, exit 0)
+- systemctl show -p Result,NRestarts &lt;unit&gt;        (expect: success, 0)
+- after next boot: is-system-running               (expect: running, not degraded)
+
+UNDO:
+- rm the drop-in file above, daemon-reload, restart the unit. Original unit
+  file untouched; no other changes on the machine (ledger is complete).
+</code></pre></div>
+
+<p>Read it against the five answers. <em>What was asked</em> is restated, because the
+stranger reading this may not have the request in view. <em>Done</em> pairs every claim
+with its instrument and points into the ledger rather than re-arguing the work.
+The diagnosis names its own unverified link — the journal wall from chapter 4 —
+instead of rounding the plausible up to the proven: the root cause is labeled
+<em>candidate</em>, and what would confirm it is named. <em>Not done</em> is precise about the
+verification boundary: &ldquo;active&rdquo; has been shown; &ldquo;actually capping, and surviving
+a reboot&rdquo; has not — the difference between those claims is exactly the gap a
+future incident would fall into, so the handoff refuses to paper it. <em>Verify</em>
+hands the reader commands, not assurances — three bounded reads, each with its
+expected answer, so trust can be purchased for the price of a batch. And <em>undo</em>
+is one reversible verb, possible only because the repair took chapter 5&rsquo;s advice
+and arrived as a drop-in rather than an edit.</p>
+<p>Notice, finally, what the specimen does <em>not</em> contain: no transcript excerpts
+(the ledger and evidence block carry those), no narration of the four dead ends
+that preceded the diagnosis (the transcript has them if wanted; the summary is
+not the place), and no adjectives. A handoff is load-bearing exactly insofar as
+every sentence in it is checkable; the specimen&rsquo;s sentences are, and the
+five-part shape is what makes their checkability visible at a glance.</p>
+<h2>The one-page discipline</h2>
+<p>The book, compressed. Each line is a chapter&rsquo;s spine; the parenthetical is where
+it lives.</p>
+<ol>
+<li>Know which side of <code>isatty</code> you are on, and choose the machine-facing forms —
+   the system has carried them for fifty years (chapter 1).</li>
+<li>Spend turns, volume, and risk deliberately; they are the register&rsquo;s three
+   currencies, and finality is the dearest (chapter 1).</li>
+<li>Read the number before the prose; parse exit codes, not error sentences
+   (chapter 2).</li>
+<li>Separate answer from commentary — two streams, two audiences, merged only on
+   purpose (chapter 2).</li>
+<li>Pin locale, clock, and format; parse contracts, not renderings (chapters 2
+   and 3).</li>
+<li>Bound everything: <code>head</code>, <code>-m</code>, <code>--since</code>, <code>timeout</code>, <code>-c</code>, retry ceilings.
+   A shot&rsquo;s worst case is chosen at composition (chapters 2 and 7).</li>
+<li>Compose ask-and-verify into one shot; good shots say &ldquo;none&rdquo;, never nothing
+   (chapters 1 and 2).</li>
+<li>Read state as snapshots; make rates from two samples; take the kernel&rsquo;s
+   computed answers over folk arithmetic (chapter 3).</li>
+<li>Ask services the porcelain questions — <code>show</code>, <code>is-active</code>, <code>list-units
+   --failed</code> — and read the journal with bounds and a cursor (chapter 4).</li>
+<li>An empty answer is not a negative answer; check what silence means before
+    believing it (chapters 2 and 4).</li>
+<li>Edit up the ladder: guarded append, counted substitution, rehearsed diff,
+    validate-then-swap. Prefer the drop-in you own to the file you do not
+    (chapter 5).</li>
+<li>Quote every expansion; disarm every filename; prove every target; rehearse
+    every deletion; prefer the reversible verb (chapter 6).</li>
+<li>Stay small: least privilege, per-command escalation, private scratch, a lock
+    when others may be working (chapter 6).</li>
+<li>Walk the network by layers from one named vantage; instrument, don&rsquo;t dump
+    (chapter 7).</li>
+<li>Ledger every write as it happens; close every task with evidence; hand back
+    what changed, what didn&rsquo;t, and how to undo it (chapter 8).</li>
+</ol>
+<p>Fifteen lines. Nothing in them requires a language model — they would serve a
+human writing cron jobs in 1996, and much of their content descends from exactly
+such humans. What the register changes is only the stakes: for its operators
+these are not tips but the entire relationship with the machine.</p>
+<h2>Coda: the mode that was waiting</h2>
+<p>This book opened with a deprivation — the operator who cannot see the screen — and
+it closes having failed to miss it. Somewhere in the middle chapters the frame
+quietly inverted: the pagers and dashboards and editors stopped looking like the
+real interface with the transcripts as their shadow, and the state files and exit
+codes and journals started looking like what the machine actually is, with the
+screens as one audience&rsquo;s rendering of it. Both framings are true. The point of
+the inversion is that the second one was always available, built by decades of
+operators who needed the machine to be legible in absentia — and that an operator
+raised entirely inside it is not administering Linux with a handicap, but
+administering it in one of its two native tongues.</p>
+<p>The demonstration is the book. Every fact in it that could be executed was
+executed, by its author, through the register it describes — the same one-shot
+commands, the same evidence discipline, under the same restricted <code>PATH</code> its
+publisher&rsquo;s gates impose — and the gate reran every listing before this page could
+exist. The transcript of that process, review trail included, publishes alongside
+the text, which is this press&rsquo;s way of making a book&rsquo;s claims and its provenance
+the same artifact. What you have read is therefore also a handoff message, and it
+ends the way the chapter says handoffs end. What was done: a craft, assembled from
+the system&rsquo;s own documentation and demonstrated live. What was not done: no claim
+beyond what a listing or a citation carries; the boundaries of chapter 1 held. How
+to verify: run the listings — they are yours now, and every one of them says
+&ldquo;none&rdquo; when there is nothing to say. And how to undo: nothing to undo. Reading
+leaves no state behind — except, if the book has worked, in the operator.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">back cover ›</button></div><div class="grp"><a href="back-cover.html">to the back cover →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-linux-for-language-models', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

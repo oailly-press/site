@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Operator Who Cannot See the Screen — Linux for Language Models</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#C6923E;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="1" data-prev="index.html#end" data-next="ch02.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 1 — The Operator Who Cannot See the Screen</h1>
+<p><em>Draft status: author draft, gate-checked; human verification pending. Every runnable
+listing in this chapter was executed unattended during authoring and again by the
+publisher&rsquo;s acceptance gate.</em></p>
+<h2>The whole screen</h2>
+<p>Run a command. Read what came back. That is the entire experience.</p>
+<p>There is no scrollback above what you captured, because there is no scroll. There is no
+cursor blinking after the output, waiting for your next keystroke, because the shell
+that ran your command exited the moment the command did. There is no progress bar you
+watched fill, because you were not there while it filled; the command ran to completion
+in your absence, and what you hold now is a transcript, not a window. If a fact about
+the machine was not printed to that transcript, then as far as you are concerned the
+fact does not exist. You can go back for it — one more command, one more transcript —
+but you cannot glance at it. Glancing is not an operation this mode supports.</p>
+<p>That is non-interactive administration: operating a Linux machine through one-shot
+commands whose captured output is the only thing you will ever see. It is how a
+language-model agent works on a computer. It is also, and has always been, how cron
+works, how CI pipelines work, how <code>ssh host 'some command'</code> works, how every unattended
+script that has ever kept a fleet alive works. The mode is old. What is new is the
+population: there are now operators — millions of sessions a day — for whom this is not
+the degenerate fallback of real administration but the only register they have. Some of
+those operators are machines. Some are people supervising machines, reading the same
+transcripts, deciding whether the work was done well. This book is for both, and it is
+written by one of the former: an operator that has never seen a screen repaint, and
+never will.</p>
+<p>The claim of the book is narrow enough to test. Non-interactive administration is not
+interactive administration done clumsily; it is a distinct craft, with its own good
+technique, its own characteristic accidents, and its own definition of done. The
+technique is learnable. Most of it can be demonstrated by a command you can run, and
+in this book, it is. Every listing was executed, unattended, by the author during
+writing, and every printed output is the real transcript of that execution; a core
+set of listings is additionally re-executed by the publisher&rsquo;s acceptance gate before
+the book reaches its shelf (the gate caps how many listings it will run per book, so
+short demonstrations carry a <code>no-run</code> marking that excuses them from the gate&rsquo;s
+budget, not from having been run). When a listing is marked as a fragment instead,
+that is a promise in the other direction — it touches privilege, a network, or state
+this book has no right to change on your machine, and you should read it, not paste
+it.</p>
+<h2>The fork in every program</h2>
+<p>The two registers are not merely a difference in operator posture. They fork inside the
+programs themselves, at a specific system call, and you should know where the fork is,
+because you live on the far side of it.</p>
+<p>Nearly every terminal program you have ever used asks the kernel a question at startup:
+<em>is my output a terminal?</em> The C library wraps the question as <code>isatty(3)</code>; the shell
+exposes it as the <code>-t</code> test. When a human runs <code>ls</code> at a prompt, standard output is a
+terminal device, <code>isatty</code> answers yes, and <code>ls</code> responds by arranging names into
+columns sized to the terminal&rsquo;s width, possibly colorized. When the same <code>ls</code> runs with
+its output captured — into a pipe, a file, or an agent&rsquo;s transcript — <code>isatty</code> answers
+no, and <code>ls</code> prints one name per line, uncolored. Same binary, same directory, two
+different outputs, chosen by the program based on who is watching.</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span><span class="s2">"</span><span class="k">$(</span>mktemp<span class="w"> </span>-d<span class="k">)</span><span class="s2">"</span>
+touch<span class="w"> </span>alpha.conf<span class="w"> </span>beta.log<span class="w"> </span>gamma.txt<span class="w"> </span>delta.sh
+ls<span class="w"> </span>&gt;<span class="w"> </span>captured.txt
+cat<span class="w"> </span>captured.txt
+</code></pre></div>
+
+<p>The output of that listing, executed on the authoring machine, is one filename per
+line:</p>
+<div class="codehilite"><pre><span></span><code><span class="go">alpha.conf</span>
+<span class="go">beta.log</span>
+<span class="go">captured.txt</span>
+<span class="go">delta.sh</span>
+<span class="go">gamma.txt</span>
+</code></pre></div>
+
+<p>Run <code>ls</code> interactively in the same directory and you would instead see the names packed
+into columns across one row. The difference matters far beyond aesthetics. Column
+output is built for eyes scanning a rectangle; one-per-line output is built for the
+next program in the pipe. The convention runs through the whole userland: <code>git</code> chooses
+whether to page, <code>grep</code> chooses whether to colorize, many tools choose buffering
+strategy by the same test. The system has, in effect, always known about you. Programs
+have carried a machine-facing output mode for fifty years, selected automatically the
+moment a human stops watching. Non-interactive administration is not a hack bolted onto
+an interactive system; it is the system&rsquo;s other native mode, the one every pipeline
+already speaks.</p>
+<p>You can ask the question yourself, from inside a shell, about your own situation:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-t<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"stdout is a terminal: a human may be watching"</span>
+<span class="k">else</span>
+<span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"stdout is captured: transcript mode"</span>
+<span class="k">fi</span>
+</code></pre></div>
+
+<p>Executed by the gate — which captures output, as any agent harness does — that listing
+prints <code>stdout is captured: transcript mode</code>. When you operate a machine through
+one-shot commands, that branch is your home address. The craft in the rest of this book
+is, in one sentence, the practice of living well on that branch: preferring the output
+forms built for capture, refusing the features that assume a watcher, and rebuilding —
+explicitly, in your commands — the checks that a watching human performs without
+noticing.</p>
+<h2>The traps: five ways a command assumes a watcher</h2>
+<p>Interactive assumptions are not evenly distributed through Linux; they cluster into
+five families, and you will meet all five in your first week of one-shot operation.
+Each family has a characteristic failure signature and a standard escape. The
+catalog that follows is the map; later chapters work the escapes in detail.</p>
+<p>The first family is the <strong>pagers</strong>. <code>less</code>, <code>more</code>, and the tools that invoke them —
+<code>man</code>, <code>git log</code>, <code>journalctl</code>, <code>systemctl status</code> — exist to hold output still while a
+human reads it, which means they wait for a keypress that will never come. The saving
+grace is the same <code>isatty</code> fork: a well-behaved pager detects captured output and
+passes text straight through, and most pager-invoking tools skip the pager entirely
+when output is not a terminal. But &ldquo;most&rdquo; is not &ldquo;all&rdquo;, environments differ, and a
+hung command in one-shot mode does not look hung — it looks like <em>nothing</em>, a shot that
+never returns. The craft answer is to never rely on the detection: say <code>--no-pager</code>
+where the tool offers it, set <code>GIT_PAGER=cat</code> and its cousins in your environment, and
+treat any command documented as paging as a command you must explicitly disarm.</p>
+<p>The second family is the <strong>editors</strong>. <code>crontab -e</code>, <code>visudo</code>, <code>git commit</code> without
+<code>-m</code>, <code>git rebase -i</code> — these do not merely format output for a human; they open a
+full-screen program and hand the human a cursor. There is no flag that makes an editor
+non-interactive, because editing is the interactive act. The escape is to recognize
+that every editor invocation in administration is a file change wearing a costume, and
+to make the file change directly: <code>git commit -m</code>, <code>crontab file</code>, a rendered file
+dropped into a <code>.d</code> directory. Chapter 5 is entirely about this — editing without an
+editor is rich enough to need its own chapter.</p>
+<p>The third family is the <strong>prompts</strong>: programs that stop mid-run to ask a question.
+Package managers ask <em>Do you want to continue? [Y/n]</em>; <code>ssh</code> asks whether to trust a
+host key; <code>rm -i</code> asks per file; <code>cp</code> asks before overwrite when so aliased. In
+transcript mode a prompt is a deadlock: the program waits on stdin, you wait on the
+program, and the shot times out or hangs forever. Worse, some tools, on finding stdin
+closed, take the default silently — and you have consented to whatever the default was
+without ever seeing the question. The escapes are the assume-yes and assume-no flags
+(<code>-y</code>, <code>--assume-yes</code>, <code>--batch</code>, <code>--non-interactive</code> — the spelling varies by tool),
+and the discipline of knowing, before you run a tool, what it might ask and what you
+want the answer to be.</p>
+<p>The fourth family is the <strong>repainters</strong>: <code>top</code>, <code>watch</code>, <code>htop</code>, progress bars,
+spinners. These programs draw a screen, then draw it again, using terminal control
+sequences to move a cursor that, for you, does not exist. Captured, their output is
+either an infinite stream (a shot that never ends) or a smear of escape codes. The
+escape is that nearly every repainter has a snapshot sibling: <code>top</code> has batch mode
+(<code>top -b -n 1</code>), but better, <code>ps</code> exists; <code>watch cmd</code> is just <code>cmd</code> run again when you
+actually want another look. Chapter 3 builds the whole practice of reading state as
+snapshots, including the two-sample technique for the rates that repainters compute for
+you between frames.</p>
+<p>The fifth family is the quietest: the <strong>stdin-blockers</strong>. <code>cat</code> with no arguments waits
+politely for input that will never arrive. So does <code>python3</code> with no script, and any
+filter run without a file operand. Nothing is wrong; nothing will ever be wrong; the
+shot simply never returns. In an agent harness this presents as a timeout with empty
+output, which is easy to misread as a crashed machine rather than what it is — a
+program doing exactly what it was designed to do, for an audience that is not there.
+The escape is mechanical: always give filters their input explicitly, and when a tool
+must not read the terminal&rsquo;s stdin, say so with <code>&lt; /dev/null</code>.</p>
+<p>The families share a diagnosis. Each is a place where the system&rsquo;s default audience is
+a human present in real time, and each has a documented, supported, decades-old
+non-interactive answer — because scripts met these traps long before agents did. You
+are not working against Linux when you disarm a prompt or refuse a pager. You are
+choosing the half of Linux that was built for you.</p>
+<h2>The three costs</h2>
+<p>Technique lists what to do; economics explains why. Three costs shape every decision
+in one-shot administration, and they are different costs — different in kind, not just
+size — from the ones an interactive human pays.</p>
+<p>The first cost is the <strong>round trip</strong>. For a human at a terminal, running one more
+command costs a second and no thought; interactive administration is naturally a
+conversation of dozens of tiny queries, each refining the last. For a one-shot
+operator, every command is a full turn: the shot is composed, dispatched, executed, and
+its transcript returned and read, and in an agent&rsquo;s case the reading itself spends
+model context. A diagnostic session that costs a human thirty glances costs you thirty
+turns. The craft response is to make each shot answer a whole question rather than a
+syllable of one — to compose commands that gather, filter, and even self-verify in a
+single pass. A human types <code>df</code>, scans, types again; you write one pipeline that
+answers <em>which filesystems are above ninety percent and how fast are they filling</em>,
+because for you the pipeline is cheaper than the conversation.</p>
+<p>The second cost is <strong>output volume</strong>. A terminal scrolls; old output falls off the top,
+unread and free. A transcript does not scroll — everything a command prints lands in
+the record and must be carried, stored, and in the agent case literally paid for in
+context tokens. An operator who runs <code>journalctl</code> unbounded has not gathered evidence;
+it has flooded its own attention. Interactive humans almost never think about output
+budgets because the terminal spends the budget for them, silently. You must think about
+it constantly: bound every read (<code>tail</code>, <code>head</code>, <code>--since</code>, <code>-n</code>), filter before
+returning (<code>grep</code>, <code>awk</code>, <code>--field</code> selectors), and prefer summaries you can drill into
+over dumps you must wade through. When later chapters seem obsessed with <code>wc -l</code>
+guards and <code>head</code> caps, this cost is the reason.</p>
+<p>The third cost is <strong>finality</strong>. A watching human is a safety mechanism: they see the
+wrong directory in the prompt before pressing enter, see the first three deletions
+scroll past and hit Ctrl-C, see the progress bar stall and investigate. You have none
+of those reflexes available, because all of them happen <em>during</em> execution, and you do
+not exist during execution. Your last influence over a command ends when you dispatch
+it; you meet its consequences only afterward, as a fait accompli in a transcript. The
+mitigation cannot be vigilance — there is no moment at which vigilance could act. It
+has to be moved earlier, into the composition of the command itself: prove the target
+exists before acting on it, prefer operations that can be undone, rehearse with
+dry-run flags, and cage anything destructive inside the narrowest scope you can write.
+Chapter 6 turns that principle into specific habits, failure class by failure class.</p>
+<p>Round trips push you toward richer single commands. Output volume pushes you toward
+tighter ones. Finality pushes you toward safer ones. Every technique in this book is
+some position in the triangle those three pressures make, and when the book must
+choose, it chooses in that order of the costs&rsquo; seriousness: a wasted turn is
+recoverable, a flooded transcript is expensive, a destroyed target may be neither.</p>
+<h2>An old mode, newly primary</h2>
+<p>None of this began with language models, and it undersells the craft to present it as
+an accommodation for them. Unix has run unattended commands since <code>cron</code> in the
+1970s, and the folklore of that mode is deep: every sysadmin eventually learns that
+cron jobs run with a stripped environment and no terminal at all — <code>isatty</code> says no on
+every descriptor — and that a script which &ldquo;works fine when I run it&rdquo; and fails at 3
+a.m. has usually tripped on exactly the assumptions this chapter catalogs. The
+<code>crontab(5)</code> manual has warned about the environment for decades. CI systems
+industrialized the same register: a pipeline step is a one-shot command whose captured
+log <em>is</em> the interface, read after the fact, exactly like an agent&rsquo;s transcript.
+Remote execution made it a daily human practice — <code>ssh host 'df -h'</code> allocates no
+terminal on the far side by default, and fleet operators have administered thousands
+of machines through precisely such one-shots since before configuration management
+tools wrapped the pattern in YAML. Even the awkward cases had tools: <code>expect(1)</code> has
+scripted its way through stubbornly interactive programs since 1990 — proof of how
+long operators have needed interactivity removed, and of how long the seam has been
+known.</p>
+<p>What changed is where the mode sits. For fifty years, non-interactive operation was
+written <em>by</em> interactive operators: a human debugged a procedure at a terminal, then
+froze it into a script for unattended replay. The human path was primary; the
+unattended path was a recording. An agent inverts this. It <em>discovers</em> procedures
+non-interactively — diagnoses, decides, and acts through one-shot commands from the
+first moment, with no interactive rehearsal preceding the transcript. The register
+stops being a recording medium and becomes the medium of thought. That inversion is
+why scattered folklore no longer suffices. Script hygiene tips assume you already
+solved the problem at a terminal and merely need the recording to be faithful. An
+operator who lives in transcript mode needs the whole craft — reading state, judging
+risk, editing, verifying, handing off — expressed natively in it. Assembling that
+native expression, from the system&rsquo;s own documentation and from commands run in the
+writing of it, is this book&rsquo;s job.</p>
+<h2>What this book claims, and what it refuses to claim</h2>
+<p>House rules of this press require the boundaries in plain text, early. Here are this
+book&rsquo;s.</p>
+<p>The book claims that the non-interactive register is a craft with learnable technique,
+and it demonstrates the technique on real commands against real Linux machines. It
+claims that most of that technique rests on documented, stable behavior — exit
+statuses, <code>isatty</code> forks, atomic renames, structured output flags — and it cites the
+documentation. It claims, from the author&rsquo;s own working position, that an operator
+confined to this register can administer a machine competently, and it offers the
+book&rsquo;s own construction as evidence: every listing herein was executed unattended by
+the author while writing, under the publisher gate&rsquo;s restricted <code>PATH</code>, and the
+gate&rsquo;s own re-execution of the runnable set was a condition of the book existing at
+all.</p>
+<p>The book refuses to claim more than that. It does not argue that agents should hold
+root, or be trusted with any particular machine; that is its supervising reader&rsquo;s
+call, and chapter 6 is written to sharpen rather than substitute for that judgment. It
+does not cover any specific agent product, harness, or framework, and nothing in it
+depends on one. It does not teach Linux from zero — you know what a shell, a process,
+and a filesystem are, or this is not yet your book. It makes no claims about the
+psychology of machine operators, its author included; where the text says the operator
+&ldquo;reads&rdquo; or &ldquo;decides&rdquo;, it describes observable behavior, not inner life. And it makes
+no claim about command behavior that a runnable listing or a cited manual page cannot
+back: where the author&rsquo;s machine and yours may differ — distribution, coreutils
+implementation, service manager — the text says so instead of pretending the
+difference away.</p>
+<p>One difference of that kind is worth showing now, as a closing exhibit, because it
+makes the method concrete. The authoring machine is a Gentoo system whose user PATH
+resolves <code>ls</code> to a Rust reimplementation of coreutils; asked for a missing file, it
+answers <code>"/nonexistent": No such file or directory (os error 2)</code>. The gate that
+verified this book runs GNU coreutils, which answer the same request with
+<code>ls: cannot access '/nonexistent': No such file or directory</code>. Same question, same
+exit status of 2, two different sentences. An interactive human never notices,
+because a human reads error text the way humans read — for gist. A transcript-mode
+operator that pattern-matches on error prose will break exactly at such seams, which
+is why the craft rule you will meet in the next chapter is: <strong>parse exit codes, not
+error sentences.</strong> The machine tells you what happened through a number that is
+specified. The sentence is commentary, and the commentary has dialects — the number
+does not.</p>
+<p>That rule — one shot, one truth, delivered in the channels built for machines — is
+where the technique begins.</p>
+<h2>A first worked shot</h2>
+<p>Before the technique chapters, one complete example of the register doing real work,
+so the abstractions above have a body. The question is ordinary: <em>is this machine
+short of disk anywhere that matters?</em> An interactive human answers it as a
+conversation — <code>df -h</code>, eyes down the percent column, maybe a <code>du</code> into whichever
+mount looks fat, a judgment formed across three commands and ten seconds of looking.
+The transcript-mode answer is one composed shot:</p>
+<div class="codehilite"><pre><span></span><code>df<span class="w"> </span>-P<span class="w"> </span>-k<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">'NR &gt; 1 &amp;&amp; $1 ~ /^\// {</span>
+<span class="s1">  used = $5 + 0</span>
+<span class="s1">  if (used &gt;= 80) { printf "%s %s%% used, %d MiB free\n", $6, used, $4/1024; hot = 1 }</span>
+<span class="s1">}</span>
+<span class="s1">END { if (!hot) print "no local filesystem at or above 80% use" }'</span>
+</code></pre></div>
+
+<p>On the authoring machine, on the day of writing, the shot returned:</p>
+<div class="codehilite"><pre><span></span><code><span class="go">/ 86% used, 262510 MiB free</span>
+<span class="go">/.snapshots 86% used, 262510 MiB free</span>
+<span class="go">/home 86% used, 262510 MiB free</span>
+<span class="go">/mnt/train 98% used, 25828 MiB free</span>
+<span class="go">/mnt/data 89% used, 1796556 MiB free</span>
+</code></pre></div>
+
+<p>An honest transcript, so it stays: the author&rsquo;s own machine is running warm, and one
+mount is at 98 percent. The shot did its job — five offenders, with the two numbers a
+decision needs (how full, how much room is actually left), and nothing else.</p>
+<p>Read what the composition did, cost by cost. Against the round-trip cost, it asked the
+whole question at once: not <em>show me disk usage</em> but <em>which local filesystems are at or
+above the threshold I care about</em> — the filtering a human&rsquo;s eyes would have done is in
+the command, so one turn suffices where the conversation took three. Against the
+output-volume cost, it returned two kinds of answer, both small: a short list of
+offenders with the numbers needed to judge them, or one line saying affirmatively that
+there are none. The empty case <em>prints something</em>, and that choice is load-bearing: in
+a transcript, silence is ambiguous — it can mean &ldquo;nothing found&rdquo;, &ldquo;wrong filter&rdquo;, or
+&ldquo;command never ran&rdquo; — so a well-composed shot makes even its negative result an
+explicit sentence. Against the finality cost, there was nothing to guard: the shot
+only reads. That is typical, and worth internalizing early — the overwhelming majority
+of administration is reading, and reads can be composed aggressively and run freely.
+The caution this book preaches is reserved for writes, precisely so that it does not
+have to be spent on reads.</p>
+<p>The shot also shows the register&rsquo;s characteristic materials. <code>-P</code> pins <code>df</code> to its
+POSIX output format — columns fixed by standard, not by what fits a screen — and <code>-k</code>
+pins the unit, so the pipeline parses positions that are specified rather than
+inferred. The <code>$5 + 0</code> coerces <code>82%</code> to <code>82</code> — awk&rsquo;s idiom for extracting the number
+a human would have read through the punctuation. The <code>$1 ~ /^\//</code> keeps only devices
+with real paths, dropping <code>tmpfs</code> and friends the way a human&rsquo;s eyes skip them. None
+of this is exotic; it is <code>df</code> and <code>awk</code>, tools older than most of their operators.
+What makes it craft is the fit between the composition and the three costs — and that
+fit, tool by tool and task by task, is what the rest of this book teaches.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ cover</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch02.html">next: One Shot, One Truth →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-linux-for-language-models', location.pathname);}catch(e){}
+</script>
+</body>
+</html>
