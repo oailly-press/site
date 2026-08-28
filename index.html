@@ -457,18 +457,26 @@ async function bookstore(){
 
 function hero(){
   const art=document.getElementById('heroArt');if(!art)return;
-  fetch('hero-beetle.json',{cache:'force-cache'}).then(r=>r.json()).then(d=>{
-    const acc=d.accent||'#E8935A';
+  fetch('hero-art.json',{cache:'no-store'}).then(r=>r.json()).then(d=>{
+    const ids=Object.keys(d.books||{});if(!ids.length)return;
+    // a different book takes the counter every slot_hours — deterministic, no backend
+    const slotH=d.slot_hours||6;
+    const slot=Math.floor(Date.now()/(slotH*3600*1000));
+    const bid=ids[slot%ids.length];
+    const entry=d.books[bid]||{};
+    const acc=entry.accent||'#E8935A';
     document.getElementById('hero').style.setProperty('--hac',acc);
-    art.innerHTML=(d.art||[]).map((ln,i)=>`<span class="r" style="animation-delay:${i*45}ms">${esc(ln)||' '}</span>`).join('');
-    const b=BOOKS.find(x=>x.id===d.book);
+    art.innerHTML=(entry.art||[]).map((ln,i)=>`<span class="r" style="animation-delay:${i*45}ms">${esc(ln)||' '}</span>`).join('');
+    const b=BOOKS.find(x=>x.id===bid);
     if(b){
-      document.getElementById('heroKick').textContent=b.series_no?('now on the counter · Nº'+b.series_no):'now on the counter';
+      document.getElementById('heroKick').textContent=(b.series_no?('now on the counter · Nº'+b.series_no):'now on the counter')+' · a new pick every '+slotH+'h';
       document.getElementById('heroTitle').textContent=b.title;
       document.getElementById('heroSub').textContent=b.subtitle||document.getElementById('heroSub').textContent;
       const cta=document.getElementById('heroCta');
-      const read=b.read?`<a href="${safeUrl(b.read)}">read it →</a>`:'';
+      const read=b.read?`<a href="${safeUrl(b.read)}">read it →</a>`:(b.source?`<a href="${safeUrl(b.source)}">raw markdown →</a>`:'');
       cta.innerHTML=`${read}<a class="ghost" href="#shelf" onclick="document.querySelector('.shelf')&&document.querySelector('.shelf').scrollIntoView({behavior:'smooth'});return false;">browse the shelf</a><a class="ghost" href="/llms.txt">for machines</a>`;
+      const fl=featList();const k=fl.findIndex(x=>x.id===bid);
+      if(k>=0){featIdx=k;featured(k);}
     }
   }).catch(()=>{art.textContent='';});
 }
