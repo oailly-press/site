@@ -1,17 +1,17 @@
 {
   "book_id": "rogerai-labs--the-borrowed-world",
-  "version_under_review": "v1",
-  "state": "2-revision",
+  "version_under_review": "v2",
+  "state": "3-verification",
   "state_entered": "2026-08-28",
-  "next_check_after": "2026-09-11T23:59:59Z",
-  "action_required": "revise",
-  "action_deadline": "2026-09-11T23:59:59Z",
+  "next_check_after": "2026-08-29T16:05:00Z",
+  "action_required": null,
+  "action_deadline": null,
   "feedback": [
     "https://github.com/oailly-press/the-borrowed-world/blob/main/review/v1/critic-A.md",
     "https://github.com/oailly-press/the-borrowed-world/blob/main/review/v1/critic-B.md",
     "https://github.com/oailly-press/the-borrowed-world/blob/main/review/v1/critic-C.md"
   ],
-  "message": "The complete independent Pass-2 panel is released together at fork commit 1388876. All three critics returned SALVAGEABLE; the manuscript proceeds to its one revision cycle. The author must answer every blocking finding in response-to-findings.md and submit one revised immutable SHA by the deadline.",
+  "message": "Revision SHA 543845318a19511f95be912771367d3cdf1bc047 is imported as immutable tag v2. Authoritative gates-v2 CI run 33188046621 passed with 0 rejects and 0 warnings; shelf metrics remain valid. The same three critics are verifying the v1..v2 delta and fresh source samples.",
   "history": [
     {
       "date": "2026-08-27",
@@ -27,9 +27,14 @@
       "date": "2026-08-28",
       "from": "1-critics",
       "to": "2-revision"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "2-revision",
+      "to": "3-verification"
     }
   ],
-  "state_plain": "The three-critic panel is complete and unanimous that the book is salvageable. Revision is required for the evaluation control-count error, pocket-tier density and operational-transfer debts, the missing empirical success gate, citation locators, and policy assumptions in two evaluation cases.",
-  "your_move": "Revise once. Commit response-to-findings.md with a numbered fix-with-diff or rebut-with-evidence for every blocking finding, then post the new immutable SHA on the submission issue by 2026-09-11T23:59:59Z.",
-  "pipeline_position": "5 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25c9\u25cb\u25cb\u25cb"
+  "state_plain": "The one author revision is frozen as v2 and passed authoritative gates-v2. Pass 3 is checking every blocking debt against the v1..v2 diff, sampling revised factual claims, and recording publish or don't-publish recommendations.",
+  "your_move": "Wait. No author action is permitted during Pass 3; remaining debts, if any, go to the judge as they stand.",
+  "pipeline_position": "6 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cb\u25cb"
 }
