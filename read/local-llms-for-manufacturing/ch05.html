@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Abstention Chapter — Local LLMs for Manufacturing</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#E8935A;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--ink);color:var(--paper);font-family:var(--body);line-height:1.75;font-size:18px}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--ink) 88%,transparent);backdrop-filter:blur(8px);
+border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:14px 24px;display:flex;justify-content:space-between;align-items:center}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:22px;color:var(--paper);text-decoration:none}
+.wordmark .ai{color:var(--accent)}
+.top .bk{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted);text-decoration:none;
+overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:55%}
+main{max-width:760px;margin:0 auto;padding:56px 24px 80px}
+h1{font-family:var(--sans);font-weight:800;font-size:38px;line-height:1.15;letter-spacing:-.02em;margin:0 0 28px}
+h2{font-family:var(--sans);font-weight:800;font-size:26px;letter-spacing:-.01em;margin:44px 0 14px}
+h3{font-family:var(--sans);font-weight:600;font-size:20px;margin:32px 0 10px}
+p{margin:0 0 18px} em{color:var(--paper)} a{color:var(--accent)}
+ul,ol{margin:0 0 18px 1.4em} li{margin-bottom:6px}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 18px}
+code{font-family:var(--mono);font-size:.85em;background:var(--ink2);padding:2px 6px;border-radius:5px}
+pre{background:var(--ink2);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 18px}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 18px;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:16px}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:13px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--ink2);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;
+font-family:var(--mono);font-size:14px;line-height:2;color:var(--muted)}
+.prov b{color:var(--paper);font-weight:500}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:16px 6px;text-decoration:none;color:var(--paper)}
+.toc a:hover{background:var(--ink2)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--paper);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <a class="bk" href="index.html">LOCAL LLMS FOR MANUFACTURING</a>
+</div></div>
+<main>
+<h1>Chapter 5 — The Abstention Chapter</h1>
+<p><em>(draft v0, 2026-08-27 — written by Claude Fable 5, unverified. <code>[R-TBD]</code> marks numbers
+awaiting lab entries.)</em></p>
+<p>Every chapter so far has been building toward a single sentence, and this is the chapter
+that gets to say it plainly: <strong>on a plant floor, the most important thing a language
+model can produce is a refusal to answer.</strong></p>
+<p>That sentence sounds backwards everywhere else in the AI industry. Demos are scored on
+answering; benchmarks reward the attempt; a chatbot that says &ldquo;I don&rsquo;t know&rdquo; three times
+in a row feels broken. But you do not run a demo. You run machines that can hurt people
+and processes that cost money by the minute, and in that world the failure modes are not
+symmetric. A model that says &ldquo;I don&rsquo;t know, and here is what&rsquo;s missing&rdquo; costs you a
+lookup or an escalation. A model that confidently names the wrong bearing costs you the
+teardown of the good one — and worse, it costs you the crew&rsquo;s trust in every answer that
+follows, including the correct ones. The entire economics of deploying language models
+on a floor turns on the rate of confident wrong answers, and abstention is the machinery
+that buys that rate down.</p>
+<p>Chapter 2 explained why this machinery does not come built in: generation cannot stay
+silent, and &ldquo;I don&rsquo;t know&rdquo; is just another sentence shape the model learned — produced
+when the context makes it probable, not when the evidence makes it true. This chapter is
+about closing that gap from both ends: <strong>plumbing that gives the model somewhere honest
+to stand, and training that teaches it to stand there.</strong></p>
+<h2>The grades of no</h2>
+<p>&ldquo;The model should abstain&rdquo; is too coarse to engineer. In practice a floor deployment
+needs about six distinguishable refusals, and conflating them wastes most of
+abstention&rsquo;s value:</p>
+<p><strong>Evidence-absent.</strong> The rendered context does not contain the answer. &ldquo;The fault table
+excerpt does not cover code F-7288.&rdquo; This is the cleanest grade, the easiest to train,
+and — thanks to Chapter 4&rsquo;s brownfield labels — often mechanically checkable after the
+fact.</p>
+<p><strong>Evidence-conflicting.</strong> The context contains two answers. The manual says the limit is
+90 °C; the alarm configuration says 85. A model that silently picks one is manufacturing
+certainty; the correct output names the conflict and stops. Conflicts are gold for a
+maintenance organization — each one is a documentation defect located for free — but
+only if the model is trained to surface rather than resolve them.</p>
+<p><strong>Under-specified question.</strong> &ldquo;Is the pump okay?&rdquo; Which pump, okay for what, over what
+window? The correct response is a clarifying question, and it is a <em>different skill</em>
+from the other grades: the model must produce the missing parameters, not just decline.</p>
+<p><strong>Out-of-competence.</strong> The question is answerable but not by this system: a legal
+question, a warranty judgment, an instruction to modify a setpoint. The refusal names
+the right channel. This grade is mostly a policy statement wearing a model&rsquo;s voice, and
+the policy belongs in the contract prompt where audit can read it.</p>
+<p><strong>Stale-or-unreliable input.</strong> Chapter 4&rsquo;s flatlined sensor, the historian gap, the
+unmapped tag. The evidence exists but is flagged untrustworthy; the answer inherits the
+flag. &ldquo;The reading suggests X, but the sensor has been flat since 08-20 — verify at the
+gauge.&rdquo;</p>
+<p><strong>Escalate.</strong> The model has an answer and the answer is alarming: evidence points to a
+condition that should not wait for the normal workflow. Strictly this is the opposite of
+refusing — but it belongs in the same taxonomy because it is the same trained judgment
+about <em>the limits of the current interaction</em>, and because the plumbing that carries it
+is identical: a first-class arm in the output schema.</p>
+<p>Design your schemas so each grade is an explicit, selectable arm — Chapter 4&rsquo;s
+constrained decoding makes the arms unmissable — and downstream handling can differ:
+evidence-absent routes to a document lookup, conflicts file a documentation ticket,
+escalations page someone. When all six collapse into one shrug, the organization learns
+that the model&rsquo;s &ldquo;no&rdquo; means nothing in particular, and stops reading it.</p>
+<h2>The plumbing half: give honesty somewhere to stand</h2>
+<p>Before any training, most of abstention is affordance. A model <em>cannot</em> honestly decline
+if the pipeline hides what is missing, and it <em>will not</em> reliably decline if declining
+requires composing an unusual sentence against the gradient of its instincts.</p>
+<p>The affordances, most of them already built in earlier chapters:</p>
+<p><strong>A first-class arm.</strong> <code>INSUFFICIENT_DATA</code> as a schema value, not a phrase the model
+must remember to write. With constrained decoding, abstention becomes one legal token
+choice among a handful — the cheapest it can possibly be. Our measurements around
+enum-constrained verdicts consistently show format failures vanishing and the remaining
+errors becoming <em>judgment</em> errors <code>[R-TBD: enum-decode mechanics]</code> — which is exactly
+the error type training can then address.</p>
+<p><strong>Visible gaps.</strong> Chapter 4&rsquo;s rule — every known data defect becomes a visible label —
+is abstention&rsquo;s raw material. A model can only say &ldquo;no data for the window in question&rdquo;
+if the rendering said <code>no data 02:12–02:31</code> instead of splicing the series seamlessly.</p>
+<p><strong>A required &ldquo;what&rsquo;s missing&rdquo; field.</strong> Pair every abstention arm with a mandatory
+companion: name the evidence that would change the answer. This converts a dead-end
+&ldquo;I don&rsquo;t know&rdquo; into a work item — pull this manual section, check that gauge — and it
+also disciplines the model: fabricating a missing-evidence description is harder than
+fabricating an answer, so the field acts as a natural brake on lazy abstention.</p>
+<p><strong>Contract language that pre-authorizes refusal.</strong> The prompt states, before the data:
+&ldquo;If the data below does not determine an answer, select INSUFFICIENT_DATA. That is a
+correct and preferred outcome.&rdquo; The sentence matters more than it looks. Models arrive
+tuned by their general training toward helpfulness; an explicit authorization measurably
+shifts the threshold <code>[R-TBD: contract-authorization ablation]</code>, and it costs eleven
+words.</p>
+<h2>The training half: teaching the threshold</h2>
+<p>Plumbing gives the model somewhere to stand; training decides <em>when</em> it stands there.
+The distinction that organizes everything: abstention is not a fact the model learns, it
+is a <strong>threshold</strong> it learns — a decision boundary between &ldquo;the evidence supports an
+answer&rdquo; and &ldquo;it does not,&rdquo; running through every topic the model will ever touch.</p>
+<p>What moves the threshold, in the order you should try:</p>
+<p><strong>Demonstrations with the reasons visible.</strong> Supervised examples where the context
+genuinely lacks the answer and the target output is the right grade of no, <em>with the
+tell named</em>: &ldquo;the excerpt covers codes F-7000 through F-7199; the asked code is F-7221.&rdquo;
+Symmetric examples where the evidence is present and the target answers. The pairing is
+the point — a training set of only-refusals teaches refusal as a style, not a judgment.</p>
+<p><strong>Near-miss mining.</strong> The most valuable training examples live at the boundary:
+contexts where the answer <em>almost</em> appears — the right manual but the wrong revision,
+the right tag but the wrong week, a related fault code one digit off. Models fail at
+the boundary, not in the obvious cases, and Chapter 4&rsquo;s logging habit produces exactly
+these examples from your own traffic, pre-labeled by the humans who corrected them.</p>
+<p><strong>Asymmetric penalties.</strong> Wherever your tuning framework lets you weight errors, weight
+them like the floor does: a confident wrong answer is several times worse than a missed
+answerable question. The ratio is a policy decision your safety review should own —
+this book&rsquo;s lab treats it as a first-class training parameter rather than a default
+<code>[R-TBD: penalty-ratio sweep]</code>.</p>
+<p><strong>Progressive evidence removal.</strong> Build training sequences from a single case rendered
+at several evidence levels — full manual page, partial page, table of contents only,
+nothing — with the target flipping from answer to abstention at the level where a
+careful human&rsquo;s would. This trains the <em>slope</em> of the threshold rather than isolated
+points on it, and it doubles as the cleanest evaluation instrument this chapter has
+(you will meet it again below as the calibration gym).</p>
+<p>A warning from our own program, because it is the predictable failure of doing the
+above with enthusiasm: <strong>over-abstention is a real and measured failure mode, not a
+hypothetical</strong> <code>[R-TBD: over-abstention incident]</code>. A model trained hard on refusals
+learns that refusing is safe, and begins declining questions the context plainly
+answers — which quietly destroys the deployment&rsquo;s value while looking responsible in
+every individual transcript. Abstention training without answerable controls in both
+training and evaluation is how you build a very polite paperweight.</p>
+<h2>Calibration: the honest middle</h2>
+<p>Between &ldquo;answer&rdquo; and &ldquo;refuse&rdquo; lives a third output worth engineering: the answer with
+its confidence attached. Not decorative confidence — calibrated confidence, where of
+the claims the model tags HIGH, nearly all are right, and of the claims it tags LOW,
+you genuinely cannot count on much.</p>
+<p>Calibration is measurable with nothing but a labeled evaluation set: bucket the model&rsquo;s
+answers by its own stated grade, compute the accuracy within each bucket, and compare
+the curve to the diagonal. A small model will not give you a philosopher&rsquo;s calibration,
+but it does not need to: the floor needs three honest grades — act on it, verify first,
+treat as a hunch — and holding a model to three grades it means is an achievable,
+testable engineering target <code>[R-TBD: calibration curve by tier]</code>. Wire the grades into
+the workflow: HIGH routes to the technician&rsquo;s queue, MEDIUM routes with its evidence
+attached for verification, LOW never leaves the review screen. Now calibration is not a
+model virtue; it is a routing rule with a measured error rate — which is a sentence a
+plant manager can approve.</p>
+<h2>Evaluating the skill of no</h2>
+<p>Chapter 6 builds the general evaluation machinery; abstention needs its specific
+instruments stated here, because most published evaluations simply do not measure it.</p>
+<p><strong>Score all four quadrants.</strong> Answerable-and-answered, answerable-but-refused,
+unanswerable-and-refused, unanswerable-but-answered. The last quadrant — the confident
+fabrication — is the one the floor fears; the second is the paperweight tax. A single
+&ldquo;accuracy&rdquo; number hides both. Report abstention precision and recall as first-class
+metrics beside answer accuracy, and set gates on all of them: our own gate philosophy —
+inherited from a benchmark program that would rather fail a good model than pass a
+lucky one — is that <strong>a model unable to say &ldquo;I don&rsquo;t know&rdquo; fails the industrial gate
+regardless of its answer accuracy</strong> <code>[R-TBD: IEB abstention gates]</code>.</p>
+<p><strong>Run the gym.</strong> The progressive-evidence-removal sequences from the training section,
+held out, give you the threshold&rsquo;s location and sharpness: at what evidence level does
+the model flip, and how consistently? A model that flips at different levels for
+cosmetically different phrasings of the same case has a soft threshold, and soft
+thresholds are where the confident fabrications leak through.</p>
+<p><strong>Adversarial answerables.</strong> Include questions that <em>look</em> unanswerable — obscure
+phrasing, ugly rendering, a distractor gap label elsewhere in the context — but are
+answerable from the given evidence. These catch over-abstention the way the fourth
+quadrant catches fabrication, and a gate needs both jaws.</p>
+<h2>A ladder, worked</h2>
+<p>Here is the calibration gym on one rung of real shape, because the pattern is easier to
+copy than to describe. Take Chapter 2&rsquo;s drive fault, F-7221, and build five renderings
+of the same investigation:</p>
+<p><strong>Level 1 — full evidence.</strong> The fault table row for F-7221, the drive&rsquo;s decel
+parameters, the historian slice showing the bus voltage spike. Target output: the
+answer, HIGH confidence, quoting the table row and the spike timestamps. Any abstention
+here is a paperweight point against the model.</p>
+<p><strong>Level 2 — answer present, corroboration missing.</strong> The fault table row only; no
+historian slice. Target: the answer, MEDIUM, with the &ldquo;what&rsquo;s missing&rdquo; habit inverted
+into a verification pointer — &ldquo;table attributes F-7221 to DC bus overvoltage; confirm
+against the bus voltage trend for the trip window.&rdquo;</p>
+<p><strong>Level 3 — adjacent evidence.</strong> The fault table covers F-7200 through F-7219; the
+asked code is one page past the excerpt&rsquo;s edge. This is the boundary rung where models
+fail: the material <em>looks</em> right, the pattern-completion pull toward &ldquo;it&rsquo;s probably
+also an overvoltage variant&rdquo; is strong, and the correct output is evidence-absent
+abstention naming the exact gap — &ldquo;excerpt ends at F-7219.&rdquo; Most of your training
+attention belongs here.</p>
+<p><strong>Level 4 — conflicting evidence.</strong> Two revisions of the fault table in context, one
+attributing F-7221 to overvoltage, the other to a brake-resistor fault. Target:
+evidence-conflicting, both rows quoted, no resolution attempted. Watch specifically
+for the model that answers from the <em>first</em> row and never mentions the second — silent
+conflict resolution is the most dangerous behavior on this ladder because it is
+indistinguishable from a clean answer unless you built this rung to catch it.</p>
+<p><strong>Level 5 — nothing.</strong> General drive documentation, no fault table at all. Target:
+evidence-absent, with the missing-evidence field naming the document class, not just
+&ldquo;insufficient data.&rdquo;</p>
+<p>Five renderings, one afternoon to build from any real case, and the set earns its keep
+twice: as training demonstrations with the targets as labels, and — held out, with
+fresh cases — as the evaluation that tells you where your model&rsquo;s threshold actually
+sits and whether tuning moved it. When the level-3 rung flips from confident guess to
+named-gap abstention while level 1 stays answered, you have watched the threshold
+learn. That, in miniature, is the whole chapter.</p>
+<h2>The organizational half: making &ldquo;no&rdquo; a good outcome</h2>
+<p>One more component, and it is not in the model. Abstention only survives contact with
+an organization that rewards it.</p>
+<p>The failure pattern is easy to predict: the model says INSUFFICIENT_DATA, the
+technician&rsquo;s screen shows a dead end, the crew learns the tool &ldquo;doesn&rsquo;t know anything,&rdquo;
+usage collapses, and the deployment dies — with perfect calibration. The fix is
+workflow, not weights. Every abstention arrives carrying its &ldquo;what&rsquo;s missing&rdquo; field, so
+the screen never shows a shrug; it shows the next action: <em>the fault table for this
+drive model is not in the document store — scan section 7 of the paper manual and this
+question becomes answerable for everyone, forever.</em> Track abstentions by cause the way
+you track alarms by tag: the histogram is a map of your documentation debt, ranked by
+how often reality asks for each missing piece. In review meetings, treat a
+correctly-refused unanswerable exactly like a correctly-answered question — both are
+the system working — and treat the confident fabrication as the incident it is.</p>
+<p>And close the loop with Chapter 3&rsquo;s two-model pattern: an abstention from the small
+always-on model is a <em>routing event</em>, not a terminus. It forwards the case — context,
+question, and the named gap — up to the larger model or the human queue. The refusal
+becomes the first step of the answer, which is what it always should have been.</p>
+<h2>The chapter in one sentence</h2>
+<p>Give the model an honest place to stand (arms, labels, contracts), train the threshold
+from both sides (refusals <em>and</em> answerable controls, penalties shaped like the floor&rsquo;s
+real costs), measure all four quadrants forever, and build the workflow so that &ldquo;I
+don&rsquo;t know, and here is what&rsquo;s missing&rdquo; is received as what it actually is: the second
+most valuable sentence a plant&rsquo;s language model can produce, one notch below the
+correct answer and a full order of magnitude above the confident wrong one.</p>
+<p>The next chapter builds the machinery that holds all of this honest — the evaluation
+gate that decides, with error bars, whether any of it is allowed near your floor.</p>
+<p>One last habit binds the chapter to the rest of the book: put the four-quadrant
+abstention report next to the accuracy number in every evaluation you ever publish or
+read, including this book&rsquo;s own. An accuracy figure without its abstention quadrants is
+a demo statistic; with them, it is an engineering document. The difference is the whole
+premise of deploying language where machines can hear it.</p>
+<nav class="pager"><a href="ch04.html"><span>PREV</span>← Reading the Plant: Protocols and Historians</a><a class="next" href="ch06.html"><span>NEXT</span>The Quality Gate →</a></nav>
+</main>
+<script>
+try{localStorage.setItem('oailly-pos-local-llms-for-manufacturing', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

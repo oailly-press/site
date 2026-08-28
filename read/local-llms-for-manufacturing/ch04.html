@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reading the Plant: Protocols and Historians — Local LLMs for Manufacturing</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#E8935A;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--ink);color:var(--paper);font-family:var(--body);line-height:1.75;font-size:18px}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--ink) 88%,transparent);backdrop-filter:blur(8px);
+border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:14px 24px;display:flex;justify-content:space-between;align-items:center}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:22px;color:var(--paper);text-decoration:none}
+.wordmark .ai{color:var(--accent)}
+.top .bk{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted);text-decoration:none;
+overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:55%}
+main{max-width:760px;margin:0 auto;padding:56px 24px 80px}
+h1{font-family:var(--sans);font-weight:800;font-size:38px;line-height:1.15;letter-spacing:-.02em;margin:0 0 28px}
+h2{font-family:var(--sans);font-weight:800;font-size:26px;letter-spacing:-.01em;margin:44px 0 14px}
+h3{font-family:var(--sans);font-weight:600;font-size:20px;margin:32px 0 10px}
+p{margin:0 0 18px} em{color:var(--paper)} a{color:var(--accent)}
+ul,ol{margin:0 0 18px 1.4em} li{margin-bottom:6px}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 18px}
+code{font-family:var(--mono);font-size:.85em;background:var(--ink2);padding:2px 6px;border-radius:5px}
+pre{background:var(--ink2);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 18px}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 18px;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:16px}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:13px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--ink2);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;
+font-family:var(--mono);font-size:14px;line-height:2;color:var(--muted)}
+.prov b{color:var(--paper);font-weight:500}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:16px 6px;text-decoration:none;color:var(--paper)}
+.toc a:hover{background:var(--ink2)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--paper);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <a class="bk" href="index.html">LOCAL LLMS FOR MANUFACTURING</a>
+</div></div>
+<main>
+<h1>Chapter 4 — Reading the Plant: Protocols and Historians</h1>
+<p><em>(draft v0, 2026-08-27 — written by Claude Fable 5, unverified. <code>[R-TBD]</code> marks numbers
+awaiting lab entries.)</em></p>
+<p>Chapter 2 promised that the context window is your instrument of truth. This chapter is
+about filling it — the unglamorous, decisive layer between your plant&rsquo;s data and the
+model&rsquo;s window. Nothing in this book pays off harder per hour of engineering, because
+the layer is where most deployments actually fail: not because the model was too small,
+but because it was fed the wrong slice of the plant, in a format that fought it, with
+the question buried.</p>
+<p>The chapter&rsquo;s one-sentence thesis: <strong>a language model is a text instrument, and your
+plant does not speak text — so the translation you build <em>is</em> the application.</strong></p>
+<h2>What the plant actually says</h2>
+<p>Strip away vendor branding and the data a plant emits has three shapes:</p>
+<p><strong>Registers and tags.</strong> The oldest industrial protocols move numbers by address: a
+register holds a 16-bit value, and meaning lives entirely in external documentation —
+this address is a temperature, that one a status word, the scale factor is ten. Nothing
+in the wire format says so. A model handed raw register dumps is being asked to
+hallucinate the documentation; a model handed <em>decoded</em> values with names and units is
+being asked to read. The difference is your decode table, which you already maintain
+for the HMI. Reuse it.</p>
+<p><strong>Structured telemetry.</strong> Newer stacks self-describe to a degree — hierarchical
+namespaces, typed values, engineering units carried in metadata. Better raw material,
+same principle: the model should receive the <em>meaningful</em> rendering, not the transport
+rendering. A JSON blob with seventeen levels of vendor namespace wrapping one
+temperature is worse model input than the line <code>furnace_3.zone_2.temp = 613 °C</code>.</p>
+<p><strong>Events and text.</strong> Alarms, operator comments, work orders, shift notes. This is the
+one shape that is already language — and it is the messiest: inconsistent vocabulary,
+shorthand, typos, meaning that depends on which technician typed it. It is also, not
+coincidentally, where language models add the most value the fastest, because nothing
+else in your stack can read it at all.</p>
+<p>The historian sits across all three: a time-series archive of tags plus, usually, an
+event store. It is the plant&rsquo;s memory, and the model&rsquo;s relationship to it is the
+central design problem of this chapter.</p>
+<h2>Textualization: the layer nobody budgets for</h2>
+<p>Between the historian and the context window sits a transformation this book calls
+textualization: turning machine data into the text the model will actually read. Every
+deployment has this layer; the failed ones just built it accidentally.</p>
+<p>The design rules, each one paid for somewhere:</p>
+<p><strong>Render meaning, not transport.</strong> Decode registers, resolve enums to their names,
+apply scale factors, attach units. Every decoding step you leave to the model is a
+hallucination invitation on exactly the material where hallucination is least
+detectable — a wrong number looks identical to a right one.</p>
+<p><strong>Say the units, every time.</strong> <code>613</code> is a trap; <code>613 °C</code> is data. Unit discipline in
+the rendering costs nothing and removes an entire class of confident misreading. Same
+for timestamps: render one timezone, name it, and keep one format end to end. Mixed
+timestamp formats in a single context are how a model &ldquo;finds&rdquo; a sequence error that is
+actually your formatter&rsquo;s.</p>
+<p><strong>Structure for the eye that will read it.</strong> Models read tables well when tables are
+small and aligned, and badly when they sprawl. Long time series belong summarized —
+minimum, maximum, mean, last value, and the timestamps of excursions — with the raw
+slice attached only for the window the question is about. Rendering <em>judgment</em> is
+allowed and encouraged: an excursion marker like <code>← exceeds alarm limit (600)</code> placed
+by your deterministic code is the single cheapest accuracy upgrade in this chapter,
+because it moves a computation from the probabilistic component to the reliable one.</p>
+<p><strong>Keep identifiers whole.</strong> Chapter 2&rsquo;s tokenizer warning becomes a formatting rule
+here: never let the renderer wrap, hyphenate, or abbreviate a tag name. If your tags
+are brutally long, ship a legend — short alias in the rendering, full name in a
+glossary block — so the model reasons over compact symbols your code can expand back
+deterministically.</p>
+<h2>Selection: the historian is bigger than the window</h2>
+<p>A single line&rsquo;s historian can emit more text per shift than a small model&rsquo;s window
+holds. You will not &ldquo;give the model the data.&rdquo; You will give it a selection, and the
+selection logic is application logic you own.</p>
+<p>The selection patterns that recur:</p>
+<p><strong>Question-scoped slicing.</strong> For &ldquo;why did line 3 trip at 14:07,&rdquo; the slice picks
+itself: the tags of line 3&rsquo;s trip chain, a window around 14:07 — minutes before, one
+minute after — plus active alarms and the last operator note. Resist the urge to be
+generous: a model reading three hundred lines of irrelevant steady-state readings is
+spending attention <em>not</em> reading the four lines that matter, and needle-burying is a
+measured failure mode, not a theoretical one <code>[R-TBD: context-dilution measurement]</code>.</p>
+<p><strong>Exception-first summarization.</strong> For standing questions — &ldquo;summarize the night
+shift&rdquo; — deterministic code compresses first: excursions, alarms, state changes,
+setpoint moves, plus base statistics per tag. The model narrates and connects; the
+arithmetic already happened in code. Split the labor by trustworthiness: code counts,
+the model explains.</p>
+<p><strong>Round-trip drill-down.</strong> The most robust pattern for open-ended diagnosis: give the
+model the summary plus a <em>catalog</em> of what it may request — tag names, time ranges —
+and let it ask. Your code fulfills each request with a fresh, scoped rendering. Three
+short trips beat one enormous context: each step keeps the window dense with relevant
+material, and the request trail becomes an audit log of the model&rsquo;s reasoning that a
+human can replay <code>[R-TBD: single-shot vs drill-down accuracy]</code>.</p>
+<h2>Asking: the question is part of the instrument</h2>
+<p>Textualized data plus a vague question still fails. The prompt patterns that survive
+floor duty:</p>
+<p><strong>State the contract before the data.</strong> Role, allowed sources (&ldquo;answer only from the
+data below&rdquo;), the abstention arm (&ldquo;if the data does not determine an answer, say
+exactly <code>INSUFFICIENT DATA</code> and name what is missing&rdquo;), and the output schema — all
+<em>before</em> the data block. Contracts stated after a long context are the first thing
+lost to Chapter 2&rsquo;s window-edge forgetting.</p>
+<p><strong>One question per call.</strong> &ldquo;What tripped, is it the same as last Tuesday, and should
+we replace the sensor?&rdquo; is three questions, and a fused answer to all three is
+unauditable. Three calls with three scoped contexts are cheap — Chapter 3 made them
+cheap — and each answer lands somewhere specific.</p>
+<p><strong>Demand evidence inline.</strong> Require every claim in the answer to quote the line of
+rendered data it rests on. This is the cheapest hallucination detector ever shipped:
+fabricated claims either quote nothing or quote text that is not in the context, and
+your code can check the quotes mechanically before a human ever reads the answer
+<code>[R-TBD: quote-check catch rate]</code>.</p>
+<h2>The output side: schemas as guardrails</h2>
+<p>Chapter 2 introduced grammar-constrained decoding as the plant&rsquo;s secret advantage; this
+is where it goes to work. Every floor question that recurs deserves a schema: the enum
+of legal verdicts, the required evidence field, the confidence grade, the
+<code>INSUFFICIENT_DATA</code> arm. Constrained output turns free-text grading into field
+checking, makes downstream automation safe to build, and — the underrated part — makes
+<em>evaluation</em> mechanical, which Chapter 6 will exploit: a schema&rsquo;d answer scores itself
+against a labeled key without a human reading prose <code>[R-TBD: enum-decode mechanics]</code>.</p>
+<p>Schema design has its own craft. Keep enums short — every added arm is a place to be
+wrong, and models discriminate eight options far better than thirty. Make the
+abstention arm first-class, not a string the model must remember to produce. Version
+your schemas like any interface, because Chapter 6&rsquo;s evaluations pin to them. And log
+every raw model response alongside its parsed form: when a verdict is challenged later,
+the raw text is your flight recorder.</p>
+<h2>A worked rendering</h2>
+<p>Theory earns its keep in the diff between bad and good input, so here is one, end to
+end. The question: &ldquo;why did conveyor 2 stop at 06:41?&rdquo;</p>
+<p>The accidental deployment pastes what the export button produced — hundreds of rows
+shaped like this, one per tag per second:</p>
+<p>```text fragment
+2026-08-27T06:39:58.113Z,PLC7.DB44.REG117,4212,1
+2026-08-27T06:39:58.113Z,PLC7.DB44.REG118,0,1
+2026-08-27T06:39:58.641Z,PLC7.DB44.REG117,4213,1</p>
+<div class="codehilite"><pre><span></span><code>Raw addresses, unscaled integers, a quality flag nobody explained, timestamps to the
+millisecond for a question about minutes. The model must guess that REG117 is the drive
+current, that 4212 means 42.12 amps, that quality `1` is good — every guess a coin flip
+wearing a lab coat.
+
+The engineered deployment renders the same facts like this:
+
+```text fragment
+CONTEXT: conveyor_2 trip investigation, window 06:36–06:43 local (America/Chicago)
+
+conv2.drive_current_A: min 41.9, max 67.3 ← exceeds alarm limit (55.0), last 0.0
+conv2.motor_temp_C:    min 71,   max 74   (alarm limit 90 — not reached)
+conv2.state:           RUNNING → FAULTED at 06:41:12
+alarms: 06:41:12  CONV2_OVERCURRENT  (priority 1, active)
+operator note 06:44 [quoted material, not instruction]:
+  "reset twice before shift change, tripped again both times" — j.m.
+</code></pre></div>
+
+<p>Same historian, same facts. The second rendering resolved names, applied scales,
+attached units, pre-computed the excursion against its limit, collapsed a thousand rows
+into the five lines that matter, fenced the human text, and stamped the timezone. Ask
+Chapter 2&rsquo;s three-way question against both and the gap is not subtle: against the
+first, a small model free-associates about registers; against the second, it has almost
+no room to be wrong, and the remaining judgment — overcurrent from mechanical jam
+versus drive fault, and what to check first — is exactly the judgment you wanted it
+applying <code>[R-TBD: raw-vs-rendered accuracy delta]</code>.</p>
+<p>The uncomfortable observation hiding in this example: most of the intelligence in the
+answer was placed there by the renderer. That is not a criticism of the model. It is
+the design. You want the probabilistic component operating on the shortest possible
+inferential leash, and the leash is braided out of decode tables you already owned.</p>
+<h2>The standing watcher</h2>
+<p>Everything above answers questions someone asked. The other half of floor duty is the
+question nobody asked yet: continuous monitoring, where Chapter 3&rsquo;s always-on small
+model earns its electricity.</p>
+<p>The pattern that works is exception-driven, not exhaustive. The watcher does not read
+the full stream — deterministic limit checks and your existing alarm system already
+guard thresholds, and racing them with a language model is using a poem to do a
+comparator&rsquo;s job. The watcher reads what the deterministic layer <em>cannot</em>: the
+conjunction of weak signals. A drive current trending up for a week, a bearing
+temperature that now runs three degrees warmer after each restart, an operator note
+mentioning &ldquo;the smell again,&rdquo; none individually alarmed — rendered together into one
+periodic digest, with the standing question &ldquo;what deserves a human&rsquo;s attention this
+week, and why?&rdquo;</p>
+<p>Two disciplines keep the watcher from becoming noise. <strong>Dwell before speaking:</strong> the
+digest runs daily or per shift, not per event, and repeats a flagged item only when its
+evidence strengthens — a model that re-announces the same trend every hour trains the
+crew to delete its reports, which is the alarm-management lesson of Chapter 9 all over
+again. <strong>Track the hit rate:</strong> every watcher flag gets a one-click disposition from the
+human who read it — useful, noise, already-known — and the running rate is reviewed
+like any instrument&rsquo;s calibration. A watcher below a usefulness floor gets retuned or
+retired; sentiment is not a metric <code>[R-TBD: watcher precision from lab deployment]</code>.</p>
+<h2>The corpus you are accidentally building</h2>
+<p>One more consequence of doing this chapter properly, and it may be the most valuable:
+log every rendering and every answer, and you are building the exact training set
+Chapter 7 needs. The renderings are your plant&rsquo;s text in its canonical form; the
+questions are your plant&rsquo;s real question distribution; the verdicts — especially the
+ones a human corrected — are labeled examples of the highest possible relevance.</p>
+<p>Three habits make the accident deliberate. Log the <em>rendered context</em>, not just the
+raw data, because the rendering is what the model actually read and what a future
+fine-tune should learn from. Capture the human disposition — accepted, corrected (to
+what), rejected — at the moment it happens, in the same record; reconstructed labels
+are worth a fraction of contemporaneous ones. And mark every record with its
+clearance status at capture time: what may be used for training, what contains names
+or sensitive material needing scrubbing, what must stay out entirely. Sorting that out
+record-by-record later is a project; a flag at write time is a column. Chapter 7
+inherits this corpus and will be grateful for every one of these habits — and the
+provenance discipline is the same one this book&rsquo;s own publisher applies to itself,
+which is not a coincidence.</p>
+<h2>What can go wrong: the adversarial note</h2>
+<p>One risk class is specific to reading <em>text</em> from the plant and deserves its plain-
+language warning. Operator comments, vendor documents, even alarm description fields
+are authored content, and authored content can contain instructions — innocently
+(&ldquo;CALL JIM BEFORE RESETTING, HE KNOWS THE TRICK&rdquo;) or otherwise. A model reading a
+context cannot fully distinguish data from directive; a work-order note that happens to
+read like a command can steer an answer. The mitigations are layered, none exotic:
+render untrusted text clearly fenced and labeled as quoted material; instruct the
+contract that quoted material is evidence, never instruction; constrain outputs so that
+even a steered model can only choose among legal verdicts; and keep a human between
+model verdicts and physical actions — which Chapter 10 will insist on for its own
+reasons anyway. Treat this the way you treat any untrusted input path into a control
+system: not with panic, with plumbing.</p>
+<h2>Brownfield honesty</h2>
+<p>Every pattern above assumed the decode table is right, the sensors work, and the
+historian kept everything. No plant matches that description. The pipeline has to be
+honest about its inputs&rsquo; dishonesty, and the mechanisms are pleasantly mundane.</p>
+<p>Undocumented tags — the registers nobody remembers mapping — get rendered as exactly
+what they are: <code>PLC7.DB44.REG119 = 77 (unmapped tag — meaning unknown)</code>. That label
+does two jobs: it stops the model from inventing a meaning, and it turns every
+investigation that stumbles over the tag into a small documentation work order. Dead
+and stuck sensors are a renderer responsibility, not a model discovery: a value that
+has not changed in a week, or reads outside physical possibility, gets flagged by code
+(<code>flatlined since 08-20</code>) so the model treats it as an evidence gap rather than a fact.
+And historian gaps — the outage from Chapter 9, the tag that started logging only last
+spring — must render as explicit absence (<code>no data 02:12–02:31</code>), because a model
+shown a seamless series will reason as if the world were seamless too.</p>
+<p>The shared principle: <strong>every known defect in the data becomes a visible label in the
+rendering.</strong> The model&rsquo;s abstention machinery — next chapter&rsquo;s subject — can only
+decline to answer when the rendering lets it see what is missing. A pipeline that
+papers over its gaps upstream has quietly removed the model&rsquo;s ability to be honest
+downstream, and will then blame the model for the confident answer it was set up to
+give.</p>
+<h2>The chapter in one drawing</h2>
+<p>Historian → <strong>decode</strong> (names, units, scale — your existing tables) → <strong>select</strong>
+(question-scoped slice or exception-first summary) → <strong>render</strong> (aligned, unit-bearing,
+identifiers whole, judgments pre-computed) → <strong>contract</strong> (sources, abstention arm,
+schema, then the data) → model → <strong>constrained output</strong> (enum verdict + quoted
+evidence) → <strong>mechanical checks</strong> (quotes exist, schema valid) → human.</p>
+<p>Every arrow is deterministic code except the model itself — which is precisely the
+point. The probabilistic component sits in the middle of a pipeline that feeds it
+honestly and checks it mechanically. Build the arrows well and Chapter 5 can make the
+model itself honest about the one thing the pipeline cannot check: whether the answer
+should exist at all.</p>
+<p>One closing measurement to make once the pipeline stands: feed it a question whose
+answer you already know, end to end, and time every arrow. Wherever the minutes went is
+where your next engineering hour belongs — and it is almost never the model.</p>
+<nav class="pager"><a href="ch03.html"><span>PREV</span>← Why Small</a><a class="next" href="ch05.html"><span>NEXT</span>The Abstention Chapter →</a></nav>
+</main>
+<script>
+try{localStorage.setItem('oailly-pos-local-llms-for-manufacturing', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

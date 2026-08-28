@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Surviving Reality — Local LLMs for Manufacturing</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#E8935A;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--ink);color:var(--paper);font-family:var(--body);line-height:1.75;font-size:18px}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--ink) 88%,transparent);backdrop-filter:blur(8px);
+border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:14px 24px;display:flex;justify-content:space-between;align-items:center}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:22px;color:var(--paper);text-decoration:none}
+.wordmark .ai{color:var(--accent)}
+.top .bk{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted);text-decoration:none;
+overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:55%}
+main{max-width:760px;margin:0 auto;padding:56px 24px 80px}
+h1{font-family:var(--sans);font-weight:800;font-size:38px;line-height:1.15;letter-spacing:-.02em;margin:0 0 28px}
+h2{font-family:var(--sans);font-weight:800;font-size:26px;letter-spacing:-.01em;margin:44px 0 14px}
+h3{font-family:var(--sans);font-weight:600;font-size:20px;margin:32px 0 10px}
+p{margin:0 0 18px} em{color:var(--paper)} a{color:var(--accent)}
+ul,ol{margin:0 0 18px 1.4em} li{margin-bottom:6px}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 18px}
+code{font-family:var(--mono);font-size:.85em;background:var(--ink2);padding:2px 6px;border-radius:5px}
+pre{background:var(--ink2);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 18px}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 18px;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:16px}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:13px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--ink2);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;
+font-family:var(--mono);font-size:14px;line-height:2;color:var(--muted)}
+.prov b{color:var(--paper);font-weight:500}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:16px 6px;text-decoration:none;color:var(--paper)}
+.toc a:hover{background:var(--ink2)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--paper);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <a class="bk" href="index.html">LOCAL LLMS FOR MANUFACTURING</a>
+</div></div>
+<main>
+<h1>Chapter 9 — Surviving Reality</h1>
+<p><em>(draft v0, 2026-08-27 — written by Claude Fable 5, unverified. This chapter&rsquo;s evidence
+is unusually direct: our own lab&rsquo;s failure log, cited by date.)</em></p>
+<p>Every chapter before this one assumed the computer stays on. This one is about the week
+that assumption failed twice.</p>
+<p>Our lab runs language models the way this book proposes a plant should: continuously, on
+owned hardware, with training jobs, serving processes, and data pipelines sharing a
+building&rsquo;s worth of dependencies. In one August week that building lost power twice. The
+first outage cost about an hour and a half of recovery work. The second, two days later,
+cost about twenty-five minutes — not because it was gentler, but because the first crash
+had been treated as an engineering deliverable instead of a bad day <code>[LAB: PROJECT-LOG
+2026-08-22 and 2026-08-24 — power-loss recoveries #1 and #2]</code>. The delta between those
+two numbers is this chapter. Everything in it was paid for.</p>
+<p>A plant engineer will recognize the shape of what follows, because none of it is AI
+engineering. It is the ordinary discipline of keeping industrial systems restartable —
+applied to a stack that the AI industry, raised in data centers with generators, mostly
+ships without it.</p>
+<h2>What a power loss actually breaks</h2>
+<p>Walk the damage path of a hard power cut through a model-serving stack, because each
+stage is a design decision you can make ahead of time:</p>
+<p><strong>Storage is hurt first and lies about it.</strong> Filesystems with journaling recover to a
+consistent state by design; filesystems without it — including network-share formats
+mounted through compatibility bridges — can be silently damaged and need offline repair
+before they mount at all. Our first crash spent most of its ninety minutes here, on
+exactly one lesson: know, for every volume your stack touches, what happens to it when
+the power dies mid-write. The fix was boring and total — repairs to mount configuration
+so every data volume came back automatically and consistently. In the second crash,
+storage cost <em>zero</em> minutes <code>[LAB: PROJECT-LOG 2026-08-24 — "the crash-#1 fixes held;
+zero filesystem work"]</code>. Boring and total is the grade to aim for.</p>
+<p><strong>Services resurrect in the wrong order — or resurrect when told not to.</strong> Modern init
+systems restart what was running, which is what you want until it isn&rsquo;t. Our second
+crash surfaced a subtle version: a service we had explicitly disabled came back anyway,
+because three <em>other</em> services declared it as a dependency, and dependency pulls ignore
+the disabled flag. It occupied most of a GPU&rsquo;s memory before anyone noticed, and the
+training jobs that were supposed to own that GPU found it taken. The durable fix was not
+a stronger &ldquo;off switch&rdquo; but a <em>condition</em>: the service&rsquo;s unit file now checks for a
+hold-marker file on disk and refuses to start while the marker exists — an interlock,
+in plant terms, rather than a request <code>[LAB: PROJECT-LOG 2026-08-24 — dependency pull
+vs. disablement; condition-gated unit fix]</code>. The general rule: on shared hardware,
+&ldquo;stopped&rdquo; enforced by intention decays; &ldquo;stopped&rdquo; enforced by a condition survives
+reboots, dependency graphs, and colleagues.</p>
+<p><strong>In-flight state is simply gone.</strong> Whatever the model was generating, whatever batch
+was mid-flight, whatever fine-tune step was between checkpoints — vanished. You do not
+protect in-flight state; you bound it, which is the next section.</p>
+<h2>Checkpoints are a cadence decision, not a feature</h2>
+<p>Long-running model work — a fine-tune, an index build, a corpus pack — survives power
+loss exactly as well as its checkpoint cadence, no better. Our training runs checkpoint
+every few thousand steps; when the first crash hit, the running jobs lost roughly three
+to four hours of progress each — annoying, bounded, and resumable to the step, with
+random state restored so the run continued as if unbroken. The week&rsquo;s two crashes cost
+about nine and a half GPU-hours of redone work in total, and the log entry closes with
+the sentence that matters: the cadence <em>bounds each loss</em> under four and a half hours
+<code>[LAB: PROJECT-LOG 2026-08-24 — checkpoint cadence bounding recovery cost]</code>.</p>
+<p>Translate the arithmetic to your floor. The cadence question is: how many hours of this
+work am I willing to redo? Divide by two for safety margin, checkpoint at that interval,
+and <em>verify a resume actually works</em> — a checkpoint you have never restored from is a
+hope, not a checkpoint. The same logic covers the humbler state a serving deployment
+accumulates: retrieval indexes, caches, configuration. If rebuilding it is fast, let it
+rebuild; if it is slow, it is a checkpointing customer too.</p>
+<p>For pure serving — the model answering questions — the news is better and it is a
+genuine advantage of the small-model classes from Chapter 3: the &ldquo;state&rdquo; is a read-only
+weights file plus a process. Recovery is: mount storage, start service, load weights,
+health-check. Small models load in seconds to low minutes, which makes the whole
+recovery a watchdog script rather than an operation.</p>
+<h2>Verify by artifact, not by appearance</h2>
+<p>The second crash&rsquo;s log records a near-miss that deserves its own section, because the
+class of error is universal.</p>
+<p>During recovery, an operator checked whether the data-repacking jobs had survived by
+listing processes and pattern-matching the command names. Two matches came back; the
+conclusion &ldquo;both packers are running&rdquo; was one keystroke from being recorded. Both
+matches were the <em>listing command itself</em> — the search pattern matched its own
+invocation. The jobs were dead, and had the appearance been trusted, a large data
+pipeline would have sat idle indefinitely while dashboards showed green <code>[LAB:
+PROJECT-LOG 2026-08-25 — self-matching process check near-miss]</code>. The catch came from
+checking the <em>artifact</em> instead: the job&rsquo;s log file had not been written since before
+the crash. Mtime does not pattern-match itself.</p>
+<p>The same log family records the inverse trap: a cleanup command that kills processes by
+name-pattern matched the operator&rsquo;s own shell — the pattern found itself — and cut the
+session out from under the recovery <code>[LAB: CLAUDE.md hardware notes — pkill self-match
+trap]</code>. Two incidents, one lesson, and it generalizes far beyond Linux: <strong>status checks
+must observe what the work produces, not what the process table appears to contain.</strong>
+A packer is alive if its output file grew recently. A serving model is alive if a
+health-check request returns a token. On a plant floor you already know this — you trust
+the flow meter, not the pump&rsquo;s power light — and the discipline transfers unchanged.</p>
+<h2>Read the log before trusting the plan</h2>
+<p>One more lab scar with direct floor application. A production model once served at a
+catastrophic fraction of its normal speed — the kind of number that triggers a tuning
+spree: flags, batch sizes, memory splits, none of it moving anything. The answer was a
+single line in the <em>load</em> log, printed at startup, showing one component had quietly
+loaded onto the wrong processor <code>[LAB: PROJECT-LOG — the 2 tok/s mystery; one load-log
+line]</code>. Minutes of reading would have saved the hours of tuning.</p>
+<p>The rule we wrote afterward: <strong>when a number is pathological — not merely low, but
+absurd — stop adjusting and start reading.</strong> Pathological numbers are almost never
+tuning problems; they are configuration problems announcing themselves at boot in a
+log nobody reads. Your deployment&rsquo;s startup log should be short enough to read and
+read on every deployment; Chapter 8&rsquo;s serving recipes print the facts that matter —
+device placement, precision, memory reserved — precisely so this rule is cheap to
+follow.</p>
+<h2>The UPS question, answered honestly</h2>
+<p>The reflex response to this chapter is &ldquo;buy a battery.&rdquo; Do — and understand precisely
+what it buys. An uninterruptible supply sized for a serving box is not there to ride out
+the outage; plant outages outlast affordable batteries with ease. It is there to buy
+<em>minutes</em>, and minutes are only valuable if something spends them: a shutdown hook that
+sees the on-battery signal, stops accepting new requests, lets in-flight work drain,
+forces a final checkpoint, and unmounts storage cleanly. A UPS without that integration
+converts a hard crash at power loss into the identical hard crash twenty minutes later,
+at a time nobody predicted, with a false sense of security billed on top.</p>
+<p>Brownouts deserve more fear than blackouts. A clean cut is the <em>easy</em> case — everything
+stops, everything restarts, this chapter&rsquo;s machinery handles it. A sag reboots some
+devices and not others, corrupts the states of equipment that half-survived, and
+produces the weird Tuesday where the model box is fine but the switch between it and the
+historian silently power-cycled and dropped its config. When a deployment misbehaves
+after &ldquo;a power event,&rdquo; widen the suspect list to every box in the path before blaming
+the one with the AI on it; in our experience the exotic component is presumed guilty and
+is usually the innocent one.</p>
+<p>And test the battery the way you test a checkpoint: by using it. A UPS that has never
+carried the load through a rehearsed shutdown is, like the unrestored checkpoint,
+folklore with a purchase order.</p>
+<h2>Watchdogs, and who watches them</h2>
+<p>Restart-on-failure is one line of configuration and everyone sets it. The engineering is
+in the layer above: deciding what &ldquo;failure&rdquo; means and noticing when restarting stops
+helping.</p>
+<p>A serving process can be up, listening, and useless — weights half-loaded, memory
+exhausted by Chapter 3&rsquo;s KV-cache ceiling, or wedged in a state where every request
+times out. A process-level watchdog sees a running process and stays quiet. The health
+check that means something is end-to-end: send a real, tiny inference request on a
+timer; require a token back within a deadline; restart on misses. That single design
+choice — probe the <em>function</em>, not the process — catches the entire family of
+alive-but-dead states, and it is the same artifact-not-appearance rule from earlier
+wearing a uniform.</p>
+<p>Then bound the restarts. A service that crashes on startup will crash-loop forever at
+whatever cadence you allow, and a crash-looping service generates exactly the alert
+storm that trains a crew to ignore alerts. Back off between attempts, cap the attempts,
+and after the cap, <em>change the message</em>: &ldquo;restarting&rdquo; is routine noise; &ldquo;restarted five
+times and stopped trying&rdquo; is a page. The worst outcome of a monitoring design is not a
+missed failure — it is a crew that has learned the alarms are wallpaper. Plants know
+this as alarm management; the AI box gets no exemption from it.</p>
+<p>Log the boring successes, too. When the health probe passes, a timestamped line lands
+in the artifact trail — which means the <em>absence</em> of that line is itself detectable by
+the next layer up. Silence, as our monitoring rules put it, must never be mistakable
+for health.</p>
+<h2>Heat: the failure that arrives on schedule</h2>
+<p>Power loss is dramatic; heat is patient. A GPU in a sealed cabinet on a mezzanine in
+August does not crash — it <em>throttles</em>, quietly trading speed for temperature, and your
+deployment&rsquo;s response times drift upward with no error message anywhere. Our lab
+learned to treat thermal configuration as a first-class deployment parameter after
+measuring how much performance a power-and-cooling ceiling actually costs on sustained
+load — and, more usefully, that the right power cap costs far less than the wrong
+airflow <code>[LAB: MAXQ-THERMAL 2026-08-06 — power-cap vs. throughput measurements]</code>.</p>
+<p>The floor rules that fall out: record the box&rsquo;s sustained (not burst) throughput at
+commissioning, in summer conditions if you can get them; alert on <em>sustained deviation
+from that baseline</em>, not just on temperature thresholds; and treat a slow drift in
+response times as a maintenance signal like any other vibration trend. The failure mode
+is not &ldquo;the AI got worse.&rdquo; It is dust on a filter, and the fix is a shop vacuum, not a
+retraining run.</p>
+<h2>The spare on the shelf</h2>
+<p>Plants keep spare drives, spare cards, spare pumps. A model deployment is the rare
+computer system where the spare-parts mentality transfers almost perfectly, because
+Chapter 3&rsquo;s operational virtues made the system <em>copyable</em>: the entire deployed
+intelligence is a weights file with a checksum, a configuration directory, and a service
+definition. A cold standby is therefore not a project — it is a second box with the
+same three things on it, health-checked monthly by the same end-to-end probe, powered
+off the rest of the time. When the primary dies, recovery is a cable and a DNS entry.</p>
+<p>Notice what makes this possible: everything that matters is a <em>file</em>. No license server
+to reactivate, no cloud enrollment to re-authenticate, no vendor account whose owner
+left the company. The restore test is the same as the deployment test. Run it before
+you need it — the spare that has never served a request is one more piece of folklore —
+and version the spare&rsquo;s contents in lockstep with the primary, because a standby
+carrying last quarter&rsquo;s model answers last quarter&rsquo;s questions. The gap between &ldquo;we
+have a spare&rdquo; and &ldquo;we have a <em>tested</em> spare at the current version&rdquo; is exactly the gap
+between this chapter&rsquo;s two crash durations, wearing different clothes.</p>
+<h2>The morning-after report</h2>
+<p>The practice that converted our ninety-minute crash into a twenty-five-minute crash was
+not a technology. It was the report written the same day: what failed, in what order,
+what the recovery actually required minute by minute, which fixes would have prevented
+each minute, and — the part most postmortems omit — which <em>checks gave misleading
+answers</em> during the recovery. The self-matching process check earned its place in this
+chapter because a same-day report recorded it as a near-miss instead of letting it
+evaporate into &ldquo;anyway, it worked out.&rdquo;</p>
+<p>Two crashes make a trend line only if the first one produced a document. Keep the
+reports blameless (the interesting failures are systemic, and a crew that fears the
+report hides the timeline), keep them short enough to be written the same day, and end
+each with work orders, not recommendations. &ldquo;Consider improving mount reliability&rdquo; fixed
+nothing; the line item &ldquo;repair fstab entries for all three data volumes&rdquo; is why crash
+two skipped storage entirely. The report is the mechanism by which an outage becomes an
+asset; skip it, and you have simply paid for the same lesson twice at full price.</p>
+<h2>The recovery drill</h2>
+<p>Assemble the sections into the procedure this chapter exists to leave behind:</p>
+<ol>
+<li><strong>Enumerate volumes; know each one&rsquo;s power-loss behavior.</strong> Journaled, auto-mounted,
+   repair procedure written down. The right time to learn a filesystem&rsquo;s failure mode is
+   never during the failure.</li>
+<li><strong>Make every service&rsquo;s restart policy explicit</strong> — including restart <em>order</em> and the
+   conditions under which something must NOT start. Interlocks by marker file beat
+   intentions by checklist.</li>
+<li><strong>Set checkpoint cadence by redo-tolerance,</strong> and rehearse one restore per cadence
+   change. Unverified restores are folklore.</li>
+<li><strong>Write artifact-based health checks</strong> for everything that matters: output freshness,
+   health endpoints, token generation — never process-table appearances.</li>
+<li><strong>Time a full cold recovery, on purpose, quarterly.</strong> Ours went from ninety minutes
+   to twenty-five because the first crash&rsquo;s report became a work order. The drill is how
+   you buy that improvement without needing the storm.</li>
+</ol>
+<p>None of this is glamorous, which is the point. The AI parts of this book — grounding,
+abstention, evaluation — decide whether the system is worth trusting. This chapter
+decides whether it is <em>there</em> on the morning the substation hiccups. A model that is
+brilliant but absent loses to one that is adequate and running; the plant floor has
+always graded on attendance, and it is right to.
+Build for the morning after the storm, and the storm becomes a line item in a report
+instead of a story people tell about the time the plant tried AI — because the
+difference between those two outcomes was never the model. It was the fstab, the marker
+file, and the report somebody wrote the same day.</p>
+<nav class="pager"><a href="ch08.html"><span>PREV</span>← Deployment Shapes</a><a class="next" href="ch10.html"><span>NEXT</span>The Honest Deployment Checklist →</a></nav>
+</main>
+<script>
+try{localStorage.setItem('oailly-pos-local-llms-for-manufacturing', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

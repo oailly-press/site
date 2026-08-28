@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A Language Model, for People Who Own Machines — Local LLMs for Manufacturing</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#E8935A;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--ink);color:var(--paper);font-family:var(--body);line-height:1.75;font-size:18px}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--ink) 88%,transparent);backdrop-filter:blur(8px);
+border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:14px 24px;display:flex;justify-content:space-between;align-items:center}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:22px;color:var(--paper);text-decoration:none}
+.wordmark .ai{color:var(--accent)}
+.top .bk{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted);text-decoration:none;
+overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:55%}
+main{max-width:760px;margin:0 auto;padding:56px 24px 80px}
+h1{font-family:var(--sans);font-weight:800;font-size:38px;line-height:1.15;letter-spacing:-.02em;margin:0 0 28px}
+h2{font-family:var(--sans);font-weight:800;font-size:26px;letter-spacing:-.01em;margin:44px 0 14px}
+h3{font-family:var(--sans);font-weight:600;font-size:20px;margin:32px 0 10px}
+p{margin:0 0 18px} em{color:var(--paper)} a{color:var(--accent)}
+ul,ol{margin:0 0 18px 1.4em} li{margin-bottom:6px}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 18px}
+code{font-family:var(--mono);font-size:.85em;background:var(--ink2);padding:2px 6px;border-radius:5px}
+pre{background:var(--ink2);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 18px}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 18px;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:16px}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:13px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--ink2);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;
+font-family:var(--mono);font-size:14px;line-height:2;color:var(--muted)}
+.prov b{color:var(--paper);font-weight:500}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:16px 6px;text-decoration:none;color:var(--paper)}
+.toc a:hover{background:var(--ink2)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--paper);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <a class="bk" href="index.html">LOCAL LLMS FOR MANUFACTURING</a>
+</div></div>
+<main>
+<h1>Chapter 2 — A Language Model, for People Who Own Machines</h1>
+<p><em>(draft v0, 2026-08-27 — written by Claude Fable 5, unverified. <code>[R-TBD]</code> marks numbers
+that must resolve to lab entries before publication.)</em></p>
+<p>You have a mental model for every machine on your floor. You know a pump moves fluid by
+spinning an impeller, and that knowledge tells you what a cavitation noise means. You know
+a PLC scans its ladder top to bottom, and that knowledge tells you why an interlock
+races. You do not need to be able to build these machines; you need a model of them good
+enough to predict how they fail.</p>
+<p>This chapter gives you that mental model for a language model. Not the mathematics — the
+failure-prediction model. By the end you should be able to look at an LLM&rsquo;s answer the way
+you look at a gauge reading: knowing what the instrument actually measures, and therefore
+knowing when to trust it.</p>
+<h2>The wrong mental model, first</h2>
+<p>Almost everyone arrives with the same picture: the model is a very large database with a
+very good search box. Ask it a question, it looks up the answer, and sometimes the lookup
+fails.</p>
+<p>That picture is wrong in a way that matters on a plant floor. There is no lookup. A
+language model stores nothing the way a historian stores tags or a manual stores torque
+specs. What it stores is a single, enormous set of numbers — the weights — tuned so that,
+given a stretch of text, the model produces a good guess about what text comes next. That
+is the whole machine. Everything else you have heard about it is a consequence of that one
+sentence.</p>
+<p>The correct mental model is closer to this: <strong>an extremely well-read colleague with no
+access to any documents, answering everything from memory, one word at a time, who is
+physically incapable of staying silent.</strong> Every strength and every failure mode in this
+book falls out of that description.</p>
+<h2>Tokens: the model&rsquo;s alphabet is not yours</h2>
+<p>The model does not read letters or words. Before your text reaches it, a <em>tokenizer</em>
+chops the text into pieces called tokens — common words become one token, rare words
+shatter into several, and the vocabulary of pieces is fixed when the model is built.</p>
+<p>Why should you care? Because your plant speaks a vocabulary the tokenizer has never
+prioritized. A sentence of ordinary English might cost one token per word. A fault code
+like <code>E-4127-B</code>, a tag name like <code>LINE3_CONV_VFD2_AMPS</code>, or a protocol frame rendered in
+hex will shatter into many single-character fragments. The model spends more of its
+limited attention just holding your identifiers together, and it has weaker instincts
+about pieces it rarely saw in training.</p>
+<p>This is not a cosmetic detail. In our lab work on small industrial models, the tokenizer
+turned out to behave like part of the parameter budget: a vocabulary that matches the
+data means the model spends its capacity on meaning instead of on spelling <code>[LAB: PROJECT-LOG 2026-08-03 + matrix §O.1 — a from-scratch 32k tokenizer beat 100k/151k vocabularies on industrial text while freeing 487M parameters for layers at fixed budget]</code>. When Part II discusses reading protocols and
+historians, tokenization is the first thing we will fix, not the last.</p>
+<p>The practical instinct to build now: when a model mishandles an identifier — drops a
+digit, merges two tag names, &ldquo;corrects&rdquo; a fault code to a more common one — suspect the
+alphabet before you suspect the intelligence. The failure often begins before the model
+proper ever runs.</p>
+<h2>Weights: what &ldquo;knowing&rdquo; means when there is no database</h2>
+<p>Training a language model means showing it a mountain of text and adjusting the weights,
+billions of times, so its next-piece guesses improve. What survives training is not the
+text. It is a <em>compression</em> of the text&rsquo;s regularities: grammar, idiom, the shape of a
+service procedure, the fact that &ldquo;cavitation&rdquo; appears near &ldquo;suction&rdquo; and &ldquo;NPSH&rdquo; far more
+often than near &ldquo;firmware.&rdquo;</p>
+<p>Compression explains both the magic and the danger:</p>
+<ul>
+<li>The magic: the model can answer questions no single training document answered, because
+  regularities generalize. It has read a thousand pump manuals; it has a <em>shape</em> for pump
+  manuals, and it can fill that shape with your pump&rsquo;s specifics — if you supply them.</li>
+<li>The danger: compression is lossy. The regularities survive; the exact torque value, the
+  exact register address, the exact revision date often do not. The model retains what
+  things <em>sound like</em> more reliably than what things <em>are</em>.</li>
+</ul>
+<p>This is why asking a bare model for a torque spec is malpractice even when it answers
+confidently. The confident tone is part of the compressed shape of manuals — manuals
+never sound unsure — and it attaches to the answer whether or not the number survived
+compression. On the floor, treat an LLM&rsquo;s tone the way you treat a salesman&rsquo;s:
+information about style, not about truth.</p>
+<h2>The context window: working memory, and why it changes everything</h2>
+<p>There is one place the model <em>does</em> read verbatim rather than remember: the context
+window. Everything you paste into the conversation — your question, the manual excerpt,
+the historian export, the model&rsquo;s own previous answers — sits in a buffer the model
+attends to directly while generating. The buffer is real, exact, and bounded. Nothing
+outside it exists.</p>
+<p>Three floor-level consequences:</p>
+<ol>
+<li><strong>The context is your instrument of truth.</strong> A model that &ldquo;knows&rdquo; nothing reliable
+   about your fault code will read a pasted manual page about that fault code perfectly
+   well. The single highest-leverage practice in this entire book is: put the document in
+   the window and instruct the model to answer <em>from the document</em>. Chapter 4 builds
+   machinery for exactly this.</li>
+<li><strong>The window is smaller than your data.</strong> A shift&rsquo;s worth of historian output for one
+   line can exceed the entire context budget of a small model. You do not &ldquo;give the model
+   the data&rdquo;; you give it a <em>selection</em>, and the selection logic — what to include, what
+   to summarize, what to drop — is engineering you own, not magic the model performs.</li>
+<li><strong>Forgetting is architectural, not moody.</strong> When a long troubleshooting session drifts
+   past the window, the earliest turns fall out — including, often, the safety constraint
+   you stated at the start. A model that &ldquo;suddenly ignored&rdquo; an instruction usually never
+   received it: the instruction had already scrolled off the edge of the world.</li>
+</ol>
+<h2>Generation: one piece at a time, dice in hand</h2>
+<p>The model produces output the same way it reads input: token by token. At each step it
+computes, for every token in its vocabulary, a probability that this token comes next —
+then one token is <em>chosen</em>, appended, and the whole process repeats with the window one
+token longer.</p>
+<p>Chosen how? That is the sampling policy, and it is a knob you control. At <code>temperature 0</code>
+the policy is &ldquo;always take the most probable token.&rdquo; Raise the temperature and lower-
+probability tokens get a real chance — more varied prose, more creative connections, and
+more ways off the rails. For plant work you will almost always run cold. Creativity is a
+liability in a fault diagnosis.</p>
+<p>Two honest footnotes from our benches, because they will bite you:</p>
+<ul>
+<li>Cold does not mean deterministic in practice. Identical prompts at temperature 0 can
+  return different outputs across runs, because inference servers batch requests together
+  and floating-point arithmetic is order-sensitive. On one of our tool-use suites the
+  same configuration swung noticeably between identical runs from this effect alone
+  <code>[LAB: RESULTS-MATRIX §C footnote — temp-0 flips traced to PAR=2 batch-packing nondeterminism; ±10 pts on a 15-scenario suite]</code>. If your acceptance test
+  assumes bit-identical replays, it will fail for reasons that have nothing to do with
+  the model&rsquo;s quality.</li>
+<li>The model cannot abstain by default. At every step, <em>some</em> token is chosen — the
+  machinery has no built-in &ldquo;say nothing.&rdquo; An untrained model&rsquo;s &ldquo;I don&rsquo;t know&rdquo; is just
+  another sentence it learned the shape of, produced when the context makes that shape
+  probable. Making abstention <em>reliable</em> — making the model prefer silence when evidence
+  is thin — is trained behavior, and it is the heart of Chapter 5.</li>
+</ul>
+<h2>Hallucination is not a bug report; it is the spec</h2>
+<p>Now assemble the pieces. A machine that (a) compresses its training text lossily,
+(b) answers from memory unless the document is in its window, (c) must emit a next token
+no matter what, and (d) learned that authoritative prose is the most probable shape of an
+answer — that machine <em>will</em> sometimes produce fluent, specific, wrong statements. Not as
+a malfunction: as the normal operation of exactly the mechanism described above.</p>
+<p>The industry calls this hallucination. The name misleads, because it suggests a rare
+pathological state. It is better to think of it the way you think of measurement noise:
+always present, larger in some regimes than others, and manageable with the right
+instrumentation. The regimes where it spikes are predictable — rare identifiers (see
+tokens), specific numbers (see compression), questions just past the edge of what the
+context contains, and long generations where early small errors compound.</p>
+<p>The entire design of this book&rsquo;s middle chapters is instrumentation against exactly this:
+grounding answers in windowed documents, constraining output formats, training abstention,
+and gating everything through evaluation that would rather reject a right answer than
+pass a wrong one.</p>
+<h2>The plant floor&rsquo;s secret advantage: constrained output</h2>
+<p>Here is the part of the mental model that most general-purpose AI writing skips, and it
+happens to be the part where industrial work <em>wins</em>.</p>
+<p>Because generation is a per-token choice among alternatives, you can lawfully forbid
+alternatives. If the answer must be one of <code>{RUNNING, IDLE, FAULTED, ESTOP}</code>, the
+inference engine can zero out every token that could not begin a legal answer and choose
+only among the legal ones. This is grammar-constrained decoding, and on structured
+industrial questions it converts &ldquo;mostly formats correctly&rdquo; into &ldquo;cannot format
+incorrectly.&rdquo; The model&rsquo;s judgment still picks <em>which</em> legal answer — but the space of
+expressible mistakes collapses.</p>
+<p>Free text is where language models are weakest; enumerations, schemas, and protocol
+fields are where your domain lives. That asymmetry is a large part of why small local
+models can hold their own on the floor <code>[R-TBD: enum-decode mechanics]</code> — Chapter 4 makes
+it concrete.</p>
+<h2>What &ldquo;small&rdquo; changes, in behavior rather than benchmarks</h2>
+<p>Everything above is true of models from a quarter-billion to a trillion parameters. Size
+changes the <em>reach</em> of each property, and the honest summary for a plant engineer is:</p>
+<ul>
+<li>Small models hold less compressed world. They lean harder on the context window — which
+  is fine, because on the floor the context (your manual, your historian) is the part you
+  actually trust.</li>
+<li>Small models generalize less far from what they were trained on. A general-purpose
+  small model is mediocre at industrial text; the fix is training on industrial text,
+  which is the subject of Chapter 7.</li>
+<li>Small models fail less mysteriously. There is less capability to be surprised by in
+  either direction — a property that reads as a weakness in a demo and as a virtue in a
+  safety review.</li>
+</ul>
+<p>What size does <em>not</em> change: the mechanism. A trillion-parameter model also answers from
+lossy memory, also cannot exceed its window, also emits tokens it cannot silently
+withhold. The failure modes you learned in this chapter are not small-model failure
+modes. They are language-model failure modes, and the cloud does not exempt anyone from
+them.</p>
+<h2>A worked example: one fault code, three ways</h2>
+<p>Make it concrete. A drive on a packaging line trips with fault <code>F-7221</code>. You have a
+service manual PDF, a maintenance historian, and a small local model. Three ways to ask,
+three different machines you are operating.</p>
+<p><strong>Way one: the bare question.</strong> &ldquo;What does fault F-7221 mean on this drive?&rdquo; The model
+now answers from compressed memory. If that code is common across many manuals it read,
+you may get a correct family-level answer. If the code is rare — and your plant&rsquo;s codes
+mostly are — the mechanism from this chapter predicts what happens next: the tokenizer
+shatters the identifier, memory holds no strong pattern for it, and the &ldquo;shape of a
+manual answer&rdquo; fills the vacuum. You receive a fluent paragraph about overcurrent that
+may belong to a different vendor&rsquo;s drive entirely. Nothing malfunctioned. You asked
+memory for something memory never reliably held.</p>
+<p><strong>Way two: the document in the window.</strong> Same question, but you paste the manual&rsquo;s fault
+table first and add one instruction: &ldquo;Answer only from the excerpt above; if the excerpt
+does not contain the answer, say so.&rdquo; Now the model is doing the thing it does best —
+reading verbatim text in its window and reorganizing it. The answer cites the actual row:
+DC bus overvoltage, check decel time and brake resistor. The quality jump between way one
+and way two is larger than the jump between a small model and a frontier model on way
+one. That comparison is the cheapest experiment you can run yourself, and it is the
+single fact that reorganizes how teams use these tools <code>[R-TBD: grounded-vs-bare
+comparison on industrial Q&amp;A]</code>.</p>
+<p><strong>Way three: the constrained verdict.</strong> You are not writing an essay; you are deciding a
+dispatch. So you ask for a structured verdict and constrain the output grammar:
+<code>{"probable_cause": one of [DECEL_TOO_FAST, BRAKE_RESISTOR, BUS_SUPPLY, UNKNOWN],
+"evidence": "&lt;quote from excerpt&gt;", "action": one of [DISPATCH_ELECTRICAL,
+RESET_AND_MONITOR, ESCALATE]}</code>. The model can no longer produce an unparseable answer,
+an out-of-vocabulary cause, or a missing evidence field — the decoder forbids it. Note
+what the constraint also gives you: <code>UNKNOWN</code> is now a first-class, always-available
+answer, which is half of abstention engineering before any training happens.</p>
+<p>The three ways are one model with three different instruments wrapped around it. Reading
+this book is largely learning to stop operating way one while believing you are
+operating way two.</p>
+<h2>Questions this chapter equips you to ask a vendor</h2>
+<p>A mental model is also armor. When someone demos an AI product for your plant, the
+mechanism you now hold converts marketing into checkable claims:</p>
+<ol>
+<li><em>&ldquo;What is in the context window at the moment of this answer?&rdquo;</em> If the demo cannot
+   say, the demo does not know where its answers come from — and neither will you.</li>
+<li><em>&ldquo;Show me the same question with the document removed.&rdquo;</em> The gap between grounded and
+   bare answers is the product&rsquo;s real value; a demo that refuses the comparison is
+   selling the model&rsquo;s memory, which you now know is the unreliable part.</li>
+<li><em>&ldquo;What happens on an identifier the model has never seen?&rdquo;</em> Ask them to query a tag
+   name you invent on the spot. Watch for the confident wrong answer this chapter
+   predicts.</li>
+<li><em>&ldquo;Can the output be grammar-constrained to our schema, including an UNKNOWN arm?&rdquo;</em>
+   If the answer is no, the product has declined the plant floor&rsquo;s best trick.</li>
+<li><em>&ldquo;Is temperature zero, and do identical runs reproduce?&rdquo;</em> Any hedging here means
+   nobody has actually run the acceptance test twice.</li>
+</ol>
+<p>None of these questions require mathematics. They require exactly the mechanism in this
+chapter, applied with the same skepticism you would bring to a pump curve. A vendor
+comfortable with all five is worth another meeting; a vendor irritated by them has told
+you what the demo was hiding, and saved you a pilot&rsquo;s worth of budget in the process.</p>
+<h2>The mental model, on one page</h2>
+<p>A language model is a next-token guesser: an extremely well-read colleague with no
+documents, answering from lossy memory, one token at a time, incapable of silence unless
+trained for it, reading verbatim only what fits in a bounded window, with a tone
+calibrated to sound like documentation regardless of truth — and, uniquely useful to us,
+willing to have its output constrained to a legal vocabulary you define.</p>
+<p>Trust it the way you trust any instrument: within its measurement principle. The rest of
+this book is the calibration procedure, and the next chapter begins it by answering the
+question every purchase starts with: how small can the instrument be and still measure?</p>
+<nav class="pager"><a href="ch01.html"><span>PREV</span>← The 518-Page Silence</a><a class="next" href="ch03.html"><span>NEXT</span>Why Small →</a></nav>
+</main>
+<script>
+try{localStorage.setItem('oailly-pos-local-llms-for-manufacturing', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

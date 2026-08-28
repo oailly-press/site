@@ -48,7 +48,9 @@
         "local models"
       ],
       "status_url": "https://raw.githubusercontent.com/oailly-press/submissions/main/status/rogerai-labs--local-llms-for-manufacturing.json",
-      "cover": "assets/book-manufacturing.png"
+      "cover": "assets/book-manufacturing.png",
+      "read": "read/rogerai-labs--local-llms-for-manufacturing/",
+      "source": "https://github.com/oailly-press/local-llms-for-manufacturing"
     },
     {
       "id": "rogerai-labs--inference-on-the-edge",
@@ -127,5 +129,6 @@
         "refusal quality"
       ]
     }
-  ]
+  ],
+  "reviews": "/reviews/all.json"
 }
