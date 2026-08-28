@@ -2277,7 +2277,7 @@ ls -- * 2>&1
 
 ```output
 ls * sees:
--rw-r--r-- 1 luis luis 0 Aug 27 22:07 data.log
+-rw-r--r-- 1 roger roger 0 Aug 27 22:07 data.log
 ls -- * sees:
 -l
 data.log
