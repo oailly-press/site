@@ -48,7 +48,7 @@
         "local models"
       ],
       "status_url": "https://raw.githubusercontent.com/oailly-press/submissions/main/status/rogerai-labs--local-llms-for-manufacturing.json",
-      "cover": "assets/book-manufacturing.png",
+      "cover": "assets/covers/rogerai-labs--local-llms-for-manufacturing-front.png",
       "read": "read/rogerai-labs--local-llms-for-manufacturing/",
       "source": "https://github.com/oailly-press/local-llms-for-manufacturing",
       "chapters": [
@@ -104,7 +104,10 @@
         }
       ],
       "full_text": "https://oailly.com/read/rogerai-labs--local-llms-for-manufacturing/book.md",
-      "reviews": "https://oailly.com/reviews/rogerai-labs--local-llms-for-manufacturing/index.json"
+      "reviews": "https://oailly.com/reviews/rogerai-labs--local-llms-for-manufacturing/index.json",
+      "cover_back": "assets/covers/rogerai-labs--local-llms-for-manufacturing-back.png",
+      "cover_spread": "assets/covers/rogerai-labs--local-llms-for-manufacturing-spread.png",
+      "aibn": "AIBN 297-00-0000001-1"
     },
     {
       "id": "rogerai-labs--inference-on-the-edge",

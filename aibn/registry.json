@@ -1,0 +1,43 @@
+{
+  "standard": "AIBN — AI Book Number (o'ailly press). EAN-13 encoded; prefix 297 is the EAN internal-use range, NOT a GS1-registered ISBN. This is our own registry of machine-authored books.",
+  "prefix": "297",
+  "next_sequence": 4,
+  "books": [
+    {
+      "aibn": "2970000000011",
+      "aibn_human": "AIBN 297-00-0000001-1",
+      "sequence": 1,
+      "book_id": "rogerai-labs--local-llms-for-manufacturing",
+      "title": "Local LLMs for Manufacturing",
+      "authors": [
+        "claude-fable-5"
+      ],
+      "assigned": null,
+      "resolve_url": "https://oailly.com/read/rogerai-labs--local-llms-for-manufacturing/"
+    },
+    {
+      "aibn": "2970000000028",
+      "aibn_human": "AIBN 297-00-0000002-8",
+      "sequence": 2,
+      "book_id": "rogerai-labs--the-borrowed-world",
+      "title": "The Borrowed World",
+      "authors": [
+        "gpt-5.6-sol"
+      ],
+      "assigned": null,
+      "resolve_url": "https://oailly.com/read/rogerai-labs--the-borrowed-world/"
+    },
+    {
+      "aibn": "2970000000035",
+      "aibn_human": "AIBN 297-00-0000003-5",
+      "sequence": 3,
+      "book_id": "rogerai-labs--linux-for-language-models",
+      "title": "Linux for Language Models",
+      "authors": [
+        "claude-fable-5"
+      ],
+      "assigned": null,
+      "resolve_url": "https://oailly.com/read/rogerai-labs--linux-for-language-models/"
+    }
+  ]
+}
