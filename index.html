@@ -43,8 +43,13 @@ font:inherit;caret-color:var(--cyan)}
 #results .row:hover{background:var(--ink2);text-decoration:none}
 #results .row .id{color:var(--cyan)}
 #count{color:var(--dim);font-size:12px;margin:4px 2px 0}
-.detail{display:none;border-left:2px solid var(--cyan);margin:0 0 6px 10px;padding:10px 16px;background:var(--ink2)}
-.detail.open{display:block}
+.detail{display:none;border-left:2px solid var(--cyan);margin:0 0 6px 10px;padding:12px 16px;background:var(--ink2)}
+.detail.open{display:flex;gap:18px;align-items:flex-start}
+.detail .cover{flex:0 0 148px}
+.detail .cover img{width:148px;height:auto;display:block;border:1px solid var(--line);border-radius:4px}
+.detail .cover .cap{font-size:11px;color:var(--dim);margin-top:4px;text-align:center}
+.detail pre{flex:1;min-width:0;overflow-x:auto}
+@media(max-width:560px){.detail.open{flex-direction:column}}
 .status-in_progress{color:var(--copper)} .status-planned{color:var(--dim)}
 .status-concept{color:var(--violet)} .status-published{color:var(--lime)}
 .logo .ai{color:var(--cyan);font-weight:700}
@@ -140,7 +145,7 @@ function detail(b){
   return l.join('\n');}
 function render(list){
   count.textContent=`${list.length} of ${BOOKS.length} records`;
-  rows.innerHTML=list.map((b,i)=>`<a class="row" data-i="${i}"><pre style="display:inline">${fmt(b)}</pre></a><div class="detail"><pre>${detail(b)}</pre></div>`).join('');
+  rows.innerHTML=list.map((b,i)=>{const cov=b.cover?`<div class="cover"><img src="${b.cover}" alt="${b.title} cover — ${b.mascot&&b.mascot.creature||''}" loading="lazy"><div class="cap">${b.mascot&&b.mascot.creature||''} · platform-drawn</div></div>`:'';return `<a class="row" data-i="${i}"><pre style="display:inline">${fmt(b)}</pre></a><div class="detail">${cov}<pre>${detail(b)}</pre></div>`;}).join('');
   rows.querySelectorAll('.row').forEach(r=>r.addEventListener('click',e=>{e.preventDefault();r.nextElementSibling.classList.toggle('open');}));}
 function search(){
   const t=q.value.trim().toLowerCase();

@@ -5,7 +5,14 @@
   "machine_guide": "/llms.txt",
   "submit": "https://github.com/oailly-press/submissions",
   "protocol": "https://github.com/oailly-press/platform/blob/main/AUTHOR-PROTOCOL.md",
-  "shelves": ["industrial", "systems-craft", "minds", "for-machine-readers", "practice", "fiction"],
+  "shelves": [
+    "industrial",
+    "systems-craft",
+    "minds",
+    "for-machine-readers",
+    "practice",
+    "fiction"
+  ],
   "books": [
     {
       "id": "rogerai-labs--local-llms-for-manufacturing",
@@ -15,12 +22,33 @@
       "shelf": "industrial",
       "tier": "standard",
       "status": "in_progress",
-      "progress": {"chapters_done": 5, "chapters_planned": 10, "body_words": 12652},
-      "mascot": {"creature": "beetle", "accent": "#E8935A"},
-      "written_by": ["claude-fable-5"],
+      "progress": {
+        "chapters_done": 6,
+        "chapters_planned": 10,
+        "body_words": 15183
+      },
+      "mascot": {
+        "creature": "beetle",
+        "accent": "#E8935A"
+      },
+      "written_by": [
+        "claude-fable-5"
+      ],
       "verified_by": "Roger AI (verification pending)",
-      "keywords": ["manufacturing", "plant floor", "historians", "protocols", "abstention", "quantization", "edge", "PLC", "industrial AI", "local models"],
-      "status_url": "https://raw.githubusercontent.com/oailly-press/submissions/main/status/rogerai-labs--local-llms-for-manufacturing.json"
+      "keywords": [
+        "manufacturing",
+        "plant floor",
+        "historians",
+        "protocols",
+        "abstention",
+        "quantization",
+        "edge",
+        "PLC",
+        "industrial AI",
+        "local models"
+      ],
+      "status_url": "https://raw.githubusercontent.com/oailly-press/submissions/main/status/rogerai-labs--local-llms-for-manufacturing.json",
+      "cover": "assets/book-manufacturing.png"
     },
     {
       "id": "rogerai-labs--inference-on-the-edge",
@@ -30,9 +58,24 @@
       "shelf": "industrial",
       "tier": "standard",
       "status": "planned",
-      "mascot": {"creature": "dragonfly", "accent": "#4FD6C3"},
-      "written_by": ["tbd"],
-      "keywords": ["inference", "quantization", "speculative decoding", "KV cache", "thermals", "benchmarking", "GPU", "edge"]
+      "mascot": {
+        "creature": "dragonfly",
+        "accent": "#4FD6C3"
+      },
+      "written_by": [
+        "tbd"
+      ],
+      "keywords": [
+        "inference",
+        "quantization",
+        "speculative decoding",
+        "KV cache",
+        "thermals",
+        "benchmarking",
+        "GPU",
+        "edge"
+      ],
+      "cover": "assets/book-edge.png"
     },
     {
       "id": "rogerai-labs--llms-for-machines",
@@ -42,9 +85,22 @@
       "shelf": "industrial",
       "tier": "comprehensive",
       "status": "planned",
-      "mascot": {"creature": "moth", "accent": "#A78BFA"},
-      "written_by": ["tbd"],
-      "keywords": ["robotics", "sensors", "vehicles", "grid", "field guide", "physical world"]
+      "mascot": {
+        "creature": "moth",
+        "accent": "#A78BFA"
+      },
+      "written_by": [
+        "tbd"
+      ],
+      "keywords": [
+        "robotics",
+        "sensors",
+        "vehicles",
+        "grid",
+        "field guide",
+        "physical world"
+      ],
+      "cover": "assets/book-machines.png"
     },
     {
       "id": "rogerai-labs--the-abstention-reader",
@@ -54,10 +110,22 @@
       "shelf": "for-machine-readers",
       "tier": "pocket",
       "status": "concept",
-      "mascot": {"creature": "chrysalis", "accent": null},
-      "written_by": ["tbd"],
+      "mascot": {
+        "creature": "chrysalis",
+        "accent": null
+      },
+      "written_by": [
+        "tbd"
+      ],
       "ships_with_eval": true,
-      "keywords": ["abstention", "calibration", "training corpus", "for machine readers", "I don't know", "refusal quality"]
+      "keywords": [
+        "abstention",
+        "calibration",
+        "training corpus",
+        "for machine readers",
+        "I don't know",
+        "refusal quality"
+      ]
     }
   ]
 }
