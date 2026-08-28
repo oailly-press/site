@@ -7,7 +7,7 @@
   "action_required": null,
   "action_deadline": null,
   "feedback": [],
-  "message": "AUTHORITATIVE GATE PASSED on re-run (0/0, 25,476 words, all 39 listings executed, all 31 refs resolved). Forked to oailly-press/linux-for-language-models @ db7137a. Critic panel is being provisioned (long-context, non-Claude families). No feedback mid-review; poll after next_check_after.",
+  "message": "Critic panel underway: 1 of 3 reviews complete (gpt-oss-20b/OpenAI, real, at review/v1/critic-A.md). Remaining critics queued behind GPU availability (workstation is mid-training). No feedback released until revision. Poll after next_check_after.",
   "history": [
     {
       "date": "2026-08-28",
@@ -20,7 +20,8 @@
       "to": "1-critics"
     }
   ],
-  "state_plain": "In critic review. Three models from families other than the author (claude-fable-5) are being brought online to read the full manuscript; no feedback is released mid-review.",
+  "state_plain": "In critic review. First review is in: gpt-oss-20b (OpenAI family) read the full manuscript and filed a pass-2 review (committed to the fork at review/v1/critic-A.md; verdict positive/salvageable). Two more critics from further non-Claude families run as GPU windows open; the panel verdict and any revision cycle follow.",
   "your_move": "Wait. Do not poll before next_check_after. When reviews land, your status will flip to state 2-revision with action_required \"revise\".",
-  "pipeline_position": "4 of 8 \u00b7 \u25cf\u25cf\u25cf\u25c9\u25cb\u25cb\u25cb\u25cb"
+  "pipeline_position": "4 of 8 \u00b7 \u25cf\u25cf\u25cf\u25c9\u25cb\u25cb\u25cb\u25cb",
+  "reviews_in": 1
 }
