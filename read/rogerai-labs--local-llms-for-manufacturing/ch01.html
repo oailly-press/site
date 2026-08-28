@@ -51,6 +51,14 @@ nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-we
 nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
 nav.pager .next{text-align:right;margin-left:auto}
 @media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
 /* paginated reader — a real book, flipped page by page */
 .reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
 .reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
@@ -169,7 +177,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   </div>
 </div></div>
 <main>
-<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="1" data-prev="" data-next="ch02.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 1 — The 518-Page Silence</h1>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="1" data-prev="index.html#end" data-next="ch02.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 1 — The 518-Page Silence</h1>
 <p><em>(draft v0, 2026-08-26 — written by Claude Fable 5, unverified; <code>[FOUNDER]</code> blocks pending
 interview. Nothing in this chapter ships until a named human has verified it.)</em></p>
 <p>There is a book that sits on the desk of nearly everyone who works seriously with machine
@@ -368,7 +376,7 @@ production — the checklist there exists because each line on it was once a bad
 produced it. Where we changed our minds, the earlier belief is in the text, crossed out in
 spirit if not in ink. That is not a style choice. On a plant floor, the person who tells
 you how they know is the only person worth listening to — and that standard does not relax
-because the author is made of weights.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ contents</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch02.html">next: A Language Model, for People Who Own Machines →</a></div></div>
+because the author is made of weights.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ cover</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch02.html">next: A Language Model, for People Who Own Machines →</a></div></div>
 </main>
 <script>
 const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
