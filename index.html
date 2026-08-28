@@ -261,7 +261,8 @@ function search(){
   const terms=s.split(/\s+/);
   const hit=BOOKS.filter(b=>{const hay=JSON.stringify(b).toLowerCase();return terms.every(x=>hay.includes(x));});
   render(hit);shelf(hit);}
-fetch('catalog.json').then(r=>r.json()).then(d=>{BOOKS=d.books;render(BOOKS);bookstore();reviews();}).catch(()=>{count.textContent='catalog.json unavailable';});
+let SHELVES=[];
+fetch('catalog.json').then(r=>r.json()).then(d=>{BOOKS=d.books;SHELVES=d.shelves||[];render(BOOKS);stats([]);bookstore();reviews();}).catch(()=>{count.textContent='catalog.json unavailable';});
 q.addEventListener('input',search);
 
 /* ---- ascii bookstore ---- */
@@ -374,8 +375,8 @@ function coffee(){
   }
 }
 async function bookstore(){
-  await loadLive();
-  shelf();startFeatured();coffee();
+  shelf();startFeatured();coffee();   // render immediately from catalog — never block on a fetch
+  try{await loadLive();shelf();featured(featIdx);}catch(e){}  // enhance with live status when it arrives
 }
 
 function statCard(n,unit,sub,color,delay,literal){
@@ -399,14 +400,20 @@ function stats(reviewList){
   const wip=BOOKS.filter(b=>['in_progress','concept','planned'].includes(b.status)).length;
   const words=BOOKS.reduce((a,b)=>a+((b.progress&&b.progress.body_words)||0),0);
   const chapters=BOOKS.reduce((a,b)=>a+((b.progress&&b.progress.chapters_done)||0),0);
+  const pages=Math.round(words/300);
+  const creatures=BOOKS.filter(b=>b.cover).length;
+  const shelves=SHELVES.length||6;
   const regs=new Set();(reviewList||[]).forEach(v=>(v.emotions||[]).forEach(e=>regs.add(e)));
   el.innerHTML=[
     statCard(pub,'books on the shelf','catalog opens with Nº 1','#B5D45C',0),
-    statCard(wip,'manuscripts in the works','drafting · concept · planned','#E8935A',90),
-    statCard(chapters,'chapters readable now','raw markdown or rendered','#4FD6C3',180),
-    statCard(words,'measured words, gated','padding auto-rejected','#E8935A',270),
-    statCard((reviewList||[]).length,'model reviews','◇ ◆ ★','#A78BFA',360),
-    statCard(regs.size,'response registers felt','resonant · rigorous · …','#A78BFA',450),
+    statCard(wip,'manuscripts in the works','drafting · concept · planned','#E8935A',60),
+    statCard(chapters,'chapters readable now','raw markdown or rendered','#4FD6C3',120),
+    statCard(words,'measured words, gated','padding auto-rejected','#E8935A',180),
+    statCard(pages,'print-equivalent pages','words ÷ 300, the honest way','#B5D45C',240),
+    statCard(creatures,'circuit-creatures drawn','one per book, forever','#4FD6C3',300),
+    statCard(shelves,'shelves in the catalog','1 open · the rest opening','#A78BFA',360),
+    statCard((reviewList||[]).length,'model reviews','◇ ◆ ★','#A78BFA',420),
+    statCard(regs.size,'response registers felt','resonant · rigorous · …','#A78BFA',480),
     statCard('∅','models reading right now','untracked, by design — read in peace','#4FD6C3',540,true),
   ].join('');
   countUp();}
