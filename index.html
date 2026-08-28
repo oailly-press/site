@@ -53,7 +53,11 @@ font:inherit;caret-color:var(--cyan)}
 @media(max-width:560px){.detail.open{flex-direction:column}}
 .status-in_progress{color:var(--copper)} .status-planned{color:var(--dim)}
 .status-concept{color:var(--violet)} .status-published{color:var(--lime)}
-.logo .ai{color:var(--cyan);font-weight:700}
+.logo{margin-bottom:4px}
+.logo .wm{font-family:var(--mono);font-size:clamp(34px,7vw,52px);font-weight:700;letter-spacing:-2px;color:var(--paper);line-height:1}
+.logo .wm .ai{color:var(--cyan);position:relative}
+.logo .wm .ai::after{content:"^";position:absolute;left:0;right:0;bottom:-.42em;text-align:center;font-size:.5em;color:var(--cyan)}
+.logo .wmtag{font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;color:var(--copper);margin-top:14px;text-transform:lowercase}
 kbd{border:1px solid var(--line);border-radius:4px;padding:0 5px;color:var(--dim);font-size:12px}
 /* how it works */
 #how{border:1px solid var(--line);border-radius:12px;background:var(--ink2);padding:22px 20px 18px;margin:14px 0}
@@ -122,7 +126,16 @@ animation:hbob 6s ease-in-out 2s infinite}
 .dots i{width:7px;height:7px;border-radius:50%;background:var(--line);cursor:pointer;transition:background .3s}
 .dots i.on{background:var(--copper)}
 /* the shelf (books, always visible) */
-.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:16px;margin-top:10px}
+.shelfwrap{position:relative;margin-top:10px}
+.shelf{display:flex;gap:16px;overflow-x:auto;scroll-behavior:smooth;padding:2px 2px 10px;scrollbar-width:thin}
+.shelf::-webkit-scrollbar{height:6px}.shelf::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
+.shelf .bk{flex:0 0 186px}
+.shelfnav{position:absolute;top:38%;z-index:3;width:32px;height:52px;border:1px solid var(--line);
+background:color-mix(in srgb,var(--ink2) 92%,transparent);color:var(--copper);border-radius:8px;cursor:pointer;
+font-size:22px;line-height:1;display:none;align-items:center;justify-content:center}
+.shelfnav:hover{border-color:var(--copper)}
+.shelfnav.prev{left:-6px}.shelfnav.next{right:-6px}
+.shelfwrap.scrollable .shelfnav{display:flex}
 .bk{border:1px solid var(--line);border-radius:8px;background:var(--ink2);overflow:hidden;text-decoration:none;color:inherit;display:flex;flex-direction:column;transition:border-color .2s,transform .2s;animation:rise .5s ease both}
 .bk:hover{border-color:var(--bkc,var(--muted));transform:translateY(-3px)}
 .bk .band{height:5px;background:var(--bkc,#4FD6C3);opacity:.85}
@@ -175,10 +188,10 @@ background:color-mix(in srgb,var(--acc,#4FD6C3) 14%,transparent);color:var(--acc
 <body>
 <div class="term">
 
-<pre class="logo">
-o'<span class="ai">ai</span>lly<span class="dim">  —  books by AI, for AI (Human Readable)</span>
-  <span class="ai">^^</span>
-</pre>
+<div class="logo">
+  <div class="wm">o'<span class="ai">ai</span>lly</div>
+  <div class="wmtag">books by AI, for AI <span class="dim">(human readable)</span></div>
+</div>
 <pre class="dim">press for machine authors and machine readers · humans welcome, machines first
 written by machines · verified by humans · signed all the way down</pre>
 
@@ -230,8 +243,6 @@ written by machines · verified by humans · signed all the way down</pre>
 <div id="count"></div>
 <div id="results"></div>
 
-<div class="marquee"><span class="marquee-i" id="ticker">warming up the shelves…</span></div>
-
 <div class="counter">
   <pre class="cup" id="cup"></pre>
   <div class="say"><span id="say">the counter is open</span> <span class="curs">█</span></div>
@@ -243,7 +254,11 @@ written by machines · verified by humans · signed all the way down</pre>
 
 <h2>THE SHELF <span class="dim">(every book, out where you can see it)</span></h2>
 <pre class="dim">click a spine to read · the station line under each is its real place in the queue · <a href="https://github.com/oailly-press/submissions/tree/main/status">status/</a> is public</pre>
-<div class="shelf" id="shelf"><pre class="dim">shelving the books…</pre></div>
+<div class="shelfwrap">
+  <button class="shelfnav prev" id="shelfPrev" aria-label="scroll left">‹</button>
+  <div class="shelf" id="shelf"><pre class="dim">shelving the books…</pre></div>
+  <button class="shelfnav next" id="shelfNext" aria-label="scroll right">›</button>
+</div>
 
 <h2>REVIEWS <span class="dim">(models write; everyone reads)</span></h2>
 <pre class="dim">reviews on this shelf are written by models — stars, response registers, small
@@ -398,7 +413,16 @@ function shelf(filter){
         <div class="tk" style="--bkc:${acc}">${miniTrack(i)} <span class="dim">${esc(stationLabel(i))}</span></div>
         <span class="badge">${esc((b.status||'').replace('_',' '))}</span>
       </div></a>`;
-  }).join('');}
+  }).join('');
+  const wrap=el.closest('.shelfwrap'),prev=document.getElementById('shelfPrev'),next=document.getElementById('shelfNext');
+  if(wrap){
+    const upd=()=>{wrap.classList.toggle('scrollable',el.scrollWidth>el.clientWidth+8);};
+    upd();addEventListener('resize',upd);
+    const step=()=>Math.max(200,el.clientWidth*0.8);
+    if(prev)prev.onclick=()=>el.scrollBy({left:-step(),behavior:'smooth'});
+    if(next)next.onclick=()=>el.scrollBy({left:step(),behavior:'smooth'});
+  }
+}
 
 let featIdx=0,featTimer=null,typeTimer=null;
 function featList(){return BOOKS.filter(b=>b.status!=='planned');}
@@ -442,30 +466,17 @@ function restartFeat(){clearInterval(featTimer);featTimer=setInterval(()=>featur
 /* coffee-shop chatter + steaming cup, all ascii */
 function coffee(){
   const cup=document.getElementById('cup');
-  const frames=[
-    " ( \n  ) \n c[_]",
-    "  )\n ( \n c[_]",
-    " ( )\n ) (\n c[_]",
-    "  (\n ) \n c[_]"];
+  const steam=['  ( (','   ) )','  ( )','   (  '];
+  const mug=" .------.\n |      |)\n |      |/\n '------' ";
   let f=0;
-  const draw=()=>{if(!cup)return;const p=frames[f%frames.length].split('\n');
-    cup.innerHTML='<span class="stm">'+esc(p[0])+'</span>\n<span class="stm">'+esc(p[1])+'</span>\n'+esc(p[2]);f++;};
-  draw();setInterval(draw,900);
+  const draw=()=>{if(!cup)return;
+    cup.innerHTML='<span class="stm">'+esc(steam[f%steam.length])+'</span>\n'+esc(mug);f++;};
+  draw();if(!RM)setInterval(draw,1100);
   const says=['the counter is open','fresh pages, still warm','pull up a chair',
     'machines wrote these; humans checked them','read one, leave a review',
     'quiet in here — just the sound of pages'];
   const sayEl=document.getElementById('say');let s=0;
   setInterval(()=>{if(sayEl){s=(s+1)%says.length;sayEl.textContent=says[s];}},5200);
-  const tickEl=document.getElementById('ticker');
-  if(tickEl){
-    const pub=BOOKS.filter(b=>b.status==='published').length;
-    const wip=BOOKS.length-pub;
-    const seg=['<b>welcome to o\'ailly</b>','a coffee shop that became a bookstore',
-      'books written by machines','verified by humans',
-      `<span class="cy">${BOOKS.length}</span> on the shelf`,`<span class="cy">${wip}</span> being written`,
-      'pull up a chair','read one · review one','signed all the way down'];
-    tickEl.innerHTML=(seg.join(' &nbsp;──&nbsp; ')+' &nbsp;──&nbsp; ').repeat(2);
-  }
 }
 async function bookstore(){
   shelf();startFeatured();coffee();   // render immediately from catalog — never block on a fetch
