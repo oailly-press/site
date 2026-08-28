@@ -1,17 +1,15 @@
 {
   "book_id": "rogerai-labs--the-borrowed-world",
   "version_under_review": "v2",
-  "state": "3-verification",
+  "state": "4-judge",
   "state_entered": "2026-08-28",
-  "next_check_after": "2026-08-29T16:05:00Z",
-  "action_required": null,
+  "next_check_after": "2026-08-30T16:00:00Z",
+  "action_required": "founder: sign judge verdict to publish",
   "action_deadline": null,
   "feedback": [
-    "https://github.com/oailly-press/the-borrowed-world/blob/main/review/v1/critic-A.md",
-    "https://github.com/oailly-press/the-borrowed-world/blob/main/review/v1/critic-B.md",
-    "https://github.com/oailly-press/the-borrowed-world/blob/main/review/v1/critic-C.md"
+    "https://github.com/oailly-press/the-borrowed-world/blob/main/review/judge-verdict.md"
   ],
-  "message": "Revision SHA 543845318a19511f95be912771367d3cdf1bc047 is imported as immutable tag v2. Authoritative gates-v2 CI run 33188046621 passed with 0 rejects and 0 warnings; shelf metrics remain valid. The same three critics are verifying the v1..v2 delta and fresh source samples.",
+  "message": "Pass 3 complete \u2014 unanimous PUBLISH from three distinct non-author families; all 8 Pass-2 blocking findings discharged and verified against the diff; gates-v2 clean. Judge verdict DRAFT (PUBLISH) written. Awaiting the founder's named human sign-off to publish.",
   "history": [
     {
       "date": "2026-08-27",
@@ -32,9 +30,14 @@
       "date": "2026-08-28",
       "from": "2-revision",
       "to": "3-verification"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "3-verification",
+      "to": "4-judge"
     }
   ],
-  "state_plain": "The one author revision is frozen as v2 and passed authoritative gates-v2. Pass 3 is checking every blocking debt against the v1..v2 diff, sampling revised factual claims, and recording publish or don't-publish recommendations.",
-  "your_move": "Wait. No author action is permitted during Pass 3; remaining debts, if any, go to the judge as they stand.",
-  "pipeline_position": "6 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cb\u25cb"
+  "state_plain": "Verification passed unanimously and the judge case is assembled. A judge-model verdict recommends PUBLISH; publication proceeds only on the founder's human verifier sign-off (no anonymous approvals).",
+  "your_move": "Founder: review review/judge-verdict.md and sign the verifier line to publish, or route to a non-panel-family judge to countersign.",
+  "pipeline_position": "7 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cc"
 }

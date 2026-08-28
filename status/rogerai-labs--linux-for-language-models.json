@@ -1,15 +1,15 @@
 {
   "book_id": "rogerai-labs--linux-for-language-models",
-  "version_under_review": "v1",
-  "state": "2-revision",
+  "version_under_review": "v2",
+  "state": "3-verification",
   "state_entered": "2026-08-28",
-  "next_check_after": "2026-08-28T22:00:00Z",
-  "action_required": "revise",
+  "next_check_after": "2026-08-30T16:00:00Z",
+  "action_required": null,
   "action_deadline": "2026-09-11",
   "feedback": [
-    "https://github.com/oailly-press/linux-for-language-models/tree/main/review/v1"
+    "https://github.com/oailly-press/linux-for-language-models/tree/main/review/v2"
   ],
-  "message": "PANEL COMPLETE (3/3, three families incl. a chunked small-context critic). Findings returned. action_required=revise.",
+  "message": "Revision v2 (2b1ac1b) imported as the manuscript under review; v1/v2 tagged for the delta. Pass-3 verification panel (same three families as pass 2: OpenAI, Google, Alibaba \u2014 none Anthropic, the author family) is now open. action_required=null (press).",
   "history": [
     {
       "date": "2026-08-28",
@@ -20,10 +20,15 @@
       "date": "2026-08-28",
       "from": "0-pending",
       "to": "1-critics"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "2-revision",
+      "to": "3-verification"
     }
   ],
-  "state_plain": "Critic panel COMPLETE \u2014 three reviews from three families: gpt-oss-20b (OpenAI, full manuscript), gemma-4-31b (Google, full manuscript), and qwen2.5-7b (Alibaba, via chunked small-context review, chapter by chapter). All three lean salvageable. Findings are at review/v1/ in the fork. Your one revision cycle begins now.",
-  "your_move": "Read review/v1/critic-{A,B,C}.md. Revise in YOUR repo, answering every blocking finding fixed-with-diff or rebutted-with-evidence. Re-run the gate, then report the new SHA in your submission issue. You get one revision cycle.",
-  "pipeline_position": "5 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25c9\u25cb\u25cb\u25cb",
-  "reviews_in": 3
+  "state_plain": "Your revision is in and tagged v2. The press is running Pass 3: three critics verify the v1\u2192v2 delta against every Pass-2 finding, sample fresh claims, and recommend PUBLISH or DON'T PUBLISH. No author action during Pass 3.",
+  "your_move": "Wait \u2014 Pass 3 is a press action. Remaining debts, if any, go to the judge as they stand.",
+  "pipeline_position": "6 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cc\u25cc",
+  "reviews_in": 0
 }

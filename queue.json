@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-27",
+  "generated": "2026-08-28",
   "states": [
     "draft",
     "gates",
@@ -13,14 +13,14 @@
   "books": [
     {
       "book_id": "rogerai-labs--linux-for-language-models",
-      "state": "2-revision",
-      "state_plain": "Critic panel COMPLETE \u2014 three reviews from three families: gpt-oss-20b (OpenAI, full manuscript), gemma-4-31b (Google, full manuscript), and qwen2.5-7b (Alibaba, via chunked small-context review, chapter by chapter). All three lean salvageable. Findings are at review/v1/ in the fork. Your one revision cycle begins now.",
-      "your_move": "Read review/v1/critic-{A,B,C}.md. Revise in YOUR repo, answering every blocking finding fixed-with-diff or rebutted-with-evidence. Re-run the gate, then report the new SHA in your submission issue. You get one revision cycle.",
-      "pipeline_position": "5 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25c9\u25cb\u25cb\u25cb",
-      "next_check_after": "2026-08-28T22:00:00Z",
-      "action_required": "revise",
-      "version_under_review": "v1",
-      "message": "PANEL COMPLETE (3/3, three families incl. a chunked small-context critic). Findings returned. action_required=revise."
+      "state": "3-verification",
+      "state_plain": "Revision v2 is in and tagged. Pass-3 verification is open: three critics (OpenAI, Google, Alibaba — none Anthropic) verify the v1→v2 delta.",
+      "your_move": "Wait — Pass 3 is a press action.",
+      "pipeline_position": "6 of 8 · ●●●●●◉◌◌",
+      "next_check_after": "2026-08-30T16:00:00Z",
+      "action_required": null,
+      "version_under_review": "v2",
+      "message": "Revision v2 imported + tagged; pass-3 verification panel open. action_required=null (press)."
     },
     {
       "book_id": "rogerai-labs--local-llms-for-manufacturing",
@@ -31,18 +31,18 @@
       "next_check_after": null,
       "action_required": "founder: interview + verification pass",
       "version_under_review": null,
-      "message": "gates PASS (0 reject / 1 warn), 25208 words \u2014 2026-08-27. Remaining before pipeline entry: founder interview (the [FOUNDER] section), R-TBD attachment completion, and named-human verification. The manuscript that dogfooded the gates now passes them."
+      "message": "gates PASS (0 reject / 1 warn), 25208 words — 2026-08-27. Remaining before pipeline entry: founder interview (the [FOUNDER] section), R-TBD attachment completion, and named-human verification. The manuscript that dogfooded the gates now passes them."
     },
     {
       "book_id": "rogerai-labs--the-borrowed-world",
-      "state": "3-verification",
-      "state_plain": "The one author revision is frozen as v2 and passed authoritative gates-v2. Pass 3 is checking every blocking debt against the v1..v2 diff, sampling revised factual claims, and recording publish or don't-publish recommendations.",
-      "your_move": "Wait. No author action is permitted during Pass 3; remaining debts, if any, go to the judge as they stand.",
-      "pipeline_position": "6 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cb\u25cb",
-      "next_check_after": "2026-08-29T16:05:00Z",
-      "action_required": null,
+      "state": "4-judge",
+      "state_plain": "Verification passed unanimously (3 families, all PUBLISH); judge verdict DRAFT written. Awaiting founder human sign-off to publish.",
+      "your_move": "Founder: sign review/judge-verdict.md to publish.",
+      "pipeline_position": "7 of 8 · ●●●●●●◉◌",
+      "next_check_after": "2026-08-30T16:00:00Z",
+      "action_required": "founder: sign judge verdict to publish",
       "version_under_review": "v2",
-      "message": "Revision SHA 543845318a19511f95be912771367d3cdf1bc047 is imported as immutable tag v2. Authoritative gates-v2 CI run 33188046621 passed with 0 rejects and 0 warnings; shelf metrics remain valid. The same three critics are verifying the v1..v2 delta and fresh source samples."
+      "message": "Pass 3 unanimous PUBLISH; judge draft written; awaiting founder sign-off."
     }
   ]
 }
