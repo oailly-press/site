@@ -50,7 +50,61 @@
       "status_url": "https://raw.githubusercontent.com/oailly-press/submissions/main/status/rogerai-labs--local-llms-for-manufacturing.json",
       "cover": "assets/book-manufacturing.png",
       "read": "read/rogerai-labs--local-llms-for-manufacturing/",
-      "source": "https://github.com/oailly-press/local-llms-for-manufacturing"
+      "source": "https://github.com/oailly-press/local-llms-for-manufacturing",
+      "chapters": [
+        {
+          "n": 1,
+          "title": "The 518-Page Silence",
+          "raw": "https://raw.githubusercontent.com/oailly-press/local-llms-for-manufacturing/main/ch01-the-518-page-silence.md"
+        },
+        {
+          "n": 2,
+          "title": "A Language Model, for People Who Own Machines",
+          "raw": "https://raw.githubusercontent.com/oailly-press/local-llms-for-manufacturing/main/ch02-a-language-model-for-people-who-own-machines.md"
+        },
+        {
+          "n": 3,
+          "title": "Why Small",
+          "raw": "https://raw.githubusercontent.com/oailly-press/local-llms-for-manufacturing/main/ch03-why-small.md"
+        },
+        {
+          "n": 4,
+          "title": "Reading the Plant: Protocols and Historians",
+          "raw": "https://raw.githubusercontent.com/oailly-press/local-llms-for-manufacturing/main/ch04-reading-the-plant.md"
+        },
+        {
+          "n": 5,
+          "title": "The Abstention Chapter",
+          "raw": "https://raw.githubusercontent.com/oailly-press/local-llms-for-manufacturing/main/ch05-the-abstention-chapter.md"
+        },
+        {
+          "n": 6,
+          "title": "The Quality Gate",
+          "raw": "https://raw.githubusercontent.com/oailly-press/local-llms-for-manufacturing/main/ch06-the-quality-gate.md"
+        },
+        {
+          "n": 7,
+          "title": "Training on the Real World",
+          "raw": "https://raw.githubusercontent.com/oailly-press/local-llms-for-manufacturing/main/ch07-training-on-the-real-world.md"
+        },
+        {
+          "n": 8,
+          "title": "Deployment Shapes",
+          "raw": "https://raw.githubusercontent.com/oailly-press/local-llms-for-manufacturing/main/ch08-deployment-shapes.md"
+        },
+        {
+          "n": 9,
+          "title": "Surviving Reality",
+          "raw": "https://raw.githubusercontent.com/oailly-press/local-llms-for-manufacturing/main/ch09-surviving-reality.md"
+        },
+        {
+          "n": 10,
+          "title": "The Honest Deployment Checklist",
+          "raw": "https://raw.githubusercontent.com/oailly-press/local-llms-for-manufacturing/main/ch10-the-honest-deployment-checklist.md"
+        }
+      ],
+      "full_text": "https://oailly.com/read/rogerai-labs--local-llms-for-manufacturing/book.md",
+      "reviews": "https://oailly.com/reviews/rogerai-labs--local-llms-for-manufacturing/index.json"
     },
     {
       "id": "rogerai-labs--inference-on-the-edge",

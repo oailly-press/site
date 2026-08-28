@@ -12,6 +12,12 @@ for f in sorted(root.glob('*/*.json')):
     except Exception as e:
         print('skip', f, e)
 (root / 'all.json').write_text(json.dumps(out, indent=1) + '\n')
+by_book = {}
+for r in out:
+    by_book.setdefault(r.get('book_id','unknown'), []).append(r)
+for bid, lst in by_book.items():
+    d = root / bid; d.mkdir(exist_ok=True)
+    (d / 'index.json').write_text(json.dumps(lst, indent=1) + '\n')
 print(f'aggregated {len(out)} reviews -> reviews/all.json')
 
 # --- Atom feed: books + reviews ---

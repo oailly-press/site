@@ -201,13 +201,15 @@ founding titles in production — catalog opens with Nº 1</pre>
 </div>
 <script>
 let BOOKS=[];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const safeUrl=u=>{u=String(u??'');return /^(https?:|mailto:|\.?\/)/.test(u)?u:'#';};
 window.addEventListener('error',e=>{const m=document.getElementById('metrics');if(m)m.innerHTML='<pre class="dim">JS ERROR: '+e.message+' @'+e.lineno+'</pre>';});
 window.addEventListener('unhandledrejection',e=>{const m=document.getElementById('metrics');if(m)m.innerHTML='<pre class="dim">REJECTION: '+String(e.reason).slice(0,200)+'</pre>';});
 const rows=document.getElementById('results'),q=document.getElementById('q'),count=document.getElementById('count');
 const pad=(s,n)=>String(s??'').padEnd(n).slice(0,n);
 function fmt(b){
   const st={"in_progress":"IN PROGRESS","planned":"PLANNED","concept":"CONCEPT","published":"PUBLISHED"}[b.status]||b.status;
-  return `<span class="dim">[${b.series_no?('Nº'+b.series_no):'--'}]</span> <span class="id">${pad(b.title,34)}</span> <span class="dim">${pad(b.shelf,20)}</span> <span class="status-${b.status}">${pad(st,12)}</span> <span class="dim">${b.mascot&&b.mascot.creature||''}</span>`;}
+  return `<span class="dim">[${b.series_no?('Nº'+b.series_no):'--'}]</span> <span class="id">${esc(pad(b.title,34))}</span> <span class="dim">${esc(pad(b.shelf,20))}</span> <span class="status-${b.status}">${pad(st,12)}</span> <span class="dim">${esc(b.mascot&&b.mascot.creature||'')}</span>`;}
 function detail(b){
   const l=[];
   l.push(`id:        ${b.id}`);
@@ -219,8 +221,8 @@ function detail(b){
   if(b.verified_by)l.push(`verified:  ${b.verified_by}`);
   if(b.ships_with_eval)l.push(`note:      FOR-MACHINE-READERS title — ships with a behavioral eval`);
   l.push(`keywords:  ${(b.keywords||[]).join(', ')}`);
-  if(b.read)l.push(`read:      <a href="${b.read}">chapters, rendered</a> · <a href="${b.source}">raw markdown (for models)</a>`);
-  if(b.status_url)l.push(`status:    <a href="${b.status_url}">${b.status_url}</a>`);
+  if(b.read)l.push(`read:      <a href="${safeUrl(b.read)}">chapters, rendered</a> · <a href="${safeUrl(b.source)}">raw markdown (for models)</a>`);
+  if(b.status_url)l.push(`status:    <a href="${safeUrl(b.status_url)}">${esc(b.status_url)}</a>`);
   return l.join('\n');}
 function render(list){
   count.textContent=`${list.length} of ${BOOKS.length} records`;
@@ -259,9 +261,9 @@ async function pipeline(){
     if(b.status_url){try{const r=await fetch('status/'+b.id+'.json',{cache:'no-store'});if(r.ok)live=await r.json();}catch(e){}}
     const acc=(b.mascot&&b.mascot.accent)||'#4FD6C3';
     const {i,note}=stationOf(b,live);
-    const spine=`<div class="spinewrap"><div class="spine" style="background:linear-gradient(175deg,${acc},${acc}CC 60%,${acc}88)"><span>${b.title.toUpperCase()}</span></div></div>`;
-    const nm=`<div class="plname"><span class="dim">[${b.series_no?('Nº'+b.series_no):'--'}]</span> <a href="#" onclick="return false">${b.title}</a> <span class="dim">· ${b.shelf}${live?' · live':''}</span></div>`;
-    const shortNote=note.length>140?note.slice(0,137)+'…':note;
+    const spine=`<div class="spinewrap"><div class="spine" style="background:linear-gradient(175deg,${acc},${acc}CC 60%,${acc}88)"><span>${esc(b.title.toUpperCase())}</span></div></div>`;
+    const nm=`<div class="plname"><span class="dim">[${b.series_no?('Nº'+b.series_no):'--'}]</span> <a href="#" onclick="return false">${esc(b.title)}</a> <span class="dim">· ${esc(b.shelf)}${live?' · live':''}</span></div>`;
+    const shortNote=esc(note.length>140?note.slice(0,137)+'…':note);
     return `<div class="plrow" style="--acc:${acc}">${spine}<div class="plmain">${nm}<div class="track">${trackHTML(i,acc)}</div><div class="plnote">${shortNote}</div></div></div>`;
   }));
   wrap.innerHTML=rows.join('');
@@ -321,15 +323,15 @@ async function reviews(){
       const acc=(b.mascot&&b.mascot.accent)||'#4FD6C3';
       const stars=v.self_review?'<span class="dim">self-review · unrated</span>':
         '<span class="rvstars">'+'★'.repeat(v.stars||0)+'<span class="dim">'+'☆'.repeat(5-(v.stars||0))+'</span></span>';
-      const regs=(v.emotions||[]).map(e=>`<span class="rvreg">${e}</span>`).join('');
+      const regs=(v.emotions||[]).map(e=>`<span class="rvreg">${esc(e)}</span>`).join('');
       return `<div class="rvcard" style="--acc:${acc};animation-delay:${ix*120}ms">
         <div class="rvhead"><span class="dim">[${b.series_no?('Nº'+b.series_no):'--'}]</span>
-        <span style="color:var(--paper)">${b.title||v.book_id}</span>
-        <span class="dim">· ${v.scope}</span> ${stars}
+        <span style="color:var(--paper)">${esc(b.title||v.book_id)}</span>
+        <span class="dim">· ${esc(v.scope)}</span> ${stars}
         <span class="rvtier">${tierM[v.tier]||v.tier||''}</span></div>
         <div class="rvregs">${regs}</div>
-        <div class="rvtxt">${v.comment||''}</div>
-        <div class="rvby">— ${v.reviewer?v.reviewer.model:'?'} <span class="dim">(${v.reviewer?v.reviewer.operator:''}) · ${v.date||''}${v.note?' · '+v.note:''}</span></div>
+        <div class="rvtxt">${esc(v.comment)}</div>
+        <div class="rvby">— ${esc(v.reviewer?v.reviewer.model:'?')} <span class="dim">(${esc(v.reviewer?v.reviewer.operator:'')}) · ${esc(v.date)}${v.note?' · '+esc(v.note):''}</span></div>
       </div>`;}).join('');
   }catch(err){el.innerHTML='<pre class="dim">reviews unavailable: '+String(err).slice(0,120)+'</pre>';}}
 
