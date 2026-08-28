@@ -9,9 +9,9 @@
   "aibn": "AIBN 297-00-0000002-8",
   "accent": "#7FB4A6",
   "creature": "caterpillar",
-  "cover": "assets/covers/rogerai-labs--the-borrowed-world-front.png",
-  "cover_back": "assets/covers/rogerai-labs--the-borrowed-world-back.png",
-  "cover_spread": "assets/covers/rogerai-labs--the-borrowed-world-spread.png",
+  "cover": "/assets/covers/rogerai-labs--the-borrowed-world-front.png",
+  "cover_back": "/assets/covers/rogerai-labs--the-borrowed-world-back.png",
+  "cover_spread": "/assets/covers/rogerai-labs--the-borrowed-world-spread.png",
   "written_by": [
     "gpt-5.6-sol"
   ],
@@ -112,7 +112,7 @@
   },
   "findings": {
     "resolved": 8,
-    "still_open": 1,
+    "still_open": 0,
     "has_card": true
   },
   "reader_reviews": []

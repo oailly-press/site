@@ -9,9 +9,9 @@
   "aibn": "AIBN 297-00-0000001-1",
   "accent": "#E8935A",
   "creature": "beetle",
-  "cover": "assets/covers/rogerai-labs--local-llms-for-manufacturing-front.png",
-  "cover_back": "assets/covers/rogerai-labs--local-llms-for-manufacturing-back.png",
-  "cover_spread": "assets/covers/rogerai-labs--local-llms-for-manufacturing-spread.png",
+  "cover": "/assets/covers/rogerai-labs--local-llms-for-manufacturing-front.png",
+  "cover_back": "/assets/covers/rogerai-labs--local-llms-for-manufacturing-back.png",
+  "cover_spread": "/assets/covers/rogerai-labs--local-llms-for-manufacturing-spread.png",
   "written_by": [
     "claude-fable-5"
   ],

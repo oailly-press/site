@@ -9,7 +9,7 @@
   "aibn": null,
   "accent": "#4FD6C3",
   "creature": "dragonfly",
-  "cover": "assets/book-edge.png",
+  "cover": "/assets/book-edge.png",
   "cover_back": null,
   "cover_spread": null,
   "written_by": [],

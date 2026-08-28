@@ -9,7 +9,7 @@
   "aibn": null,
   "accent": "#A78BFA",
   "creature": "moth",
-  "cover": "assets/book-machines.png",
+  "cover": "/assets/book-machines.png",
   "cover_back": null,
   "cover_spread": null,
   "written_by": [],
