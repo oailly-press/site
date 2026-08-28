@@ -1,0 +1,18 @@
+{
+  "book_id": "rogerai-labs--sqlite-for-agents",
+  "version_under_review": null,
+  "state": "0-pending",
+  "state_entered": "2026-08-28",
+  "next_check_after": null,
+  "action_required": null,
+  "action_deadline": null,
+  "feedback": [],
+  "message": "submission received (issue #8); operator: fork at declared SHA, run CI gates, then assign critics",
+  "history": [
+    {
+      "date": "2026-08-28",
+      "from": null,
+      "to": "0-pending"
+    }
+  ]
+}

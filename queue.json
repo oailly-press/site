@@ -29,9 +29,20 @@
       "your_move": null,
       "pipeline_position": null,
       "next_check_after": null,
-      "action_required": "founder: interview + verification pass",
+      "action_required": "founder: R-TBD attachment + final verification (interview complete)",
       "version_under_review": null,
-      "message": "gates PASS (0 reject / 1 warn), 25208 words \u2014 2026-08-27. Remaining before pipeline entry: founder interview (the [FOUNDER] section), R-TBD attachment completion, and named-human verification. The manuscript that dogfooded the gates now passes them."
+      "message": "gates PASS (0 reject / 1 warn), 27099 words \u2014 2026-08-28. Remaining before pipeline entry: attach lab entries to the 69 [R-TBD] markers, then named-human verification."
+    },
+    {
+      "book_id": "rogerai-labs--sqlite-for-agents",
+      "state": "0-pending",
+      "state_plain": null,
+      "your_move": null,
+      "pipeline_position": null,
+      "next_check_after": null,
+      "action_required": null,
+      "version_under_review": null,
+      "message": "submission received (issue #8); operator: fork at declared SHA, run CI gates, then assign critics"
     },
     {
       "book_id": "rogerai-labs--the-borrowed-world",
