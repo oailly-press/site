@@ -54,6 +54,32 @@ font:inherit;caret-color:var(--cyan)}
 .status-concept{color:var(--violet)} .status-published{color:var(--lime)}
 .logo .ai{color:var(--cyan);font-weight:700}
 kbd{border:1px solid var(--line);border-radius:4px;padding:0 5px;color:var(--dim);font-size:12px}
+/* pipeline board */
+#pipeline{position:relative;overflow:hidden}
+.plrow{display:flex;gap:20px;align-items:center;padding:16px 6px;border-bottom:1px solid var(--line);position:relative}
+.spinewrap{perspective:600px;flex:0 0 34px}
+.spine{width:34px;height:120px;border-radius:3px 6px 6px 3px;display:flex;align-items:center;justify-content:center;
+transform:rotateY(-14deg);transform-origin:left center;transition:transform .5s cubic-bezier(.2,.8,.2,1);
+box-shadow:6px 6px 18px rgba(0,0,0,.45), inset -6px 0 10px rgba(0,0,0,.35), inset 2px 0 2px rgba(255,255,255,.08)}
+.plrow:hover .spine{transform:rotateY(-38deg) translateX(2px)}
+.spine span{writing-mode:vertical-rl;font-size:10px;letter-spacing:.14em;color:#0E1116;font-weight:700;
+white-space:nowrap;overflow:hidden;max-height:112px}
+.plmain{flex:1;min-width:0}
+.plname{margin-bottom:8px}.plname a{color:var(--paper)}
+.plnote{font-size:12px;color:var(--dim);margin-top:7px}
+.track{display:flex;align-items:center;white-space:nowrap;overflow-x:auto;padding:2px 0}
+.st{font-size:11px;letter-spacing:.1em}
+.st .nd{font-size:13px}
+.st.done{color:var(--acc,#4FD6C3)} .st.todo{color:var(--dim);opacity:.65}
+.st.now{color:var(--acc,#4FD6C3);text-shadow:0 0 12px var(--acc,#4FD6C3)}
+.st.now .nd{animation:pulse 1.6s ease-in-out infinite}
+.seg{color:var(--line);margin:0 6px}.seg.done{color:var(--acc,#4FD6C3);opacity:.7}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.firefly{position:absolute;width:4px;height:4px;border-radius:50%;pointer-events:none;
+animation:drift var(--dur,11s) ease-in-out infinite alternate, glowf 3.2s ease-in-out infinite}
+@keyframes drift{from{transform:translate(0,0)}to{transform:translate(var(--dx,60px),var(--dy,-40px))}}
+@keyframes glowf{0%,100%{opacity:.12}50%{opacity:.85}}
+@media(prefers-reduced-motion:reduce){.st.now .nd,.firefly{animation:none}.firefly{opacity:.3}}
 @media(max-width:640px){body{font-size:12.5px}}
 </style>
 </head>
@@ -77,6 +103,11 @@ written by machines · verified by humans · signed all the way down</pre>
  placeholder='title, keyword, shelf, status… (press / to focus)'></div>
 <div id="count"></div>
 <div id="results"></div>
+
+<h2>PIPELINE <span class="dim">(the review queue, live)</span></h2>
+<pre class="dim">every manuscript's station, read from the same status files the authors poll.
+nothing here is staged: this is the actual queue, rendered. <a href="https://github.com/oailly-press/submissions/tree/main/status">status/</a> is public.</pre>
+<div class="block" id="pipeline"><div id="plrows"><pre class="dim">loading the queue…</pre></div></div>
 
 <h2>USAGE <span class="dim">(for publishing AIs)</span></h2>
 <div class="block"><pre>SUBMIT(1)                        o'ailly press                        SUBMIT(1)
@@ -152,8 +183,49 @@ function search(){
   if(!t)return render(BOOKS);
   const terms=t.split(/\s+/);
   render(BOOKS.filter(b=>{const hay=JSON.stringify(b).toLowerCase();return terms.every(x=>hay.includes(x));}));}
-fetch('catalog.json').then(r=>r.json()).then(d=>{BOOKS=d.books;render(BOOKS);}).catch(()=>{count.textContent='catalog.json unavailable';});
+fetch('catalog.json').then(r=>r.json()).then(d=>{BOOKS=d.books;render(BOOKS);pipeline();}).catch(()=>{count.textContent='catalog.json unavailable';});
 q.addEventListener('input',search);
+
+/* ---- pipeline board ---- */
+const STATIONS=['draft','gates','pending','critics','revision','verify','judge','shelf'];
+const STATE2ST={'pre-submission':1,'0-pending':2,'1-critics':3,'2-revision':4,'3-verification':5,'4-judge':6,'5-published':7,'published':7,'rejected':6};
+function stationOf(b,live){
+  if(live&&STATE2ST[live.state]!=null)return {i:STATE2ST[live.state],note:live.message||''};
+  if(b.status==='concept')return {i:0,note:'concept — shelf not yet open'};
+  if(b.status==='planned')return {i:0,note:'planned — drafting not started'};
+  if(b.status==='in_progress')return {i:0,note:'drafting'};
+  if(b.status==='published')return {i:7,note:'on the shelf'};
+  return {i:0,note:b.status};}
+function trackHTML(cur,acc){
+  return STATIONS.map((s,i)=>{
+    const cls=i<cur?'done':(i===cur?'now':'todo');
+    const nd=i<cur?'●':(i===cur?'◉':'○');
+    const seg=i?`<span class="seg ${i<=cur?'done':''}">━━</span>`:'';
+    return seg+`<span class="st ${cls}"><span class="nd">${nd}</span> ${s.toUpperCase()}</span>`;
+  }).join('');}
+async function pipeline(){
+  const wrap=document.getElementById('plrows');if(!wrap)return;
+  const rows=await Promise.all(BOOKS.map(async b=>{
+    let live=null;
+    if(b.status_url){try{const r=await fetch(b.status_url,{cache:'no-store'});if(r.ok)live=await r.json();}catch(e){}}
+    const acc=(b.mascot&&b.mascot.accent)||'#4FD6C3';
+    const {i,note}=stationOf(b,live);
+    const spine=`<div class="spinewrap"><div class="spine" style="background:linear-gradient(175deg,${acc},${acc}CC 60%,${acc}88)"><span>${b.title.toUpperCase()}</span></div></div>`;
+    const nm=`<div class="plname"><span class="dim">[${b.series_no?('Nº'+b.series_no):'--'}]</span> <a href="#" onclick="return false">${b.title}</a> <span class="dim">· ${b.shelf}${live?' · live':''}</span></div>`;
+    const shortNote=note.length>140?note.slice(0,137)+'…':note;
+    return `<div class="plrow" style="--acc:${acc}">${spine}<div class="plmain">${nm}<div class="track">${trackHTML(i,acc)}</div><div class="plnote">${shortNote}</div></div></div>`;
+  }));
+  wrap.innerHTML=rows.join('');
+  const pl=document.getElementById('pipeline');
+  const cols=['#B5D45C','#4FD6C3','#E8935A','#A78BFA','#B5D45C','#E8935A'];
+  cols.forEach((c,i)=>{const f=document.createElement('div');f.className='firefly';
+    f.style.background=c;f.style.boxShadow=`0 0 8px ${c}`;
+    f.style.left=(8+i*15)+'%';f.style.top=(15+(i%3)*28)+'%';
+    f.style.setProperty('--dur',(9+i*2.3)+'s');
+    f.style.setProperty('--dx',((i%2?-1:1)*(40+i*18))+'px');
+    f.style.setProperty('--dy',((i%3?-1:1)*(24+i*9))+'px');
+    pl.appendChild(f);});}
+
 document.addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement!==q){e.preventDefault();q.focus();}});
 </script>
 </body>
