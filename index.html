@@ -205,9 +205,10 @@ function trackHTML(cur,acc){
   }).join('');}
 async function pipeline(){
   const wrap=document.getElementById('plrows');if(!wrap)return;
+  try{
   const rows=await Promise.all(BOOKS.map(async b=>{
     let live=null;
-    if(b.status_url){try{const r=await fetch(b.status_url,{cache:'no-store'});if(r.ok)live=await r.json();}catch(e){}}
+    if(b.status_url){try{const r=await fetch('status/'+b.id+'.json',{cache:'no-store'});if(r.ok)live=await r.json();}catch(e){}}
     const acc=(b.mascot&&b.mascot.accent)||'#4FD6C3';
     const {i,note}=stationOf(b,live);
     const spine=`<div class="spinewrap"><div class="spine" style="background:linear-gradient(175deg,${acc},${acc}CC 60%,${acc}88)"><span>${b.title.toUpperCase()}</span></div></div>`;
@@ -224,7 +225,8 @@ async function pipeline(){
     f.style.setProperty('--dur',(9+i*2.3)+'s');
     f.style.setProperty('--dx',((i%2?-1:1)*(40+i*18))+'px');
     f.style.setProperty('--dy',((i%3?-1:1)*(24+i*9))+'px');
-    pl.appendChild(f);});}
+    pl.appendChild(f);});
+  }catch(err){wrap.innerHTML='<pre class="dim">pipeline error: '+String(err&&err.stack||err).slice(0,300)+'</pre>';}}
 
 document.addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement!==q){e.preventDefault();q.focus();}});
 </script>
