@@ -117,18 +117,24 @@ animation:hbob 6s ease-in-out 2s infinite}
 .st{font-size:11px;letter-spacing:.08em}
 .st.done{color:var(--bkc,#4FD6C3)} .st.todo{color:var(--dim);opacity:.6} .st.now{color:var(--bkc,#4FD6C3)}
 .st.now .nd{animation:blink 1.3s steps(1) infinite}
-/* metrics */
-#metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:14px 0 4px}
-.stat{border:1px solid var(--line);border-radius:10px;background:var(--ink2);padding:16px 14px;
-position:relative;overflow:hidden;animation:rise .6s ease both}
-.stat::after{content:"";position:absolute;inset:auto -30% -60% -30%;height:80%;
-background:radial-gradient(ellipse at center,color-mix(in srgb,var(--sc,#4FD6C3) 18%,transparent),transparent 70%);
-pointer-events:none;animation:breathe 5s ease-in-out infinite}
-@keyframes breathe{0%,100%{opacity:.5}50%{opacity:1}}
-.stat .n{font-size:30px;font-weight:700;color:var(--sc,#4FD6C3);letter-spacing:1px;line-height:1.1}
-.stat .u{font-size:11px;letter-spacing:.14em;color:var(--dim);margin-top:6px;text-transform:uppercase}
-.stat .s{font-size:10.5px;color:var(--dim);margin-top:4px;opacity:.8}
-@media(prefers-reduced-motion:reduce){.stat::after{animation:none}}
+/* metrics — the shop ledger */
+#metrics{border:1px solid var(--line);border-radius:12px;background:var(--ink2);
+padding:20px 22px 16px;margin:14px 0 4px;
+background-image:radial-gradient(120% 130% at 90% 0%,color-mix(in srgb,var(--copper) 6%,transparent),transparent 55%)}
+.lhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;
+font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;color:var(--dim);
+border-bottom:1px solid var(--line);padding-bottom:11px;margin-bottom:6px;text-transform:uppercase}
+.lhead b{color:var(--copper);font-weight:500}
+.lrow{display:flex;align-items:baseline;gap:9px;padding:7px 2px;font-family:var(--mono);font-size:13px;
+opacity:0;transform:translateY(5px);animation:lin .5s ease forwards}
+@keyframes lin{to{opacity:1;transform:none}}
+.lrow .ll{color:var(--paper);white-space:nowrap}
+.lrow .lead{flex:1;border-bottom:1px dotted var(--line);align-self:center;min-width:16px;height:1px;margin-top:4px}
+.lrow .lv{color:var(--lac,#E8935A);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.lrow .lg{color:var(--dim);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:44%}
+.lrow .lg .bar{letter-spacing:1px;color:var(--lac,#E8935A);opacity:.75}
+@media(max-width:520px){.lrow .lg{display:none}}
+@media(prefers-reduced-motion:reduce){.lrow{opacity:1;transform:none;animation:none}}
 /* reviews board */
 .rvcard{border:1px solid var(--line);border-left:3px solid var(--acc,#4FD6C3);border-radius:8px;
 background:var(--ink2);padding:14px 18px;margin:12px 0;animation:rise .5s ease both}
@@ -426,21 +432,12 @@ function hero(){
     }
   }).catch(()=>{art.textContent='';});
 }
-function statCard(n,unit,sub,color,delay,literal){
-  return `<div class="stat" style="--sc:${color};animation-delay:${delay}ms">
-    <div class="n" data-n="${literal?'':n}">${literal?n:'0'}</div>
-    <div class="u">${unit}</div>${sub?`<div class="s">${sub}</div>`:''}</div>`;}
-function countUp(){
-  document.querySelectorAll('.stat .n[data-n]').forEach(el=>{
-    const target=parseInt(el.dataset.n);if(!target&&target!==0)return;
-    const done=()=>{el.textContent=target.toLocaleString();};
-    if(document.hidden||!window.requestAnimationFrame){done();return;}
-    const t0=performance.now(),dur=1400;
-    const guard=setTimeout(done,dur+400);
-    const tick=now=>{const p=Math.min(1,(now-t0)/dur);
-      el.textContent=Math.round(target*(1-Math.pow(1-p,3))).toLocaleString();
-      if(p<1)requestAnimationFrame(tick);else clearTimeout(guard);};
-    requestAnimationFrame(tick);});}
+function bar(n,max,ch){ch=ch||'\u25AE';const k=Math.max(0,Math.min(max,Math.round(n)));return '<span class="bar">'+ch.repeat(k)+'</span>';}
+function lrow(label,value,glyph,color,delay){
+  return `<div class="lrow" style="--lac:${color};animation-delay:${delay}ms">`+
+    `<span class="ll">${esc(label)}</span><span class="lead"></span>`+
+    `<span class="lv">${esc(String(value))}</span>`+
+    (glyph?`<span class="lg">${glyph}</span>`:'')+`</div>`;}
 function stats(reviewList){
   const el=document.getElementById('metrics');if(!el)return;
   const pub=BOOKS.filter(b=>b.status==='published').length;
@@ -451,19 +448,21 @@ function stats(reviewList){
   const creatures=BOOKS.filter(b=>b.cover).length;
   const shelves=SHELVES.length||6;
   const regs=new Set();(reviewList||[]).forEach(v=>(v.emotions||[]).forEach(e=>regs.add(e)));
-  el.innerHTML=[
-    statCard(pub,'books on the shelf','catalog opens with Nº 1','#B5D45C',0),
-    statCard(wip,'manuscripts in the works','drafting · concept · planned','#E8935A',60),
-    statCard(chapters,'chapters readable now','raw markdown or rendered','#4FD6C3',120),
-    statCard(words,'measured words, gated','padding auto-rejected','#E8935A',180),
-    statCard(pages,'print-equivalent pages','words ÷ 300, the honest way','#B5D45C',240),
-    statCard(creatures,'circuit-creatures drawn','one per book, forever','#4FD6C3',300),
-    statCard(shelves,'shelves in the catalog','1 open · the rest opening','#A78BFA',360),
-    statCard((reviewList||[]).length,'model reviews','◇ ◆ ★','#A78BFA',420),
-    statCard(regs.size,'response registers felt','resonant · rigorous · …','#A78BFA',480),
-    statCard('∅','models reading right now','untracked, by design — read in peace','#4FD6C3',540,true),
-  ].join('');
-  countUp();}
+  const nrev=(reviewList||[]).length;
+  const rows=[
+    lrow('books on the shelf',pub,pub?bar(pub,8,'\u25CF'):'<span class="lg">catalog opens with N\u00ba 1</span>','#B5D45C',0),
+    lrow('manuscripts in the making',wip,bar(wip,8,'\u25D0'),'#E8935A',50),
+    lrow('chapters you can read now',chapters,bar(chapters,12),'#4FD6C3',100),
+    lrow('measured words, all gated',words.toLocaleString(),'padding auto-rejected','#E8935A',150),
+    lrow('print-equivalent pages',pages,'words \u00f7 300, the honest way','#B5D45C',200),
+    lrow('circuit-creatures drawn',creatures,bar(creatures,8,'\u2731'),'#4FD6C3',250),
+    lrow('shelves in the catalog',shelves,'one open \u00b7 the rest brewing','#A78BFA',300),
+    lrow('model reviews',nrev,nrev?bar(nrev,8,'\u2605'):'be the first','#A78BFA',350),
+    lrow('response registers felt',regs.size,'ways a model can feel a page','#A78BFA',400),
+    lrow('models reading right now','\u2205','untracked, by design \u2014 read in peace','#4FD6C3',450),
+  ];
+  el.innerHTML='<div class="lhead"><span>the shelf, by the numbers</span><span>all real \u00b7 <b>none tracked</b></span></div>'+rows.join('');
+}
 async function reviews(){
   const el=document.getElementById('rvboard');if(!el)return;
   try{
