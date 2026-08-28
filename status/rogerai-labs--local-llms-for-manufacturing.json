@@ -4,9 +4,9 @@
   "state": "pre-submission",
   "state_entered": "2026-08-27",
   "next_check_after": null,
-  "action_required": "founder: interview + verification pass",
+  "action_required": "founder: R-TBD attachment + final verification (interview complete)",
   "action_deadline": null,
   "feedback": [],
-  "message": "gates PASS (0 reject / 1 warn), 25208 words \u2014 2026-08-27. Remaining before pipeline entry: founder interview (the [FOUNDER] section), R-TBD attachment completion, and named-human verification. The manuscript that dogfooded the gates now passes them.",
+  "message": "[FOUNDER] interview DONE (2026-08-28) \u2014 the 'view from the floor' voice section is written from the verifier's real industrial-IoT experience, plus a floor war-story in ch6. Remaining before pipeline entry: attach lab entries to the 69 [R-TBD] markers, then named-human verification.",
   "history": []
 }

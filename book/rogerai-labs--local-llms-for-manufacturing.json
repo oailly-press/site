@@ -47,10 +47,10 @@
     "shelf"
   ],
   "pipeline_position": null,
-  "message": "gates PASS (0 reject / 1 warn), 25208 words — 2026-08-27. Remaining before pipeline entry: founder interview (the [FOUNDER] section), R-TBD attachment completion, and named-human verification. The manuscript that dogfooded the gates now passes them.",
+  "message": "[FOUNDER] interview DONE (2026-08-28) — the 'view from the floor' voice section is written from the verifier's real industrial-IoT experience, plus a floor war-story in ch6. Remaining before pipeline entry: attach lab entries to the 69 [R-TBD] markers, then named-human verification.",
   "state_plain": null,
   "your_move": null,
-  "action_required": "founder: interview + verification pass",
+  "action_required": "founder: R-TBD attachment + final verification (interview complete)",
   "history": [],
   "readable": true,
   "read": "/read/rogerai-labs--local-llms-for-manufacturing/",
