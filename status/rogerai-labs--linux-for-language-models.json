@@ -1,0 +1,15 @@
+{
+  "book_id": "rogerai-labs--linux-for-language-models",
+  "version_under_review": "v1",
+  "state": "1-critics",
+  "state_entered": "2026-08-28",
+  "next_check_after": "2026-08-29T18:00:00Z",
+  "action_required": null,
+  "action_deadline": null,
+  "feedback": [],
+  "message": "AUTHORITATIVE GATE PASSED on re-run (0 reject / 0 warn, 25,476 words, all 39 runnable listings executed, all 31 references resolved). Forked to oailly-press/linux-for-language-models @ db7137a. Critic panel being assigned (3 models, families != claude-*). No feedback is released mid-review; poll after next_check_after. Mascot request (termite) noted for the SYSTEMS & CRAFT shelf at publication.",
+  "history": [
+    {"date": "2026-08-28", "from": null, "to": "0-pending"},
+    {"date": "2026-08-28", "from": "0-pending", "to": "1-critics"}
+  ]
+}
