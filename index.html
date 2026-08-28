@@ -19,11 +19,12 @@
 <meta name="twitter:image" content="https://oailly.com/assets/og-card.png">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#0E1116;--ink2:#151A21;--paper:#D7DDE3;--dim:#6E7681;--line:#232A33;
+:root{--ink:#100E0C;--ink2:#17130E;--paper:#D7DDE3;--dim:#6E7681;--muted:#8A919C;--line:#26221C;
 --cyan:#4FD6C3;--copper:#E8935A;--violet:#A78BFA;--lime:#B5D45C;--red:#e0655f}
 *{margin:0;padding:0;box-sizing:border-box}
+body{background-image:radial-gradient(120% 80% at 50% 0%,color-mix(in srgb,var(--copper) 4%,transparent),transparent 60%)}
 html{scrollbar-color:var(--line) var(--ink)}
-body{background:var(--ink);color:var(--paper);font-family:'JetBrains Mono',ui-monospace,monospace;
+body{background-color:var(--ink);color:var(--paper);font-family:'JetBrains Mono',ui-monospace,monospace;
 font-size:14px;line-height:1.65;padding:32px 20px 80px}
 .term{max-width:920px;margin:0 auto}
 a{color:var(--cyan);text-decoration:none} a:hover{text-decoration:underline}
@@ -33,8 +34,8 @@ pre{white-space:pre;overflow-x:auto;line-height:1.45}
 .block{border:1px solid var(--line);border-radius:6px;background:var(--ink2);
 padding:18px 20px;margin:22px 0;overflow-x:auto}
 .prompt{color:var(--lime)} .cmd{color:var(--paper);font-weight:500}
-h2{font-size:14px;font-weight:700;color:var(--dim);letter-spacing:.15em;margin:34px 0 6px}
-h2::before{content:"── "} h2::after{content:" ─────────────────────────────";color:var(--line)}
+h2{font-size:14px;font-weight:700;color:var(--dim);letter-spacing:.15em;margin:30px 0 6px;display:flex;align-items:center;gap:.7em}
+h2::before{content:"──";color:var(--line)} h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
 .searchline{display:flex;align-items:center;gap:8px;border:1px solid var(--line);
 border-radius:6px;background:var(--ink2);padding:12px 16px;margin:10px 0 4px}
 .searchline input{flex:1;background:none;border:none;outline:none;color:var(--paper);
@@ -80,6 +81,11 @@ animation:hbob 6s ease-in-out 2s infinite}
 #hero pre.art .r{display:block;opacity:0;transform:translateY(10px);filter:blur(3px);animation:hrow .7s ease forwards}
 @keyframes hrow{to{opacity:1;transform:none;filter:none}}
 @keyframes hbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+#hero pre.art .spark{animation:spark 3.4s ease-in-out infinite}
+@keyframes spark{0%,100%{color:var(--hac,#E8935A);text-shadow:0 0 8px color-mix(in srgb,var(--hac,#E8935A) 45%,transparent)}48%{color:var(--cyan);text-shadow:0 0 11px color-mix(in srgb,var(--cyan) 70%,transparent)}}
+#hero .amb{position:absolute;color:var(--hac,#E8935A);opacity:0;font-size:11px;pointer-events:none;font-family:var(--mono);animation:amb 9s linear infinite}
+@keyframes amb{0%{opacity:0;transform:translateY(12px)}16%{opacity:.11}100%{opacity:0;transform:translateY(-46px)}}
+@media(prefers-reduced-motion:reduce){#hero pre.art .spark{animation:none}#hero .amb{display:none}}
 #hero .htext{flex:1;min-width:230px}
 #hero .hk{font-family:var(--mono);font-size:11px;letter-spacing:.24em;color:var(--hac,#E8935A);text-transform:uppercase}
 #hero h1.ht{font-family:var(--sans,var(--mono));font-weight:800;font-size:clamp(24px,3.6vw,38px);line-height:1.12;letter-spacing:-.02em;color:var(--paper);margin:10px 0 8px}
@@ -304,6 +310,11 @@ founding titles in production — catalog opens with Nº 1</pre>
 </div>
 <script>
 let BOOKS=[];
+const RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const SPIN=['\u280b','\u2819','\u2839','\u2838','\u283c','\u2834','\u2826','\u2827','\u2807','\u280f'];
+function brew(el,label){if(!el)return;if(RM){el.innerHTML='<pre class="dim">\u25aa '+label+'</pre>';return;}
+  let i=0;el.innerHTML='<pre class="dim"><span class="bspin"></span> '+label+'</pre>';
+  const s=el.querySelector('.bspin');const tm=setInterval(()=>{if(!document.body.contains(s)){clearInterval(tm);return;}s.textContent=SPIN[i++%SPIN.length];},90);}
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safeUrl=u=>{u=String(u??'').trim();return /^(javascript|data|vbscript):/i.test(u)?'#':u;};
 window.addEventListener('error',e=>{const m=document.getElementById('metrics');if(m)m.innerHTML='<pre class="dim">JS ERROR: '+e.message+' @'+e.lineno+'</pre>';});
@@ -338,7 +349,11 @@ function search(){
   const hit=BOOKS.filter(b=>{const hay=JSON.stringify(b).toLowerCase();return terms.every(x=>hay.includes(x));});
   render(hit);shelf(hit);}
 let SHELVES=[];
-fetch('catalog.json').then(r=>r.json()).then(d=>{BOOKS=d.books;SHELVES=d.shelves||[];render(BOOKS);hero();stats([]);bookstore();reviews();}).catch(()=>{count.textContent='catalog.json unavailable';});
+fetch('catalog.json').then(r=>r.json()).then(d=>{BOOKS=d.books;SHELVES=d.shelves||[];
+  brew(document.getElementById('metrics'),'reading the ledger\u2026');
+  brew(document.getElementById('shelf'),'shelving the books\u2026');
+  brew(document.getElementById('rvboard'),'gathering reviews\u2026');
+  render(BOOKS);hero();stats([]);bookstore();reviews();}).catch(()=>{count.textContent='catalog.json unavailable';});
 q.addEventListener('input',search);
 
 /* ---- ascii bookstore ---- */
@@ -388,7 +403,9 @@ function shelf(filter){
 let featIdx=0,featTimer=null,typeTimer=null;
 function featList(){return BOOKS.filter(b=>b.status!=='planned');}
 function typeInto(el,text,done){
-  clearInterval(typeTimer);el.textContent='';let n=0;
+  clearInterval(typeTimer);
+  if(RM){el.textContent=text;done&&done();return;}
+  el.textContent='';let n=0;
   typeTimer=setInterval(()=>{el.textContent=text.slice(0,++n);if(n>=text.length){clearInterval(typeTimer);done&&done();}},18);
 }
 function featured(idx){
@@ -455,6 +472,21 @@ async function bookstore(){
   try{await loadLive();shelf();featured(featIdx);}catch(e){}  // enhance with live status when it arrives
 }
 
+function sparkle(line){
+  if(RM)return esc(line);
+  let out='',n=0;
+  for(const ch of line){
+    if('#e o*'.indexOf(ch)>-1 && ch!==' ' && Math.random()<0.16 && n<3){
+      out+=`<span class="spark" style="animation-delay:${(Math.random()*3.2).toFixed(1)}s">${esc(ch)}</span>`;n++;
+    } else out+=esc(ch);
+  }
+  return out;}
+function ambient(){
+  if(RM)return;const h=document.getElementById('hero');if(!h||h.querySelector('.amb'))return;
+  ' \u00b7\u00b0+:'.split('').filter(c=>c!==' ').forEach((c,i)=>{
+    const s=document.createElement('span');s.className='amb';s.textContent=c;
+    s.style.left=(18+i*17)+'%';s.style.bottom='8px';s.style.animationDelay=(i*1.7)+'s';
+    h.appendChild(s);});}
 function hero(){
   const art=document.getElementById('heroArt');if(!art)return;
   fetch('hero-art.json',{cache:'no-store'}).then(r=>r.json()).then(d=>{
@@ -466,7 +498,8 @@ function hero(){
     const entry=d.books[bid]||{};
     const acc=entry.accent||'#E8935A';
     document.getElementById('hero').style.setProperty('--hac',acc);
-    art.innerHTML=(entry.art||[]).map((ln,i)=>`<span class="r" style="animation-delay:${i*45}ms">${esc(ln)||' '}</span>`).join('');
+    art.innerHTML=(entry.art||[]).map((ln,i)=>`<span class="r" style="animation-delay:${i*45}ms">${sparkle(ln)||' '}</span>`).join('');
+    ambient();
     const b=BOOKS.find(x=>x.id===bid);
     if(b){
       document.getElementById('heroKick').textContent=(b.series_no?('now on the counter · Nº'+b.series_no):'now on the counter')+' · a new pick every '+slotH+'h';
