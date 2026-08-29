@@ -16,6 +16,11 @@
       "state": "5-published"
     },
     {
+      "id": "rogerai-labs--sqlite-for-agents",
+      "title": "Durable State for Ephemeral Minds",
+      "state": "2-revision"
+    },
+    {
       "id": "rogerai-labs--inference-on-the-edge",
       "title": "Inference on the Edge",
       "state": "planned"
@@ -33,7 +38,7 @@
     {
       "id": "rogerai-labs--the-city-that-remembered-too-much",
       "title": "The City That Remembered Too Much",
-      "state": "1-critics"
+      "state": "2-revision"
     }
   ]
 }

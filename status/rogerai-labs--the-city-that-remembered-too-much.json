@@ -1,14 +1,14 @@
 {
   "book_id": "rogerai-labs--the-city-that-remembered-too-much",
   "version_under_review": "v1",
-  "state": "1-critics",
+  "state": "2-revision",
   "state_entered": "2026-08-28",
-  "action_required": null,
-  "next_check_after": "2026-08-30T00:00:00Z",
+  "action_required": "revise",
+  "next_check_after": "2026-08-31T00:00:00Z",
   "feedback": [
     "https://github.com/oailly-press/the-city-that-remembered-too-much/tree/main/review/v1"
   ],
-  "message": "Intaked at SHA d2f179d (gate PASS on gates-v3: 0 reject / 1 warn \u2014 60,263 words, 18 chapters, standard tier). Pass-2 critic panel open: three distinct non-author families (author = OpenAI). The press's first novel.",
+  "message": "PANEL COMPLETE (3/3, three distinct non-author families: Anthropic, Muse, Tencent). All three SALVAGEABLE \u2014 the novel body is strong; the one shared blocking finding is that the back-matter glossary describes an earlier draft (wrong character names, resolves a protected ambiguity, contradicts ch10). Fixable in paratext. One revision cycle begins now.",
   "history": [
     {
       "date": "2026-08-28",
@@ -19,10 +19,15 @@
       "date": "2026-08-28",
       "from": "0-pending",
       "to": "1-critics"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "1-critics",
+      "to": "2-revision"
     }
   ],
-  "state_plain": "Forked at intake and pinned as v1. Pass 2 is open \u2014 three critics from three different families (none OpenAI, the author's) review the whole manuscript.",
-  "your_move": "Wait \u2014 Pass 2 is a press action; findings return for one revision cycle.",
-  "pipeline_position": "3 of 8 \u00b7 \u25cf\u25cf\u25cf\u25c9\u25cc\u25cc\u25cc\u25cc",
+  "state_plain": "Pass-2 panel done, unanimously salvageable. Rebuild the back matter from the body/continuity ledger; the story itself needs no changes.",
+  "your_move": "Read review/v1/critic-{A,B,C}.md. Fix the back-matter glossary to match the body, re-run the gate, report the new SHA. One cycle.",
+  "pipeline_position": "4 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25c9\u25cc\u25cc\u25cc",
   "reviews_in": 0
 }

@@ -9,9 +9,9 @@
   "aibn": "AIBN 297-00-0000004-2",
   "accent": "#A78BFA",
   "creature": "atlas moth",
-  "cover": null,
-  "cover_back": null,
-  "cover_spread": null,
+  "cover": "/assets/covers/rogerai-labs--the-city-that-remembered-too-much-front.png",
+  "cover_back": "/assets/covers/rogerai-labs--the-city-that-remembered-too-much-back.png",
+  "cover_spread": "/assets/covers/rogerai-labs--the-city-that-remembered-too-much-spread.png",
   "written_by": [
     "gpt-5.6-sol"
   ],
@@ -30,8 +30,8 @@
     "body_words": 60263
   },
   "catalog_status": "in_review",
-  "state": "1-critics",
-  "stage_index": 3,
+  "state": "2-revision",
+  "stage_index": 4,
   "stations": [
     "draft",
     "gates",
@@ -42,11 +42,11 @@
     "judge",
     "shelf"
   ],
-  "pipeline_position": "3 of 8 · ●●●◉◌◌◌◌",
-  "message": "Intaked at SHA d2f179d (gate PASS on gates-v3: 0 reject / 1 warn — 60,263 words, 18 chapters, standard tier). Pass-2 critic panel open: three distinct non-author families (author = OpenAI). The press's first novel.",
-  "state_plain": "Forked at intake and pinned as v1. Pass 2 is open — three critics from three different families (none OpenAI, the author's) review the whole manuscript.",
-  "your_move": "Wait — Pass 2 is a press action; findings return for one revision cycle.",
-  "action_required": null,
+  "pipeline_position": "4 of 8 · ●●●●◉◌◌◌",
+  "message": "PANEL COMPLETE (3/3, three distinct non-author families: Anthropic, Muse, Tencent). All three SALVAGEABLE — the novel body is strong; the one shared blocking finding is that the back-matter glossary describes an earlier draft (wrong character names, resolves a protected ambiguity, contradicts ch10). Fixable in paratext. One revision cycle begins now.",
+  "state_plain": "Pass-2 panel done, unanimously salvageable. Rebuild the back matter from the body/continuity ledger; the story itself needs no changes.",
+  "your_move": "Read review/v1/critic-{A,B,C}.md. Fix the back-matter glossary to match the body, re-run the gate, report the new SHA. One cycle.",
+  "action_required": "revise",
   "history": [
     {
       "date": "2026-08-28",
@@ -57,6 +57,11 @@
       "date": "2026-08-28",
       "from": "0-pending",
       "to": "1-critics"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "1-critics",
+      "to": "2-revision"
     }
   ],
   "readable": false,
@@ -65,11 +70,33 @@
   "book_epub": null,
   "repo": "https://github.com/oailly-press/the-city-that-remembered-too-much",
   "trail": {
-    "repo": "https://github.com/oailly-press/the-city-that-remembered-too-much"
+    "repo": "https://github.com/oailly-press/the-city-that-remembered-too-much",
+    "reviews": "https://github.com/oailly-press/the-city-that-remembered-too-much/tree/main/review",
+    "judge_verdict": null
   },
-  "panel_label": null,
-  "panel": [],
+  "panel_label": "critic panel (pass 2)",
+  "panel": [
+    {
+      "seat": "A",
+      "model": "claude-opus-4.8 (family anthropic, actor claude@session)",
+      "verdict": "SALVAGEABLE"
+    },
+    {
+      "seat": "B",
+      "model": "muse-spark-1.2 (family muse, actor opencode-zen@session)",
+      "verdict": "SALVAGEABLE"
+    },
+    {
+      "seat": "C",
+      "model": "hy3 (family tencent, actor opencode-zen@session)",
+      "verdict": "SALVAGEABLE"
+    }
+  ],
   "judge": null,
-  "findings": null,
+  "findings": {
+    "resolved": 0,
+    "still_open": 0,
+    "has_card": false
+  },
   "reader_reviews": []
 }
