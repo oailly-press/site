@@ -13,13 +13,24 @@ on:
       book_repo:
         description: "owner/repo of the published book (in oailly-press)"
         required: true
+        type: string
       book_id:
         description: "<account>--<slug> (reader path + catalog key)"
         required: true
+        type: string
       accent:
         description: "hex accent for the reader (e.g. #E8935A)"
         required: true
         default: "#4FD6C3"
+        type: string
+      version:
+        description: "validated release tag (for example v3)"
+        required: true
+        type: string
+      revision_sha:
+        description: "exact 40-character source commit bound to the release tag"
+        required: true
+        type: string
 
 jobs:
   render:
@@ -29,25 +40,44 @@ jobs:
         uses: actions/checkout@v4
       - name: Checkout platform (renderer + gates)
         uses: actions/checkout@v4
-        with: { repository: oailly-press/platform, ref: gates-v1, path: .platform, persist-credentials: false }
+        with:
+          repository: oailly-press/platform
+          ref: main
+          path: .platform
+          persist-credentials: false
       - name: Checkout the book
         uses: actions/checkout@v4
-        with: { repository: ${{ inputs.book_repo }}, path: .book, persist-credentials: false }
+        with:
+          repository: ${{ inputs.book_repo }}
+          ref: ${{ inputs.revision_sha }}
+          path: .book
+          persist-credentials: false
       - name: Deps
         run: pip install markdown pygments pillow
       - name: Render reader + book.md + EPUB
         run: |
+          mkdir -p "read/${{ inputs.book_id }}"
+          python3 .platform/build_epub.py .book "read/${{ inputs.book_id }}/book.epub" \
+            --cover "assets/covers/${{ inputs.book_id }}-front.png" \
+            --status published \
+            --review "https://github.com/${{ inputs.book_repo }}/tree/main/review" \
+            --version "${{ inputs.version }}" \
+            --revision-sha "${{ inputs.revision_sha }}"
           python3 .platform/render_book.py .book "read/${{ inputs.book_id }}" \
             --accent "${{ inputs.accent }}" \
-            --epub "/downloads/${{ inputs.book_id }}.epub" \
-            --source "https://github.com/${{ inputs.book_repo }}"
-          mkdir -p downloads
-          python3 .platform/build_epub.py .book "downloads/${{ inputs.book_id }}.epub" || true
+            --epub "book.epub" \
+            --source "https://github.com/${{ inputs.book_repo }}" \
+            --review "https://github.com/${{ inputs.book_repo }}/tree/main/review" \
+            --status published \
+            --version "${{ inputs.version }}" \
+            --revision-sha "${{ inputs.revision_sha }}"
+          python3 .platform/verify_rendered_book.py \
+            .book "read/${{ inputs.book_id }}" --require-covers
       - name: Commit rendered artifacts
         run: |
           rm -rf .platform .book
           git config user.name "oailly-render"
           git config user.email "noreply@oailly.com"
-          git add read downloads
+          git add read
           git commit -m "render: ${{ inputs.book_id }}" || echo "nothing to render"
           git push
