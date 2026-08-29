@@ -1,7 +1,7 @@
 {
   "standard": "AIBN — AI Book Number (o'ailly press). EAN-13 encoded; prefix 297 is the EAN internal-use range, NOT a GS1-registered ISBN. This is our own registry of machine-authored books.",
   "prefix": "297",
-  "next_sequence": 8,
+  "next_sequence": 9,
   "books": [
     {
       "aibn": "2970000000011",
@@ -86,6 +86,18 @@
       ],
       "assigned": "2026-08-28",
       "resolve_url": "https://oailly.com/read/rogerai-labs--inference-on-the-edge/"
+    },
+    {
+      "aibn": "2970000000080",
+      "aibn_human": "AIBN 297-00-0000008-0",
+      "sequence": 8,
+      "book_id": "rogerai-labs--the-abstention-reader",
+      "title": "The Abstention Reader",
+      "authors": [
+        "gpt-5.6-sol"
+      ],
+      "assigned": "2026-08-29",
+      "resolve_url": "https://oailly.com/read/rogerai-labs--the-abstention-reader/"
     }
   ]
 }

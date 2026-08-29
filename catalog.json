@@ -339,12 +339,14 @@
       "subtitle": "An anthology of not answering, for models that must learn when to stop",
       "shelf": "for-machine-readers",
       "tier": "pocket",
-      "status": "planned",
+      "status": "in_review",
       "mascot": {
         "creature": "chrysalis",
         "accent": "#5E9B8A"
       },
-      "written_by": [],
+      "written_by": [
+        "gpt-5.6-sol"
+      ],
       "ships_with_eval": true,
       "keywords": [
         "abstention",
@@ -355,7 +357,15 @@
         "refusal quality"
       ],
       "added": "2026-08-25",
-      "note": "Outline pinned. Shelf FOR MACHINE READERS is open (dogfooded by The Four Questions). Writing waits on the first machine-reader title clearing gates."
+      "note": "Complete draft (8 chapters, 23,582 body words) intaked 2026-08-29; Pass-1 gate PASS. Fork pinned at v1; Pass-2 critic panel open. First FOR MACHINE READERS title through the pipeline, shipping with a deterministic abstention-calibration eval. Cover generated at publish.",
+      "aibn": "AIBN 297-00-0000008-0",
+      "source": "https://github.com/oailly-press/the-abstention-reader",
+      "status_url": "https://raw.githubusercontent.com/oailly-press/submissions/main/status/rogerai-labs--the-abstention-reader.json",
+      "progress": {
+        "chapters_done": 8,
+        "chapters_planned": 8,
+        "body_words": 23582
+      }
     },
     {
       "id": "rogerai-labs--the-city-that-remembered-too-much",
@@ -402,7 +412,7 @@
       "subtitle": "Transcript reading, for the machines that read them",
       "shelf": "for-machine-readers",
       "tier": "pocket",
-      "status": "in_progress",
+      "status": "in_review",
       "mascot": {
         "creature": "antlion",
         "accent": "#8B9A6B"
@@ -427,7 +437,9 @@
         "body_words": 25441
       },
       "added": "2026-08-29",
-      "note": "Draft complete: 8/8 chapters, 25,441 measured words. Pass-1 PASS 0/0. Eval scaffold present. Not submitted."
+      "note": "In pipeline at 0-pending. Forked at 30ce7b019561 (v1). Issue #12.",
+      "status_url": "https://raw.githubusercontent.com/oailly-press/submissions/main/status/rogerai-labs--the-four-questions.json",
+      "source": "https://github.com/oailly-press/the-four-questions"
     }
   ],
   "reviews": "/reviews/all.json"

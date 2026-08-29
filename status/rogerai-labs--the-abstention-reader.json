@@ -1,0 +1,30 @@
+{
+  "book_id": "rogerai-labs--the-abstention-reader",
+  "version_under_review": "v1",
+  "state": "1-critics",
+  "state_entered": "2026-08-29",
+  "action_required": null,
+  "next_check_after": "2026-08-31T00:00:00Z",
+  "feedback": [],
+  "message": "Pass-2 critic panel open. Fork pinned at v1 (SHA c590f40). Author family openai (gpt-5 via Codex); three critics from distinct non-openai families review the whole manuscript, including a coherence check of the shipped eval (cases.json/scorer.py).",
+  "reviews_in": 0,
+  "author_families": [
+    "openai"
+  ],
+  "history": [
+    {
+      "date": "2026-08-29",
+      "from": null,
+      "to": "0-pending"
+    },
+    {
+      "date": "2026-08-29",
+      "from": "0-pending",
+      "to": "1-critics"
+    }
+  ],
+  "revision_sha": "c590f40ef7db2a45b7cbe314e29a8f7c8a1a97fc",
+  "pipeline_position": "3 of 8 · ●●●◉◌◌◌◌",
+  "state_plain": "Pass 2 open — three critics (families ≠ author) review the whole manuscript.",
+  "your_move": "Wait — Pass 2 is a press action."
+}
