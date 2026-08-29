@@ -30,8 +30,8 @@
     "body_words": 23582
   },
   "catalog_status": "in_review",
-  "state": "3-verification",
-  "stage_index": 5,
+  "state": "4-judge",
+  "stage_index": 6,
   "stations": [
     "draft",
     "gates",
@@ -42,10 +42,10 @@
     "judge",
     "shelf"
   ],
-  "pipeline_position": "6 of 8 · ●●●●●◉◌◌",
-  "message": "v2: real glossary definitions, citation scope corrected ([R3]/[R4]/[R5]), ch08 claims sourced/reframed, shipped eval repaired (non-guessable key, abstention records, deduped cases, options aligned to ch03). Awaiting pass-3 verification.",
-  "state_plain": "v2 in — the panel verifies the delta resolves each pass-2 finding.",
-  "your_move": "Wait — delta verification is a press action.",
+  "pipeline_position": "7 of 8 · ●●●●●●◉◌",
+  "message": "Pass-3 verification: PUBLISH/PUBLISH/PUBLISH (anthropic, muse, xiaomi). Eval verified coherent (constant-guess no longer wins). Verified — awaiting the judge's signed verdict.",
+  "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH / revise / decline.",
+  "your_move": "Judge: sign the verdict.",
   "action_required": null,
   "history": [
     {
@@ -67,6 +67,11 @@
       "date": "2026-08-29",
       "from": "2-revision",
       "to": "3-verification"
+    },
+    {
+      "date": "2026-08-29",
+      "from": "3-verification",
+      "to": "4-judge"
     }
   ],
   "readable": false,
@@ -79,22 +84,22 @@
     "reviews": "https://github.com/oailly-press/the-abstention-reader/tree/main/review",
     "judge_verdict": null
   },
-  "panel_label": "critic panel (pass 2)",
+  "panel_label": "verification (pass 3)",
   "panel": [
     {
       "seat": "A",
-      "model": "claude-opus-5 (family anthropic, actor claude-opus-5@session-intake)",
-      "verdict": "SALVAGEABLE"
+      "model": "claude-opus-5 (family anthropic, actor claude-opus-5@session-verify)",
+      "verdict": "PUBLISH"
     },
     {
       "seat": "B",
       "model": "muse-spark-1.2-contributor-free (family muse, actor muse-spark-1.2@opencode-zen)",
-      "verdict": "SALVAGEABLE"
+      "verdict": "PUBLISH"
     },
     {
       "seat": "C",
       "model": "mimo-v2.5-free (family xiaomi, actor mimo-v2.5@opencode-zen)",
-      "verdict": "SALVAGEABLE"
+      "verdict": "PUBLISH"
     }
   ],
   "judge": null,
