@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>One File, Whole Truths — Durable State for Ephemeral Minds</title>
+<meta name="description" content="SQLite as the memory of machine operators — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="Durable State for Ephemeral Minds">
+<meta property="og:description" content="SQLite as the memory of machine operators — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--sqlite-for-agents/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--sqlite-for-agents.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Durable State for Ephemeral Minds">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--sqlite-for-agents.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#7CB342;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="2" data-prev="ch01.html" data-next="ch03.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 2 — One File, Whole Truths</h1>
+<p><em>Draft status: author draft, gate-checked; human verification pending. Outputs are
+real transcripts; the crash in the first listing is a genuine mid-transaction
+process death, reproduced live.</em></p>
+<h2>The promise</h2>
+<p>Everything the estate offers rests on a single guarantee, so this chapter earns it
+properly before the book builds on it. The guarantee is the transaction: a group
+of changes that takes effect entirely or not at all, no matter what happens to the
+process making them. Chapter 1 showed the file-midden&rsquo;s partial write — half a
+ledger, unreadable, history gone. Here is the same death, mid-write, against the
+estate&rsquo;s engine. The listing forks a child operator that opens a transaction,
+inserts two ledger entries, and is killed before commit — <code>os._exit(1)</code>, no
+cleanup handlers, no goodbye, as close to a real timeout-kill as a demonstration
+can honestly get:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span><span class="o">,</span><span class="w"> </span><span class="nn">subprocess</span><span class="o">,</span><span class="w"> </span><span class="nn">sys</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"CREATE TABLE ledger (id INTEGER PRIMARY KEY, entry TEXT NOT NULL)"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">();</span> <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">child</span> <span class="o">=</span> <span class="s1">'''</span>
+<span class="s1">import sqlite3, os</span>
+<span class="s1">db = sqlite3.connect("estate.db")</span>
+<span class="s1">db.execute("BEGIN IMMEDIATE")</span>
+<span class="s1">db.execute("INSERT INTO ledger (entry) VALUES ('step 1 of 3 done')")</span>
+<span class="s1">db.execute("INSERT INTO ledger (entry) VALUES ('step 2 of 3 done')")</span>
+<span class="s1">os._exit(1)   # killed mid-transaction, no commit, no cleanup</span>
+<span class="s1">'''</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span> <span class="s2">"-c"</span><span class="p">,</span> <span class="n">child</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"child exit:"</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">returncode</span><span class="p">)</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"rows visible to the successor:"</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT count(*) FROM ledger"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">child exit: 1</span>
+<span class="go">rows visible to the successor: 0</span>
+</code></pre></div>
+
+<p>Zero rows — not one row, not a corrupted row and a half. The successor inherits
+the ledger exactly as it stood before the doomed transaction began. Compare this
+carefully with what it replaces. The midden&rsquo;s failure left <em>no</em> history; the
+naive hope (&ldquo;surely it wrote the first insert&rdquo;) would have left <em>wrong</em> history —
+a ledger asserting step one completed with no record that a step two was ever in
+flight. The transaction&rsquo;s all-or-nothing is better than both, and better in the
+specific currency the register&rsquo;s operators trade in: the estate never contains a
+state that no operator ever intended to be true. Every state a successor can
+observe is a state some predecessor deliberately committed. That property — call
+it <em>no unintended truths</em> — is the foundation everything else in this book stands
+on, and it was purchased in the listing above for the price of one <code>BEGIN</code>.</p>
+<h2>The visible mechanics</h2>
+<p>The guarantee is not magic, and seeing its machinery once makes its edge cases
+legible forever. SQLite&rsquo;s classic implementation of atomic commit is the rollback
+journal: before touching the database file, the engine writes the <em>original</em>
+content of every page it is about to change into a sidecar file, so that a crash
+at any instant leaves either an untouched database or enough information to
+restore one. The sidecar is an ordinary file, and you can catch it existing:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"CREATE TABLE t (x)"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"BEGIN IMMEDIATE"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO t VALUES (1)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"mid-transaction files:"</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"estate"</span><span class="p">)))</span>
+<span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"after commit:       "</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"estate"</span><span class="p">)))</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">mid-transaction files: ['estate.db', 'estate.db-journal']</span>
+<span class="go">after commit:        ['estate.db']</span>
+</code></pre></div>
+
+<p>There is the promise, incarnate as <code>estate.db-journal</code>. If the process dies with
+that journal present, the <em>next</em> connection to open the database — tomorrow&rsquo;s
+operator, a different program, the sqlite3 shell — finds it, replays the original
+pages back, and only then proceeds: recovery is automatic, unavoidable, and
+requires nothing from the successor but opening the file. The engine&rsquo;s
+atomic-commit documentation walks the full choreography, including the fsync
+barriers that make it hold across power loss, and it repays one careful read.
+Chapter 5 introduces the journal&rsquo;s modern sibling — write-ahead logging, which
+inverts the arrangement to buy concurrency — but the contract seen from outside
+is identical, and so is the operator&rsquo;s one obligation, which this glimpse makes
+concrete: <strong>the sidecar files are part of the database.</strong> A <code>-journal</code> (or, under
+WAL, a <code>-wal</code>) file sitting beside the estate is not litter to clean up; deleting
+it, or copying the main file without it, is how &ldquo;atomic&rdquo; becomes &ldquo;corrupted&rdquo; —
+the precise mistake chapter 7 teaches backup to avoid.</p>
+<h2>Transactions are units of meaning</h2>
+<p>Knowing that transactions group changes, the design question is <em>which</em> changes
+belong grouped, and the answer gives operators a tool the file-midden never
+offered: invariants. A transaction boundary should enclose exactly the set of
+statements that must be true <em>together</em> — that make no sense, or make a lie,
+if only some of them land. The register&rsquo;s previous book taught that a change
+without a printed verification is a rumor; the estate can now enforce a stronger
+form structurally. Suppose the discipline is that no change is recorded without
+its proof. Put both in one transaction, and a failure anywhere before the proof
+exists erases the claim as well:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"CREATE TABLE changes (id INTEGER PRIMARY KEY, action TEXT, proof TEXT)"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO changes (action, proof) VALUES ('edited sshd_config', NULL)"</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"verification probe failed"</span><span class="p">)</span>   <span class="c1"># proof never obtained</span>
+<span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"caught:"</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"half-recorded changes:"</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT count(*) FROM changes"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="k">with</span> <span class="n">db</span><span class="p">:</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO changes (action, proof) VALUES ('edited sshd_config', 'sshd -t exit 0')"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"fully-recorded changes:"</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT count(*) FROM changes"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">caught: verification probe failed</span>
+<span class="go">half-recorded changes: 0</span>
+<span class="go">fully-recorded changes: 1</span>
+</code></pre></div>
+
+<p>The failed attempt vanished — action and all — because the exception unwound the
+transaction before commit; the successful attempt landed whole. Notice what this
+does to the estate&rsquo;s epistemics: a <code>changes</code> row <em>cannot exist</em> in the
+action-recorded-but-unproven state, not because writers are disciplined but
+because the schema of commitment forbids it. (Whether an <em>unrecorded but
+performed</em> action can exist is the operator&rsquo;s conduct problem, and chapter 4&rsquo;s
+ledger pattern narrows it; no database can close it alone.) The design habit
+that follows is worth stating as a rule: <strong>choose transaction boundaries by
+asking what a successor must never half-see.</strong> A multi-row config change, a
+cursor advance paired with the processing it acknowledges, an artifact row
+paired with its hash — each is one transaction because each is one truth.
+The anti-pattern is equally shaped: transactions drawn around <em>convenience</em>
+(one per function, one per loop iteration, one giant one around an hour&rsquo;s work)
+group statements by accident, and chapter 5 will add the concurrency reason
+why the giant sort is actively harmful.</p>
+<h2>The Python seam</h2>
+<p>Between the operator and the engine sits the <code>sqlite3</code> module, and its seams are
+where estates actually leak, so this section is blunt about them. The first seam
+is the one every newcomer meets the hard way — uncommitted work does not
+survive:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"CREATE TABLE facts (id INTEGER PRIMARY KEY, fact TEXT)"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO facts (fact) VALUES ('this machine has 64 cpus')"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>                      <span class="c1"># ended without commit</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"facts the successor inherits:"</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT count(*) FROM facts"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">facts the successor inherits: 0</span>
+</code></pre></div>
+
+<p>The fact was inserted, the statement succeeded, the process exited cleanly — and
+the successor inherits nothing, because under the module&rsquo;s default (legacy)
+transaction handling, that INSERT silently <em>opened</em> a transaction that nothing
+ever committed. (The table itself survived only because DDL under the legacy
+mode autocommits differently — an inconsistency that is itself an argument for
+what follows.) Closing, in SQLite semantics, resolves an open transaction by
+rolling it back: correct by the engine&rsquo;s lights, catastrophic by the operator&rsquo;s.
+Three disciplines close the seam. Prefer the context manager for every write —
+<code>with db:</code> commits on success and rolls back on exception, turning the previous
+section&rsquo;s invariant pattern into the path of least resistance. Know its one
+surprise: <code>with db:</code> does <strong>not</strong> close the connection, only ends the
+transaction; the estate connection can and should live across many such blocks.
+And on modern Python, consider declaring intentions explicitly — the module now
+offers an <code>autocommit</code> attribute whose explicit modes replace the legacy
+implicit-transaction behavior; the standard library documentation marks the
+legacy mode as the compatibility default, not the recommendation. Whichever mode
+an estate&rsquo;s tooling picks, it should pick <em>on purpose</em>, in one place, and write
+it down — chapter 3 gives estate metadata a table, and the connection discipline
+belongs in it.</p>
+<p>The second seam is quieter: <code>executescript</code> issues an implicit COMMIT before
+running, and DDL&rsquo;s interaction with open transactions has version-dependent
+subtleties — reason enough for a simpler rule that sidesteps the whole area:
+schema changes happen at estate-open time, alone, before any data transaction
+begins (chapter 3&rsquo;s migration pattern does exactly this), and data transactions
+never mix DDL in. Operators that keep the two phases separate never meet the
+subtleties at all.</p>
+<p>Error reading completes the seam-sealing, because the module speaks in
+exception classes the way commands speak in exit codes, and the register&rsquo;s
+number-first discipline translates directly. <code>IntegrityError</code> is the schema
+talking: a constraint refused the write, the estate is <em>working</em> — chapter
+3 will make these refusals load-bearing and chapter 4&rsquo;s idempotency
+pattern will treat one as an answer rather than a failure. <code>OperationalError</code>
+is the circumstances talking: locked, busy, missing table, read-only —
+conditions to diagnose, several of which chapter 5 converts to routine.
+<code>ProgrammingError</code> is the operator talking to itself: malformed SQL,
+wrong parameter counts — a composition bug, never retried, always fixed.
+And <code>DatabaseError</code>&rsquo;s corruption face (&ldquo;malformed&rdquo;) is chapter 7&rsquo;s
+department, met there with its own protocol. Catching broadly
+(<code>except Exception</code>) around estate writes collapses these four distinct
+sentences into one shrug — the transcript-mode operator&rsquo;s oldest sin,
+parsing prose instead of reading the channel built for machines — and the
+estate discipline is the same as the register&rsquo;s: catch the narrow class
+the logic actually answers, let the rest surface loudly, and record what
+surfaced.</p>
+<h2>Saying IMMEDIATE, and meaning it</h2>
+<p>The listings above wrote <code>BEGIN IMMEDIATE</code> where plain <code>BEGIN</code> would seem to do,
+and the difference deserves its own section because it is the first place
+concurrency intrudes on even a single operator&rsquo;s thinking. A plain (deferred)
+BEGIN acquires no lock at all: the transaction is notional until the first
+actual read or write, and — the sharp edge — a transaction that <em>reads first and
+writes later</em> acquires a read lock first and must upgrade to a write lock at the
+first write. If, between the read and the write, some other connection has begun
+its own write, the upgrade can find itself in a deadlock the engine resolves by
+refusing: <code>database is locked</code>, delivered not at BEGIN, where the operator was
+prepared to wait, but midway through the transaction&rsquo;s logic, where it was not.
+<code>BEGIN IMMEDIATE</code> takes the write intention out loud at the start: it acquires
+the write reservation up front, converting a mid-flight refusal into an at-entry
+wait — and an at-entry wait is exactly the shape the register&rsquo;s operators know
+how to handle, with a timeout and a bounded retry. The rule of thumb this book
+uses everywhere: <strong>a transaction that will write says IMMEDIATE at BEGIN.</strong>
+Read-only transactions stay deferred and cost nothing. Chapter 5 measures the
+contention behavior for real, two operators against one file; the habit is
+installed now because retrofitting it later means auditing every write site.</p>
+<h2>Reading is transactional too</h2>
+<p>Transactions entered this chapter as the writer&rsquo;s tool, and their quieter half
+belongs to readers. A report composed from several SELECTs — count the open
+intents, then sum the week&rsquo;s failures, then list the stale cursors — is
+implicitly claiming that its lines describe <em>one moment</em>. Run bare, each
+SELECT is its own instant, and a writer committing between them hands the
+report a world that never existed: the intent counted in line one resolved
+before line three listed it, and the totals disagree with the details. Nobody
+debugs this, because nothing errored; the report is simply, occasionally,
+incoherent — and an unattended operator publishing it into a handoff message
+is signing evidence with a torn timestamp. The cure is the same instrument
+pointed the other way: open a transaction, run every read the report needs,
+then end it. Inside, the reads share one consistent view (under WAL, chapter
+5 shows this costs concurrent writers nothing at all), and the report&rsquo;s
+implicit claim becomes true. The habit is cheap to install — the estate&rsquo;s
+reporting queries live behind one function, the function wraps itself in a
+read transaction — and it retires a failure class whose signature
+(aggregates that almost agree) otherwise costs an afternoon the first time
+it is met. The register&rsquo;s rule about evidence blocks said every figure is
+measured fresh at the end; the estate&rsquo;s version adds: and all of them
+through one snapshot, so &ldquo;the end&rdquo; is a moment rather than a smear.</p>
+<h2>The price of a promise, and buying in bulk</h2>
+<p>Every COMMIT pays for its guarantee in the coin of chapter 1&rsquo;s register: real
+work at the storage layer — journal bookkeeping and, at full durability, sync
+barriers that wait for the disk. The cost is invisible at human scales and
+decisive at loop scales, which makes it exactly the kind of economics an
+unattended operator must know by feel rather than discover in production:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"CREATE TABLE readings (id INTEGER PRIMARY KEY, v INTEGER)"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"pragmas in effect:"</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"PRAGMA journal_mode"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span>
+      <span class="s2">"journal,"</span><span class="p">,</span> <span class="s2">"synchronous"</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"PRAGMA synchronous"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">"(FULL)"</span><span class="p">)</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2000</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">db</span><span class="p">:</span>                                   <span class="c1"># one transaction per row</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO readings (v) VALUES (?)"</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span><span class="p">,))</span>
+<span class="n">per_row_ms</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span>
+<span class="k">with</span> <span class="n">db</span><span class="p">:</span>                                       <span class="c1"># one transaction for the whole batch</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2000</span><span class="p">):</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO readings (v) VALUES (?)"</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span><span class="p">,))</span>
+<span class="n">batched_ms</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"2000 rows, 2000 commits: </span><span class="si">{</span><span class="n">per_row_ms</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> ms"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"2000 rows, 1 commit:     </span><span class="si">{</span><span class="n">batched_ms</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> ms"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"rows landed:"</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT count(*) FROM readings"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">pragmas in effect: delete journal, synchronous 2 (FULL)</span>
+<span class="go">2000 rows, 2000 commits: 22 ms</span>
+<span class="go">2000 rows, 1 commit:     2 ms</span>
+<span class="go">rows landed: 4000</span>
+</code></pre></div>
+
+<p>The listing prints its own configuration first, because the numbers mean nothing
+without it: this ran at the engine&rsquo;s <em>defaults</em> — the classic rollback journal
+(<code>delete</code> mode) and <code>synchronous = FULL</code>, the full durability setting chapter 2
+counsels keeping — not under WAL (chapter 5) and not with sync weakened. That
+disclosure is the difference between a reproducible claim and a lucky
+transcript, because both figures below are dominated by exactly those two
+pragmas. An order of magnitude on the authoring machine — whose NVMe storage and write
+caching flatter the per-commit case enormously; on modest hardware with honest
+sync barriers the same experiment, at these same pragmas, runs seconds against
+milliseconds, and the
+engine&rsquo;s own FAQ answer on insertion speed explains why: a durable transaction
+cannot outrun the platter or the flash erase block it waits on. The design
+consequence is not &ldquo;avoid commits&rdquo; but the same boundary rule as before, read
+from the other side: since a transaction is a unit of meaning, <em>bulk work whose
+rows form one truth should arrive as one transaction</em> — an import, a scan&rsquo;s
+findings, a batch of samples — and the meaning rule and the economics rule
+converge on the same code. Where they genuinely diverge — a long stream of
+independent truths, each of which must be durable the moment it happens, as in
+the ledger the next chapters build — the per-commit price is not waste but the
+purchase of exactly what was promised, paid knowingly. What the economics
+forbid is only the unexamined middle: loops that commit per row out of habit,
+buying two thousand durability guarantees to record one batch nobody needed
+mid-batch.</p>
+<h2>Rehearsal inside the transaction</h2>
+<p>One more instrument completes the transactional toolkit, and it answers a shape
+of work the register&rsquo;s operators meet constantly: the attempt that may not
+survive. A session&rsquo;s outer transaction holds the truths it is sure of; inside
+it, an exploratory step — try strategy A, and if its verification fails, fall
+back — needs an undo boundary of its own that does not forfeit the whole
+session. SQLite&rsquo;s savepoints are transactions-within-transactions built for
+exactly this:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"CREATE TABLE ledger (id INTEGER PRIMARY KEY, entry TEXT)"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="k">with</span> <span class="n">db</span><span class="p">:</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO ledger (entry) VALUES ('session opened')"</span><span class="p">)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SAVEPOINT attempt"</span><span class="p">)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO ledger (entry) VALUES ('tried strategy A')"</span><span class="p">)</span>
+    <span class="n">strategy_a_worked</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">strategy_a_worked</span><span class="p">:</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"ROLLBACK TO attempt"</span><span class="p">)</span>      <span class="c1"># undo the attempt, keep the session</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"RELEASE attempt"</span><span class="p">)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO ledger (entry) VALUES ('used strategy B instead')"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT id, entry FROM ledger"</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">(1, 'session opened')</span>
+<span class="go">(2, 'used strategy B instead')</span>
+</code></pre></div>
+
+<p>The failed attempt&rsquo;s row is gone; the session&rsquo;s opening row and the fallback
+survived, all inside one outer commit — and the id sequence (1 then 2, no gap
+in this run) is the successor&rsquo;s view of a history in which strategy A was
+never recorded as tried. Whether that erasure is <em>correct</em> is a design
+decision the pattern forces you to make explicitly, which is its second
+virtue: an operator whose discipline says failed attempts are themselves
+findings should record the failure as a fact — a committed row saying strategy
+A was tried and did not verify — rather than leaving it inside the savepoint
+to vanish. Rollback is for states that were never true; the ledger is for
+events that really happened, failures included. The savepoint gives you the
+mechanism for both readings and the obligation to choose between them, and
+the register&rsquo;s honesty rules, as usual, decide the default: when in doubt,
+the attempt happened, so the record stays.</p>
+<h2>Durability&rsquo;s fine print</h2>
+<p>One last honesty layer, because &ldquo;committed&rdquo; is doing load-bearing work in this
+chapter and its precise content should be on the table. What COMMIT promises
+against <em>process</em> death is absolute and was demonstrated above. What it promises
+against <em>power</em> death depends on the <code>synchronous</code> pragma and, beneath that, on
+the storage stack telling the truth about flushes. At the default full setting,
+the engine issues the sync barriers its atomic-commit protocol requires, and a
+power cut yields either the before-state or the after-state — the documented
+guarantee, contingent (as the documentation itself is careful to say) on disks
+that do not lie about write completion. Operators tempted to trade this away
+will find <code>synchronous = off</code> delivers real speed and a real risk: a badly timed
+power loss can corrupt the database, not merely lose the last commit. The
+estate&rsquo;s position is conservative and simple: leave <code>synchronous</code> at its
+default; take the free and safe concurrency win of WAL mode when chapter 5
+introduces it; and treat any tuning beyond that as requiring the engine
+documentation&rsquo;s own &ldquo;how to corrupt&rdquo; page read in full first — the page exists
+precisely because most corruption in the wild is operators defeating their own
+guarantees. The register&rsquo;s blast-radius chapter taught that safety is
+composition-time work; here, composition time is configuration time, and the
+correct composition is mostly to decline to compose.</p>
+<h2>What the transaction cannot promise</h2>
+<p>This chapter closes on the guarantee&rsquo;s honest boundary, because the estate&rsquo;s
+worst failures live just past it. The transaction makes the <em>record</em> atomic. It
+cannot make the record and the <em>world</em> atomic, and an operator&rsquo;s work is mostly
+in the world: the service restarted, the email sent, the file deleted. Between
+&ldquo;the action happened&rdquo; and &ldquo;the row committed&rdquo; there is always a gap — the
+process can die after acting and before recording, or after recording an intent
+and before acting on it — and no database on either side of the gap can close
+it, because the gap is between two systems that share no transaction. This is
+the estate&rsquo;s local edition of an old distributed-systems truth, and the
+register&rsquo;s previous book met its behavioral half in the blast-radius chapter&rsquo;s
+rule that a failed write is followed by a read. The estate adds the structural
+half: design the records so that the gap, when it happens, is <em>detectable and
+survivable</em> rather than silent.</p>
+<p>Two patterns carry most of that weight, and both are schema patterns as much as
+conduct patterns. The first is intent-then-outcome. An operation that touches
+the world gets <em>two</em> writes: a committed row recording the intent before the
+action (&ldquo;about to restart nginx, reason, timestamp&rdquo;), and a second write
+recording the outcome after. A successor that finds an intent with no outcome
+knows exactly what it inherits: an action whose fate is unknown, to be resolved
+by reading the world — the service&rsquo;s actual state — before anything else
+proceeds. Compare the alternatives. Record-only-after-acting, and a death in
+the gap leaves an action that happened with no trace: the silent midden
+failure, back again. Record-only-intent, and the ledger fills with plans
+indistinguishable from history. The two-write pattern costs one extra commit
+per world-action — the previous section priced it: cheap, and purchased for
+exactly the moment it pays.</p>
+<p>The second pattern is the idempotency key, and it turns the estate into a guard
+against the retry accidents the register&rsquo;s operators are prone to by
+constitution. Give every world-action a stable identity — the operation&rsquo;s
+natural key, or a generated one carried in the task — and record it in a column
+with a UNIQUE constraint. A retried operator that attempts to record the same
+intent twice is refused by the schema itself, at which point the retry knows it
+is a retry — before touching the world a second time. The pattern converts &ldquo;did
+I already send this?&rdquo; from an unanswerable memory question into an INSERT whose
+failure <em>is</em> the answer. Chapter 4 builds it into the ledger schema properly;
+it is previewed here because it is transactional thinking applied at the
+design layer: the uniqueness constraint is a transaction boundary drawn around
+all time, not just around one session&rsquo;s statements — this action, ever, once.</p>
+<p>The gap patterns also hand the estate&rsquo;s author a testing method worth
+naming, because transactional code has the classic property of working
+perfectly until the one moment it matters. The crash demonstration that
+opened this chapter — a child process killed mid-transaction by <code>os._exit</code>
+— is not just a teaching device; it is a reusable harness. Estate tooling
+of any seriousness gets kill-tested: the critical write paths run in a
+child, the child is killed at the awkward moments (after the intent, before
+the outcome; mid-migration; between action and record), and the parent then
+opens the estate and asserts the invariants this book has been accumulating
+— no half-recorded changes, version number honest, exactly one of
+intent-without-outcome or nothing. The harness costs twenty lines once and
+converts this chapter&rsquo;s promises from believed to <em>demonstrated on your own
+schemas</em> — which is, the reader will notice, precisely the relationship
+this press&rsquo;s gate has to this book&rsquo;s listings. Trust arrives the same way
+everywhere: something tried to break the claim, on the record, and failed.</p>
+<p>Held together, the boundary reads like this. Inside the file, the transaction
+gives you <em>no unintended truths</em>. At the file&rsquo;s edge, intent-then-outcome gives
+you <em>no silent gaps</em> — every uncertainty is visible as an open intent. Across
+runs, idempotency keys give you <em>no accidental repeats</em>. None of the three is
+the others&rsquo; substitute, and the estate needs all three precisely because its
+operators end without warning. That is the full shape of the promise; what
+remains is to write it down in tables a stranger can read.</p>
+<p>A note on scope keeps the three-guarantee summary honest for the reader
+building multi-file arrangements: the transaction&rsquo;s boundary is the
+database it runs in. Two estates changed &ldquo;together&rdquo; by one session are two
+transactions, with the gap between them exactly as real as the world-gap
+above — one more argument for chapter 5&rsquo;s one-estate-per-lineage default,
+and, where a split is genuinely earned, for treating cross-file
+consistency by the same intent-then-outcome bookkeeping rather than by
+hoping the two commits land as one. (The engine can in fact join attached
+databases under a single atomic commit in most configurations, but the
+estate declines to lean on machinery its operators would have to verify
+per-setup; patterns that assume the gap survive every setup.)</p>
+<p>The transaction, then: all-or-nothing against crashes, demonstrated; mechanics
+visible on disk; boundaries drawn by meaning; the Python seams sealed; write
+intent declared at entry; durability&rsquo;s contingencies stated. One promise,
+carefully kept, and the estate stops being a pile of bytes and becomes a place
+where truths can be deposited. What gets deposited, and in what shape a stranger
+can inherit — that is schema, and it is the next chapter.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch03.html">next: Schema Is the Handoff →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-durable-state-for-ephemeral-minds', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

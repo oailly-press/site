@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Two Operators, One File — Durable State for Ephemeral Minds</title>
+<meta name="description" content="SQLite as the memory of machine operators — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="Durable State for Ephemeral Minds">
+<meta property="og:description" content="SQLite as the memory of machine operators — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--sqlite-for-agents/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--sqlite-for-agents.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Durable State for Ephemeral Minds">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--sqlite-for-agents.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#7CB342;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="5" data-prev="ch04.html" data-next="ch06.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 5 — Two Operators, One File</h1>
+<p><em>Draft status: author draft, gate-checked; human verification pending. Outputs are
+real transcripts; the two-process counter at the chapter&rsquo;s end is a genuine
+concurrent run.</em></p>
+<h2>The second operator arrives</h2>
+<p>Every listing so far wrote from one connection, which flattered a fiction: that
+the estate has one tenant. Real estates do not. The timer fires its report job
+while the interactive session is mid-task; a supervisor dispatches two agents
+whose work overlaps; yesterday&rsquo;s run, believed dead, turns out to be alive and
+finishing. The register&rsquo;s previous book met this world with <code>flock</code> and taught
+the honest limits of advisory locking: it protects the writers who remember to
+take the lock. The estate can do better, because the coordination this chapter
+needs is not bolted onto the file — it <em>is</em> the file. SQLite&rsquo;s locking is
+mandatory for everyone who comes through the library, which is everyone; there
+is no code path that writes the database around it. Two operators that have
+never heard of each other, sharing nothing but a path, get correctness anyway.
+What they do not get is freedom from each other&rsquo;s <em>timing</em> — and this chapter
+is about the difference: what the engine guarantees unasked, what it asks the
+operator to decide (chiefly: how long to wait), and which famous SQLite
+complaint — <code>database is locked</code> — is not a malfunction but a question
+addressed to you.</p>
+<p>The mental model to install first is the single-writer truth. However many
+connections hold the estate open, SQLite permits exactly one write transaction
+at a time; writers <em>queue</em>, they never interleave. Everything else in the
+chapter — the refusal, the timeout, WAL&rsquo;s reader liberation, the throughput
+ceiling — is a consequence of that one design decision, which is also the
+decision that makes chapter 2&rsquo;s promises cheap enough to keep. Multi-writer
+engines pay for their concurrency in machinery (row locks, MVCC vacuuming,
+conflict resolution) and in sharper failure modes; the estate&rsquo;s engine chose
+instead to make the common case — few operators, brief writes — simple and
+bulletproof. The design fit is worth noticing: operator estates are almost
+definitionally low-contention. Sessions write in bursts, ledgers take a row at
+a time, nothing holds transactions across human-scale pauses (chapter 2&rsquo;s
+boundaries rule already forbade it). The single-writer queue is not a limit the
+estate suffers; it is the contract the estate&rsquo;s workload was born matching.</p>
+<h2>The refusal, witnessed</h2>
+<p>Here is the collision, staged small and read closely, because everything the
+operator must decide follows from its anatomy:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"CREATE TABLE t (x INTEGER) STRICT"</span><span class="p">);</span> <span class="n">a</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span>
+<span class="n">b</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"PRAGMA busy_timeout = 0"</span><span class="p">)</span>     <span class="c1"># refuse to wait, so the refusal is visible</span>
+<span class="n">a</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"BEGIN IMMEDIATE"</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO t VALUES (1)"</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"BEGIN IMMEDIATE"</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"second operator:"</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="n">b</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"BEGIN IMMEDIATE"</span><span class="p">);</span> <span class="n">b</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO t VALUES (2)"</span><span class="p">);</span> <span class="n">b</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"rows after both:"</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT count(*) FROM t"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">second operator: database is locked</span>
+<span class="go">rows after both: 2</span>
+</code></pre></div>
+
+<p>Operator A holds the write slot mid-transaction; operator B asks for it and is
+told no; A finishes; B asks again and succeeds; both rows land. Nothing was
+corrupted, nothing was lost, nobody&rsquo;s write interleaved with anybody&rsquo;s — the
+lost-update accident of chapter 1 is structurally absent. What B received was
+not an error in the register&rsquo;s sense but a <em>status</em>: <code>SQLITE_BUSY</code>, surfaced by
+Python as that famous message, meaning precisely &ldquo;the slot is taken; try again
+later.&rdquo; The listing forced the refusal into view by setting the busy timeout to
+zero — B declared it would not wait, so it didn&rsquo;t. That declaration is the
+operator&rsquo;s real decision surface, and the default answer is wrong for estates:
+a fresh connection&rsquo;s timeout is effectively no patience at all, which converts
+every routine collision into an exception. The registers&rsquo; operators know this
+error&rsquo;s cousin from package managers — &ldquo;could not get lock&rdquo; — and know the
+diagnosis is usually <em>someone else is legitimately working</em>, not <em>something is
+broken</em>. The estate&rsquo;s version deserves the same reading.</p>
+<h2>Patience is configuration</h2>
+<p>What B should have done is wait — briefly, boundedly, and without any code for
+it, because waiting is built in:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span><span class="o">,</span><span class="w"> </span><span class="nn">threading</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"CREATE TABLE t (x INTEGER) STRICT"</span><span class="p">);</span> <span class="n">a</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="n">a</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"BEGIN IMMEDIATE"</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO t VALUES (1)"</span><span class="p">)</span>            <span class="c1"># first operator holds the write lock</span>
+<span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">second_operator</span><span class="p">():</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span>             <span class="c1"># its own connection, its own thread</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"PRAGMA busy_timeout = 2000"</span><span class="p">)</span>      <span class="c1"># willing to wait up to 2 s</span>
+    <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span>
+    <span class="k">with</span> <span class="n">b</span><span class="p">:</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO t VALUES (2)"</span><span class="p">)</span>
+    <span class="n">result</span><span class="p">[</span><span class="s2">"waited"</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+<span class="n">th</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">second_operator</span><span class="p">);</span> <span class="n">th</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>                                       <span class="c1"># first operator releases</span>
+<span class="n">th</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"second operator wrote after waiting </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'waited'</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">s"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"rows:"</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT count(*) FROM t"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">second operator wrote after waiting 0.4s</span>
+<span class="go">rows: 2</span>
+</code></pre></div>
+
+<p>B asked, was refused, and simply <em>stayed in line</em>; four-tenths of a second
+later A released, B wrote, and no exception ever surfaced. The
+<code>busy_timeout</code> pragma is the whole mechanism: below it, the engine retries
+acquisition for up to the stated bound before giving up and returning BUSY.
+Choosing the bound is register economics, and the register&rsquo;s own rules apply
+verbatim. The wait must exist (zero patience turns normal coexistence into
+failure), must be bounded (infinite patience is the hang chapter 1 of the
+previous book banned), and the bound should be derived from the neighbors: a
+touch longer than the longest write transaction any well-behaved tenant runs —
+which chapter 2&rsquo;s boundary discipline already made short. This book&rsquo;s default
+is five seconds, set in <code>open_estate()</code> beside the foreign-keys pragma, one
+decision made once. And when the bound is genuinely exceeded — BUSY <em>after</em>
+five seconds — the correct reading changes: now something probably is wrong (a
+tenant died holding nothing, since crashed processes release locks with their
+file handles; more likely a tenant is violating the short-transaction covenant)
+and the register&rsquo;s failure discipline takes over: record the refusal in the
+run&rsquo;s own account, read the world, do not hammer.</p>
+<p>Two mechanics footnotes belong here because their absence causes real
+confusion. First, the incidental lesson the listing&rsquo;s shape teaches: Python&rsquo;s
+sqlite3 binds each connection to its creating thread by default — the waiting
+operator built its own connection inside its thread because sharing one across
+threads is refused by the module. Connections are cheap; the pattern is one
+per thread, or <code>check_same_thread=False</code> accepted knowingly with external
+serialization. Second, <code>BEGIN IMMEDIATE</code> is what makes waiting <em>work</em>: chapter
+2 installed it to convert mid-transaction refusals into at-entry waits, and
+this is the payoff — the busy handler can only wait politely at moments where
+waiting is safe, and a deferred transaction that already read and now wants to
+write is not such a moment (the engine returns BUSY immediately there,
+timeout notwithstanding, precisely because waiting could deadlock two
+half-done readers forever). Say IMMEDIATE; wait at the door, not on the
+stairs.</p>
+<h2>WAL: the readers go free</h2>
+<p>The classic journal mode has one genuinely operator-hostile trait left: writers
+and readers contend — a long read can hold off a writer, a committing writer
+excludes readers at the wrong moment. The modern cure is one pragma, and it is
+the single most valuable configuration line in this book:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"journal mode now:"</span><span class="p">,</span> <span class="n">w</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"PRAGMA journal_mode = WAL"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">w</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"CREATE TABLE facts (n INTEGER) STRICT"</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">w</span><span class="p">:</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="s2">"INSERT INTO facts VALUES (?)"</span><span class="p">,</span> <span class="p">[(</span><span class="n">i</span><span class="p">,)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span>
+<span class="n">r</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"BEGIN"</span><span class="p">)</span>                                   <span class="c1"># reader opens its snapshot</span>
+<span class="n">before</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT count(*) FROM facts"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">with</span> <span class="n">w</span><span class="p">:</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO facts VALUES (99)"</span><span class="p">)</span>       <span class="c1"># writer commits DURING the read txn</span>
+<span class="n">during</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT count(*) FROM facts"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">r</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="n">after</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT count(*) FROM facts"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"reader saw: </span><span class="si">{</span><span class="n">before</span><span class="si">}</span><span class="s2"> rows, then </span><span class="si">{</span><span class="n">during</span><span class="si">}</span><span class="s2"> inside the same snapshot, then </span><span class="si">{</span><span class="n">after</span><span class="si">}</span><span class="s2"> in a new one"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"sidecars:"</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"estate.db-"</span><span class="p">)))</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">journal mode now: wal</span>
+<span class="go">reader saw: 3 rows, then 3 inside the same snapshot, then 4 in a new one</span>
+<span class="go">sidecars: ['estate.db-shm', 'estate.db-wal']</span>
+</code></pre></div>
+
+<p>Write-ahead logging inverts chapter 2&rsquo;s journal: instead of saving old pages
+aside and writing new ones in place, the engine appends new pages to a log and
+leaves the main file alone, folding the log back in later (&ldquo;checkpointing&rdquo;).
+Three consequences, all visible in the transcript. Readers no longer block
+writers or vice versa — the writer committed mid-read-transaction without
+either party waiting. Readers get <em>snapshot isolation</em> for free: inside one
+read transaction the reader saw 3 rows, then still 3 <em>after</em> the concurrent
+commit — a stable world to compute over, the moving-substrate problem of the
+register&rsquo;s network chapter solved outright at the estate&rsquo;s door — and the new
+truth appeared only when the reader opened a new transaction. And the sidecar
+population changed: <code>-wal</code> and <code>-shm</code> now accompany the database, persistently
+(WAL mode is a property of the file, surviving reopen), with chapter 2&rsquo;s rule
+unchanged and now sharper — <em>the sidecars are part of the database</em>, and
+chapter 7 will show that copying around them is the classic way to lose
+committed data. Two honest caveats bound the gift: WAL requires shared memory,
+so it is unavailable or unsafe on network filesystems — estates live on local
+disks, which they should anyway (the engine&rsquo;s corruption documentation has a
+section on network filesystems that reads like a warning label) — and a read
+transaction held open for a long time pins the WAL from checkpointing, so the
+log grows; the short-transaction covenant turns out to bind readers too.</p>
+<h2>Connections: how many, held how long</h2>
+<p>The chapter&rsquo;s demos juggled connections freely, and real estates need the
+lifecycle stated. A connection is cheap to open — a file open and a header
+read, microseconds locally — so the previous volume&rsquo;s instincts about
+connection pooling (a server-database economics) do not transfer; an operator
+that opens at session start and closes at exit is doing it right, and a
+scheduled job that opens, works, and closes has nothing to optimize. The
+rules that do matter are about <em>holding</em>. One connection per thread (the
+module&rsquo;s binding rule, met above). One estate connection per operator
+process, not per function — chapter 2&rsquo;s <code>with db:</code> blocks share it safely,
+and a process that opens dozens of connections to one file is manufacturing
+its own lock traffic. And nothing <em>holds a transaction</em> across a wait: not a
+network call, not a subprocess, not a model inference, not user input. The
+WAL section&rsquo;s caveat gives the reader&rsquo;s version teeth — a read transaction
+held open pins the snapshot, so an operator that opens a read transaction
+and then thinks for ten minutes is forcing the WAL to retain ten minutes of
+history for a view nobody needed frozen — and the writer&rsquo;s version is
+chapter 2&rsquo;s covenant with a sharper reason: the write slot is <em>exclusive</em>,
+so a transaction held across a thirty-second inference is thirty seconds of
+every other tenant&rsquo;s timeout budget. Transactions bracket <em>database work</em>,
+never <em>thinking</em>; the estate connection lives long, its transactions live
+milliseconds.</p>
+<h2>Durability under WAL: one honest knob</h2>
+<p>Chapter 2 counseled leaving <code>synchronous</code> at its default and this chapter
+must refine that advice once, because WAL changes the trade&rsquo;s terms in the
+operator&rsquo;s favor. Under rollback journaling, lowering sync guarantees risks
+corruption; under WAL, the engine documents a gentler middle. <code>synchronous =
+NORMAL</code> syncs at checkpoints rather than at every commit and — so long as the
+<code>-wal</code> sidecar is preserved and the storage stack honors the sync each
+checkpoint does issue — cannot corrupt the database on power loss; what it
+risks is only the <em>most recent commits rolling back</em> to the last checkpoint if
+power dies before the next one. The documentation states the trade in plain
+words: under NORMAL, transactions &ldquo;are no longer durable and might rollback
+following a power failure or hard reset&rdquo; (Ref 16). Process crashes lose
+nothing either way. The qualifier is load-bearing, and worth saying twice: the
+promise is against <em>corruption</em>, not against losing the tail of recent commits,
+and it holds only while the <code>-wal</code> file stays with its database — which is
+exactly why chapter 7 counts deleting or copying around the sidecar as the
+classic way to turn &ldquo;durable&rdquo; into &ldquo;lost.&rdquo; For an estate on a workstation or a battery-backed
+machine, WAL + NORMAL is the documented sweet spot and this book&rsquo;s
+recommendation, set in <code>open_estate()</code> with the reason recorded in the
+settings history (chapter 4&rsquo;s pattern eating its own cooking). The estate
+declines to go further: <code>synchronous = OFF</code> re-enters corruption territory,
+and the ledger&rsquo;s whole value is that its last row can be believed. The
+decision, either way, is one line — and the point of teaching it is less
+the milliseconds than the method: durability settings are <em>estate policy</em>,
+chosen once, recorded with reasons, never adjusted silently mid-incident by
+whichever session is frustrated with a slow loop.</p>
+<h2>The read-only seat</h2>
+<p>Not every tenant deserves the pen. Reporting sessions, dashboards, the
+supervisor&rsquo;s audit, chapter 7&rsquo;s restore drills — all read; none should be
+<em>able</em> to write, because ability is blast radius whether or not intent
+exists (the previous volume&rsquo;s least-privilege doctrine, verbatim). The
+engine provides the seat:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<span class="n">rw</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span>
+<span class="n">rw</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"CREATE TABLE facts (fact TEXT) STRICT"</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">rw</span><span class="p">:</span> <span class="n">rw</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO facts VALUES ('reports read; they do not write')"</span><span class="p">)</span>
+<span class="n">ro</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"file:estate.db?mode=ro"</span><span class="p">,</span> <span class="n">uri</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"read-only seat reads:"</span><span class="p">,</span> <span class="n">ro</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT fact FROM facts"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">ro</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO facts VALUES ('surely just this once')"</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"read-only seat writes:"</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">read-only seat reads: reports read; they do not write</span>
+<span class="go">read-only seat writes: attempt to write a readonly database</span>
+</code></pre></div>
+
+<p>The URI form&rsquo;s <code>mode=ro</code> refuses writes at the connection, cheaply and
+unconditionally — a report with a bug cannot corrupt the record it reports
+on, which is the property that lets scheduled reporting run without the
+scrutiny writes earn. Two strengthenings extend the seat. For genuinely
+frozen files — archives, the backups chapter 7 verifies — <code>immutable=1</code>
+goes further, promising the engine the file cannot change and skipping
+lock traffic entirely (a promise that must be <em>true</em>; it is for cold
+backups, never for live estates). And beneath the engine sits the outer
+wall the register already taught: the estate file&rsquo;s unix permissions
+decide who reaches it at all, and an operator lineage&rsquo;s estate belongs to
+that lineage&rsquo;s user, mode 600, with the supervisor&rsquo;s audit seat granted
+through group read — file-system enforcement backing engine politeness,
+the same layering the previous volume built for every other durable
+asset.</p>
+<h2>Reading a BUSY like an operator</h2>
+<p>The refusal taxonomy, assembled for the diagnostic reflexes. BUSY at BEGIN
+IMMEDIATE, within the timeout, resolving on retry: weather — a neighbor
+writing, the queue working as designed; record nothing, proceed. BUSY
+persisting past a generous timeout: a tenant is violating the
+short-transaction covenant; the culprit is found not with database tools but
+with the previous volume&rsquo;s — <code>fuser</code> on the estate file names the processes
+holding it open (a fragment for the same PATH reasons as ever), and the run
+registry says which <em>operator</em> each process claims to be; the fix is the
+neighbor&rsquo;s transaction shape, never a longer timeout arms race. BUSY at a
+<em>deferred</em> transaction&rsquo;s midpoint (the upgrade case): a design bug in the
+asking code — the transaction read before declaring write intent; the fix is
+IMMEDIATE, and no timeout would have helped. And the exotic
+<code>SQLITE_BUSY_SNAPSHOT</code> under WAL — a writer whose snapshot has been
+overtaken — resolves by restarting the transaction fresh. Four faces, four
+different next moves, one diagnostic principle carried over whole from the
+register: the refusal&rsquo;s <em>timing and persistence</em> carry the diagnosis, and
+hammering retries without reading them converts information into noise.</p>
+<p>One WAL mechanic belongs in the operator&rsquo;s model because it is the mode&rsquo;s
+only moving part: the checkpoint, the act of folding the log back into the
+main file. By default it happens automatically (around a thousand log
+pages), opportunistically, and invisibly — the right arrangement, left
+alone. The operational readings: the <code>-wal</code> file&rsquo;s <em>size</em> is the health
+gauge (steady modest size: checkpointing is keeping up; monotonic growth:
+something is pinning it — almost always the long-lived read transaction
+the connection section indicted, found via the registry and cured by
+fixing the reader, not by forcing checkpoints); and the one legitimate
+manual intervention is maintenance-shaped — <code>PRAGMA
+wal_checkpoint(TRUNCATE)</code> at a quiet moment (the backup session, the
+handoff) folds everything in and shrinks the log to zero, leaving the
+estate compact for the copy or the inheritance. What the operator never
+does is treat checkpointing as a correctness lever: committed data is
+equally durable in the log and the main file (chapter 7&rsquo;s engine-mediated
+copies know where truth lives), so checkpoint management is housekeeping
+economics — log size against fold-in cost — and the default economics are
+already good. Know the gauge, fix the pinner, truncate at handoff; the
+rest is the engine&rsquo;s business.</p>
+<h2>What must never be shared</h2>
+<p>The file shares; two things above it must not, and both failure modes are
+documented corruption paths rather than theory. The first is the connection
+object across a <code>fork()</code>. An operator that opens the estate and then forks
+— the daemonization dance, a multiprocessing pool created after connecting
+— hands both processes the same open file descriptors and the same
+in-library state, and the engine&rsquo;s how-to-corrupt documentation lists
+exactly this as a way to break a database: two processes unknowingly
+sharing what each believes is a private connection. The rule is mechanical:
+<em>open after fork, never before</em> — child processes create their own
+connections (the chapter&rsquo;s subprocess listings all do; multiprocessing
+workers open inside the worker function), and a process that must fork
+closes the estate first. The second is the file across <em>hosts</em> via a
+shared filesystem — the network-mount warning of the WAL section,
+generalized: SQLite&rsquo;s coordination is exactly as good as the filesystem&rsquo;s
+locking, network filesystems&rsquo; locking is historically exactly not good
+enough, and the corruption documentation&rsquo;s dedicated section on it is the
+most-cited page in this book&rsquo;s references for a reason. Same machine,
+different processes: share freely, the whole chapter is the proof. Different
+machines: the estate does not stretch; chapter 8 names what does. Between
+those two rules and the covenant, the sharing story is complete — and
+notably free of locks the operator must remember, which was the entire
+point of paying an engine to remember them.</p>
+<h2>The proof at scale</h2>
+<p>The chapter&rsquo;s claims assembled and stress-tested — two genuinely separate
+processes, no shared state but the path, a hundred read-modify-writes each:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span><span class="o">,</span><span class="w"> </span><span class="nn">subprocess</span><span class="o">,</span><span class="w"> </span><span class="nn">sys</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"PRAGMA journal_mode = WAL"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"CREATE TABLE counters (name TEXT PRIMARY KEY, value INTEGER NOT NULL) STRICT"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO counters VALUES ('runs', 0)"</span><span class="p">);</span> <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="n">worker</span> <span class="o">=</span> <span class="s1">'''</span>
+<span class="s1">import sqlite3</span>
+<span class="s1">db = sqlite3.connect("estate.db")</span>
+<span class="s1">db.execute("PRAGMA busy_timeout = 5000")</span>
+<span class="s1">for _ in range(100):</span>
+<span class="s1">    with db:</span>
+<span class="s1">        db.execute("UPDATE counters SET value = value + 1 WHERE name = 'runs'")</span>
+<span class="s1">'''</span>
+<span class="n">procs</span> <span class="o">=</span> <span class="p">[</span><span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span> <span class="s2">"-c"</span><span class="p">,</span> <span class="n">worker</span><span class="p">])</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">procs</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"two operators, 100 increments each, final count:"</span><span class="p">,</span>
+      <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT value FROM counters WHERE name='runs'"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">two operators, 100 increments each, final count: 200</span>
+</code></pre></div>
+
+<p>Two hundred, exactly — set beside chapter 1&rsquo;s flat-file counter, which lost
+half its updates to two writers <em>in the same process being careful</em>. The
+workers here share no locks of their own, coordinate nothing, and could have
+been written by strangers; the busy timeout absorbed their collisions and the
+single-writer queue serialized their arithmetic. This is the estate&rsquo;s
+concurrency story in one number: correctness is the engine&rsquo;s job and arrived
+by default; the operator&rsquo;s whole contribution was two pragmas and short
+transactions.</p>
+<h2>Where the file lives, and how many files there are</h2>
+<p>Concurrency questions are often placement questions wearing a disguise, so
+the estate&rsquo;s geography gets settled here. <em>Where:</em> on a local filesystem,
+always — the WAL caveat and the corruption documentation agree — and by
+convention where the previous volume put durable operator state: under the
+platform&rsquo;s state directory (<code>~/.local/state/&lt;operator&gt;/estate.db</code> for a
+per-user operator, <code>/var/lib/&lt;operator&gt;/</code> for a system one), never in
+scratch, never on a network mount, never in a synced-folder product whose
+sync engine is precisely the naive copier chapter 7 indicts. <em>How many:</em>
+one estate per <em>accountable lineage</em> — the operator identity that owns the
+ledger&rsquo;s promises — which usually means one per agent-role per machine.
+Splitting finer (per task, per session) shreds the composition dividend the
+previous section just demonstrated; merging coarser (all operators on a
+host in one file) couples unrelated write queues and makes chapter 8&rsquo;s
+retention policy a negotiation. The two legitimate splits are the ones
+already earned: high-rate sample tables (this chapter&rsquo;s ceiling section)
+and scratch (never in the estate at all). And when split files must be
+queried together, the engine&rsquo;s <code>ATTACH</code> joins them at read time — one
+connection, two files, cross-database SELECTs — so the split costs analysis
+nothing; a reporting session attaches the samples database read-only beside
+the estate and the composed queries run as if the seam were not there. The
+geography, like every estate policy, goes in the settings table with its
+reason, because the successor&rsquo;s first question — <em>where is everything?</em> —
+deserves a recorded answer rather than a convention remembered.</p>
+<h2>The ceiling, and the covenant</h2>
+<p>Honesty about where the story ends. Writers queue, so write throughput has a
+ceiling: roughly, one write transaction&rsquo;s duration times the queue&rsquo;s length is
+everyone&rsquo;s latency, and a fleet of chatty writers against one estate will feel
+it — first as waits, then as timeouts. The remedies escalate in order: batch
+(chapter 2&rsquo;s economics — most &ldquo;many writes&rdquo; are one truth); shorten
+transactions (the covenant again — nothing holds the write slot across a
+network call or a model inference, ever); split estates along real seams (the
+scratch/records boundary of chapter 1 often marks files that never needed to
+be one — a high-rate sample log is its own database, attached when queried);
+and, when a workload is genuinely many concurrent writers across many hosts,
+concede the case to chapter 8, which is where this book hands such workloads
+to server databases without embarrassment. What the ceiling almost never
+justifies is the move folklore reaches for first — disabling the durability
+that makes the estate worth having. The engine&rsquo;s own guidance pages order the
+levers the same way: transaction shape first, WAL second, hardware third,
+guarantees last and reluctantly.</p>
+<p>The covenant that keeps the whole chapter working fits in three lines an
+operator can hold: open through one ritual (foreign keys on, busy timeout
+set, WAL on); say IMMEDIATE when you will write, and keep every transaction
+— reader or writer — short; treat BUSY within the bound as weather, and BUSY
+beyond it as a finding about a neighbor. Under that covenant, the estate
+scales exactly as far as operator memory needs it to — and the file stays
+one file, inheritable whole, which the next chapter finally teaches the
+operator to <em>search</em>.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch06.html">next: Search Is Recall →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-durable-state-for-ephemeral-minds', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

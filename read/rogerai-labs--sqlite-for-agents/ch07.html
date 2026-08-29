@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trust, Verify, Repair — Durable State for Ephemeral Minds</title>
+<meta name="description" content="SQLite as the memory of machine operators — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="Durable State for Ephemeral Minds">
+<meta property="og:description" content="SQLite as the memory of machine operators — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--sqlite-for-agents/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--sqlite-for-agents.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Durable State for Ephemeral Minds">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--sqlite-for-agents.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#7CB342;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="7" data-prev="ch06.html" data-next="ch08.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 7 — Trust, Verify, Repair</h1>
+<p><em>Draft status: author draft, gate-checked; human verification pending. Outputs are
+real transcripts; the corruption in the final listing is real damage, inflicted on
+a scratch database by the listing itself.</em></p>
+<h2>Inherited trust is not trust</h2>
+<p>Every chapter so far wrote the estate; this one inherits it. The successor
+operator opens a file it did not create, holding records it did not witness,
+and must decide how much weight the file can bear — before building on it, not
+after. The register&rsquo;s previous volume made this posture a reflex for machines
+(&ldquo;the four-question routine&rdquo;, &ldquo;proof of target&rdquo;); the estate needs the same
+reflex with different instruments, because a database can fail in ways a
+transcript cannot: bytes rot, copies go stale, sidecars get separated from
+their files, and — the quiet majority of real incidents — the backup everyone
+trusted turns out to have been wrong every night for a year. The good news is
+proportionate: the estate&rsquo;s engine ships verification as a first-class
+operation, cheap enough to run on schedule, and the correct-backup problem has
+exact, documented answers. This chapter is those instruments, ordered as the
+successor meets them: verify what you inherited, back up what you verified,
+and know the recovery ladder before you need its rungs.</p>
+<p>The posture to install is the same one the previous volume gave outward
+reports: <em>claims sized to evidence</em>. An estate is not &ldquo;fine&rdquo; because it opens
+— chapter 2 showed opening does almost nothing — and not &ldquo;backed up&rdquo; because
+a file named backup exists. It is fine because <code>integrity_check</code> said <code>ok</code>
+recently; it is backed up because a restore was <em>drilled</em>. Everything below
+mechanizes those two sentences.</p>
+<h2>The opening move</h2>
+<p>SQLite&rsquo;s self-audit walks the entire file — every page, every index, every
+constraint&rsquo;s storage — and returns either the single row <code>ok</code> or a list of
+what is wrong:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span><span class="o">,</span><span class="w"> </span><span class="nn">pathlib</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"CREATE TABLE facts (id INTEGER PRIMARY KEY, fact TEXT) STRICT"</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">db</span><span class="p">:</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="s2">"INSERT INTO facts (fact) VALUES (?)"</span><span class="p">,</span> <span class="p">[(</span><span class="sa">f</span><span class="s2">"fact </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span><span class="p">,)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">200</span><span class="p">)])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"healthy file says:"</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"PRAGMA integrity_check"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">raw</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span><span class="o">.</span><span class="n">read_bytes</span><span class="p">())</span>
+<span class="n">raw</span><span class="p">[</span><span class="mi">4096</span><span class="p">:</span><span class="mi">4160</span><span class="p">]</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">"</span><span class="se">\xde\xad</span><span class="s2">"</span> <span class="o">*</span> <span class="mi">32</span>                    <span class="c1"># 64 bytes of damage mid-file</span>
+<span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span><span class="o">.</span><span class="n">write_bytes</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">verdict</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"PRAGMA integrity_check"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"damaged file says:"</span><span class="p">,</span> <span class="n">verdict</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][:</span><span class="mi">70</span><span class="p">])</span>
+<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">DatabaseError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"damaged file says:"</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">healthy file says: ok</span>
+<span class="go">damaged file says: database disk image is malformed</span>
+</code></pre></div>
+
+<p>Sixty-four bytes of damage, surgically inflicted mid-file, and the audit caught
+it — where a JSON midden with the same wound would have parsed cleanly or
+failed confusingly depending on where the bytes landed, and a naive estate
+consumer might have read plausible garbage for weeks. Operating doctrine for
+the check: it runs at <em>inheritance</em> (a successor&rsquo;s first act on an estate it
+did not close), at <em>backup</em> (below — verifying the copy, which is the copy
+that matters), and on <em>schedule</em> for long-lived estates. Its cost scales with
+file size; the lighter <code>PRAGMA quick_check</code> skips the slowest cross-checks and
+is the right compromise for large estates checked often, with the full check
+reserved for backups and suspicion. Two companions complete the audit
+toolkit: <code>PRAGMA foreign_key_check</code> reports orphaned references (chapter 3&rsquo;s
+switch enforces them per-connection going forward, but rows written by some
+past pragma-forgetting tenant are findable only by asking), and the
+application-level audits this book has been accumulating all along — chapter
+4&rsquo;s artifact hashes, chapter 6&rsquo;s index-sync counts — run beside the engine&rsquo;s,
+because the engine can only vouch for storage, never for meaning.</p>
+<p>Verification&rsquo;s price list keeps the schedule honest, so the costs go on
+record with the doctrine. <code>integrity_check</code> reads every page and checks
+every index against its table — I/O-bound, linear in file size, seconds
+for the megabyte estates this book&rsquo;s patterns produce and minutes only
+when an estate has ignored chapter 8&rsquo;s retention for years. <code>quick_check</code>
+skips the slow cross-checks (index-to-table consistency among them) for
+roughly order-of-magnitude savings, which is why the daily seat belongs to
+it and the full check rides the backup cadence, where its cost disappears
+into an operation that reads the whole file anyway. <code>foreign_key_check</code>
+scales with the referencing tables it scans; the application audits cost
+whatever their queries cost, which chapter 3&rsquo;s index discipline already
+bounded. None of it approaches the price of the alternative — the
+register&rsquo;s economics, one last time: a verification is a read, reads are
+cheap, and the one commodity that cannot be bought back after the fact is
+the confidence that yesterday&rsquo;s estate was sound <em>yesterday</em>, attested on
+the record, by a check that ran when nobody was worried.</p>
+<p>One boundary of the engine&rsquo;s audit deserves explicitness before the backup
+sections rely on it: <code>integrity_check</code> proves the file is a well-formed
+database; it does not prove it is <em>your</em> database. A backup restored from
+the wrong generation, an estate swapped by mistake, rows deleted by an
+authorized-but-wrong session — all audit <code>ok</code>, because storage soundness
+was never identity or completeness. The estate&rsquo;s own layers carry that
+weight where it matters: the info table names the estate and its lineage
+(chapter 3), the artifact index&rsquo;s hash pins each backup generation to its
+recorded identity, and — for estates whose threat model includes tampering
+rather than mere accident — the ledger&rsquo;s append-only shape extends
+naturally to a verification chain, each row carrying a hash over its
+content plus its predecessor&rsquo;s hash, making silent rewriting of history
+detectable by one walk. Most operator estates stop well short of that
+last measure, and should; the point of naming the layers is the habit of
+asking, for each trust question, <em>which</em> instrument actually answers it —
+the engine for bytes, the schema for meaning, provenance for identity,
+and, at the far end, cryptography for adversaries. Chapter 5&rsquo;s threat was
+concurrency and the engine answered it; this chapter&rsquo;s is decay and
+mistake; the adversarial case is real but rarer, and an estate that
+reaches it has usually outgrown one file for reasons chapter 8 already
+catalogs.</p>
+<h2>The backup that lies</h2>
+<p>Chapter 5 promised that copying a live WAL database loses data; here is the
+loss, measured. The scenario is the commonest backup bug in SQLite&rsquo;s world: a
+cron job that <code>cp</code>s the main file, unaware that recent commits — sometimes
+all commits — live in the <code>-wal</code> sidecar until a checkpoint folds them in:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span><span class="o">,</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"PRAGMA journal_mode = WAL"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"PRAGMA wal_autocheckpoint = 0"</span><span class="p">)</span>          <span class="c1"># keep recent commits in the -wal</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"CREATE TABLE ledger (id INTEGER PRIMARY KEY, entry TEXT) STRICT"</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">db</span><span class="p">:</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="s2">"INSERT INTO ledger (entry) VALUES (?)"</span><span class="p">,</span>
+                   <span class="p">[(</span><span class="sa">f</span><span class="s2">"entry </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span><span class="p">,)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500</span><span class="p">)])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"live estate holds:"</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT count(*) FROM ledger"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">,</span> <span class="s2">"naive-backup.db"</span><span class="p">)</span>      <span class="c1"># cp on a live WAL database</span>
+<span class="n">naive</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"naive-backup.db"</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"naive copy holds:"</span><span class="p">,</span> <span class="n">naive</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT count(*) FROM ledger"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"naive copy says: "</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">live estate holds: 500</span>
+<span class="go">naive copy says:  no such table: ledger</span>
+</code></pre></div>
+
+<p>Worse than losing rows: the copy lost the <em>table</em>. Every commit of this young
+database still lived in the write-ahead log, so the main file held little more
+than a header, and the backup — well-named, timestamped, dutifully rotated —
+would restore to an empty estate. The demonstration pins the extreme case by
+disabling auto-checkpointing, but the production version differs only in
+degree: with default checkpointing the naive copy is missing <em>whatever
+committed since the last checkpoint</em>, an amount that varies invisibly from
+minute to minute — a backup whose completeness is a coin toss weighted by
+timing. And the rollback-journal sibling of this bug is nastier still: a <code>cp</code>
+taken mid-transaction can capture a half-committed page set that <em>the copy has
+no journal to repair</em>, yielding not a stale backup but a corrupt one. The rule
+absorbs in one line — <strong>a database in use cannot be copied by copying its
+file</strong> — and the honest versions cost nothing, as the next listing shows.</p>
+<h2>The backup that tells the truth</h2>
+<p>The engine offers two correct paths, both usable while the estate is live.
+<code>VACUUM INTO</code> writes a complete, transactionally consistent, freshly-packed
+copy to a new file in one statement; the online backup API (exposed in Python
+as <code>Connection.backup</code>) streams a consistent copy page by page, politely
+yielding to concurrent writers. The first is the estate&rsquo;s default for its
+simplicity and the compaction it throws in free:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"PRAGMA journal_mode = WAL"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"PRAGMA wal_autocheckpoint = 0"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"CREATE TABLE ledger (id INTEGER PRIMARY KEY, entry TEXT) STRICT"</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">db</span><span class="p">:</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="s2">"INSERT INTO ledger (entry) VALUES (?)"</span><span class="p">,</span>
+                   <span class="p">[(</span><span class="sa">f</span><span class="s2">"entry </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span><span class="p">,)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500</span><span class="p">)])</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"VACUUM INTO 'true-backup.db'"</span><span class="p">)</span>           <span class="c1"># transactionally consistent copy</span>
+<span class="n">bak</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"true-backup.db"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"backup holds:      "</span><span class="p">,</span> <span class="n">bak</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT count(*) FROM ledger"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"backup integrity:  "</span><span class="p">,</span> <span class="n">bak</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"PRAGMA integrity_check"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">backup holds:       500</span>
+<span class="go">backup integrity:   ok</span>
+</code></pre></div>
+
+<p>Same live database, same uncheckpointed WAL, and the copy holds all five
+hundred rows with a clean audit — because the copy was made <em>through the
+engine</em>, which knows where the truth currently lives, instead of through the
+file system, which does not. The listing also models the doctrine&rsquo;s second
+clause: the verification ran <em>on the backup</em>, in the same breath as its
+creation. An unverified backup is a hope with a filename; this one leaves the
+session as a claim with evidence, ready for chapter 8&rsquo;s handoff. Around the
+mechanism goes ordinary register discipline, inherited wholesale from the
+previous volume: timestamped backup names (its reversibility chapter),
+retention by schedule (its timer chapter), the backup recorded in the ledger
+with outcome and integrity verdict (chapter 4), and — the clause institutions
+skip until an incident teaches it — the <em>restore drill</em>: on some schedule, a
+backup is actually opened, actually queried, actually compared against
+expectations, because &ldquo;backup succeeded&rdquo; and &ldquo;restore works&rdquo; are different
+facts and only the second one was ever the point. The drill, too, is one
+<code>open_estate()</code> against yesterday&rsquo;s file plus a handful of the standing
+queries — for an unattended operator, a scheduled job like any other.</p>
+<h2>The trust ladder for inherited estates</h2>
+<p>Verification instruments in hand, the successor&rsquo;s opening posture can be
+graded rather than binary — a ladder of earned trust, climbed as far as the
+work requires, mirroring the evidence disciplines the previous volume built
+for machines. Rung zero: the file opens and identifies itself (<code>user_version</code>,
+<code>sqlite_schema</code>) — enough to <em>look</em>, nothing more. Rung one: <code>quick_check</code>
+says ok — storage is sound; the successor may <em>read</em> and build provisional
+plans. Rung two: the application audits pass — foreign keys check out,
+artifact hashes match, the FTS row counts agree — the estate&rsquo;s <em>internal</em>
+claims cohere, and routine work may proceed on them. Rung three, for records
+about to bear real weight: spot re-verification against the <em>world</em> — the
+config row against the actual file it describes, the &ldquo;service healthy&rdquo;
+outcome against a fresh probe — because storage integrity never promised the
+world held still, and rung three is where the estate&rsquo;s <code>recorded_at</code> columns
+earn their keep by pricing each fact&rsquo;s staleness. The ladder&rsquo;s use is
+economic, in the register&rsquo;s sense: climbing costs turns, and the height
+required is set by what the session will do — a read-only report trusts at
+rung one; a purge keyed on artifact rows climbs to three for exactly the
+rows it will act on. What the ladder forbids is only the midden habit:
+acting at rung three&rsquo;s stakes on rung zero&rsquo;s evidence because the file
+opened and looked plausible.</p>
+<h2>Cadence, copies, and the cold rule</h2>
+<p>Mechanism without schedule is chapter 7&rsquo;s own evidence theater, so the
+backup doctrine gets its operational shape. Cadence follows value density:
+an estate absorbing a session&rsquo;s work backs up at session end (the handoff&rsquo;s
+natural moment — the briefing cites the backup it just verified); estates
+under continuous unattended write take a timer (previous volume, chapter 4)
+on a period priced by the acceptable loss window. Retention follows the
+previous volume&rsquo;s timestamped-graveyard pattern: dated backup files, a
+purge schedule, and at least one <em>drilled</em> generation always outside the
+blast radius of the newest mistake — because the incident that corrupts an
+estate at 3 a.m. is also the incident most likely to have corrupted
+<em>tonight&rsquo;s</em> backup at 2:55. Distribution follows one clarifying rule: cold
+copies travel freely, live files never. The naive-copy prohibition binds
+only the <em>live</em> database; a <code>VACUUM INTO</code> product is a closed, complete,
+ordinary file, and every file tool the register knows — rsync to another
+host, checksum manifests, the artifact index itself (the estate&rsquo;s backups
+belong in the estate&rsquo;s <em>successor&rsquo;s</em> artifact table, hash and all) —
+applies to it without caveat. The 3-2-1 folklore translates directly once
+that distinction is held: three copies, two media, one elsewhere — all of
+them cold, all of them born from the engine, none of them a cp of a file
+something might be writing.</p>
+<h2>Sidecar forensics</h2>
+<p>Because chapter 5&rsquo;s sidecars are where naive tooling does its damage, the
+successor needs the reading list for files found beside an inherited
+estate. A <code>-wal</code> file present at rest: normal — the last tenant exited
+without a final checkpoint; the engine will fold it in on open, and the
+only wrong move is &ldquo;cleaning it up&rdquo; first, which discards committed
+transactions. A <code>-shm</code> file: coordination scaffolding, meaningless at
+rest, recreated on demand — its presence signals nothing. A <code>-journal</code>
+file: an interrupted rollback-journal transaction awaiting automatic
+recovery on open — same rule, sharper stakes: deleting it converts a
+recoverable interruption into corruption. The general law covers every
+case and fits on one line: <strong>sidecars are opened with the engine, never
+interpreted, moved, or deleted by hand</strong> — and its corollary from chapter
+5, that a live estate&rsquo;s directory is copied only through the engine,
+completes the pair of rules that would, between them, have prevented the
+majority of the corruption stories the documentation&rsquo;s post-mortems
+collect. The one legitimately hands-on act — archiving a <em>cold</em> estate
+directory whose tenant is confirmed gone — is the previous volume&rsquo;s
+proof-of-target discipline: <code>fuser</code> says no holders, then the whole
+directory travels together, sidecars included, as one artifact.</p>
+<h2>The ladder down</h2>
+<p>Last, the bad day: verification failed, on the live file. The recovery ladder,
+descended in order and recorded in the run&rsquo;s account at every rung. First
+rung: stop writing — every write to a corrupt database deepens the hole, so
+the estate goes read-only the moment the audit speaks (the ledger&rsquo;s own
+account of this event goes, per chapter 1&rsquo;s taxonomy, in a <em>different</em> file).
+Second: preserve the evidence — copy the damaged file <em>and its sidecars</em>
+(file-level copy is correct here precisely because the priority has inverted:
+bytes, not consistency, are now the asset) before any recovery attempt
+touches them. Third: restore from the newest verified backup, measure the gap
+— the ledger&rsquo;s last rows in the backup date the loss — and let
+intent-then-outcome (chapter 2) direct the re-verification of whatever world
+actions fell in it. Fourth, only when backups fail the need: salvage — the
+<code>.recover</code> command of the sqlite3 shell walks the wreck and emits everything
+reconstructible, and <code>.dump</code> predates it as the cruder tool; both produce SQL
+to rebuild a new file, never repairs in place. And the rung below salvage is
+candor: some losses are losses, and the register&rsquo;s covenant — retractions
+told, not hidden — applies to estates exactly as to publications. The
+successor inherits the account of what was lost with the same provenance
+discipline as any other fact, because the alternative — a gap wearing a calm
+face — is the one failure this book&rsquo;s whole tradition refuses.</p>
+<h2>The estate you did not expect</h2>
+<p>The trust ladder assumed the estate is <em>yours</em> — an inherited file from
+your own lineage, suspect only of decay. Operators also meet the other
+kind: a database file of unknown provenance, arriving as a download, an
+attachment, another team&rsquo;s export. The engine&rsquo;s security documentation is
+plain that a database file is an <em>input</em> like any other, and a crafted one
+is an attack surface: deliberately corrupt structures probing the parser,
+and — subtler — schema-borne behavior, because views and triggers execute
+when touched, meaning a hostile schema can make an innocent-looking SELECT
+do things its reader never wrote. The defensive posture for unknown files
+costs three lines and the register&rsquo;s habits. Open read-only (<code>mode=ro</code> —
+chapter 5&rsquo;s seat, now as armor). Leave <code>PRAGMA trusted_schema</code> at its
+modern default of off, which refuses the schema-borne tricks the docs
+enumerate, and run <code>PRAGMA integrity_check</code> plus <code>quick_check</code> before any
+real query, as triage rather than trust. And read the schema <em>as text
+first</em> (<code>sqlite_schema</code>, chapter 3&rsquo;s stranger query) before running
+anything that would evaluate it — the previous volume&rsquo;s read-before-edit,
+reincarnated as read-before-query. For the estate&rsquo;s own lineage this
+paranoia is unnecessary by construction; the point of stating it is the
+boundary: the disciplines that make your own estates trustworthy are
+provenance disciplines, and a file without provenance gets the other
+protocol, every time, no matter how much its tables look like home.</p>
+<h2>The standing verification job</h2>
+<p>Instruments and cadences assembled, the chapter&rsquo;s doctrine compresses into
+one scheduled session — the estate&rsquo;s health check, an unattended operator
+like any other, whose own runs land in the registry it audits. Its shape,
+as a template to adapt: daily, <code>quick_check</code> plus the application audits
+(foreign keys, FTS sync counts, open-intent staleness — chapter 8&rsquo;s
+briefing queries, run for alerting rather than orientation), each result a
+ledger row only when it <em>finds</em> something, per the only-writes rule. At
+backup cadence, the full sequence this chapter demonstrated: <code>VACUUM INTO</code>
+a dated file, <code>integrity_check</code> on the product, hash into the artifact
+index, retention purge of expired generations — one transaction of record
+per backup, proof included. Monthly, the restore drill: yesterday&rsquo;s backup
+opened, briefed, and spot-queried, with the drill&rsquo;s outcome ledgered
+because &ldquo;restores worked in August&rdquo; is exactly the kind of claim an
+incident in November wants dated. And on every schedule, the meta-check
+the register&rsquo;s monitoring chapter taught: the health check&rsquo;s <em>own</em>
+absence must be loud — a job that verifies everything but whose silence
+looks like health is the calm-face failure again, so the briefing&rsquo;s
+staleness queries watch the watcher too (&ldquo;last verification run: when?&rdquo;).
+None of this is machinery beyond what the book already built; it is
+chapters 4 through 7 composed into a timer, which is the estate&rsquo;s whole
+method arriving at its own maintenance.</p>
+<h2>When the bytes are fine and the facts are not</h2>
+<p>One verification failure mode remains that no pragma detects: meaning-rot.
+The storage audits clean, the hashes match, and the record is <em>wrong</em> —
+because the world moved after the row was written. The config row describes
+a file someone hand-edited last week; the &ldquo;service healthy&rdquo; outcome
+predates the migration; the fact about the gate&rsquo;s memory cap was true of a
+gate two versions ago. The estate&rsquo;s defenses are the provenance disciplines
+laid down in chapter 3, now read as a freshness system. <code>recorded_at</code>
+prices every fact&rsquo;s age, and the trust ladder&rsquo;s rung three — re-verify
+against the world before acting — is <em>triggered</em> by that price crossing
+the stakes at hand: a day-old fact backs a routine read; a season-old fact
+backing a destructive write gets re-proven first, by the register&rsquo;s own
+proof-of-target reflexes. <code>source</code> makes re-proving cheap: the row that
+names its origin (a path, a command, a URL) carries its own re-verification
+procedure. And the correction habit closes the loop: a fact found stale is
+not UPDATEd into silence but corrected on the record — new row, correction
+citing the old, journal entry for the searcher — so the estate&rsquo;s history
+shows not only what was believed but when belief was revised, which is what
+distinguishes a memory from a cache. Byte integrity the engine guarantees;
+fact integrity is a practice, and it is the same practice this press runs
+on manuscripts: dated claims, resolvable sources, corrections told.</p>
+<p>Corruption itself deserves a closing word of proportion, because the engine&rsquo;s
+reputation sometimes takes blame its documentation carefully allocates
+elsewhere. SQLite&rsquo;s file format is famously durable; the documented paths to
+corruption are dominated by the environment — storage that lies about syncs,
+network filesystems with broken locking, <em>other processes</em> deleting or
+copying sidecar files, backups taken the naive way — and by exotic
+misconfiguration, not by the engine&rsquo;s bookkeeping. Which returns the chapter
+to its theme with the emphasis correctly placed: the estate&rsquo;s trustworthiness
+is mostly the operator&rsquo;s conduct — local disks, sidecars respected,
+engine-mediated copies, checks on schedule, drills for real. The engine
+holds up its half ruthlessly. The verification suite is how the operator
+proves, on schedule, that both halves are still standing — and its verdicts
+are precisely what the final chapter&rsquo;s handoff will cite.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch08.html">next: Where Memory Ends →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-durable-state-for-ephemeral-minds', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

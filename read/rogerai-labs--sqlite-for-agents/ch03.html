@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Schema Is the Handoff — Durable State for Ephemeral Minds</title>
+<meta name="description" content="SQLite as the memory of machine operators — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="Durable State for Ephemeral Minds">
+<meta property="og:description" content="SQLite as the memory of machine operators — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--sqlite-for-agents/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--sqlite-for-agents.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Durable State for Ephemeral Minds">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--sqlite-for-agents.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#7CB342;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="3" data-prev="ch02.html" data-next="ch04.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 3 — Schema Is the Handoff</h1>
+<p><em>Draft status: author draft, gate-checked; human verification pending. Outputs are
+real transcripts from the authoring machine.</em></p>
+<h2>The stranger at the door</h2>
+<p>Whoever next opens the estate — tomorrow&rsquo;s session, a different tool, a human
+with a database browser, some future model that does not exist yet — arrives
+knowing nothing except what the file itself can teach. There will be no
+walkthrough, no chat with the author, no institutional memory; the register&rsquo;s
+operators do not get onboarding. Every hope of a good handoff therefore rests on
+one artifact: the schema. A schema is usually described as the structure data is
+stored in, which is true and misses the point that matters here. For the
+amnesiac&rsquo;s estate, the schema is <em>the documentation that executes</em> — the one
+description of the data that cannot drift from the data, because the engine
+enforces it on every write. Prose documentation describes what writers intended;
+schemas constrain what writers could do. A stranger can trust the second kind
+without trusting anyone.</p>
+<p>This chapter is therefore written as a craft of hospitality: every choice —
+types, constraints, provenance columns, versioning, naming — is judged by what
+it tells or guarantees to a reader who was not there. The test to hold
+throughout is concrete: <em>could a competent stranger, given only the file,
+reconstruct what each table means, how much to trust each row, and how the
+whole thing has changed over its life?</em> Each section below closes one gap
+between today&rsquo;s estates and a yes.</p>
+<h2>Types that mean it</h2>
+<p>The first surprise SQLite deals a newcomer is that, by historical default, its
+column types are suggestions. The engine&rsquo;s &ldquo;flexible typing&rdquo; — documented
+candidly in its datatype and quirks pages — declares a column&rsquo;s type an
+<em>affinity</em>, a preference the engine will try to honor and cheerfully override
+when a value disagrees:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"CREATE TABLE loose (host TEXT, cpus INTEGER)"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO loose VALUES (42, 'sixty-four')"</span><span class="p">)</span>   <span class="c1"># both wrong, both accepted</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"CREATE TABLE strict (host TEXT, cpus INTEGER) STRICT"</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO strict VALUES ('RogGentoo', 'sixty-four')"</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">IntegrityError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"strict refused:"</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"loose table holds:"</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT host, cpus FROM loose"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">())</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">strict refused: cannot store TEXT value in INTEGER column strict.cpus</span>
+<span class="go">loose table holds: ('42', 'sixty-four')</span>
+</code></pre></div>
+
+<p>The loose table accepted a numeric host name and a spelled-out CPU count without
+a murmur, and will hand them to every future reader who asked, by reading the
+schema, for text and an integer. In an application with a single disciplined
+writer this laxity is survivable; in an estate written by generations of
+operators — some of them language models assembling INSERT statements from
+prose — it is a slow poison, because every reader must now defend against every
+past writer&rsquo;s accidents. The cure costs seven characters: the <code>STRICT</code> table
+option, added to the language in 2021 precisely for schemas that mean what they
+say, makes the declared type a contract and a violating write an error at the
+write site — where the operator that caused it is still present to read the
+refusal, instead of at the read site months later, where nobody is. This book&rsquo;s
+rule needs no nuance: <strong>every estate table is STRICT.</strong> The loose demonstration
+above is the last non-STRICT table in it.</p>
+<p>Two consequences of STRICT deserve a sentence each. Declared types must come
+from the engine&rsquo;s real repertoire (INT, INTEGER, REAL, TEXT, BLOB, ANY) — the
+compatibility aliases that flexible typing tolerated are refused, which is
+itself documentation-by-enforcement. And where a column legitimately holds
+mixed types — rare, but real — <code>ANY</code> declares that honestly, telling the
+stranger &ldquo;expect anything here&rdquo; instead of lying with a specific type the
+engine will not police.</p>
+<h2>Constraints: the rules that outlive their authors</h2>
+<p>Types police form; constraints police meaning, and they are where the estate&rsquo;s
+discipline stops being conduct and becomes structure. Chapter 2 established the
+invariant &ldquo;no change recorded without its proof&rdquo; by transaction shape — a
+discipline each writer must remember. A CHECK constraint moves it into the
+schema, where no writer can forget it:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"""</span>
+<span class="s2">CREATE TABLE tasks (</span>
+<span class="s2">  id INTEGER PRIMARY KEY,</span>
+<span class="s2">  title TEXT NOT NULL CHECK (length(title) &gt; 0),</span>
+<span class="s2">  status TEXT NOT NULL DEFAULT 'open'</span>
+<span class="s2">      CHECK (status IN ('open', 'blocked', 'done', 'abandoned')),</span>
+<span class="s2">  proof TEXT,</span>
+<span class="s2">  CHECK (NOT (status = 'done' AND proof IS NULL))</span>
+<span class="s2">) STRICT</span>
+<span class="s2">"""</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO tasks (title) VALUES ('rotate backup credentials')"</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"UPDATE tasks SET status = 'done' WHERE id = 1"</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">IntegrityError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"refused:"</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"UPDATE tasks SET status = 'done', proof = 'restore drill passed 2026-08-28' WHERE id = 1"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT title, status, proof FROM tasks"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">())</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">refused: CHECK constraint failed: NOT (status = 'done' AND proof IS NULL)</span>
+<span class="go">('rotate backup credentials', 'done', 'restore drill passed 2026-08-28')</span>
+</code></pre></div>
+
+<p>Read the refused UPDATE as the stranger will read the schema: this estate does
+not contain finished tasks without evidence, and that is not a hope, it is a
+property. Each constraint in the table is doing double duty. <code>NOT NULL</code> and the
+non-empty check on <code>title</code> refuse the classic degradation of ledgers into rows
+of placeholders. The <code>status IN (...)</code> enumeration is the poor operator&rsquo;s enum,
+and more: it is the complete, machine-readable list of states this workflow
+admits — a stranger learns the lifecycle without a wiki. The table-level CHECK
+encodes the proof invariant. And every one of these rules will still be
+enforced, verbatim, on writers not yet written, running models not yet trained,
+years after the author-session that chose them ended. Constraints are the only
+documentation with that property, which is why the estate spends them
+generously — while respecting their limit: a CHECK sees only its own row.
+Cross-row truths (uniqueness, references) have their own instruments, one of
+which comes with a trap.</p>
+<h2>The referential switch everyone forgets</h2>
+<p>Foreign keys — the declaration that a <code>findings.run_id</code> must name a real row in
+<code>runs</code> — are the cross-table constraint estates lean on constantly, and SQLite
+ships them <strong>off</strong>. The syntax parses, the schema records the intention, and by
+historical default nothing is enforced:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">executescript</span><span class="p">(</span><span class="s2">"""</span>
+<span class="s2">CREATE TABLE runs (id INTEGER PRIMARY KEY, started_at TEXT);</span>
+<span class="s2">CREATE TABLE findings (id INTEGER PRIMARY KEY, run_id INTEGER REFERENCES runs(id), note TEXT);</span>
+<span class="s2">"""</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO findings (run_id, note) VALUES (999, 'orphan')"</span><span class="p">)</span>   <span class="c1"># run 999 never existed</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"orphans accepted by default:"</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT count(*) FROM findings"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"PRAGMA foreign_keys = ON"</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO findings (run_id, note) VALUES (998, 'another orphan')"</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">IntegrityError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"with the pragma:"</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">orphans accepted by default: 1</span>
+<span class="go">with the pragma: FOREIGN KEY constraint failed</span>
+</code></pre></div>
+
+<p>The quirks documentation owns this frankly as a compatibility fossil: turning
+enforcement on by default would break decades-old applications, so every new
+connection starts with it off, and <code>PRAGMA foreign_keys = ON</code> must be issued
+<em>per connection</em> — not once per database, which is the misunderstanding that
+produces estates that were protected on Tuesdays. The operational consequence
+is a ritual this book now installs and never abandons: estates are opened by
+one function, and that function issues every connection-scoped pragma the estate
+depends on — foreign keys here, and the busy timeout and WAL that chapter 5 will
+justify, all set in one place before any work begins. Scattered
+<code>sqlite3.connect()</code> calls throughout a codebase are how one forgotten switch
+quietly waives the constraints everywhere; a single <code>open_estate()</code> is how a
+decision is made once. The migration listing below <em>is</em> that function, because
+the open ritual and versioning belong together — and because the pragmas it sets
+are the same ones chapter 5&rsquo;s covenant names, the function you copy here already
+carries chapter 5&rsquo;s concurrency guarantees, not this chapter&rsquo;s alone.</p>
+<h2>Born versioned</h2>
+<p>Schemas change — a column proves missing, a pattern from chapter 4 gets
+adopted, an index earns its keep — and the estate must survive its own
+evolution across operators who cannot be gathered for a migration party. The
+mechanism is small enough to read whole. The database carries its own version
+number (SQLite reserves <code>PRAGMA user_version</code>, an integer stored in the file
+header, for exactly this); the code carries an append-only list of migrations;
+opening the estate applies whatever the file has not yet seen:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<span class="n">MIGRATIONS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"CREATE TABLE facts (id INTEGER PRIMARY KEY, fact TEXT NOT NULL) STRICT"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">"ALTER TABLE facts ADD COLUMN source TEXT NOT NULL DEFAULT 'unrecorded'"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">"CREATE INDEX facts_source ON facts(source)"</span><span class="p">),</span>
+<span class="p">]</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">open_estate</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"PRAGMA busy_timeout = 5000"</span><span class="p">)</span>     <span class="c1"># wait for the write slot (chapter 5)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"PRAGMA journal_mode = WAL"</span><span class="p">)</span>      <span class="c1"># readers and writers stop blocking (chapter 5)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"PRAGMA synchronous = NORMAL"</span><span class="p">)</span>    <span class="c1"># the documented WAL sweet spot (chapter 5)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"PRAGMA foreign_keys = ON"</span><span class="p">)</span>       <span class="c1"># enforce references, and per connection</span>
+    <span class="n">applied</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"PRAGMA user_version"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">version</span><span class="p">,</span> <span class="n">ddl</span> <span class="ow">in</span> <span class="n">MIGRATIONS</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">version</span> <span class="o">&gt;</span> <span class="n">applied</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">db</span><span class="p">:</span>
+                <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">ddl</span><span class="p">)</span>
+                <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">"PRAGMA user_version = </span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"applied migration </span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">db</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">open_estate</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">);</span> <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"reopening…"</span><span class="p">)</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">open_estate</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"schema version now:"</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"PRAGMA user_version"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">applied migration 1</span>
+<span class="go">applied migration 2</span>
+<span class="go">applied migration 3</span>
+<span class="go">reopening…</span>
+<span class="go">schema version now: 3</span>
+</code></pre></div>
+
+<p>The second opening applied nothing — the file said 3, the list said 3, done —
+and that idempotence is the whole trick: any operator, any generation, opening
+any vintage of the estate, arrives at the same schema, and a fresh file builds
+itself from nothing by the same path. Three rules keep the mechanism honest.
+Migrations are <em>append-only</em>: a shipped migration is history, and fixing a bad
+one means appending a corrective, never editing the past — the same
+no-history-rewrites covenant this book&rsquo;s own publisher enforces on manuscripts,
+for the same reason (someone already built on the past). Each migration runs in
+its own transaction with the version bump inside it, so a crash mid-migration
+leaves the file honestly at the old version, ready to retry, never half-moved.
+And migrations are pure DDL applied at open, before any data work — chapter 2&rsquo;s
+separation of schema phase from data phase, now with an address. (SQLite&rsquo;s
+<code>ALTER TABLE</code> is deliberately minimal — add, rename, drop; no type changes —
+and the documentation&rsquo;s sanctioned workaround for bigger reshapes — the
+twelve-step build-new, copy, swap procedure detailed later in this chapter — is
+chapter 5&rsquo;s atomic-replace instinct applied
+to tables. Design so you rarely need it; the migration list makes even that
+reshaping a recorded, replayable event.)</p>
+<h2>The estate&rsquo;s value conventions</h2>
+<p>Between types and constraints sits a layer of conventions the schema cannot
+fully enforce but the stranger must be able to assume, and stating them once —
+in the estate&rsquo;s own documentation table or its schema comments — spares every
+future writer a private decision and every future reader a private guess.
+Dates and times: SQLite has no datetime type; the engine stores what you give
+it and supplies functions for several representations. The estate&rsquo;s convention
+is the one both prior chapters already used — TEXT, UTC, ISO-8601, seconds
+precision, trailing <code>Z</code> — because it sorts as text, compares as text, reads
+without conversion, and joins across estates without timezone archaeology; a
+CHECK (<code>length(recorded_at) = 20</code>) pins the shape cheaply where drift would
+hurt. Booleans: INTEGER 0 and 1, with a CHECK constraining to those two, since
+SQLite&rsquo;s own quirks page notes the keywords are mere aliases. Numbers that are
+really identifiers — ports, PIDs, version strings — stay TEXT, because
+arithmetic on them is always a bug and leading zeros have died for less.</p>
+<p>Two lower-level conventions complete the set, each a sentence of policy
+against an hour of future confusion. Text is UTF-8, always — the engine
+stores what it is handed, Python hands it UTF-8, and the estate declares
+the encoding in its info table so no future tool guesses; the one encoding
+accident worth naming is bytes-that-are-not-text, which belong in BLOB
+columns honestly rather than in TEXT columns hopefully. And REAL is for
+measurements, never for money or counts-of-things: floating point is the
+right shape for a CPU temperature and the classic wrong shape for anything
+that must sum exactly, where the convention is integers in the smallest
+unit (cents, bytes, milliseconds) with the unit in the column name or its
+comment — <code>duration_ms INTEGER</code>, self-documenting at every read site. Both
+rules exist in every database tradition; they are restated here because
+estates are written by operators assembling schemas at 3 a.m. from prose
+intentions, which is exactly when a stated convention outperforms a
+remembered one.</p>
+<p>The schema can also <em>compute</em> for its writers. Beyond the DEFAULT
+expressions the provenance block already leans on, generated columns —
+<code>GENERATED ALWAYS AS (expression)</code> — derive a value from the row&rsquo;s other
+columns, kept current by the engine itself: a <code>year</code> column generated from
+<code>recorded_at</code> for cheap grouping, a normalized lowercase key generated
+from a mixed-case source, a size bucket derived from a byte count. The
+estate&rsquo;s use for them is the same as for defaults: moving invariants out
+of writer discipline and into structure, so that a value which <em>must</em>
+track another value cannot be updated into disagreement by a forgetful
+session. The restraint that keeps them honest: generated columns derive,
+they never import — an expression reaching beyond its own row (dates
+&ldquo;now&rdquo;, random values, subqueries) is a trap the syntax mostly forbids and
+the design rule finishes: derivation is structure, acquisition is a
+writer&rsquo;s act, and the provenance block exists to record the second.</p>
+<p>NULL deserves its own paragraph, because it is the one value that behaves
+differently from every intuition text formats build, and estates use it
+deliberately (chapter 4&rsquo;s &ldquo;fate unknown&rdquo;). NULL is not zero, not empty string,
+and — the sharp edge — not equal <em>or unequal</em> to anything, which makes it
+invisible to comparisons that feel exhaustive:</p>
+<p>```python no-run
+import sqlite3
+db = sqlite3.connect(&ldquo;:memory:&rdquo;)
+db.execute(&ldquo;CREATE TABLE t (host TEXT, env TEXT)&rdquo;)
+db.executemany(&ldquo;INSERT INTO t VALUES (?,?)&rdquo;,
+               [(&ldquo;web-1&rdquo;,&rdquo;prod&rdquo;), (&ldquo;web-2&rdquo;,&rdquo;staging&rdquo;), (&ldquo;web-3&rdquo;, None)])
+print(&ldquo;hosts where env != &lsquo;staging&rsquo;:&rdquo;,
+      db.execute(&ldquo;SELECT host FROM t WHERE env != &lsquo;staging&rsquo;&rdquo;).fetchall())
+print(&ldquo;with NULL handled:           &ldquo;,
+      db.execute(&ldquo;SELECT host FROM t WHERE env IS DISTINCT FROM &lsquo;staging&rsquo;&rdquo;).fetchall())</p>
+<div class="codehilite"><pre><span></span><code>```output
+hosts where env != 'staging': [('web-1',)]
+with NULL handled:            [('web-1',), ('web-3',)]
+</code></pre></div>
+
+<p>The host with no recorded environment vanished from a query that asked, in
+plain English, for everything that is not staging — because <code>NULL !=
+'staging'</code> is neither true nor false, and WHERE keeps only true. Three-valued
+logic is not a flaw to route around but the correct semantics for &ldquo;unknown&rdquo;;
+the operator&rsquo;s obligations are two. Query with the NULL-aware forms when
+unknowns must be included (<code>IS NULL</code>, <code>IS DISTINCT FROM</code>, <code>coalesce</code>). And
+constrain NULL to mean exactly one thing per column — chapter 4&rsquo;s ledger
+allows it in <code>outcome</code> <em>as</em> the fate-unknown marker and forbids it everywhere
+meaning would blur, which is the general rule: a nullable column is a column
+whose NULL has a documented reading, and any other nullable column is a guess
+someone deferred.</p>
+<h2>Migrations that move data</h2>
+<p>The migration list shown above contains only structure, and most migrations
+are structural — but the honest catalog includes the other kind, because
+sooner or later a migration must <em>reshape rows</em>: backfill a new column from
+an old one&rsquo;s contents, split a field, normalize a unit. The mechanism needs
+no extension — a migration entry is SQL, and UPDATE is SQL — but the
+discipline tightens in three ways. A data migration states its scope in a
+WHERE clause exactly as the previous volume&rsquo;s edits anchored their <code>sed</code>
+patterns, and rehearses as a SELECT count of that scope before shipping (the
+dry-run doctrine, unchanged). It remains inside the migration&rsquo;s transaction,
+so a failure mid-backfill leaves the version number honestly unmoved. And it
+never destroys its input in the same migration that derives from it — the
+old column survives until a later migration retires it, one version after
+the new column has been read in anger. For reshapes beyond ALTER TABLE&rsquo;s
+deliberate minimalism — type changes, constraint additions to existing
+columns, a PRIMARY KEY or UNIQUE added after the fact — the engine&rsquo;s
+documentation prescribes not a one-liner but a precise <em>twelve-step</em> procedure,
+and the steps that a casual &ldquo;create-copy-drop-rename&rdquo; omits are exactly the ones
+that bite an estate whose open ritual enforces foreign keys. Foreign-key
+enforcement must be turned <strong>off</strong> for the duration (the rebuild drops and
+recreates a table other rows may reference); the old table&rsquo;s indexes, triggers,
+and views must be remembered before the drop and recreated after the rename
+(they do not follow the data across); and <code>PRAGMA foreign_key_check</code> must run
+before the commit to prove nothing was orphaned. Order matters most of all: the
+new table is built under a <em>new</em> name and renamed into place — never the old one
+renamed out of the way first, which (since SQLite 3.25/3.26 carries renames into
+triggers, views, and FK references) can corrupt exactly those references. The
+documentation draws the correct and incorrect orderings side by side; the estate
+follows the correct one, inside one transaction, as a recorded migration:</p>
+<p>```python fragment</p>
+<h1>The sanctioned table rebuild — the ALTER TABLE documentation&rsquo;s twelve steps</h1>
+<h1>(https://sqlite.org/lang_altertable.html §8), run as one migration entry:</h1>
+<h1>PRAGMA foreign_keys = OFF;                       # (1) FKs off for the rebuild</h1>
+<h1>BEGIN;                                           # (2) one transaction</h1>
+<h1># (3) remember what to recreate in step (8):</h1>
+<h1>#     SELECT type, sql FROM sqlite_schema WHERE tbl_name = &lsquo;facts&rsquo;;</h1>
+<h1>CREATE TABLE facts_new (&hellip;corrected shape&hellip;) STRICT;    # (4) NEW name</h1>
+<h1>INSERT INTO facts_new SELECT &hellip;transformed&hellip; FROM facts;# (5) copy</h1>
+<h1>DROP TABLE facts;                              # (6)</h1>
+<h1>ALTER TABLE facts_new RENAME TO facts;         # (7) rename new -&gt; old</h1>
+<h1># (8) recreate the saved indexes/triggers/views on facts</h1>
+<h1># (9) recreate any external views that referenced facts</h1>
+<h1>PRAGMA foreign_key_check;                      # (10) verify no orphans</h1>
+<h1>COMMIT;                                          # (11)</h1>
+<h1>PRAGMA foreign_keys = ON;                        # (12) re-enable enforcement</h1>
+<div class="codehilite"><pre><span></span><code>A reshape is the most invasive act an estate performs on itself, which is why
+it lives in the migration list — versioned, transactional, replayed
+identically by every opener — rather than in any session's ad-hoc hands. Because
+`open_estate()` opens with foreign keys *on*, a rebuild migration is the one
+place that toggles them off and back within its own transaction, restoring the
+ritual's invariant the moment it commits. The
+stranger's guarantee survives even this: whatever generation of the schema
+they open, the road from there to current is recorded, ordered, and runs
+itself.
+
+## Indexes: the reader's courtesy
+
+The stranger inherits not only meanings but *costs*, and one more schema
+instrument decides whether the estate's questions stay cheap as it grows. A
+table is, physically, rows in row order; a query that filters on anything else
+must, absent help, examine every row. The help is an index, and the engine will
+tell you — before any harm is done — whether a given question has one, through a
+statement every estate author should reflexively use:
+
+```python
+import sqlite3
+db = sqlite3.connect("estate.db")
+db.execute("CREATE TABLE facts (id INTEGER PRIMARY KEY, subject TEXT NOT NULL, fact TEXT NOT NULL) STRICT")
+with db:
+    db.executemany("INSERT INTO facts (subject, fact) VALUES (?, ?)",
+                   [(f"host-{n % 50}", f"observation {n}") for n in range(5000)])
+q = "SELECT count(*) FROM facts WHERE subject = 'host-7'"
+print("before:", db.execute("EXPLAIN QUERY PLAN " + q).fetchone()[3])
+db.execute("CREATE INDEX facts_subject ON facts(subject)")
+print("after: ", db.execute("EXPLAIN QUERY PLAN " + q).fetchone()[3])
+print("answer:", db.execute(q).fetchone()[0])
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">before: SCAN facts</span>
+<span class="go">after:  SEARCH facts USING COVERING INDEX facts_subject (subject=?)</span>
+<span class="go">answer: 100</span>
+</code></pre></div>
+
+<p><code>SCAN</code> is the plan that reads everything; <code>SEARCH ... USING INDEX</code> is the plan
+that walks straight to the hundred matching rows among five thousand. At five
+thousand rows the difference is microseconds and nobody cares; the reason the
+habit matters is that estates <em>age</em>, and the queries written today run against
+the table sizes of years hence, by operators who will experience a missing
+index not as a design gap but as &ldquo;the estate got slow&rdquo; — a diagnosis away from
+the cause. The register&rsquo;s two-question test settles what to index: whatever
+columns the estate&rsquo;s <em>standing questions</em> filter or join on — <code>subject</code> here,
+<code>recorded_at</code> for every retention and staleness query, foreign-key columns on
+the many side. And the cost side stays honest: each index is paid for on every
+write, which at operator scales is negligible and at bulk-import scales is
+exactly why the migration list creates indexes <em>after</em> chapter 4&rsquo;s patterns
+settle what the standing questions are. <code>EXPLAIN QUERY PLAN</code> is the audit that
+keeps both sides truthful — the estate&rsquo;s equivalent of the register&rsquo;s dry run,
+asking the engine what it <em>would</em> do while everything is still cheap.</p>
+<h2>Shapes that mislead strangers</h2>
+<p>Hospitality also means declining certain shapes that schemas admit but
+strangers regret. Three recur in operator estates often enough to name. The
+JSON blob column — a TEXT field holding a serialized object — reintroduces the
+midden <em>inside</em> the database: unqueryable without unpacking, unconstrainable by
+CHECK in any depth, invisible to STRICT. SQLite&rsquo;s JSON functions make blobs
+tolerable at the edges (a genuinely irregular payload, kept whole for
+fidelity, with the <em>queried</em> fields lifted out into real columns beside it),
+and the discipline is that lift: anything a standing question touches gets a
+column; the blob is an artifact, not a record. The attribute-soup table —
+<code>(entity, attribute, value)</code> triples, endlessly flexible — trades every
+guarantee this chapter built for schema-free convenience: no types, no CHECKs,
+no meaningful constraints, and every real query a self-join puzzle. It is the
+shape estates reach for when their authors have not yet decided what they are
+recording; the decision, not the soup, is the work. And the wide-null table —
+one row type wearing forty mostly-NULL columns because several distinct kinds
+of record were crowded into one table — fails the stranger at the first
+question (&ldquo;which columns apply to which rows?&rdquo;) that the schema, its one job,
+can no longer answer. Each anti-shape has the same cure: tables that hold one
+kind of thing, named for it, with the columns that kind actually owes — which
+is chapter 4&rsquo;s whole agenda.</p>
+<h2>The columns every record owes the future</h2>
+<p>With types strict, constraints meaningful, references enforced, and birth
+versioned, what remains is the estate&rsquo;s signature habit, promised since chapter
+1: no fact without its papers. Concretely, record tables carry a provenance
+block — <code>recorded_at</code>, defaulted by the schema to UTC ISO-8601 from the
+engine&rsquo;s own clock so no writer can forget or localize it; <code>recorded_by</code>,
+required, naming the operator (session, script, model — whatever identity the
+successor can act on); and <code>source</code>, required, naming where the fact came from
+— a file path, a URL, a command, a transcript reference. The choice of TEXT
+ISO-8601 over numeric epochs is deliberate hospitality: it sorts correctly as
+text, reads correctly to humans and models without conversion, and survives
+tool changes — the register book&rsquo;s determinism rule, applied to storage. The
+stranger&rsquo;s payoff compounds: any row can be weighed (how old? whose claim? from
+what evidence?), re-verified (follow <code>source</code>), or aged out (chapter 8&rsquo;s
+retention queries key on <code>recorded_at</code>). And the discipline prices honesty
+correctly on the write side too — an operator that cannot fill <code>source</code> is
+holding a rumor, and the schema just asked it to notice that before the rumor
+entered the record.</p>
+<p>One last hospitality note, almost free and almost never used: SQL comments
+survive. SQLite stores the literal text of every CREATE statement and returns
+it verbatim to any tool that asks, so a comment written in the schema —
+explaining a constraint&rsquo;s reason, a column&rsquo;s unit, a status&rsquo;s meaning — is
+carried inside the database file itself, readable forever. The proof, on a
+table chapter 4 will need anyway:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"estate.db"</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"""</span>
+<span class="s2">CREATE TABLE cursors (</span>
+<span class="s2">  stream TEXT PRIMARY KEY,          -- what is being read (journal unit, feed URL, log path)</span>
+<span class="s2">  position TEXT NOT NULL,           -- opaque resume token; meaning belongs to the stream</span>
+<span class="s2">  advanced_at TEXT NOT NULL         -- UTC; staleness is the reader's first question</span>
+<span class="s2">) STRICT</span>
+<span class="s2">"""</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT sql FROM sqlite_schema WHERE name = 'cursors'"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">CREATE TABLE cursors (</span>
+<span class="go">  stream TEXT PRIMARY KEY,          -- what is being read (journal unit, feed URL, log path)</span>
+<span class="go">  position TEXT NOT NULL,           -- opaque resume token; meaning belongs to the stream</span>
+<span class="go">  advanced_at TEXT NOT NULL         -- UTC; staleness is the reader's first question</span>
+<span class="go">) STRICT</span>
+</code></pre></div>
+
+<p>The comments came back byte-for-byte, from the file, years-proof: the
+<code>sqlite_schema</code> table every database carries is the estate describing itself,
+and any stranger&rsquo;s first query. The estate&rsquo;s tables should be written like the drop-in files of the
+register book: opening with two lines that say why they exist and who put them
+there — except here, the note and the structure it explains travel in the same
+artifact and cannot be separated. A schema written this way is not described by
+its documentation. It <em>is</em> its documentation, enforced where it can be,
+explained where it cannot.</p>
+<p>One table completes the self-description, and every estate should carry it
+from birth: the info table — plain key-value rows naming what no column
+can. What this estate is for, in a sentence. Which operator lineage owns
+it. Where its conventions are written (this book&rsquo;s, or the successor
+document that supersedes it). Where its backups land. Who the supervising
+human is. Five to ten rows, written once, maintained on change — the
+estate&rsquo;s title page, and the answer to the one question the briefing of
+chapter 8 cannot compute: <em>what am I looking at?</em> The previous volume put
+this note in a drop-in file&rsquo;s opening comments; the estate puts it where
+nothing can separate it from the data it explains.</p>
+<h2>The handoff review, in nine questions</h2>
+<p>The chapter compresses to a checklist an author can run against any estate
+schema — its own, or an inherited one being judged. Each question maps to a
+section above.</p>
+<ol>
+<li>Is every table STRICT, with types from the real repertoire?</li>
+<li>Does every enumerable column enumerate (CHECK &hellip; IN), and every
+   invariant that spans columns have its table-level CHECK?</li>
+<li>Does the one shared open ritual issue every connection-scoped pragma —
+   <code>foreign_keys = ON</code>, <code>busy_timeout</code>, <code>journal_mode = WAL</code>,
+   <code>synchronous = NORMAL</code> — and is there exactly one open ritual?</li>
+<li>Does the file carry its version, and does opening apply an append-only
+   migration list idempotently, DDL alone, one transaction per step?</li>
+<li>Do all record tables carry the provenance block — recorded_at (UTC ISO,
+   defaulted), recorded_by, source — with NULL meanings documented?</li>
+<li>Are the value conventions (dates, booleans, identifiers) stated once
+   and pinned by CHECK where drift would hurt?</li>
+<li>Does every standing question have its index, and has EXPLAIN QUERY
+   PLAN confirmed it?</li>
+<li>Are the anti-shapes absent — queried fields inside JSON blobs,
+   attribute soup, wide-null crowding?</li>
+<li>Could the stranger answer &ldquo;what is this?&rdquo; from the file alone — schema
+   comments present, info table filled?</li>
+</ol>
+<p>Nine yeses is a schema that will survive its authors, which is the only
+kind worth writing. What the stranger does next — the shapes of the tables
+an operator actually keeps — is chapter 4.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch04.html">next: The Ledger Pattern and Friends →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-durable-state-for-ephemeral-minds', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

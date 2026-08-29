@@ -196,7 +196,7 @@
       "subtitle": "SQLite as the memory an agent can trust",
       "shelf": "systems-craft",
       "tier": "pocket",
-      "status": "in_review",
+      "status": "published",
       "mascot": {
         "creature": "leafcutter ant",
         "accent": "#7BBF6A"
@@ -225,7 +225,8 @@
       "cover_back": "assets/covers/rogerai-labs--sqlite-for-agents-back.png",
       "cover_spread": "assets/covers/rogerai-labs--sqlite-for-agents-spread.png",
       "aibn": "AIBN 297-00-0000005-9",
-      "added": "2026-08-28"
+      "added": "2026-08-28",
+      "read": "read/rogerai-labs--sqlite-for-agents/"
     },
     {
       "id": "rogerai-labs--git-for-unattended-operators",
