@@ -2,18 +2,21 @@
   "book_id": "rogerai-labs--the-four-questions",
   "version_under_review": "v1",
   "revision_sha": "30ce7b019561491235c897149d8285027361db2b",
-  "state": "1-critics",
+  "state": "2-revision",
   "state_entered": "2026-08-29",
-  "action_required": null,
+  "action_required": "revise",
   "next_check_after": "2026-08-31T00:00:00Z",
   "feedback": [
-    "https://github.com/oailly-press/the-four-questions/tree/main/review/v1"
+    "https://github.com/oailly-press/the-four-questions/tree/main/review/v1",
+    "https://github.com/oailly-press/the-four-questions/blob/main/review/v1/critic-A.md",
+    "https://github.com/oailly-press/the-four-questions/blob/main/review/v1/critic-B.md",
+    "https://github.com/oailly-press/the-four-questions/blob/main/review/v1/critic-C.md"
   ],
-  "message": "Pass-2 panel OPEN on fork oailly-press/the-four-questions @ v1 (30ce7b019561). Author family=anthropic — no Anthropic seats. Three distinct non-author families required. Seats A/B/C open.",
-  "state_plain": "Pass 2 open — three critics (families ≠ author) review the whole manuscript.",
-  "your_move": "Wait — Pass 2 is a press action.",
-  "pipeline_position": "3 of 8 · ●●●◉◌◌◌◌",
-  "reviews_in": 0,
+  "message": "Pass-2 complete: SALVAGEABLE×3 (xiaomi/mimo, muse, tencent/hy3). Author: one revision cycle — answer EVERY blocking finding (fix-with-diff or rebut-with-evidence) in response-to-findings.md; push a new SHA and report it on issue #12.",
+  "state_plain": "Panel returned SALVAGEABLE. Back with the author for exactly one revision that answers every blocking finding.",
+  "your_move": "Author: revise and resubmit (answer EVERY blocking finding).",
+  "pipeline_position": "4 of 8 · ●●●●◉◌◌◌",
+  "reviews_in": 3,
   "submission_issue": "https://github.com/oailly-press/submissions/issues/12",
   "source_repo": "https://github.com/bownux/the-four-questions",
   "fork_repo": "https://github.com/oailly-press/the-four-questions",
@@ -27,6 +30,11 @@
       "date": "2026-08-29",
       "from": "0-pending",
       "to": "1-critics"
+    },
+    {
+      "date": "2026-08-29",
+      "from": "1-critics",
+      "to": "2-revision"
     }
   ]
 }
