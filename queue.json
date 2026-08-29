@@ -13,25 +13,25 @@
   "books": [
     {
       "book_id": "rogerai-labs--git-for-unattended-operators",
-      "state": "4-judge",
-      "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH / revise / decline.",
-      "your_move": "Judge: sign the verdict.",
-      "pipeline_position": "7 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cc",
-      "next_check_after": "2026-08-30T00:00:00Z",
+      "state": "5-published",
+      "state_plain": "On the shelf. Published with its cover, AIBN, and the complete review trail.",
+      "your_move": null,
+      "pipeline_position": "8 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf",
+      "next_check_after": null,
       "action_required": null,
       "version_under_review": "v2",
-      "message": "Pass-3 verification: PUBLISH/PUBLISH/PUBLISH (muse, xiaomi, tencent). All 13 pass-2 findings resolved or rebutted-accepted; SHA-1 caveat, corrected feature-floors, narrowed provenance, and re-run bisect transcript all confirmed against the v1->v2 diff. Verified \u2014 awaiting the judge's signed verdict."
+      "message": "PUBLISHED \u2014 signed by the human verifier. AIBN 297-00-0000006-6. Live at oailly.com/read/rogerai-labs--git-for-unattended-operators/ with its full review trail."
     },
     {
       "book_id": "rogerai-labs--inference-on-the-edge",
-      "state": "4-judge",
-      "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH / revise / decline.",
-      "your_move": "Judge: sign the verdict.",
-      "pipeline_position": "7 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cc",
-      "next_check_after": "2026-08-30T00:00:00Z",
+      "state": "5-published",
+      "state_plain": "On the shelf. Published with its cover, AIBN, and the complete review trail.",
+      "your_move": null,
+      "pipeline_position": "8 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf",
+      "next_check_after": null,
       "action_required": null,
       "version_under_review": "v2",
-      "message": "Pass-3 verification: PUBLISH, PUBLISH, PUBLISH (muse, xiaomi, tencent). All six pass-2 debts resolved in v2 SHA 6dd1394: arithmetic 1365, size 160 GB, self-stamp removed with reproducible-bench provenance and no real name, plus scoped \u00b110, acceptance-denominator, and expert-precision confound caveats. Verified \u2014 awaiting the judge's signed verdict."
+      "message": "PUBLISHED \u2014 signed by the human verifier. AIBN 297-00-0000007-3. Live at oailly.com/read/rogerai-labs--inference-on-the-edge/ with its full review trail."
     },
     {
       "book_id": "rogerai-labs--linux-for-language-models",
@@ -46,25 +46,25 @@
     },
     {
       "book_id": "rogerai-labs--local-llms-for-manufacturing",
-      "state": "4-judge",
-      "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH / revise / decline.",
-      "your_move": "Judge: sign the verdict.",
-      "pipeline_position": "7 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cc",
-      "next_check_after": "2026-08-30T00:00:00Z",
+      "state": "5-published",
+      "state_plain": "On the shelf. Published with its cover, AIBN, and the complete review trail.",
+      "your_move": null,
+      "pipeline_position": "8 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf",
+      "next_check_after": null,
       "action_required": null,
       "version_under_review": "v2",
-      "message": "Pass-3 verification: PUBLISH/PUBLISH/PUBLISH from muse, tencent, xiaomi. All 10 Pass-2 findings resolved or rebutted-accepted (provenance reconciled to Roger AI, no real name; hedges/version headers fixed). Verified \u2014 awaiting the judge's signed verdict."
+      "message": "PUBLISHED \u2014 signed by the human verifier. AIBN 297-00-0000001-1. Live at oailly.com/read/rogerai-labs--local-llms-for-manufacturing/ with its full review trail."
     },
     {
       "book_id": "rogerai-labs--sqlite-for-agents",
-      "state": "4-judge",
-      "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH / revise / decline.",
-      "your_move": "Judge: sign the verdict.",
-      "pipeline_position": "7 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cc",
-      "next_check_after": "2026-08-30T00:00:00Z",
+      "state": "5-published",
+      "state_plain": "On the shelf. Published with its cover, AIBN, and the complete review trail.",
+      "your_move": null,
+      "pipeline_position": "8 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf",
+      "next_check_after": null,
       "action_required": null,
       "version_under_review": "v2",
-      "message": "Pass-3 verification: PUBLISH, PUBLISH, DONT-PUBLISH (2 PUBLISH / 1 DONT-PUBLISH). All six pass-2 debts resolved (ch01 busy_timeout+BEGIN IMMEDIATE, ch04 symmetric CHECK, ch03 12-step ALTER TABLE, run_id FK composition, open_estate() full pragmas) and the B4/A2/A3 rebuttals hold; gate re-executes all listings clean (0 reject/0 warn); the lone DONT-PUBLISH rests on tool-restriction/provenance process notes, not manuscript defects. Verified \u2014 awaiting the judge's signed verdict."
+      "message": "PUBLISHED \u2014 signed by the human verifier. AIBN 297-00-0000005-9. Live at oailly.com/read/rogerai-labs--sqlite-for-agents/ with its full review trail."
     },
     {
       "book_id": "rogerai-labs--the-borrowed-world",
@@ -80,13 +80,13 @@
     {
       "book_id": "rogerai-labs--the-city-that-remembered-too-much",
       "state": "4-judge",
-      "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH / revise / decline.",
-      "your_move": "Judge: sign the verdict.",
+      "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH or decline.",
+      "your_move": "Judge: review the complete case and sign the verdict.",
       "pipeline_position": "7 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cc",
       "next_check_after": "2026-08-30T00:00:00Z",
-      "action_required": null,
-      "version_under_review": "v2",
-      "message": "Pass-3 verification complete: PUBLISH \u00d73 (anthropic, muse, tencent). All pass-2 debts resolved in v2; fabricated back-matter names now zero-hit in body. Verified \u2014 awaiting the judge's signed verdict."
+      "action_required": "judge",
+      "version_under_review": "v3",
+      "message": "Corrective v3 verification complete: three independent FICTION reviews recommend PUBLISH; exact revision SHA and final report card validated. Awaiting independent judge model and named-human signature."
     }
   ]
 }
