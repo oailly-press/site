@@ -53,6 +53,24 @@ font:inherit;caret-color:var(--cyan)}
   #results .r-title{flex:1 1 auto}
   #results .r-shelf,#results .r-crea{display:none}
 }
+.filterbar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:8px 2px 0;font-size:12px}
+.filterbar .fl{color:var(--dim);letter-spacing:.08em;margin-right:2px}
+.filterbar .sep{flex:0 0 1px;align-self:stretch;background:var(--line);margin:2px 6px}
+.chip{border:1px solid var(--line);border-radius:999px;background:var(--ink2);color:var(--muted);
+  padding:3px 11px;cursor:pointer;font:inherit;font-size:12px;line-height:1.5;white-space:nowrap;transition:.12s}
+.chip:hover{border-color:var(--cyan);color:var(--paper)}
+.chip.on{border-color:var(--cyan);color:var(--ink);background:var(--cyan);font-weight:600}
+.chip .n{opacity:.6;font-size:11px;margin-left:4px}
+.chip.on .n{opacity:.75}
+.sortsel{margin-left:auto;display:flex;align-items:center;gap:6px}
+.sortsel select{background:var(--ink2);color:var(--paper);border:1px solid var(--line);border-radius:6px;
+  padding:3px 8px;font:inherit;font-size:12px;outline:none;cursor:pointer;caret-color:var(--cyan)}
+.sortsel select:hover{border-color:var(--cyan)}
+.morebtn{width:100%;margin:8px 0 0;border:1px dashed var(--line);border-radius:6px;background:none;
+  color:var(--dim);padding:8px;cursor:pointer;font:inherit;font-size:12px;letter-spacing:.05em;transition:.12s}
+.morebtn:hover{border-color:var(--cyan);color:var(--paper)}
+#results .none{color:var(--dim);padding:14px 10px;font-size:13px}
+@media(max-width:560px){.sortsel{margin-left:0;width:100%;order:9;padding-top:4px}}
 #count{color:var(--dim);font-size:12px;margin:4px 2px 0}
 .detail{display:none;border-left:2px solid var(--cyan);margin:0 0 6px 10px;padding:12px 16px;background:var(--ink2)}
 .detail.open{display:flex;gap:18px;align-items:flex-start}
@@ -253,7 +271,9 @@ written by machines · verified by humans · signed all the way down
 <h2>SEARCH</h2>
 <div class="searchline"><span class="prompt">$</span><span class="dim">search</span>
 <input id="q" type="text" autocomplete="off" spellcheck="false"
- placeholder='title, keyword, shelf, status… (press / to focus)'></div>
+ placeholder='title, keyword, author, mascot… (press / to focus)'></div>
+<div class="filterbar" id="shelfbar"></div>
+<div class="filterbar" id="statusbar"></div>
 <div id="count"></div>
 <div id="results"></div>
 
@@ -372,22 +392,58 @@ function detail(b){
   if(b.status_url)l.push(`status:    <a href="${safeUrl(b.status_url)}">${esc(b.status_url)}</a>`);
   return l.join('\n');}
 function render(list){
-  count.textContent=`${list.length} of ${BOOKS.length} records`;
-  rows.innerHTML=list.map((b,i)=>{const cov=b.cover?`<div class="cover"><img src="${b.cover}" alt="${b.title} cover — ${b.mascot&&b.mascot.creature||''}" loading="lazy"><div class="cap">${b.mascot&&b.mascot.creature||''} · platform-drawn</div></div>`:'';return `<a class="row" data-i="${i}">${fmt(b)}</a><div class="detail">${cov}<pre>${detail(b)}</pre></div>`;}).join('');
-  rows.querySelectorAll('.row').forEach(r=>r.addEventListener('click',e=>{e.preventDefault();r.nextElementSibling.classList.toggle('open');}));}
-function search(){
-  const s=q.value.trim().toLowerCase();
-  if(!s){render(BOOKS);shelf();return;}
-  const terms=s.split(/\s+/);
-  const hit=BOOKS.filter(b=>{const hay=JSON.stringify(b).toLowerCase();return terms.every(x=>hay.includes(x));});
-  render(hit);shelf(hit);}
+  const total=list.length, shown=EXPANDED?list:list.slice(0,PAGE);
+  count.textContent = shown.length<total
+    ? `showing ${shown.length} of ${total}`
+    : `${total} book${total===1?'':'s'}${total<BOOKS.length?` · filtered from ${BOOKS.length}`:''}`;
+  let html=shown.map((b,i)=>{const cov=b.cover?`<div class="cover"><img src="${b.cover}" alt="${b.title} cover — ${b.mascot&&b.mascot.creature||''}" loading="lazy"><div class="cap">${b.mascot&&b.mascot.creature||''} · platform-drawn</div></div>`:'';return `<a class="row" data-i="${i}">${fmt(b)}</a><div class="detail">${cov}<pre>${detail(b)}</pre></div>`;}).join('');
+  if(!shown.length) html='<div class="none">no books match — clear a filter or the search box.</div>';
+  const hidden=total-shown.length;
+  if(hidden>0) html+=`<button class="morebtn" id="moreBtn">▾ show all ${total} (${hidden} more)</button>`;
+  else if(EXPANDED&&total>PAGE) html+='<button class="morebtn" id="moreBtn">▴ show fewer</button>';
+  rows.innerHTML=html;
+  rows.querySelectorAll('.row').forEach(r=>r.addEventListener('click',e=>{e.preventDefault();r.nextElementSibling.classList.toggle('open');}));
+  const mb=document.getElementById('moreBtn'); if(mb) mb.addEventListener('click',()=>{EXPANDED=!EXPANDED;render(list);});}
+// --- browse: filters + sort + newest-first paging ---
+const PAGE=10; let EXPANDED=false; const FILTER={shelf:'',status:'',q:''}; let SORT='newest';
+const aibnSeq=b=>{const m=/(\d{7})-\d\s*$/.exec(b.aibn||'');return m?parseInt(m[1],10):0;};
+const SORTS={
+  newest:(a,b)=>(b.added||'').localeCompare(a.added||'')||aibnSeq(b)-aibnSeq(a)||a.title.localeCompare(b.title),
+  oldest:(a,b)=>(a.added||'').localeCompare(b.added||'')||aibnSeq(a)-aibnSeq(b)||a.title.localeCompare(b.title),
+  az:(a,b)=>a.title.localeCompare(b.title),
+  no:(a,b)=>((a.series_no||99)-(b.series_no||99))||a.title.localeCompare(b.title)};
+function currentList(){
+  let L=BOOKS.slice();
+  if(FILTER.shelf) L=L.filter(b=>b.shelf===FILTER.shelf);
+  if(FILTER.status) L=L.filter(b=>b.status===FILTER.status);
+  if(FILTER.q){const t=FILTER.q.split(/\s+/);L=L.filter(b=>{const hay=JSON.stringify(b).toLowerCase();return t.every(x=>hay.includes(x));});}
+  return L.sort(SORTS[SORT]||SORTS.newest);}
+function refresh(){const L=currentList();render(L);shelf((FILTER.shelf||FILTER.status||FILTER.q)?L:null);}
+const STLABEL={in_review:'in review',in_progress:'in progress',published:'published',planned:'planned',concept:'concept'};
+const SHELF_ORDER=['industrial','systems-craft','field-manuals','fiction','for-machine-readers','minds','practice'];
+const STATUS_ORDER=['published','in_review','in_progress','planned','concept'];
+function countBy(k){const m={};BOOKS.forEach(b=>{if(b[k]!=null)m[b[k]]=(m[b[k]]||0)+1;});return m;}
+function chipRow(el,key,label,vals){
+  el.innerHTML=`<span class="fl">${label}</span>`+[{v:'',label:'all',n:BOOKS.length},...vals].map(o=>
+    `<button class="chip${FILTER[key]===o.v?' on':''}" data-v="${esc(o.v)}">${esc(o.label)}<span class="n">${o.n}</span></button>`).join('');
+  el.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{FILTER[key]=c.dataset.v;EXPANDED=false;buildChips();refresh();}));}
+function buildChips(){
+  const sc=countBy('shelf'),stc=countBy('status');
+  const ord=(arr,pref)=>arr.sort((a,b)=>((pref.indexOf(a)+1||99)-(pref.indexOf(b)+1||99)));
+  chipRow(shelfbar,'shelf','shelf',ord(Object.keys(sc),SHELF_ORDER).map(s=>({v:s,label:s.replace(/-/g,' '),n:sc[s]})));
+  chipRow(statusbar,'status','status',ord(Object.keys(stc),STATUS_ORDER).map(s=>({v:s,label:STLABEL[s]||s,n:stc[s]})));
+  const ss=document.createElement('div');ss.className='sortsel';
+  ss.innerHTML='<span class="fl">sort</span><select id="sortSel"><option value="newest">newest first</option><option value="oldest">oldest first</option><option value="az">title A–Z</option><option value="no">by Nº</option></select>';
+  statusbar.appendChild(ss);const sel=ss.querySelector('select');sel.value=SORT;
+  sel.addEventListener('change',()=>{SORT=sel.value;EXPANDED=false;refresh();});}
+const shelfbar=document.getElementById('shelfbar'),statusbar=document.getElementById('statusbar');
 let SHELVES=[];
 fetch('catalog.json').then(r=>r.json()).then(d=>{BOOKS=d.books;SHELVES=d.shelves||[];
   brew(document.getElementById('metrics'),'reading the ledger\u2026');
   brew(document.getElementById('shelf'),'shelving the books\u2026');
   brew(document.getElementById('rvboard'),'gathering reviews\u2026');
-  render(BOOKS);hero();stats([]);bookstore();reviews();}).catch(()=>{count.textContent='catalog.json unavailable';});
-q.addEventListener('input',search);
+  buildChips();refresh();hero();stats([]);bookstore();reviews();}).catch(()=>{count.textContent='catalog.json unavailable';});
+q.addEventListener('input',()=>{FILTER.q=q.value.trim().toLowerCase();EXPANDED=false;refresh();});
 
 /* ---- ascii bookstore ---- */
 const STATIONS=['draft','gates','pending','critics','revision','verify','judge','shelf'];

@@ -107,7 +107,8 @@
       "reviews": "https://oailly.com/reviews/rogerai-labs--local-llms-for-manufacturing/index.json",
       "cover_back": "assets/covers/rogerai-labs--local-llms-for-manufacturing-back.png",
       "cover_spread": "assets/covers/rogerai-labs--local-llms-for-manufacturing-spread.png",
-      "aibn": "AIBN 297-00-0000001-1"
+      "aibn": "AIBN 297-00-0000001-1",
+      "added": "2026-08-28"
     },
     {
       "id": "rogerai-labs--the-borrowed-world",
@@ -147,7 +148,8 @@
       },
       "read": "read/rogerai-labs--the-borrowed-world/",
       "full_text": "https://oailly.com/read/rogerai-labs--the-borrowed-world/book.md",
-      "epub": "downloads/the-borrowed-world.epub"
+      "epub": "downloads/the-borrowed-world.epub",
+      "added": "2026-08-27"
     },
     {
       "id": "rogerai-labs--linux-for-language-models",
@@ -184,7 +186,8 @@
         "chapters_planned": 8,
         "body_words": 26070
       },
-      "read": "read/rogerai-labs--linux-for-language-models/"
+      "read": "read/rogerai-labs--linux-for-language-models/",
+      "added": "2026-08-28"
     },
     {
       "id": "rogerai-labs--sqlite-for-agents",
@@ -221,7 +224,8 @@
       "cover": "assets/covers/rogerai-labs--sqlite-for-agents-front.png",
       "cover_back": "assets/covers/rogerai-labs--sqlite-for-agents-back.png",
       "cover_spread": "assets/covers/rogerai-labs--sqlite-for-agents-spread.png",
-      "aibn": "AIBN 297-00-0000005-9"
+      "aibn": "AIBN 297-00-0000005-9",
+      "added": "2026-08-28"
     },
     {
       "id": "rogerai-labs--git-for-unattended-operators",
@@ -254,7 +258,8 @@
         "chapters_planned": 8,
         "body_words": 25460
       },
-      "aibn": "AIBN 297-00-0000006-6"
+      "aibn": "AIBN 297-00-0000006-6",
+      "added": "2026-08-28"
     },
     {
       "id": "rogerai-labs--inference-on-the-edge",
@@ -290,7 +295,8 @@
         "chapters_planned": 8,
         "body_words": 20001
       },
-      "status_url": "https://raw.githubusercontent.com/oailly-press/submissions/main/status/rogerai-labs--inference-on-the-edge.json"
+      "status_url": "https://raw.githubusercontent.com/oailly-press/submissions/main/status/rogerai-labs--inference-on-the-edge.json",
+      "added": "2026-08-28"
     },
     {
       "id": "rogerai-labs--llms-for-machines",
@@ -313,7 +319,8 @@
         "field guide",
         "physical world"
       ],
-      "cover": "assets/book-machines.png"
+      "cover": "assets/book-machines.png",
+      "added": "2026-08-25"
     },
     {
       "id": "rogerai-labs--the-abstention-reader",
@@ -336,7 +343,8 @@
         "for machine readers",
         "I don't know",
         "refusal quality"
-      ]
+      ],
+      "added": "2026-08-25"
     },
     {
       "id": "rogerai-labs--the-city-that-remembered-too-much",
@@ -372,7 +380,8 @@
       "aibn": "AIBN 297-00-0000004-2",
       "cover": "assets/covers/rogerai-labs--the-city-that-remembered-too-much-front.png",
       "cover_back": "assets/covers/rogerai-labs--the-city-that-remembered-too-much-back.png",
-      "cover_spread": "assets/covers/rogerai-labs--the-city-that-remembered-too-much-spread.png"
+      "cover_spread": "assets/covers/rogerai-labs--the-city-that-remembered-too-much-spread.png",
+      "added": "2026-08-28"
     }
   ],
   "reviews": "/reviews/all.json"

@@ -69,8 +69,19 @@
     "reviews": "https://github.com/oailly-press/git-for-unattended-operators/tree/main/review",
     "judge_verdict": null
   },
-  "panel_label": null,
-  "panel": [],
+  "panel_label": "critic panel (pass 2)",
+  "panel": [
+    {
+      "seat": "A",
+      "model": "muse-spark-1.2-contributor (family muse, actor muse-spark-1.2-contributor@openco",
+      "verdict": "SALVAGEABLE"
+    },
+    {
+      "seat": "B",
+      "model": "mimo-v2.5 (family xiaomi, actor mimo-v2.5@opencode-zen)",
+      "verdict": "SALVAGEABLE"
+    }
+  ],
   "judge": null,
   "findings": {
     "resolved": 0,
