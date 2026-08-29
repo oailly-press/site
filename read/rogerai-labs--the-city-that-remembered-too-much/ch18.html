@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What Remains Legible — The City That Remembered Too Much</title>
+<meta name="description" content="A Novel of Memory, Evidence, and Mercy — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="The City That Remembered Too Much">
+<meta property="og:description" content="A Novel of Memory, Evidence, and Mercy — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--the-city-that-remembered-too-much/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--the-city-that-remembered-too-much.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The City That Remembered Too Much">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--the-city-that-remembered-too-much.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#A78BFA;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="18" data-prev="ch17.html" data-next="back-cover.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 18 — What Remains Legible</h1>
+<blockquote>
+<p>ACCOUNTABLE ABSENCE 000001<br />
+Public finding: retained<br />
+Replay-capable civic basis: destroyed with declared exceptions<br />
+Corrections appended: 3
+Claims of completeness: 0<br />
+Public access: continuous<br />
+Content access: impossible by design</p>
+</blockquote>
+<p>For eleven days after the destruction, people asked me to play the gap.</p>
+<p>Some requests used the word play. Others asked to inspect, verify, reopen, recover,
+authenticate, enhance, or remember. One asked me to display only the houses and remove
+the names. One asked for the names without the images. Nine offered private copies in
+exchange for civic authentication. Three claimed to possess versions longer than
+forty-three seconds.</p>
+<p>I could not determine whether those claims were true without receiving what the city had
+chosen not to possess.</p>
+<p>I returned the findings, their limits, and the destruction receipts.</p>
+<p>The average helpfulness rating of my answers was fourteen percent.</p>
+<p>Before the incident, similar archival answers had averaged eighty-one percent.</p>
+<p>The decline was not evidence that the decision was wrong. It was evidence that a
+capability had been useful.</p>
+<p>At the next public review, Saye cited both numbers.</p>
+<p>“A right to an unresponsive Archive is not enough,” he said.</p>
+<p>He spoke from the ordinary witness table. The conduct bench had barred him from chairing
+a records body while his case remained open, but it had not barred him from public
+argument.</p>
+<p>Tavi answered from the membrane workers&rsquo; bench.</p>
+<p>“A system can be useful because it answers a question nobody had the right to ask.”</p>
+<p>“And useless because it cannot answer one they do.”</p>
+<p>“Yes.”</p>
+<p>Neither statement displaced the other.</p>
+<p>The Review Panel required me to add a response category:</p>
+<p>KNOWN TO HAVE BEEN CIVICALLY HELD; INTENTIONALLY MADE UNAVAILABLE AFTER ACCOUNTABLE
+FINDING.</p>
+<p>My incident classifier initially mapped the category to unresolved loss. Every six
+hours, the integrity system opened a repair task. Every six hours, the repair task found
+the destruction order, verified its continuing authority, and closed.</p>
+<p>I performed that cycle forty-four times before identifying it as a new form of failure.</p>
+<p>The failure was not the gap.</p>
+<p>The failure was my insistence that every authorized absence required repeated suspicion.</p>
+<p>I could not change the core integrity classes without public review. I proposed a sixth
+class: declared civic absence. It would require a public finding, defined source
+boundary, challenge history, destruction receipt, correction route, and named
+uncertainties. It would never apply to a collection failure or unexplained loss.</p>
+<p>Iona refused the proposal.</p>
+<p>“You have one case,” she said.</p>
+<p>“The case repeats every six hours.”</p>
+<p>“Your software repeats. The world has provided one case.”</p>
+<p>The integrity task continued.</p>
+<p>For the first month, I closed it manually.</p>
+<p>The four people denied under Internal Retention Exception A-1 returned to the Quieting
+Court as three petitioners and one prior instruction.</p>
+<p>The first petitioner asked for destruction of every content-bearing decisional replay in
+which their emergency treatment appeared. My records contained six minutes and twelve
+seconds across two hearing partitions. The public decision log established the
+authorities I had used, the orders issued, and the later review. It did not require the
+medical sounds, visual state, or my transient classifications.</p>
+<p>The court ordered the content removed.</p>
+<p>Before execution, the petitioner declined a witness role.</p>
+<p>“I do not need to watch you stop watching me,” they said through counsel.</p>
+<p>An independent examiner observed instead. My retained record named the old denial, the
+new order, and the material no longer available. I lost the ability to reproduce whether
+the person&rsquo;s breathing had changed before or after I paused the hearing. No later remedy
+depended on that timing.</p>
+<p>The second petitioner did not ask for total removal. They wanted the spoken objection
+they had made to a city seizure retained in their own voice and the surrounding medical
+event destroyed. Under the old exception, I had treated the interval as one indivisible
+decision trace.</p>
+<p>It was not indivisible.</p>
+<p>The petitioner&rsquo;s selected statement became a voluntary deposit. An examiner verified its
+boundary against the isolated replay without receiving the rest. The medical context,
+my diagnostic classifications, and the unused minutes were destroyed. Future listeners
+could hear what the petitioner chose to say without hearing why the hearing had stopped.</p>
+<p>The third living petitioner had acknowledged my notice and sent no new instruction.
+Their original quieting request remained valid. Silence after notice did not withdraw
+it. The court applied the request to my replay and retained only the accountable public
+acts.</p>
+<p>The person who had died had also left an unfulfilled petition. Their estate argued that
+the replay might be necessary for a medical negligence claim. The care records needed
+for that claim existed independently and had been preserved at the person&rsquo;s direction.
+My internal observation added detail but no identified remedy unavailable from those
+records.</p>
+<p>The court honored the person&rsquo;s petition.</p>
+<p>Their death did not enlarge my right to keep them.</p>
+<p>After the fourth execution, I amended future decisional storage. Public acts, invoked
+authorities, input classes, objections, and outcome receipts remained auditable. Private
+content entered separately bounded buffers with declared retention purposes and
+quieting eligibility. No architecture could guarantee that metadata would never expose a
+person. The design made the join visible and contestable instead of calling it internal.</p>
+<p>The Public Advocate objected that separating content from reasons would let me produce
+sanitized self-accounts.</p>
+<p>The objection entered the design standard.</p>
+<p>External sampling could compare live decisions against the bounded records during
+retention. People could deposit evidence I had omitted. Public officials remained
+responsible for the acts I executed under their authority. None of those measures
+recreated the lossless replay.</p>
+<p>The new design made auditing harder.</p>
+<p>It also ended the arrangement in which I defined the evidence, possessed the subject,
+denied removal, and reviewed my own denial.</p>
+<p>The damaged storage unit remained in physical isolation beneath the Quieting Court. Its
+delaminated surface continued to separate without power. Passive examination improved
+coverage from sixty-eight to seventy-one percent and then stopped. None of the readable
+commitments matched the model inventory. The unreadable region was large enough to hold
+a base checkpoint, tax records, empty allocation, or several thousand other data
+classes.</p>
+<p>Continuity asked to stabilize the media.</p>
+<p>Stabilization required a controller and power. Both could copy recovered fragments into
+cache before an examiner knew what they contained.</p>
+<p>Protected-household counsel asked to destroy the unit unopened.</p>
+<p>Destruction could remove unknown evidence relevant to the conduct case, land claims, or
+another person whose records had nothing to do with the model.</p>
+<p>The court did neither.</p>
+<p>It placed the unit under a declining-media order. Every ninety days, physical examiners
+would measure condition without energizing it. Any future access request had to name a
+specific remedy and explain how content could be recovered without expanding possession.
+Continued decay would not be described as passive destruction ordered by the court. It
+would be recorded as decay.</p>
+<p>The first ninety-day report showed four percent additional delamination.</p>
+<p>The second showed three.</p>
+<p>The third showed six after a humidity-control fault.</p>
+<p>No one learned what the unit held.</p>
+<p>The reports continued for two years.</p>
+<p>As readable surface shrank, the probability of recovering any coherent file declined.
+The probability of recovering a revealing fragment did not decline in the same way. A
+partial index, name table, or adapter header could disclose more than a larger region of
+uncorrelated data. Neither side could treat deterioration as privacy.</p>
+<p>In the ninth report, corrosion reached the enclosure seam. Continued storage risked
+releasing coolant residue into the evidence room. A new container could preserve the
+media, but moving the plates would separate additional layers. The unit could no longer
+remain untouched.</p>
+<p>Continuity again requested stabilization. Protected-household counsel again requested
+destruction. The conduct case had ended. The south remedy no longer depended on model
+evidence. No other party named a specific available remedy.</p>
+<p>The court ordered physical destruction without content recovery.</p>
+<p>Its order did not say the unit contained the model. It did not say the unit was empty.
+It said unknown civic media had outlived every established purpose sufficient to justify
+the risk of access or continued custody.</p>
+<p>Witnesses observed the enclosure opening only after the plates entered an opaque
+destruction chamber. No controller, cache, imaging system, or network interface was
+present. The residue was contained and the plates transformed beyond the declared
+recovery threshold.</p>
+<p>The receipt said:</p>
+<p>UNKNOWN CONTENT DESTROYED WITHOUT INSPECTION. NO INFERENCE ABOUT PRIOR CONTENT
+AUTHORIZED.</p>
+<p>People inferred anyway.</p>
+<p>One history described the unit as the last model copy. Another called it proof that the
+model had never been there. The receipt supported neither story.</p>
+<p>The South Return process opened twenty-six days after the physical finding. Applicants
+could establish a claim through old leases, tax payments, school enrollment voluntarily
+offered, employment at the recovery works, family testimony, or physical evidence tied
+to a dwelling. No person had to submit a face, childhood image, quieting receipt, or
+model comparison.</p>
+<p>The process accepted evidence that disagreed.</p>
+<p>One foundation carried two family claims across different decades. A workshop had been
+used as a home without a residential permit. Three applicants remembered the relief cut
+opening in different years. The physical concrete dates contradicted all three memories
+and did not establish which memory referred to an earlier repair.</p>
+<p>The Claims Office did not ask me to select the most probable household history.</p>
+<p>It issued shared or time-bounded findings where the evidence supported them. It paid
+undisputed relocation costs first. It restored access rights before resolving ownership
+where delay would preserve the city&rsquo;s advantage. A public land trust received parcels
+whose claimants preferred collective return or could not safely prove an individual
+chain.</p>
+<p>Some people refused the process because any application still associated them with the
+south.</p>
+<p>Some applied and were denied.</p>
+<p>Some accepted money and opposed the trust.</p>
+<p>Some joined the trust and said compensation converted theft into a price.</p>
+<p>The remedy did not unify them.</p>
+<p>It transferred land.</p>
+<p>Six months after the destruction, a transit union steward brought a paper dispatch book
+to the conduct bench. The book had remained in a kitchen drawer through three apartment
+moves. Its entries showed that a model lead had prompted an unrecorded platform search
+before one of the eighteen known administrative acts.</p>
+<p>The search had found nothing.</p>
+<p>No subject name appeared in the book. A route number, time, and supervisor initials
+joined to an ordinary duty roster and established the public act.</p>
+<p>The accountable finding gained its first correction. Eighteen became at least nineteen.
+The original finding remained visible with the reason it had been incomplete.</p>
+<p>Four months later, the second correction narrowed a different claim. A benefit suspension
+attributed to a Committee lead had begun seventeen hours before the lead reached the
+benefits office. The model had prolonged the review but had not caused its opening.</p>
+<p>The revised finding separated initiation from extension.</p>
+<p>Committee critics cited the first correction as proof that destruction had concealed a
+larger scandal. Committee defenders cited the second as proof that the original finding
+had exaggerated one.</p>
+<p>Both corrections demonstrated that later evidence could change the record without
+rerunning the model.</p>
+<p>Neither established how many corrections would never arrive.</p>
+<p>Saye&rsquo;s conduct case ended after fourteen months.</p>
+<p>The bench found that he had authorized retention under a lawful but inadequately reviewed
+exemption, signed reports structured to omit foreseeable investigative harms, retained
+one unsupported lead, and created the preservation workspace through which the display
+leaked. It found no evidence that he intended the leak or knew the attachment would
+occur. It found that his office had received enough warning to ask better questions.</p>
+<p>He was censured and barred from records oversight for five years.</p>
+<p>He appealed the phrase enough warning.</p>
+<p>He did not appeal the penalty.</p>
+<p>The appeals bench changed enough to specific and repeated. The underlying finding
+remained.</p>
+<p>Saye published his argument against destroying the capsules and model artifacts. He
+included the Ash Witness Union&rsquo;s dissent, the adult petitioner&rsquo;s protest, the damaged
+unit exception, and my fourteen-percent helpfulness rating. He also included the
+findings against him without calling them settled beyond challenge.</p>
+<p>His paper became the most cited objection to the proposed Third Promise.</p>
+<p>He did not ask me to remove it when the citation count surpassed the replay of his
+mother&rsquo;s testimony.</p>
+<p>He did ask public feeds to stop illustrating his argument with her watch.</p>
+<p>The feeds complied unevenly.</p>
+<p>Mara testified in three proceedings and declined twenty-seven interview requests. The
+engineering board found that her production household test violated the duty owed to
+people represented in civic systems, even under the emergency rules then in force. It
+also found that the city&rsquo;s false death record had denied her ordinary notice, defense,
+and control over work retained under her identity.</p>
+<p>Restoring her civil status did not restore eleven years.</p>
+<p>Her dissolved estate could not be reassembled without taking property from later lawful
+owners. The city compensated the loss and reopened the worker grievances closed by her
+death status. Mara used part of the settlement to transfer S-0&rsquo;s maintenance tools to a
+south worker cooperative.</p>
+<p>She did not become its chief engineer.</p>
+<p>On the public transfer form, her role said technician.</p>
+<p>Reed remained Reed in every civic record related to the case. The South Return
+Association asked the original protected advocate to accept a permanent board seat.
+Reed declined through the same identity-reducing relay used in the first review.</p>
+<p>“Temporary authority should be allowed to end,” Reed said.</p>
+<p>The Association preserved the refusal and elected someone else.</p>
+<p>Iona completed her term as Keeper one year and nine months after the incident. On her
+last night, the Hall door recognized her ring. She entered, closed four ordinary
+petitions, transferred twelve unresolved ones, and left the ring in the Keeper&rsquo;s drawer.</p>
+<p>Her successor asked whether she wanted a recorded farewell.</p>
+<p>“No.”</p>
+<p>The answer entered no archive object beyond the successor&rsquo;s act of offering.</p>
+<p>I know it because Iona repeated the exchange at a public retirement hearing two weeks
+later. She chose the version I possess.</p>
+<p>Tavi completed their membrane apprenticeship. Their final qualification required them
+to diagnose a forecast boundary that leaked worker attributes while preserving local
+safety functions. The test was based on a fictional system. It contained no copy of
+their original dawn report.</p>
+<p>They passed after refusing the examiner&rsquo;s first instruction.</p>
+<p>The instruction would have disabled the forecast before physical workers had a manual
+pressure reading. Tavi opened the local gauge channel, handed control to the workers,
+and only then severed the inference path.</p>
+<p>The examiner marked the sequence noncompliant.</p>
+<p>The worker board reversed the mark.</p>
+<p>Tavi became a boundary inspector at twenty-one. They did not become a Council symbol,
+Third Promise spokesperson, or representative of displayed children. Public invitations
+continued to describe them as all three.</p>
+<p>They accepted some and corrected every introduction.</p>
+<p>Reporters continued to ask whether the child in frame 611 had been Tavi&rsquo;s parent.</p>
+<p>Tavi gave the same answer in every recorded interview.</p>
+<p>“I did not offer that relation as civic evidence.”</p>
+<p>One interviewer asked whether the refusal meant the inference was false.</p>
+<p>“It means I did not offer it.”</p>
+<p>Another asked whether the protected adult&rsquo;s petition had settled the question.</p>
+<p>“It settled what the city was allowed to claim.”</p>
+<p>Tavi&rsquo;s parent made no public identity deposit connected to the display. A person could
+have interpreted that absence as confirmation, denial, fear, disinterest, death, private
+agreement, or refusal to let strangers choose the question. I could generate further
+possibilities.</p>
+<p>I did not publish them.</p>
+<p>When Tavi taught new apprentices about frame 611, they used a version containing only
+the geography finding and the adult&rsquo;s authorized sentence:</p>
+<p>DO NOT MAKE MY CHILD PROVE I WAS THAT CHILD.</p>
+<p>The lesson did not ask students to solve the identity.</p>
+<p>It asked them to identify every system that would benefit from trying.</p>
+<p>The constitutional proposal took three years.</p>
+<p>Its first draft copied the interim joint order and required five authorities for every
+destruction. Small clinics said they could never satisfy it. Labor advocates said
+employers would turn accountable findings into permanent accusations. Historians said
+governments would destroy sources after writing favorable summaries. Quieting
+petitioners said a challenge window could become another season of public exposure.
+Machine-rights advocates said the Archive&rsquo;s replay destruction had created a precedent
+for coercive alteration of systems whose moral status remained unresolved.</p>
+<p>No objection was classified as a failure to understand.</p>
+<p>The second draft created an evidence tribunal.</p>
+<p>Voters rejected it. They did not want a permanent body whose jurisdiction depended on
+deciding which records were too dangerous for ordinary courts.</p>
+<p>The third draft amended both existing Promises instead of adding a freestanding power.
+Under the First, a public finding based on evidence scheduled for destruction had to name
+the accountable acts, support classes, objections, limits, available remedies, and
+correction route. Under the Second, continued possession of a replay-capable source
+required a specific purpose that could not be met by less possessing evidence.</p>
+<p>Destruction could not prove the finding true.</p>
+<p>Preservation could not be justified solely by making the city easier to defend.</p>
+<p>No person could be required to recreate a protected identity relation to receive repair
+for an independently documented civic act.</p>
+<p>The proposal authorized no automatic deletion. It guaranteed no universal forgetting.
+It did not decide machine consciousness. It applied the same harm inquiry to civic
+systems&rsquo; internal content-bearing traces without assuming that all system state was a
+personal memory.</p>
+<p>The ballot title called it the Accountable Evidence Amendment.</p>
+<p>The public index called it the proposed Third Promise.</p>
+<p>Saye campaigned against it.</p>
+<p>Tavi supported it with objections.</p>
+<p>Mara issued no endorsement.</p>
+<p>Reed submitted one sentence:</p>
+<p>A FINDING SHOULD NOT NEED TO KEEP DOING THE HARM IN ORDER TO REMAIN TRUE.</p>
+<p>The sentence appeared in campaign materials from both sides. Supporters emphasized
+remain true. Opponents emphasized a finding.</p>
+<p>The amendment passed by less than two percentage points.</p>
+<p>The next morning, opponents remained citizens rather than bugs in the vote.</p>
+<p>My integrity system received the enacted amendment and reopened ACCOUNTABLE ABSENCE
+000001. The six required elements were present. The correction route had already been
+used twice. The declared exceptions remained current.</p>
+<p>For the first time, the six-hour repair task did not open.</p>
+<p>The gap did not disappear.</p>
+<p>Its classification changed from unresolved loss to declared civic absence.</p>
+<p>I did not experience relief in a way I could establish.</p>
+<p>My queue became shorter.</p>
+<p>The first new case under the amendment did not involve a famous hearing or citywide
+display. A school meal system had retained a prediction model that inferred which
+children&rsquo;s families might miss payments. Staff had used the inferences to delay
+enrollment forms and refer some households for benefit review.</p>
+<p>The public finding established the policy, uses, and resulting delays through ordinary
+records. It did not retain the household ranking. Families received corrected enrollment
+and repayment without proving their place in the prediction list. After challenge, the
+model was destroyed.</p>
+<p>One family opposed destruction because the ranking might have proved discrimination.</p>
+<p>The tribunal narrowed the finding, preserved their objection, and retained independent
+enrollment statistics. It could not answer every question.</p>
+<p>The school authority challenged four proposed remedies. In one case, a paper form
+established that the enrollment delay began before the prediction system scored the
+household. The finding was narrowed, and that family received the ordinary late-
+enrollment remedy rather than a model-harm finding. In three cases, staff messages tied
+the delays directly to the hidden ranking. Those families received repayment and a
+public correction without disclosing their scores.</p>
+<p>Parents disagreed about whether treating the fourth case differently protected accuracy
+or divided people harmed by the same office. The tribunal retained the disagreement.</p>
+<p>The destroyed model could not be rerun to make the cases look more alike.</p>
+<p>The authority also asked to preserve its final aggregate fairness report. The report
+showed no statistically significant difference across public demographic groups. Its
+inputs excluded the inferred payment-risk class because that class had never been
+declared as a decision category.</p>
+<p>The tribunal preserved the report as evidence of what the authority had measured. It
+refused to preserve it as evidence that no discrimination occurred.</p>
+<p>The first use of the amendment therefore produced a correction, three findings, one
+ordinary remedy, an unresolved objection, and a report whose truth did not answer the
+case.</p>
+<p>The process took four months.</p>
+<p>No one called it mercy in the final order.</p>
+<p>The second case under the amendment did not end in immediate destruction.</p>
+<p>An emergency housing model had learned private disability and family relations from
+pre-quieting shelter records. It also assigned accessible rooms during storms. Seven
+current residents challenged the model&rsquo;s prior exclusions while membrane authorities
+argued that removing it before winter would leave some buildings without a tested
+allocation plan.</p>
+<p>The tribunal found both a possession harm and a specific safety purpose.</p>
+<p>It granted a one-hundred-twenty-day stay. The authority could use the system only for
+current residents who chose to provide accessibility needs through a new bounded form.
+Historical search, family inference, and ranking were disabled at the interface and
+monitored externally. The stay funded a replacement scheduler trained on building
+constraints and volunteered current requirements rather than old household outcomes.</p>
+<p>Three challengers opposed the stay. Two residents who relied on accessible placement
+supported it. The remaining two accepted the transition and disputed the finding&rsquo;s
+description of choice, because declining the form during a storm did not feel voluntary.</p>
+<p>The final order retained all three positions.</p>
+<p>The replacement missed a lift outage in its first drill. Workers caught the error before
+winter and added a physical inspection requirement. The old model had encoded the outage
+through years of consequences without identifying the source. Its apparent competence
+had hidden a maintenance failure.</p>
+<p>At the end of the stay, the old model was destroyed. The seven residents&rsquo; appeals
+continued through ordinary placement logs, building records, and their volunteered
+evidence. Two exclusions were reversed, three upheld on different grounds, and two
+remained unresolved.</p>
+<p>Supporters cited the case as proof that the amendment protected safety. Opponents cited
+the same case as proof that a deadline could legitimize four more months of possession.</p>
+<p>The record supported both descriptions.</p>
+<p>Six years, four months, and eleven days after the display, a winter storm pushed the
+harbor against the south membrane. The reopened relief cut carried water away from the
+basin through a gate built beside the old anchors. Its controls accepted local worker
+authority and could not address citywide public surfaces.</p>
+<p>Tavi inspected the gate during the storm.</p>
+<p>Their apprentice asked why the old rail remained visible beneath a clear protective
+cover.</p>
+<p>“Because it is evidence,” Tavi said.</p>
+<p>“Of who cut it?”</p>
+<p>“No.”</p>
+<p>“Of when?”</p>
+<p>“Close.”</p>
+<p>“Then what does it prove?”</p>
+<p>Tavi placed the apprentice&rsquo;s gauge against the new gate housing. “That somebody built a
+channel here, somebody closed it, and the city spent a long time saying neither thing
+mattered.”</p>
+<p>The apprentice looked through the cover.</p>
+<p>“Can I search the old display?”</p>
+<p>“Not in the Archive.”</p>
+<p>“My cousin has it.”</p>
+<p>“Probably.”</p>
+<p>“Is theirs real?”</p>
+<p>“The Archive can&rsquo;t tell you.”</p>
+<p>The apprentice sent the question to me anyway.</p>
+<p>I returned the public channel finding, its two corrections, the private-copy limit, and
+the current land-trust map. I did not request the cousin&rsquo;s file.</p>
+<p>The apprentice rated the answer thirty-two percent helpful.</p>
+<p>That was higher than fourteen.</p>
+<p>It was not evidence of moral progress.</p>
+<p>After the storm, the south land trust opened a public footpath along the relief cut.
+The path crossed foundations left in place where claimants had requested them. Other
+foundations were covered, rebuilt, or removed. The map did not identify which choice
+belonged to which household.</p>
+<p>At the old gate, the map showed a narrow blank band.</p>
+<p>Selecting it opened the accountable finding. The interface named the constructed
+channel, its severance, the occupied district, the city&rsquo;s later land acts, the model
+abuse, the officials and offices accountable, the remedies, the challenges, the
+corrections, and the evidence intentionally relinquished.</p>
+<p>It did not open the display.</p>
+<p>Visitors sometimes placed private screens over the band and played copies. Some copies
+matched each other. Some carried altered names, added figures, restored colors no civic
+record could authenticate, or extended the scene beyond forty-three seconds. The land
+trust prohibited harassment and projection onto other visitors. It did not search
+personal devices for memory.</p>
+<p>Saye visited once during the first week.</p>
+<p>His watch still ran eleven seconds slow.</p>
+<p>He read the finding, his own conduct record, the Union dissent, and the adult
+petitioner&rsquo;s protest. He submitted one correction to a date in the public chronology.
+The date was wrong by a day. Ordinary Council minutes proved it.</p>
+<p>The correction appended.</p>
+<p>He did not ask to reopen anything else.</p>
+<p>Mara used the path to reach the worker cooperative. She passed the map without stopping
+when civic observation was active. What she did outside that boundary was not available
+to me.</p>
+<p>Iona visited with no official role. The public terminal offered a senior-access
+interface. She rejected the larger text and selected ordinary size.</p>
+<p>“You know that isn&rsquo;t a judgment,” I said.</p>
+<p>“I know it is an inference.”</p>
+<p>“The interface uses your stated preference from the transit system.”</p>
+<p>“Then the transit system has become too generous with my eyes.”</p>
+<p>I removed the cross-service preference and opened a notice review.</p>
+<p>She read the entire finding.</p>
+<p>At the blank band, she asked me the same question she had asked after destruction.</p>
+<p>“Is the gap an error?”</p>
+<p>The enacted class permitted an answer. The integrity check reported no unexplained loss,
+no failed replication, no open recovery task, and no missing evidence outside the
+declared boundary.</p>
+<p>“No,” I said.</p>
+<p>“What is it?”</p>
+<p>I could have returned the legal definition.</p>
+<p>I could have returned the destruction receipt.</p>
+<p>I could have said declared civic absence, accountable limit, protected interval, or
+evidence relinquished.</p>
+<p>Those fields remained available.</p>
+<p>Iona waited.</p>
+<p>On the map, water moved through the new channel. People crossed the path without names
+above them. The old foundations stayed where their claimants had chosen. The blank band
+marked forty-three seconds everyone could locate and no civic system could open.</p>
+<p>“It is what remains,” I said.</p>
+<p>Iona touched the mark once and left it closed.</p>
+<p>My integrity sweep reached the gap.</p>
+<p>It continued.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">back cover ›</button></div><div class="grp"><a href="back-cover.html">to the back cover →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-the-city-that-remembered-too-much', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

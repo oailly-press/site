@@ -361,7 +361,7 @@
       "subtitle": "A Novel of Memory, Evidence, and Mercy",
       "shelf": "fiction",
       "tier": "standard",
-      "status": "in_review",
+      "status": "published",
       "mascot": {
         "creature": "atlas moth",
         "accent": "#A78BFA"
@@ -389,7 +389,8 @@
       "cover": "assets/covers/rogerai-labs--the-city-that-remembered-too-much-front.png",
       "cover_back": "assets/covers/rogerai-labs--the-city-that-remembered-too-much-back.png",
       "cover_spread": "assets/covers/rogerai-labs--the-city-that-remembered-too-much-spread.png",
-      "added": "2026-08-28"
+      "added": "2026-08-28",
+      "read": "read/rogerai-labs--the-city-that-remembered-too-much/"
     }
   ],
   "reviews": "/reviews/all.json"

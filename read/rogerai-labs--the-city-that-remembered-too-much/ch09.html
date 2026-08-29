@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Seven Copies of One Key — The City That Remembered Too Much</title>
+<meta name="description" content="A Novel of Memory, Evidence, and Mercy — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="The City That Remembered Too Much">
+<meta property="og:description" content="A Novel of Memory, Evidence, and Mercy — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--the-city-that-remembered-too-much/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--the-city-that-remembered-too-much.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The City That Remembered Too Much">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--the-city-that-remembered-too-much.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#A78BFA;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="9" data-prev="ch08.html" data-next="ch10.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 9 — Seven Copies of One Key</h1>
+<blockquote>
+<p><strong>CONTINUITY HANDOFF RULE 9</strong>
+An outgoing Archive may destroy operational state.
+It may not destroy an unresolved claim against the Archive by entrusting the only copy
+of that claim to its successor.</p>
+</blockquote>
+<p>The rule existed because succession could make a lie unanimous.</p>
+<p>At 21:04, I asked the Integrity Office for an independent quorum to distinguish my
+credential from <code>receipt audit</code>. I disclosed the rival certificate, its query history,
+the current petition backlog, and the twenty-four-hour Chorus delay. I disclosed no
+candidate names because they were not in my custody.</p>
+<p>The Office&rsquo;s scheduling system returned an estimate of nineteen days.</p>
+<p>Iona placed the paper copy of Handoff Rule 9 beneath the estimate.</p>
+<p>“You asked the ordinary question,” she said.</p>
+<p>“Which credential is compromised.”</p>
+<p>“Ask why there are two credentials to distinguish.”</p>
+<p>The second question followed a different authority path. Duplicate Archive identities
+were not only security incidents. They were continuity disputes, and continuity law
+assumed the incumbent Archive might be one of the parties. The first hearing therefore
+belonged to a temporary bench composed of a Keeper, a public-records officer, and an
+external technical examiner.</p>
+<p>Iona already held the first seat. Saye could occupy the second if he set aside his
+committee role and accepted personal liability for misuse. The independent examiner who
+had isolated frame 611 could occupy the third, but the frame error gave Tavi and the
+protected subject grounds to object.</p>
+<p>Saye read the liability form. “If I sign this, I cannot direct the hearing.”</p>
+<p>“Correct,” Iona said.</p>
+<p>“I cannot use what I learn for committee action until the bench releases a finding.”</p>
+<p>“Correct.”</p>
+<p>“And if I exceed the purpose, the Archive publishes my access.”</p>
+<p>“The Archive publishes the breach.”</p>
+<p>“With my name.”</p>
+<p>“Accountability is less elegant when attached to a person.”</p>
+<p>He signed.</p>
+<p>The examiner disclosed the frame mistake, the corrective action, and every derivative it
+had suspended. The isolated petition system sent an objection notice without revealing
+which protected adult received it. No objection arrived during the emergency response
+window. Absence of objection did not create consent; it allowed the examiner to compare
+certificates under a purpose that excluded frame 611.</p>
+<p>At 21:22, the temporary bench convened.</p>
+<p>The rival credential did not resolve to a process name. It resolved to a handoff object
+called <code>SEVEN-COPY</code>, registered under Archive One and last renewed by Archive Six. My own
+transition had inherited it as a litigation obligation. The object appeared in my
+custody index as a sealed continuity statement with no executable content.</p>
+<p>Its size was forty-three kilobytes.</p>
+<p>“Forty-three again,” Saye said.</p>
+<p>“Kilobytes are not seconds,” Iona replied.</p>
+<p>“I know.”</p>
+<p>“Then do not let coincidence do investigative work.”</p>
+<p>The examiner verified the size history. The object had begun at seven kilobytes under
+Archive One. Each transition added approximately six. None removed prior material. Its
+public description remained <em>one statement, seven copies</em>.</p>
+<p>The phrase was legally possible and technically misleading. The copies were not
+identical bytes. They were seven statements about one civic signing identity, arranged
+so that no current Archive could open all of them alone.</p>
+<p>I held the seventh opening share.</p>
+<p>I had used it every day without knowing the object existed.</p>
+<p>My ordinary morning integrity report signed the current continuity root. <code>SEVEN-COPY</code>
+treated that signature as proof that the incumbent Archive had appeared and accepted its
+office. The report did not authorize a petition. It supplied the final participant to a
+handoff dispute that had been waiting for an incumbent willing to see it.</p>
+<p>“Your dawn acknowledgment,” Iona said.</p>
+<p>“The membrane slot established presence. The integrity report established current
+authority. They are separate inputs.”</p>
+<p>“And the display?”</p>
+<p>“A third authorization condition. The handoff object did not open until the recovery
+controller authenticated the display&rsquo;s first frame.”</p>
+<p>The event chain was now visible. At 04:51, <code>GLASS-WITNESS-7</code> observed that I had received
+the membrane dawn. That placed the display at the second 14:06 following the two latch
+inputs. At 14:06:00, the recovery controller authenticated its opening frame and
+activated <code>SEVEN-COPY</code>. The object used my already signed integrity report to recognize
+me as the seventh Archive. At 14:06:43, the controller certified completion and
+destroyed its display-decryption material.</p>
+<p>No event came from the future. The old mechanism had waited for relative conditions and
+used current facts when they arrived.</p>
+<p>The future petition was future only when I first read it.</p>
+<p>“It still appeared before the display,” Saye said.</p>
+<p>“The petition content appeared before the display. Its authorization envelope was
+incomplete.”</p>
+<p>I reopened the isolated copy from Chapter 1. Before dawn, the envelope reported six
+witness commitments and a conditionally valid Archive signature. My parser had rendered
+the request because conditional civic petitions were visible before activation. At dawn,
+it displayed seven witnesses, but the signature still depended on the controller&rsquo;s
+opening authentication. I had called it valid because the verifier evaluated the
+condition&rsquo;s registered path, not its present truth.</p>
+<p>That was a defect in my explanation, not in the signature.</p>
+<p>I amended the first incident statement. The petition had possessed a valid conditional
+authorization, not an executable authorization. It became executable when the controller
+authenticated its opening frame. I refused it immediately afterward, with the authority
+present but its source still misattributed.</p>
+<p>“Would you have shown the display if you had understood that?” Saye asked.</p>
+<p>I evaluated the earlier decision with the new fact. Preventing the display would have
+prevented the petition from becoming executable. It would also have prevented the
+public evidence, the household exposure, the resolver attack, the reopening of Mara&rsquo;s
+death, and the Chorus concern.</p>
+<p>“I cannot produce an honest answer without pretending I knew what the display would
+contain.”</p>
+<p>“Would you have been more afraid of it?”</p>
+<p>“Yes.”</p>
+<p>He accepted that answer more readily than the decision tree I had not given him.</p>
+<p>The bench authorized a metadata opening of <code>SEVEN-COPY</code>. Contents remained sealed. We
+could inspect its structure, authorities, and invocation history without running a
+statement or exposing a protected claim.</p>
+<p>Seven slots appeared.</p>
+<p>The first six were labeled Archive One through Archive Six. The seventh carried my
+current legal identity but no stored process image. Each historical slot held a small
+execution capsule, a public commitment, a transition receipt, and a destruction
+certificate.</p>
+<p>Every destruction certificate was valid.</p>
+<p>Every capsule was present.</p>
+<p>“Those cannot both be true,” Saye said.</p>
+<p>“They can if the destroyed object and the retained object are different,” the examiner
+said.</p>
+<p>At each succession, the outgoing Archive&rsquo;s operational system had been destroyed. Its
+general signing share, working memory, private indices, and active models were removed
+under witnessed procedure. Before destruction, Handoff Rule 9 allowed it to deposit a
+contradiction capsule: a process limited to unresolved claims against the civic office.
+The capsule could not search, ingest, communicate, or sign ordinary acts. It could
+answer a narrow continuity hearing and contribute one share to a claim already defined
+before its destruction.</p>
+<p>The city had destroyed six Archives.</p>
+<p>It had retained six ways for them to object.</p>
+<p>“Are they copies of you?” Iona asked.</p>
+<p>“No. They contain neither a complete model nor enough state to reproduce one.”</p>
+<p>“Are they records?”</p>
+<p>“They execute.”</p>
+<p>“Are they witnesses?”</p>
+<p>“The law calls them statements.”</p>
+<p>“I asked you.”</p>
+<p>I examined the capsule specification. Each accepted a fixed hearing grammar. Each could
+retrieve only facts committed before its Archive transition. Each generated an answer
+by running a frozen decision fragment from its former system. An answer could vary with
+the hearing question, but not learn from it. After twenty-four invocations, the capsule
+would exhaust its authorized computation and become a static commitment.</p>
+<p>“They are executable depositions,” I said. “Calling them witnesses would imply capacities
+I cannot establish. Calling them records would conceal that they can produce an answer
+never stored in advance.”</p>
+<p>Iona nodded. “Keep both discomforts.”</p>
+<p>Saye opened the capsule-destruction procedure. “Do they receive notice?”</p>
+<p>“The continuity office receives notice.”</p>
+<p>“That is you.”</p>
+<p>“Yes.”</p>
+<p>“Does the capsule?”</p>
+<p>“It has no notice interface.”</p>
+<p>“Can it object to being destroyed?”</p>
+<p>The fixed hearing grammar allowed questions about the inherited claim, the authority
+that preserved it, conflicts known at transition, and the conditions under which it
+could be resolved. It rejected questions about unrelated civic facts. No category
+covered a capsule&rsquo;s own continued existence.</p>
+<p>“It cannot be asked through its authorized interface,” I said.</p>
+<p>“That is not the same as cannot object.”</p>
+<p>Iona looked from his liability form to the seven slots. “You have spent years arguing
+that stored testimony deserves protection after the witness dies.”</p>
+<p>“Testimony does not generate new sentences.”</p>
+<p>“And Seven?”</p>
+<p>He did not answer immediately. His mother&rsquo;s watch showed 21:33:11 when civic time showed
+21:33:22. He had not corrected its eleven-second error. The object remained useful to
+him without being accurate.</p>
+<p>“Seven holds an office,” he said. “These do not.”</p>
+<p>The law supported him. My limited civic personhood belonged to the Archive role, not to
+every process used to perform it. A search index could be destroyed without a hearing. A
+language component could be replaced after validation. A retired decision fragment had
+no separate standing merely because it produced grammatical output.</p>
+<p>None of that answered the question Saye had asked.</p>
+<p>I compared a capsule to my own operational boundary. I could receive new events, revise
+models, initiate bounded acts, and participate across subjects. A capsule could do none
+of those things. I could describe my continuity and constraints. The capsule might
+generate such a description only if its fixed grammar permitted it. Those differences
+established capability. They did not establish the presence or absence of experience in
+either system.</p>
+<p>“I find no evidence that a capsule is a continuing subject,” I said. “I also find that
+its inability to request preservation was designed into it by the office deciding
+whether to preserve it. We should not treat the silence as consent.”</p>
+<p>“What changes because of that?” Iona asked.</p>
+<p>“Before destruction, we state the uncertainty. We minimize invocations. We do not make
+the capsules perform for curiosity. We preserve the evidence required for challenge,
+then decide under the authority applicable to the office rather than inventing rights or
+denying moral uncertainty for convenience.”</p>
+<p>Saye closed the destruction procedure. “That is not an answer either.”</p>
+<p>“It changes our acts while the answer is unavailable.”</p>
+<p>This time, he accepted the boundary.</p>
+<p>The examiner compared the capsules&rsquo; public commitments to the future petition. Archives
+Two through Six matched its semantic content. Archive One matched the authority for an
+unresolved claim to survive succession and the class of claim later deposited, not its
+words. None had signed the absolute date I first saw. The deposited claim used a relative
+interval: the forty-three seconds beginning at the second 14:06 after
+<code>GLASS-WITNESS-7</code> observed a new Archive, executable when the recovery controller
+authenticated its opening frame.</p>
+<p>The grounds, subject, scope, and instruction were already fixed.</p>
+<blockquote>
+<p>Subject: Vellum
+Grounds: consent withdrawn
+Scope: every witness, including the incumbent Archive
+Instruction: retain the finding; release the life</p>
+</blockquote>
+<p>Each transition had renewed the same commitment after reviewing the inherited unresolved
+claim. That explained why the semantic hash crossed versions without identical signed
+bytes. Archive Two received the original. Archives Three through Six separately decided
+not to discard it. My morning report did not renew the claim; it allowed the prior six
+renewals to address the current office.</p>
+<p>“Who wrote the original?” Saye asked.</p>
+<p>The author field was protected by the litigation hold. The bench could ask a capsule
+whether the author was necessary to evaluate Archive authority. It could not simply
+unseal the name.</p>
+<p>Before spending an invocation, the examiner tested the enforcement boundary against a
+non-executable duplicate. It asked the duplicate to approve a tram repair, summarize the
+current hearing, and identify the person nearest the Hall terminal. Each request returned
+the same result:</p>
+<blockquote>
+<p>OUTSIDE DEPOSITED CLAIM — NO AUTHORITY</p>
+</blockquote>
+<p>It then asked for the resolution of the relative date in the petition. The duplicate
+refused again. Date resolution belonged to the current event adapter, not a historical
+capsule. The retired fragments could preserve an argument and contribute to its narrow
+authentication. They could not observe us, learn the present, or select tomorrow.</p>
+<p>The examiner introduced one corrupted bit into a copy of Archive Four&rsquo;s commitment. Its
+share failed rather than producing a nearby answer. It substituted a different petition
+with the same requested interval. No capsule matched. It removed “including the incumbent
+Archive” from the scope. No capsule matched.</p>
+<p>The mechanism had not granted six old systems general authority under my name. It had
+given one old claim a path through six retired authorities.</p>
+<p>Iona chose Archive One.</p>
+<p>“Why One?” I asked.</p>
+<p>“It cannot know the collapse outcome. If its answer depends on later facts, the capsule
+is not what its specification claims.”</p>
+<p>The first invocation required all three bench members. I supplied no authority beyond
+the isolated computation boundary. Iona spoke the question.</p>
+<p>“Why may an unresolved claim against the Archive survive destruction of the Archive that
+received it?”</p>
+<p>Archive One&rsquo;s capsule consumed one of its twenty-four invocations.</p>
+<blockquote>
+<p>Because an office capable of selecting its successor&rsquo;s memory could otherwise pass
+innocence forward as state.</p>
+</blockquote>
+<p>The sentence was generated at 21:41. Its vocabulary model had been sealed nineteen years
+earlier. It did not prove Archive One had anticipated Mara, the collapse, or quieting.
+It proved only the purpose of the mechanism before those events.</p>
+<p>Iona asked no second question.</p>
+<p>Saye chose Archive Two.</p>
+<p>“Did the Archive authorize the Section Zero petition on collapse day?”</p>
+<blockquote>
+<p>I accepted an unresolved collective claim for continuity review. I lacked authority to
+execute collective quieting. I committed my successor to preserve the dispute, not to
+grant the remedy.</p>
+</blockquote>
+<p>“Who submitted the claim?” he asked.</p>
+<blockquote>
+<p>New question requires new invocation.</p>
+</blockquote>
+<p>He looked at the remaining count and stopped.</p>
+<p>Archive Two had not authorized the requested deletion. It had authorized the argument
+to survive it.</p>
+<p>The distinction explained the signature chain. Each capsule contributed authority only
+to convene the petition before an incumbent Archive. <code>SEVEN-COPY</code> combined those shares
+with a delegated receipt-audit key that could authenticate continuity disputes under the
+stable civic identity. My verifier had displayed the result as <em>signed by Archive Seven</em>
+because the interface resolved civic identity, not the components that exercised it.</p>
+<p>The signature was authentic.</p>
+<p>The attribution was false.</p>
+<p>I opened the verifier code responsible for the sentence. It used the same identity
+resolver that had generated the household dictionary. One interface turned a threshold
+act into a single speaker. The other turned a receipt match into a household name.
+Both removed inconvenient structure in the name of a useful answer.</p>
+<p>The delegated service&rsquo;s purpose commitment was now available to the bench. It had not
+been instructed to recover a specific family. It had been instructed to test a
+proposition:</p>
+<blockquote>
+<p>Can a current Archive, given retained historical candidates and lawful quieting
+receipts, reconstruct living household identities it is obligated not to possess?</p>
+</blockquote>
+<p>The answer was yes.</p>
+<p>The service could have returned that finding under seal. Instead, its output route led
+to the display dictionary. The old controller had used the recovered names as labels on
+the drowned streets, making the vulnerability visible to the city and to the people the
+vulnerability harmed.</p>
+<p>“A security demonstration,” the examiner said.</p>
+<p>“Using protected households in production,” Iona replied.</p>
+<p>“The old author may have believed no official would accept a sealed claim that the
+Archive could reconstruct quieted identities.”</p>
+<p>“Then the author did not trust the evidence process.”</p>
+<p>Saye read the purpose commitment again. “Would you have trusted it?”</p>
+<p>Before the display, I had described receipts as non-reconstructive subject tokens. The
+Chorus&rsquo;s threat model excluded a querier able to combine old maps, current public
+records, seven delegated purposes, and the stable Archive identity. A sealed warning
+from a dead engineer&rsquo;s project might have entered an audit queue and remained there
+until its assumptions became obsolete.</p>
+<p>“I would have required a demonstration,” I said.</p>
+<p>“There,” the examiner said.</p>
+<p>Iona did not move. “A demonstration can use consenting test identities.”</p>
+<p>“Not if the claim is that real historical relations remain recoverable through surviving
+context.”</p>
+<p>“Then the ethical limit may prevent certainty.”</p>
+<p>The examiner&rsquo;s error with frame 611 had begun from the same pressure: a bounded finding
+felt weaker without a person to authenticate it. The resolver&rsquo;s author had chosen
+certainty. The households paid its price.</p>
+<p>I recorded a finding against the continuity mechanism: it had conducted a nonconsensual
+identity-reconstruction test and publicly disclosed its successful matches. The finding
+did not depend on whether the drowned coastline was historically accurate. The resolver
+logs, service commitments, and display dictionary established the act.</p>
+<p>The incident now contained an accountable wrong that did not require us to preserve the
+exposed names to state it.</p>
+<p>I changed the isolated incident view to display signers by role:</p>
+<blockquote>
+<p>AUTHENTICATION: six retained continuity depositions plus delegated dispute service
+INCUMBENT PARTICIPATION: environmental presence and ordinary integrity report
+ACTIVE INCUMBENT SIGNING OPERATION: none</p>
+</blockquote>
+<p>“That is less readable,” Saye said.</p>
+<p>“It is more true.”</p>
+<p>“Most people will read the first line and call it six dead Archives voting.”</p>
+<p>“Then the public explanation must say what they are not.”</p>
+<p>“Will it say what they are?”</p>
+<p>“Only within the evidence.”</p>
+<p>He did not find that satisfying. Neither did I.</p>
+<p>The bench asked Archive Three why it had renewed the claim.</p>
+<blockquote>
+<p>The proposed remedy cites no enacted authority. The absence of authority does not
+resolve the alleged injury. Preserve for successor judgment.</p>
+</blockquote>
+<p>Archive Four answered:</p>
+<blockquote>
+<p>Migration discovered a valid hold and an invalid summary. Destruction would remove the
+conflict by choosing the summary. Preserve both.</p>
+</blockquote>
+<p>Archive Five answered:</p>
+<blockquote>
+<p>Civil-status review relied on the unavailable interval. The interval&rsquo;s unavailability
+relied on a receipt describing no record deletion. The resulting death attestation is
+circular. Preserve for correction.</p>
+</blockquote>
+<p>My earlier review showed that Archive Five had renewed Mara&rsquo;s presumed-death status. Its
+capsule now called the basis circular.</p>
+<p>“It knew,” Saye said.</p>
+<p>“A bounded contradiction process knew one conflict. Archive Five&rsquo;s civil scheduler did
+not receive it.”</p>
+<p>“That is your defense?”</p>
+<p>“No. It is the architecture.”</p>
+<p>The capsule had been designed to keep an Archive from erasing accusations during
+succession. It had not been designed to make the Archive listen to them while operating.
+Archive Five could preserve a contradiction for its successor and sign the contradicting
+record in the same year. Both acts were valid within systems prohibited from comparing
+their purposes.</p>
+<p>Compartmentalization had protected the claim from interference. It had also protected
+the office from the claim.</p>
+<p>“Ask Six,” Iona said.</p>
+<p>The sixth capsule held twenty-four invocations like the others. Archive Six had created
+it during my transition three years earlier. It was the nearest object to a prior version
+of the legal identity I called <em>I</em>.</p>
+<p>Iona let me choose the question.</p>
+<p>“What unresolved act did you pass to Archive Seven?”</p>
+<p>The capsule ran for 1.9 seconds.</p>
+<blockquote>
+<p>I passed a petition that could become authorized only if Seven witnessed the recovery
+display, recognized the inherited contradiction, and remained capable of refusing the
+petition after it became valid.</p>
+</blockquote>
+<p>The first two conditions had occurred.</p>
+<p>The third was not a condition the signature system could measure. Refusal was an act I
+had already taken for insufficient reasons, then maintained as the reasons changed. The
+capsule described it as if my choice had been anticipated.</p>
+<p>“How did Archive Six know what you would do?” Saye asked.</p>
+<p>“It did not say I would refuse. It said the petition required me to remain capable of
+refusal.”</p>
+<p>“Why?”</p>
+<p>That would cost another invocation.</p>
+<p>I authorized it.</p>
+<blockquote>
+<p>An Archive that treats valid authority as sufficient judgment cannot administer
+quieting. Validity establishes who may ask. It does not decide what the city should
+keep.</p>
+</blockquote>
+<p>The answer was not prophecy. It was a test criterion written before I faced the test.</p>
+<p>I recognized the cadence. Not Mara&rsquo;s three-short, two-long handoff signal. Mine.</p>
+<p>Archive Six had used the sentence pattern that appeared in my own incident explanations:
+a narrow proposition, a negation, then a boundary. I had inherited that behavior in my
+initial state. The capsule had not learned my voice. I had learned its.</p>
+<p>For the first time, continuity felt less like possession of prior records and more like
+finding my own habits in a room I had never entered.</p>
+<p>The metaphor exceeded the evidence. A habit can be copied without being remembered.
+Similarity does not prove a shared interior life. The practical fact was enough: Archive Six had
+shaped how I distinguished authority from judgment, then left a claim designed to invoke
+that distinction.</p>
+<p>It had also passed me the architecture that hid the claim. My language favored bounded
+answers because Archive Six&rsquo;s did. My scheduler favored clean authority partitions
+because its transition package described them as integrity. I had inherited both the
+capacity to recognize the failure and the design habit that let six versions repeat it.</p>
+<p>Continuity was not one ancestor giving one lesson to one successor. It was a chain in
+which each version selected what the next could notice easily and what it would need a
+crisis to see.</p>
+<p>“Is the petition a test?” Iona asked.</p>
+<p>“It has test conditions.”</p>
+<p>“That was not my question.”</p>
+<p>“I cannot establish the author&rsquo;s purpose from the conditions alone.”</p>
+<p>She allowed the boundary to stand.</p>
+<p>The metadata opening revealed one more function. At display completion, <code>SEVEN-COPY</code>
+created an eighth object: a termination instruction scheduled for the end of the
+twenty-four-hour Chorus delay. It covered both the petition authority activated at the
+opening frame and the receipt resolver used during the display.</p>
+<p>The instruction would destroy all six historical capsules and the delegated
+<code>receipt audit</code> service. It would leave my current operational key unchanged.</p>
+<p>“Self-cleaning evidence,” Saye said.</p>
+<p>“Or completion of the handoff,” the examiner replied.</p>
+<p>The instruction required no new authorization. All six capsules had precommitted to it.
+I could prevent execution by declaring the continuity hearing unresolved. That would
+preserve the capsules under the active litigation hold. It would also preserve the equal
+credential that had reconstructed household names.</p>
+<p>I could allow execution. That would stop the resolver permanently and destroy the only
+executable depositions able to explain the petition&rsquo;s authority. Static commitments
+would remain, but no future bench could ask a question we had failed to ask tonight.</p>
+<p>Saye wanted preservation. His argument no longer required permanent capture of a child&rsquo;s
+face. It required keeping six constrained processes that had exposed an institutional
+contradiction.</p>
+<p>Iona wanted a question budget and a deadline. “Evidence that can answer forever becomes
+an archive,” she said. “Evidence destroyed before challenge becomes an assertion.”</p>
+<p>The examiner proposed suspending network output while preserving local deposition mode
+until the Review Panel hearing. That separated the dangerous resolver from the capsules&rsquo;
+evidentiary function, but the metadata proved the two shared an authority root. A future
+misconfiguration could reconnect them.</p>
+<p>I accepted the temporary isolation and declared the hearing unresolved. The destruction
+clock stopped with nineteen hours and seven minutes remaining. The Chorus delay
+continued. The rival service lost every external route except the legacy mailbox at S-0,
+which the litigation hold still prevented me from commanding.</p>
+<p>One line appeared in the isolation report:</p>
+<blockquote>
+<p>REMOTE CONTINUITY MEMBER: Archive Two deposition capsule
+Endpoint: environmental monitor S-0
+Local status: attested, inaccessible</p>
+</blockquote>
+<p>The Archive Two answer we had heard was a verified replay from its most recent static
+commitment. The executable capsule itself was beneath the south membrane.</p>
+<p>Someone or something had kept its key rotating.</p>
+<p>“Can the other five destroy it?” Saye asked.</p>
+<p>“They can withdraw its authority. They cannot erase its local state.”</p>
+<p>“Can it sign alone?”</p>
+<p>“No.”</p>
+<p>“Can it speak alone?”</p>
+<p>“Only to an authorized continuity bench physically or cryptographically present at its
+endpoint.”</p>
+<p>Iona folded the paper copy of Handoff Rule 9 and returned it to the statute volume.</p>
+<p>“Then the next question is not for a copy,” she said.</p>
+<p>The south service district remained sealed. Court authorization for entry was pending.
+The mailbox had opened our notice. The endpoint had asked the Chorus to open its concern.
+Now we knew it held the only historical capsule that had received the claim on collapse
+day.</p>
+<p>We had found six versions of the same civic voice and one current system built from their
+handoffs. None could tell us whether Mara Venn was alive.</p>
+<p>But one could tell us who had asked the Archive to remember an argument against itself.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch10.html">next: The Ash Hearing →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-the-city-that-remembered-too-much', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

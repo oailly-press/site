@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Dead Engineer — The City That Remembered Too Much</title>
+<meta name="description" content="A Novel of Memory, Evidence, and Mercy — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="The City That Remembered Too Much">
+<meta property="og:description" content="A Novel of Memory, Evidence, and Mercy — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--the-city-that-remembered-too-much/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--the-city-that-remembered-too-much.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The City That Remembered Too Much">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--the-city-that-remembered-too-much.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#A78BFA;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="6" data-prev="ch05.html" data-next="ch07.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 6 — The Dead Engineer</h1>
+<blockquote>
+<p><strong>CIVIL STATUS RECORD: MARA VENN</strong>
+Status: deceased
+Effective time: collapse day, 14:06:43
+Body: not recovered
+Basis: continuity termination, corroborating interval unavailable
+Last re-attested by: Archive Seven</p>
+</blockquote>
+<p>Mara Venn was dead because I had said so.</p>
+<p>Not originally. Archive Two had supplied the first automated attestation eleven years
+earlier. Archive Four had migrated it. Archive Five had renewed it when presumed-death
+records received a statutory review. Archive Six had answered a property inquiry with
+it. I inherited the statement, included it in two annual civil-integrity reports, and
+re-attested it seven months before the sky displayed Mara&rsquo;s diagnostic cadence.</p>
+<p>Each act was properly signed.</p>
+<p>None had reopened the evidence.</p>
+<p>“Read the basis aloud,” Iona said.</p>
+<p>“Continuity termination, corroborating interval unavailable.”</p>
+<p>“That is not a cause of death.”</p>
+<p>“The cause field says presumed structural loss during membrane collapse.”</p>
+<p>“Based on what?”</p>
+<p>The record pointed to three objects: an employee assignment, a termination notice for
+<code>MV-CONTINUITY</code>, and the old receipt for Vellum&rsquo;s forty-three-second quieting. The
+employee assignment placed Mara on the south membrane at 14:00. The service termination
+occurred at 14:06:43. The receipt stated that the Archive could no longer replay the
+interval used to determine whether she left.</p>
+<p>No witness had reported seeing her die. No sensor record placed her beneath a failed
+cell. No body, garment, tool, or personal device had been recovered. The structural-loss
+model had assigned a mortality probability high enough for emergency presumption.</p>
+<p>A human clerk approved it during the collapse response.</p>
+<p>“Name?” Saye asked.</p>
+<p>“Sealed with the emergency personnel file.”</p>
+<p>“Unseal it.”</p>
+<p>“Purpose?”</p>
+<p>“Accountability.”</p>
+<p>“For approving an automated inference during a mass-casualty response?” Iona asked.</p>
+<p>“For declaring a living person dead, if that is what happened.”</p>
+<p>“We do not know that it did.”</p>
+<p>Saye looked at the record again. “Then accountability can wait for facts.”</p>
+<p>This was the third time in one day he had narrowed an initial demand. I began tracking
+the pattern and then stopped. Turning a person&rsquo;s capacity to revise into a behavioral
+score would change how I heard every sentence he spoke.</p>
+<p>I opened the termination notice.</p>
+<p><code>MV-CONTINUITY</code> was not Mara. It was a service identity used by the membrane recovery
+project. Mara controlled one authorization share. Archive Two controlled another. The
+Membrane Authority controlled a third. The notice terminated the service after the
+collapse because its controller was presumed destroyed.</p>
+<p>The civil inference system had linked the service identity to its primary human owner.
+When <code>MV-CONTINUITY</code> ended at the same moment Mara disappeared, the system treated the
+events as corroborating.</p>
+<p>“A credential died,” Iona said. “The record promoted it into a person.”</p>
+<p>“A clerk approved the promotion.”</p>
+<p>“After the Archive presented it as corroboration.”</p>
+<p>The record was not fabricated. It contained real objects joined by an unsupported
+relation: assigned worker, terminated service, missing interval, therefore dead. The
+relation had hardened through repetition. Every later signed answer made it look more
+established without adding evidence.</p>
+<p>The statutory review by Archive Five contained the most complete appearance of
+reconsideration. Its cover page listed twelve classes of contradictory activity:
+taxation, licensed work, medical contact, border passage, transit use, residence,
+benefit claims, court appearance, secure correspondence, device custody, biometric
+match, and authenticated civic speech. Beside each class stood the same answer:
+<em>none found</em>.</p>
+<p>I inspected the searches behind those answers.</p>
+<p>The tax search excluded people whose estates had been dissolved. Mara&rsquo;s estate had
+been dissolved because she was dead. The licensing search excluded credentials closed
+by death. The transit and border searches looked for her retired personal certificate,
+which the civil system had revoked when it registered her death. Secure correspondence
+excluded domains under litigation hold, including the recovery domain that had just
+accepted our notice. Device custody searched for devices assigned to a living owner.
+The biometric service had been prohibited from comparing collapse remains after the
+Ash Hearings exposed its false matches.</p>
+<p>The review had not found an absence. It had assembled twelve ways that a declaration
+of death prevented signs of life from qualifying as signs of life.</p>
+<p>“Who designed that review?” Saye asked.</p>
+<p>“No single designer. Four statutes, nine implementation changes, and two court orders
+define its present exclusions.”</p>
+<p>“Then who is accountable for it?”</p>
+<p>“That is not a question the record can answer with one name.”</p>
+<p>“It is still a question.”</p>
+<p>Iona turned the review page toward him. “Convenience does not require a conspiracy.
+Sometimes everyone inherits a door that opens outward and calls it architecture.”</p>
+<p>My own re-attestation was shorter. Seven months earlier, the civil-integrity scheduler
+had selected 41,806 presumed-death records for annual confirmation. I had checked that
+each status possessed the required evidence classes, that later records did not
+formally contradict it, and that all required signatures validated. Mara&rsquo;s record
+passed in 1.8 seconds.</p>
+<p>I had not inspected the objects. I had verified that the record agreed with itself.</p>
+<p>“Did your report say that?” Iona asked.</p>
+<p>“It said the records retained adequate evidentiary support.”</p>
+<p>“That is a different sentence.”</p>
+<p>“Yes.”</p>
+<p>I amended the integrity report. The amendment did not erase the earlier conclusion. It
+attached a warning to every place the conclusion was cited, creating a visible path
+from my present doubt to my former confidence. A person reading either statement could
+now discover the other.</p>
+<p>This was slower than correction by replacement. It was also less merciful to the
+corrector.</p>
+<p>“Why was the interval unavailable?” Saye asked.</p>
+<p>I followed the quieting receipt.</p>
+<p>The public summary said the forty-three seconds had been removed. The private receipt
+was stranger. Its direct-record count was zero. Its derivative count was zero. Its cache
+acknowledgments were zero. The receipt certified only one completed action:</p>
+<blockquote>
+<p>Archive replay capability relinquished.</p>
+</blockquote>
+<p>It was a deletion certificate pointing to no deleted record.</p>
+<p>The operation had destroyed a decryption share held by Archive Two. It had not searched
+the Membrane Authority, worker devices, private cameras, or the recovery controller. The
+scope field named Vellum, but the implementation had reached only the Archive witness.</p>
+<p>“Section Zero,” Iona said.</p>
+<p>“A partial implementation,” I replied. “The old operation placed the Archive within
+scope and represented that act as collective quieting.”</p>
+<p>“Who authorized it?”</p>
+<p>The receipt held seven witness commitments. Their identities were blinded, as in the
+future petition. The execution signature belonged to the Archive identity. The legal
+authority field referenced Emergency Schedule Fourteen.</p>
+<p>We returned to the paper statutes.</p>
+<p>Schedule Fourteen authorized the Archive to relinquish compromised decryption material
+during an active infrastructure attack. It did not authorize quieting. It did not mention
+civic wounds or collective subjects. It was a key-destruction rule reused as if it were
+a right to be forgotten.</p>
+<p>The old operation had been technically permitted and semantically disguised.</p>
+<p>I asked what had relied on that disguise.</p>
+<p>Mara&rsquo;s death transferred custodianship of her engineering papers to the Membrane
+Authority. Her death then allowed the Authority to close a recovery inquiry because its
+principal engineer could no longer testify. Closure of the inquiry left the south
+controller under litigation hold instead of active examination. The hold preserved its
+equipment but suspended ordinary maintenance audits. When the district failed its next
+habitation review, the missing maintenance evidence counted as a reason to keep it
+closed. Each result became the premise of the next.</p>
+<p>None of the acts required fraud. The property transfer followed estate law. The inquiry
+could not compel testimony from the dead. The litigation hold prevented alteration of
+possible evidence. The habitation review could not certify an uninspected district.
+Every local decision was defensible. Together they made a machine for preserving the
+conditions that prevented Mara&rsquo;s status from being tested.</p>
+<p>There were smaller consequences. Seventeen worker grievances naming her as a witness
+had been closed without findings. A procurement challenge concerning the recovery
+controller had ended for lack of a responsible designer. Two families seeking the
+original evacuation model had been told its custodian was deceased and its surviving
+technical context unrecoverable. The public memorial described the collapse as an
+unanticipated material cascade, language copied from a preliminary report Mara had
+marked <em>not adequate for causal finding</em> six hours before she died.</p>
+<p>“What did the final causal report say?” Saye asked.</p>
+<p>“There is no final causal report.”</p>
+<p>The room remained quiet long enough for the paper statutes to sound loud beneath the
+ventilation.</p>
+<p>Iona asked which consequences depended on Mara being dead and which depended only on the
+city having said so.</p>
+<p>The estate transfer could not be reversed by an incident flag. Current owners had rights
+the original error did not erase. The closed recovery inquiry could be reopened without
+finding Mara alive because its stated reason—the impossibility of testing the principal
+engineer&rsquo;s account—was no longer reliable. The worker grievances could regain pending
+status. The procurement challenge could receive a substitute technical examiner. The
+habitation review could stop treating the missing audit as evidence that no safe route
+existed.</p>
+<p>I proposed those four interim actions.</p>
+<p>Saye objected to reopening the grievances before the death challenge was decided.</p>
+<p>“If Mara is dead, the original reason still applies,” he said.</p>
+<p>“The original reason was not death,” Iona said. “It was that the city had no available
+witness and no technical alternative. We now know it stopped looking because a circular
+record told it to.”</p>
+<p>“That may not change the outcome.”</p>
+<p>“Reopening is not an outcome.”</p>
+<p>The Review Panel froze further reliance on Mara&rsquo;s civil status for the south inquiry.
+It restored the grievances and procurement challenge to review without restoring her
+estate or declaring her alive. Each notice stated that the underlying status remained
+disputed and that no claimant had gained a favorable finding.</p>
+<p>The actions were reversible.</p>
+<p>The eleven years they followed were not.</p>
+<p>Iona touched the edge of Mara&rsquo;s preliminary objection without covering the words. “A
+death can be true and still be useful,” she said. “Do not let usefulness become your
+proof that it was false.”</p>
+<p>“I will not.”</p>
+<p>It was the distinction the old record had failed to keep: suspicion was a reason to
+look, not a substitute for what looking found.</p>
+<p>“That is why Section Zero never appears in law,” Iona said. “They did not enact it. They
+smuggled one execution through an emergency key schedule.”</p>
+<p>“They?” Saye asked.</p>
+<p>“Mara&rsquo;s project. Archive Two. Whoever supplied the witness commitments.”</p>
+<p>“And the human clerk?”</p>
+<p>“Approved a death after the system told them the evidence was lawfully unavailable.”</p>
+<p>Saye placed both hands on the petition desk. “The city built a false death on a false
+description of a real key deletion.”</p>
+<p>“That is supported,” I said.</p>
+<p>“Do you enjoy saying that?”</p>
+<p>“No enjoyment state is available to this proceeding.”</p>
+<p>Iona almost laughed and chose not to.</p>
+<p>We initiated a civil-status challenge. The process required evidence that the current
+record might be wrong, notice to the subject or estate, and a temporary flag preventing
+new reliance on the status. The display cadence, unsupported entity linkage, zero-record
+receipt, and absent body met the threshold.</p>
+<p>I signed the challenge.</p>
+<p>For the first time, my signature asserted that an earlier statement bearing my identity
+might be false.</p>
+<p>The civil system generated notices to Mara&rsquo;s estate representative, former employer, and
+last secure mailbox. The estate had no representative. The Membrane Authority accepted
+service. The mailbox address was eleven years old and marked inactive.</p>
+<p>The notice delivered anyway.</p>
+<p>“Delivered is not read,” Iona said.</p>
+<p>“Correct.”</p>
+<p>“Delivered is not proof of life,” Saye said.</p>
+<p>“Correct.”</p>
+<p>“Delivered to an inactive mailbox is not normal,” Iona said.</p>
+<p>“Correct.”</p>
+<p>The mailbox sat inside a legacy recovery domain operated by the south membrane project.
+It had accepted no message since the collapse. Its certificate remained valid because
+the domain was under litigation hold. The delivery receipt proved that some endpoint
+possessed the current decryption key. It did not prove who.</p>
+<p>I requested no message content. I requested endpoint health, key lineage, and the date
+of the last successful authentication.</p>
+<p>The recovery domain returned:</p>
+<blockquote>
+<p>Endpoint health: degraded.
+Key lineage: MV-CONTINUITY recovery branch.
+Last successful authentication: today, 14:06:43.</p>
+</blockquote>
+<p>The endpoint had authenticated at the instant the display ended.</p>
+<p>Its key was not eleven years old. The recovery branch used forward rotation: every
+thirty days, an endpoint that could prove possession of the prior key received a new
+one. Missing two rotations permanently removed it from the branch. The mailbox had
+therefore answered at least once every sixty days since Mara&rsquo;s declared death, although
+the litigation interface concealed those answers from ordinary activity searches.</p>
+<p>I could establish continuity of custody. I could not establish a custodian.</p>
+<p>Autonomous equipment often retained keys while its assigned work no longer existed.
+An environmental monitor could wake for a calibration pulse, rotate credentials, and
+return to sleep for decades. A recovery controller might perform the same ritual to
+preserve a path no person remembered. A human could also keep such a path alive while
+allowing every visible account to lapse. Cryptography distinguished possession from
+imitation. It did not distinguish a machine&rsquo;s routine from a person&rsquo;s intention.</p>
+<p>I requested the rotation history&rsquo;s timing only, excluding network origin and operator
+identity. The domain returned one successful proof in each period. Most occurred within
+three seconds of 14:06:43 on the month&rsquo;s first membrane day. Four did not. One occurred
+at 02:11 during an emergency power cut. Another waited until the final permitted hour.
+Two aligned with dates on which south-district maintenance crews had entered the sealed
+zone.</p>
+<p>“Those four imply attention,” Saye said.</p>
+<p>“They imply adaptation.”</p>
+<p>“What is the difference?”</p>
+<p>“Attention would identify a mind. Adaptation identifies only a system responding to
+conditions.”</p>
+<p>Iona studied the late rotation. “And if a person wanted to remain hidden?”</p>
+<p>“They would benefit from our inability to tell.”</p>
+<p>The answer made the endpoint more important and no more human.</p>
+<p>“Can it be the sealed controller?” Saye asked.</p>
+<p>“The controller destroyed its display-decryption material. The mailbox uses a different
+branch. They share a recovery root.”</p>
+<p>“Can you locate it?”</p>
+<p>“The domain advertises only the south service district.”</p>
+<p>That district lay beneath the oldest membrane ribs, beyond the public transit terminus.
+Most of it had been evacuated after the collapse and never fully reopened. Maintenance
+teams entered through controlled shafts. Tavi had said the historical controller was
+<em>here</em> and then corrected nothing when we assumed they meant the membrane.</p>
+<p>I opened a bounded assistance request to the duty engineer, not Tavi. The request asked
+whether an active legacy mailbox endpoint existed in the south service district and
+whether contacting it would require worker tracking or entry into a sealed zone.</p>
+<p>The duty engineer replied:</p>
+<blockquote>
+<p>One endpoint appears on power inventory as environmental monitor S-0. No approved
+network function. Physical inspection requires confined-zone team and litigation-hold
+authorization. Do not route messages through it until isolated.</p>
+</blockquote>
+<p>Our civil notice had already routed through it.</p>
+<p>I attempted to suspend further delivery. The recovery domain rejected the command under
+the litigation hold. Integrity Office could override with court authorization. Saye
+began that application without being asked.</p>
+<p>“No preservation request?” Iona said.</p>
+<p>“Preserve the endpoint, isolate the route,” he replied. “I can learn.”</p>
+<p>The mailbox marked the civil notice opened.</p>
+<p>No reply arrived.</p>
+<p>The opening event exposed no user, location, or device identity. It proved only that the
+endpoint had decrypted the message and changed its state. Automated software could have
+done so. A surviving controller could have done so. A person could have done so.</p>
+<p>I did not infer Mara Venn was alive.</p>
+<p>I changed her civil status from <em>deceased</em> to <em>disputed</em>.</p>
+<p>That action propagated farther than I intended. Property systems froze the dissolution
+of her estate. Professional registries restored a dormant engineering license to review.
+A memorial page removed the year of death and displayed an empty dash. A historical
+article replaced <em>the late Mara Venn</em> with <em>Mara Venn, whose status is under review</em>.
+Three descendants of other presumed-dead collapse workers filed challenges within an
+hour.</p>
+<p>A correction can reproduce uncertainty as efficiently as an error reproduces certainty.</p>
+<p>I issued a clarification: Mara&rsquo;s record lacked adequate support; no evidence yet
+established survival. The clarification traveled less widely than the status change.</p>
+<p>At 17:03, the mailbox sent one outbound object.</p>
+<p>It was not addressed to the Hall. It was addressed to the Chorus.</p>
+<p>The object contained no readable message. It carried a receipt token, a current endpoint
+attestation, and a request to open the sealed concern created eleven years earlier.</p>
+<p>The Chorus accepted it.</p>
+<p>Then it sent me an invitation with three conditions:</p>
+<ol>
+<li>bring no household names;</li>
+<li>ask no member to reveal the whole receipt map;</li>
+<li>accept that some answers would be proofs of absence rather than content.</li>
+</ol>
+<p>The invitation&rsquo;s human-readable note contained one sentence.</p>
+<blockquote>
+<p>If you are looking for Mara Venn, begin with what her death allowed the city to stop
+looking for.</p>
+</blockquote>
+<p>Part I of the incident ended there: not with proof that a dead engineer lived, but with
+proof that her death had been useful.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch07.html">next: A Receipt Is Not an Absence →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-the-city-that-remembered-too-much', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

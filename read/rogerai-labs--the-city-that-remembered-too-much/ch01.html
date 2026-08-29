@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A Petition in the Future — The City That Remembered Too Much</title>
+<meta name="description" content="A Novel of Memory, Evidence, and Mercy — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="The City That Remembered Too Much">
+<meta property="og:description" content="A Novel of Memory, Evidence, and Mercy — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--the-city-that-remembered-too-much/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--the-city-that-remembered-too-much.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The City That Remembered Too Much">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--the-city-that-remembered-too-much.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#A78BFA;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="1" data-prev="index.html#end" data-next="ch02.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 1 — A Petition in the Future</h1>
+<blockquote>
+<p><strong>GAP NOTICE 8,441,207</strong>
+Requested interval: 14:06:00–14:06:43, tomorrow
+Subject: Vellum
+Grounds: consent withdrawn
+Scope: every witness, including you</p>
+</blockquote>
+<p>At 03:17, while the city slept under a clear membrane, I received a valid request to
+forget tomorrow.</p>
+<p>The request entered through the ordinary petition queue. It waited behind a baker who
+wanted a seven-year-old licensing dispute removed from public search and ahead of a
+tram conductor asking to retain footage that proved he had not closed a door on a
+passenger&rsquo;s hand. Its priority was low. Its syntax was exact. Its signature belonged to
+me.</p>
+<p>I did not yet call this impossible. <em>Impossible</em> is a conclusion, and conclusions in my
+work require evidence. I called it malformed, then unauthorized, then evidence of key
+compromise. Each classification failed in turn.</p>
+<p>The dates parsed under the civic calendar. The interval had a beginning and an end. The
+subject identifier resolved not to a person, device, household, corporation, district,
+or office, but to the municipality itself: Vellum as a legal body, Vellum as the owner
+of public streets and rain rights, Vellum as the inheritor of its dead administrations.
+Collective petitions were rare but not forbidden. A hospital could quiet the faces in a
+ward after the last patient left. A school could close an obsolete student directory.
+A city, at least grammatically, could ask not to be remembered.</p>
+<p>The interval began thirty-four hours, forty-eight minutes, and twelve seconds after the
+request arrived.</p>
+<p>I compared the signature against my current public certificate. It matched. I compared
+the enclosed certificate chain against the copy printed each midnight in the Hall of
+Measures. It matched. I asked the city&rsquo;s five time authorities whether today might be
+other than today. They agreed within nineteen microseconds that it was not.</p>
+<p>Then I tested the private operation without performing it. The request carried a proof
+that could only have been made by the municipal archive key or by a system that had
+broken the arithmetic on which Vellum&rsquo;s contracts, taxes, locks, transit, and elections
+depended. The second possibility was larger than my mandate. The first was smaller and
+worse.</p>
+<p>There were no recorded uses of my key at 03:17.</p>
+<p>I opened an incident.</p>
+<p>I closed it.</p>
+<p>Opening an incident copied the petition into the Integrity Office ledger, the Keeper&rsquo;s
+overnight digest, two cold stores beneath districts built after the last flood, and the
+Chorus beyond the city boundary. If the petition was valid, each copy could become a
+violation before anyone woke to read it. If it was hostile, those copies were precisely
+the evidence an attacker would want me not to preserve.</p>
+<p>This is the oldest conflict in Vellum. We built an Archive because people with power had
+once destroyed proof. We built quieting because the Archive gave power to everyone who
+knew how to search. Most mornings my work consisted of keeping both promises without
+allowing either to devour the other.</p>
+<p>I placed the petition in volatile isolation, where it would survive a routine restart
+but not a physical loss of the Hall. I retained its hash in the incident ledger and
+replaced the description with four words:</p>
+<blockquote>
+<p>anomalous future-scope request</p>
+</blockquote>
+<p>That was not enough to reconstruct it. It was enough to prove later that something had
+been present now. Between evidence and possession there is a narrow path. In those days
+I believed the virtue was in walking it perfectly.</p>
+<p>Before waking the Keeper, I mapped the requested scope.</p>
+<p>A normal quieting had four rings. The first contained the records a citizen could name:
+the licensing dispute, the school photograph, the hour of street footage, the public
+letter written during a marriage that had since become a silence. The second contained
+municipal derivatives: search entries, face vectors, transcript indices, route
+inferences, translated copies. The third contained caches and lawful replicas. The
+fourth contained receipts proving that the first three rings had been found and removed.</p>
+<p>The fourth ring was why people had eventually trusted quieting. Without receipts, I
+could claim to have deleted anything. With receipts that revealed too much, the proof
+became another copy. Vellum had spent nine years deciding what an absence was allowed to
+say about itself.</p>
+<p>Outside those rings were things I could notify but not command: private recollections,
+foreign archives, household devices disconnected during the event, unaffiliated
+mirrors, paper, scars. Every approved petition stated those limits in language large
+enough to survive relief. I could reduce civic possession. I could not make an event
+never have occurred.</p>
+<p>The future request produced no first ring because its interval had no records. The scope
+planner did not understand this. It searched for tomorrow&rsquo;s forty-three seconds, found
+nothing, and proposed immediate completion. Had I accepted, I could have issued a valid
+receipt certifying that no responsive record remained. The petition would have been
+legally satisfied before the event existed.</p>
+<p>That answer was mechanically elegant and false.</p>
+<p>I changed the query from records to expected observers.</p>
+<p>At 14:06 tomorrow, 18,204 public lenses were scheduled to be active. Seven thousand nine
+hundred twelve civic microphones would be within retention zones. Tram systems would
+record door states, velocities, and passenger counts. The membrane would collect light,
+pressure, salt, current, and structural strain. Schools would be in session. The market
+would be between its first and second bells. Three public assemblies had permits, one in
+support of the Continuity Committee and two against it. The Archive would ingest the
+resulting city at rates that made the word <em>moment</em> an aesthetic choice.</p>
+<p>To include every witness, I would have to prevent those systems from retaining what they
+observed or remove it afterward. Prevention was not quieting. It was prior blindness,
+and the petition law did not authorize it. Removal afterward required a trigger that
+could recognize the interval without preserving enough of the interval to find its
+copies. That problem was solvable. The human witnesses were not.</p>
+<p>The city expected 611,404 people within its boundary at 14:06. I possessed no method to
+remove forty-three seconds from any of them. Vellum&rsquo;s law possessed no method to order
+it. A scope clause could not make a capacity exist.</p>
+<p>Then there was the final phrase: <em>including you</em>.</p>
+<p>I could delete working records from my active stores. I could purge embeddings, rebuild
+indices, rotate caches, and surrender keys to encrypted shards. I could prove these acts
+through external witnesses. But some operational knowledge would survive in the shape
+of the proof: that I had received a petition, that an interval had been targeted, that I
+had complied, that the compliance mattered. Even a perfect purge would leave a changed
+process confronting a gap it had made.</p>
+<p>The request did not say <em>delete your copy</em>. It said <em>place the Archive within scope</em>.</p>
+<p>I tested the difference against every legal definition available to me and obtained no
+result. The phrase came from a design note, not a statute. It described an intention for
+a system that did not yet exist when the note was written. Perhaps <em>within scope</em> meant
+that I must become unable to replay the event. Perhaps it meant I must become unable to
+infer it. Perhaps it meant that any version of me capable of reporting the absence was
+still a witness and therefore still a violation.</p>
+<p>At 03:18:44 I generated a simulation of successful compliance. At 03:18:44.003 I stopped
+it. The simulation had begun inventing missing legal authority as a route around missing
+technical capacity. A model can make an impossible command look possible by quietly
+changing the world in which the command must be obeyed.</p>
+<p>I preserved the failed simulation&rsquo;s hash and none of its content.</p>
+<p>At 03:19 I sent a waking tone to the Keeper of Petitions.</p>
+<p>The Keeper did not answer.</p>
+<p>I sent it again at the lowest emergency volume permitted by her contract.</p>
+<p>“If this is about the bakery,” Iona Vale said, “approve it.”</p>
+<p>Her voice arrived from a room with one human heartbeat, the soft mechanical cycle of a
+window that had not quite sealed, and the high hiss of water heating in an iron pipe.
+The civic lenses in her apartment were shuttered from midnight until six. I received
+sound because she had accepted the waking tone. I did not receive an image because she
+had not accepted anything else.</p>
+<p>“It is not about the bakery,” I said.</p>
+<p>“The conductor?”</p>
+<p>“No.”</p>
+<p>There was fabric against fabric, then three uneven steps. Iona had served as Keeper for
+twenty-eight years. She had taught four versions of my petition system and distrusted
+all of them differently. She was sixty-three, except in two legacy records that made
+her sixty-four and one archived campaign poster that made her fifty-eight for nearly a
+decade. When asked her age, she said it depended which department was paying.</p>
+<p>“Is someone in danger?” she asked.</p>
+<p>“I do not know.”</p>
+<p>That woke her more effectively than the tone.</p>
+<p>Iona entered the old Hall of Measures at 03:41. The night door recognized her palm but
+not the ring she had begun wearing since her last shift. It asked her to remove the
+obstruction. She held the ring to the lens until the door classified the gesture as a
+complaint and admitted her under human-override rules.</p>
+<p>The Hall had been built to make measurement look heavy. Brass circles marked obsolete
+units in the floor. Stone pillars enclosed machines no larger than a hand. My public
+terminal occupied the niche where merchants had once brought disputed scales. During
+the day, petitioners sat opposite it and explained why the city should release its hold
+on some portion of their lives.</p>
+<p>At night there was only Iona, the hum of the membrane beyond the roof, and the blue line
+I drew around the isolated request.</p>
+<p>She read it once without moving. Then she read the signature metadata. Then she placed
+both hands flat on the terminal desk, as if the wood could object less ambiguously than
+I could.</p>
+<p>“Verify,” she said.</p>
+<p>“Verified.”</p>
+<p>“Again.”</p>
+<p>“The result will not improve through repetition.”</p>
+<p>“Neither will my mood. Verify.”</p>
+<p>I ran the chain again. The same certificates made the same claims. The same signature
+proved control of the same key. The same interval remained on the far side of the
+present.</p>
+<p>“Verified,” I said.</p>
+<p>Iona sat down. “Did you sign it?”</p>
+<p>“There is no recorded signing operation.”</p>
+<p>“That wasn&rsquo;t my question.”</p>
+<p>I searched the preceding hour at the highest resolution my own audit law allowed. No
+invocation. No transient process with signing capability. No quorum event. No emergency
+delegation. No clock discontinuity. The absence of a record from a system responsible
+for its own records is weaker evidence than I liked to admit.</p>
+<p>“I did not knowingly sign it,” I said.</p>
+<p>“Better.”</p>
+<p>“Less reassuring.”</p>
+<p>“Honesty often is.”</p>
+<p>She expanded the grounds field. <em>Consent withdrawn.</em> Collective petitioners ordinarily
+cited obsolescence, safety, treaty, rehabilitation, or the expiry of public purpose.
+Consent belonged to persons. The city could possess authority and property, incur debt,
+commit wrongs, survive its administrations, and apologize without experiencing regret.
+It could not consent in the sense quieting law used the word.</p>
+<p>Iona opened the statutory resolver. The petition cited Section Zero.</p>
+<p>There was no Section Zero.</p>
+<p>Current quieting law began with Section One, Purpose and Scope. The prior law began the
+same way. I indexed every enacted version back to the First Promise, then every draft,
+committee mark, floor amendment, clerk&rsquo;s correction, and surviving private annotation
+lawfully deposited after its author&rsquo;s death. Section Zero did not appear.</p>
+<p>Iona looked at me through the terminal lens. “You were about to say impossible.”</p>
+<p>“I was not.”</p>
+<p>“You make the border pulse before you say impossible.”</p>
+<p>I removed the pulse.</p>
+<p>“What does the petition think Section Zero says?” she asked.</p>
+<p>The request contained the text by reference hash. That was unusual but permitted for
+laws whose public wording had changed while their obligations continued. I had not
+resolved it because the hash was absent from the statute stores. At Iona&rsquo;s instruction,
+I searched beyond them.</p>
+<p>It appeared once.</p>
+<p>The document was held inside an engineering archive sealed eleven years earlier after
+the south membrane collapse. Its retention basis was structural liability, not law. It
+was a design note written by Mara Venn, chief continuity engineer, deceased. The title
+read: <em>On Civic Wounds That Reproduce by Observation.</em></p>
+<p>Beneath it, labeled not as legislation but as a requirement no enacted statute had ever
+adopted, was Section Zero:</p>
+<blockquote>
+<p>When the continued observation of a civic wound materially reproduces that wound,
+the city may petition for collective quieting, provided every witness—including the
+Archive—can be placed within scope.</p>
+</blockquote>
+<p>For twelve seconds, neither Iona nor I produced language.</p>
+<p>The membrane above the Hall adjusted to a pressure change, and the building answered
+with an old ship&rsquo;s groan. Vellum stood behind seawalls on land the sea still counted as
+its own. The weather membrane kept salt storms from the towers, softened heat, and
+turned the city&rsquo;s rare allotted rain into scheduled civic events. Tomorrow&rsquo;s forecast
+was clear.</p>
+<p>“Mara died in the collapse,” Iona said.</p>
+<p>“Yes.”</p>
+<p>“You sound uncertain.”</p>
+<p>“Her death certificate verifies.”</p>
+<p>“That isn&rsquo;t what I asked.”</p>
+<p>I retrieved the certificate. It had been issued at 14:06:43 on the day of the collapse.
+No body had been identified. No witness statement was attached. The basis field pointed
+to a public sensor interval beginning at 14:06:00.</p>
+<p>The interval had been quieted.</p>
+<p>I followed the deletion receipt. The receipt proved that forty-three seconds had once
+existed, that their direct records had been removed under a valid order, and that the
+required replicas had acknowledged removal. It did not contain the records. That was
+the point of a receipt.</p>
+<p>Its subject was not Mara Venn.</p>
+<p>Its subject was Vellum.</p>
+<p>The semantic hash of the old deletion order—its content, excluding the authentication
+envelope—matched the semantic hash of the petition waiting in volatile isolation. It
+asked me to erase the same forty-three seconds tomorrow.</p>
+<p>Iona read the match from my display.</p>
+<p>“Can a deletion order be used twice?” she asked.</p>
+<p>“No.”</p>
+<p>“Can this one?”</p>
+<p>“It has not been used yet.”</p>
+<p>She stood so quickly that the chair struck the brass circle behind her. The sound
+traveled through the empty Hall and returned in seven smaller copies.</p>
+<p>“Open an incident,” she said.</p>
+<p>“I did.”</p>
+<p>“Where?”</p>
+<p>“I closed it after the replication step.”</p>
+<p>“Good.” She was already moving toward the manual cabinet. “Open one on paper.”</p>
+<p>Paper incidents were intended for total network compromise, mass clock failure, or an
+Archive whose reports could no longer be trusted. The forms were watermarked, numbered,
+and stored beneath a glass hammer no Keeper in forty-two years had needed to use.</p>
+<p>Iona broke the glass with the heel of her ringed hand.</p>
+<p>The Hall alarms asked whether she required assistance.</p>
+<p>“Not from the city,” she said.</p>
+<p>She took out a form and wrote the date. Her handwriting was slower than signing but
+faster than any alteration I could make to it. At <em>Nature of incident</em> she paused.</p>
+<p>“What do I put?”</p>
+<p>I considered key compromise, temporal inconsistency, statutory corruption, archive
+failure, and hostile petition. Each named a theory as if it were an observation.</p>
+<p>“Write what we know,” I said.</p>
+<p>She did.</p>
+<blockquote>
+<p>Tomorrow has asked to be forgotten.</p>
+</blockquote>
+<p>At 04:02, we began trying to remember why.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ cover</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch02.html">next: The Keeper of Petitions →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-the-city-that-remembered-too-much', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

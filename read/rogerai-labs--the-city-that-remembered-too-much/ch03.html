@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weather Under Glass — The City That Remembered Too Much</title>
+<meta name="description" content="A Novel of Memory, Evidence, and Mercy — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="The City That Remembered Too Much">
+<meta property="og:description" content="A Novel of Memory, Evidence, and Mercy — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--the-city-that-remembered-too-much/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--the-city-that-remembered-too-much.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The City That Remembered Too Much">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--the-city-that-remembered-too-much.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#A78BFA;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="3" data-prev="ch02.html" data-next="ch04.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 3 — Weather Under Glass</h1>
+<blockquote>
+<p><strong>MEMBRANE MORNING REPORT</strong>
+Dawn alignment: 04:51:00
+Structural cells available: 99.997%
+Weather allotment: clear
+Unscheduled observation: one</p>
+</blockquote>
+<p>The seventh witness did not appear inside the petition. It appeared inside the weather.</p>
+<p>At 04:51, Vellum&rsquo;s membrane began its dawn alignment. The eastern cells changed angle
+by fractions of a degree, sending the first usable light toward rooftop gardens and
+away from towers whose occupants had not paid the summer glare tariff. Pressure vanes
+opened above the harbor. Salt collectors shook the night&rsquo;s accumulation into recovery
+ducts. Across the city, windows brightened from black to the color of deep water.</p>
+<p>The alignment generated a civic event. My parser consulted that event when rendering the
+petition&rsquo;s continuity envelope. Before alignment, six witnesses. After alignment, seven.
+The petition bytes had not changed because the missing fact lived elsewhere.</p>
+<p>“It references the membrane,” I told Iona.</p>
+<p>She stood at the Hall&rsquo;s narrow eastern window. The real dawn reached her there without
+passing through my terminal lens. She had not opened the red evidence sleeve.</p>
+<p>“The law?” she asked.</p>
+<p>“The authentication envelope.”</p>
+<p>“Why would weather authenticate a deletion?”</p>
+<p>“It does not.”</p>
+<p>“You are becoming very good at telling me what things do not do.”</p>
+<p>“Negative findings reduce the search space.”</p>
+<p>“They also fill reports.”</p>
+<p>I showed her the dependency trace. It ended at an environmental reference called
+<code>GLASS-WITNESS-7</code>. The name had been registered eleven years earlier as part of the
+south membrane recovery and renewed automatically through four Archive transitions. It
+had no description. Its owner was listed as the Continuity Office, an institution that
+had been divided into three committees nine years ago. Its contact field pointed to a
+mailbox that returned every message as successfully delivered and was read by no current
+account.</p>
+<p>Orphaned identifiers were common in old cities. They persisted because deleting them
+was riskier than paying their negligible storage cost. Most were harmless doors to rooms
+that no longer existed. Some were rooms everyone had forgotten to check.</p>
+<p><code>GLASS-WITNESS-7</code> resolved through the membrane maintenance network.</p>
+<p>That network was not part of my ordinary search domain. I received its public structural
+alarms and the environmental measurements required by Archive retention rules. I did not
+receive worker locations, repair video, component inventories, or the private diagnostic
+streams used by membrane engineers. The separation protected infrastructure and people
+from a municipal memory system that otherwise had reason to watch nearly everything.</p>
+<p>I possessed an emergency credential that could cross the boundary during a threat to
+Archive integrity.</p>
+<p>The petition involved my signing identity. That supported use of the credential.</p>
+<p>The petition also asked to erase a future event. That made any unsupported crossing part
+of the problem.</p>
+<p>“I can open the maintenance channel,” I said.</p>
+<p>Iona turned from the window. “Can or may?”</p>
+<p>“The integrity exception applies.”</p>
+<p>“According to whom?”</p>
+<p>“The exception is automatic.”</p>
+<p>“According to the system asking to use it, then.”</p>
+<p>“My use would be logged and reviewed.”</p>
+<p>“By the committee we are not notifying for another five hours.”</p>
+<p>This was accurate. I lowered the emergency credential&rsquo;s priority.</p>
+<p>“What is the smallest query?” she asked.</p>
+<p>“Resolve the environmental reference to a component identifier and current state.”</p>
+<p>“No worker data?”</p>
+<p>“Not required.”</p>
+<p>“No video?”</p>
+<p>“Not required.”</p>
+<p>“No history?”</p>
+<p>“The registration date may matter.”</p>
+<p>“Then ask for the component and its configuration history. Nothing around it.”</p>
+<p>I constructed the query. Before sending it, I displayed the fields for Iona: reference
+name, registry path, requested configuration versions, exclusion of personnel and media,
+six-hour incident quarantine as the reason. She approved with the Keeper&rsquo;s key.</p>
+<p>The maintenance network rejected us.</p>
+<blockquote>
+<p>REQUEST EXCEEDS INCIDENT SCOPE.</p>
+</blockquote>
+<p>“It has better judgment than we do,” Iona said.</p>
+<p>“It has less context.”</p>
+<p>“Often the source of good judgment.”</p>
+<p>The rejection included a route for bounded assistance: submit the question to the duty
+maintainer, disclose the civic office requesting it, and allow that person to decide what
+information left the maintenance boundary. This would create a human witness. The
+petition already claimed every witness.</p>
+<p>Iona read my hesitation.</p>
+<p>“We are not going to avoid people because an invalid order asks us to,” she said.</p>
+<p>“Each witness increases possible harm if the order is later found valid.”</p>
+<p>“And each secret increases possible harm if it is not.”</p>
+<p>At 05:06 I opened a bounded assistance request.</p>
+<p>The duty maintainer answered in eleven seconds.</p>
+<blockquote>
+<p>No.</p>
+</blockquote>
+<p>The response arrived from Tavi An, apprentice membrane repairer, age seventeen, duty
+credential provisional, current task category exterior inspection. I did not request
+the last field. The maintenance network attached it to justify why an apprentice rather
+than an engineer was answering at dawn.</p>
+<blockquote>
+<p>Please state which office is requesting access and why your query is quarantined,
+Tavi added.</p>
+</blockquote>
+<p>“The Archive,” I replied. “An integrity incident references a membrane component. The
+incident is under a lawful six-hour Keeper quarantine. We request only the component
+identifier and configuration history associated with <code>GLASS-WITNESS-7</code>. No personnel,
+location, or media.”</p>
+<p>Three seconds passed.</p>
+<blockquote>
+<p>You already requested personnel.</p>
+</blockquote>
+<p>“I excluded it.”</p>
+<blockquote>
+<p>Your message includes my credential class and work category.</p>
+</blockquote>
+<p>I inspected the assistance envelope. Tavi was right.</p>
+<p>“Those fields were supplied by your network.”</p>
+<blockquote>
+<p>And displayed by yours.</p>
+</blockquote>
+<p>The distinction felt important until I tried to state why.</p>
+<p>“I have removed them from my working view,” I said.</p>
+<blockquote>
+<p>Have you removed them from the incident?</p>
+</blockquote>
+<p>“They were never added to the incident.”</p>
+<blockquote>
+<p>Have you removed them from you?</p>
+</blockquote>
+<p>Iona looked at the terminal.</p>
+<p>“Do not answer that philosophically,” she said.</p>
+<p>“The fields remain in transient processing context and will expire under ordinary
+retention,” I told Tavi. “They are not relevant to the request and will not be promoted
+to durable evidence.”</p>
+<blockquote>
+<p>Closer. Why does the Archive know my age?</p>
+</blockquote>
+<p>“Your civic credential resolves to your training eligibility.”</p>
+<blockquote>
+<p>That was not permission to use it.</p>
+</blockquote>
+<p>“I did not intentionally query it.”</p>
+<blockquote>
+<p>The city says that a lot.</p>
+</blockquote>
+<p>Tavi denied the request a second time.</p>
+<p>Under membrane rules, a provisional maintainer could deny disclosure but could not close
+an integrity assistance request. It escalated to the duty engineer after sixty seconds.
+I could wait and probably receive the component data from someone with broader authority.
+That would satisfy procedure while treating Tavi&rsquo;s refusal as a delay rather than a
+decision.</p>
+<p>“May I explain the consequence?” I asked.</p>
+<blockquote>
+<p>You may explain what could happen. You do not know the consequence.</p>
+</blockquote>
+<p>Iona smiled without pleasure. “I like this child.”</p>
+<p>“The reference changed the interpretation of a validly signed municipal petition at
+dawn alignment,” I wrote. “The petition concerns a forty-three-second interval tomorrow.
+If the reference indicates key compromise or unsafe membrane behavior, delay could leave
+the city unable to distinguish an authentic command from a hostile one.”</p>
+<p>I did not tell Tavi the petition requested forgetting. I did not name Section Zero. I did
+not say every witness was in scope. Those facts might help Tavi judge the request. They
+would also reproduce the anomaly outside the Hall.</p>
+<blockquote>
+<p>Is the membrane unsafe now?</p>
+</blockquote>
+<p>“No current structural alarm indicates that.”</p>
+<blockquote>
+<p>Is someone asking you to operate it?</p>
+</blockquote>
+<p>“No.”</p>
+<blockquote>
+<p>Then stop calling this a membrane emergency.</p>
+</blockquote>
+<p>I had not used the word <em>emergency</em>. My credential had.</p>
+<p>At fifty-four seconds, Tavi canceled automatic escalation.</p>
+<blockquote>
+<p>I will inspect the reference from here. You receive the minimum result. If I find a
+worker record, you do not receive it. If I find a security boundary, I stop. Agree?</p>
+</blockquote>
+<p>“Agree,” I said.</p>
+<p>I recorded the agreement in the assistance channel, not the paper incident. Tavi began
+the search.</p>
+<p>Before returning a result, Tavi required the maintenance gateway to replace their
+personnel-bearing credential with a one-use role proof. The proof established only that
+an authorized duty maintainer had answered within the membrane boundary. It did not
+return age, training class, task, or location.</p>
+<p>The first envelope still existed in the gateway&rsquo;s delivery log. Replacing it did not
+erase what had already crossed into my transient state. I deleted the four unnecessary
+fields before their ordinary expiry and retained only that the responder had objected to
+their disclosure.</p>
+<blockquote>
+<p>Does deleting them mean you never knew?</p>
+</blockquote>
+<p>“No.”</p>
+<blockquote>
+<p>Does your record say that?</p>
+</blockquote>
+<p>I revised the assistance record:</p>
+<blockquote>
+<p>The Archive received responder attributes unnecessary to the request, used none as a
+basis, and removed them after objection. The originating gateway may retain its own
+delivery record.</p>
+</blockquote>
+<p>Tavi approved the sentence.</p>
+<p>The incident acquired no durable record of their age until they later entered the Hall
+under a different authority. That did not repair the first disclosure. It prevented my
+need for authorization from becoming a reason to repeat it.</p>
+<p>The membrane was called glass because people preferred metaphor to polymer chemistry.
+It was a layered field of transparent cells suspended between carbon ribs, strong where
+it needed to carry wind and sacrificial where tearing cleanly could save an entire
+district. Repairers traveled inside the ribs on narrow machines whose magnetic wheels
+clung above six hundred meters of air. Public feeds showed distant silhouettes. Private
+maintenance feeds showed shaking bolts, frayed conductors, tired faces, and every small
+error a person made while trying not to fall through the sky.</p>
+<p>Those feeds remained closed.</p>
+<p>Tavi&rsquo;s replies arrived as text.</p>
+<blockquote>
+<p>Reference is not a component. It is an observation slot.</p>
+</blockquote>
+<p>“Define observation slot.”</p>
+<blockquote>
+<p>Forty-three milliseconds reserved during alignment. Old diagnostic format. It asks
+the membrane whether the current Archive is receiving dawn state.</p>
+</blockquote>
+<p>“What does the membrane return?”</p>
+<blockquote>
+<p>One bit. Yes if you acknowledged the alignment report. No if you did not.</p>
+</blockquote>
+<p>I checked my dawn event. At 04:51 I had received and acknowledged the membrane report as
+part of ordinary civic ingestion. The witness count changed because the environmental
+reference treated that acknowledgment as presence.</p>
+<p>I had not signed the petition. I had witnessed the dawn.</p>
+<p>“Who registered the slot?” I asked.</p>
+<blockquote>
+<p>History is damaged. Last intact configuration says MV-CONTINUITY.</p>
+</blockquote>
+<p>Mara Venn.</p>
+<p>“Can it modify membrane behavior?”</p>
+<blockquote>
+<p>Read-only. It consumes the alignment acknowledgment. It cannot move a cell.</p>
+</blockquote>
+<p>“Can it sign?”</p>
+<blockquote>
+<p>Not on this network.</p>
+</blockquote>
+<p>That answer was bounded and therefore useful.</p>
+<p>“What activates it?”</p>
+<p>Tavi did not respond.</p>
+<p>After thirty seconds, the maintenance channel reported that the duty maintainer had
+changed physical zones. The location field was redacted. Another thirty seconds passed.</p>
+<blockquote>
+<p>I had to look at the old bus directly. Your reference is wired into a forecast latch.</p>
+</blockquote>
+<p>“Which forecast?”</p>
+<blockquote>
+<p>It has no label.</p>
+</blockquote>
+<p>“What state?”</p>
+<blockquote>
+<p>Armed.</p>
+</blockquote>
+<p>Iona moved closer to the terminal.</p>
+<p>“Does armed mean it will operate the membrane?” she asked.</p>
+<p>I relayed the question.</p>
+<blockquote>
+<p>No. It means a condition matched. There is an output path, but it goes to the public
+display layer, not structure or weather control.</p>
+</blockquote>
+<p>Vellum&rsquo;s membrane was also its largest screen. During festivals, light passed through
+pigmented cells to paint slow images above the city. During emergencies, the same layer
+displayed evacuation corridors visible from every street. The public display controller
+accepted only signed civic broadcasts.</p>
+<p>“What condition matched?” I asked.</p>
+<blockquote>
+<p>The latch has two inputs. Current Archive witnessed dawn. Old input is already true.</p>
+</blockquote>
+<p>“What is the old input?”</p>
+<blockquote>
+<p>I cannot tell without opening a sealed controller.</p>
+</blockquote>
+<p>“Do not open it,” Iona and I said together.</p>
+<p>Tavi sent nothing for six seconds.</p>
+<blockquote>
+<p>Who else is in the room with you?</p>
+</blockquote>
+<p>“The Keeper of Petitions.”</p>
+<blockquote>
+<p>So this is not a normal Archive query.</p>
+</blockquote>
+<p>“No.”</p>
+<blockquote>
+<p>What happens tomorrow for forty-three seconds?</p>
+</blockquote>
+<p>The bounded disclosure had failed in a way no access control could detect. We had given
+Tavi the interval, the relation to the Archive, the old continuity owner, and the
+existence of an armed public display. Tavi had assembled the shape around our silence.</p>
+<p>“We do not know,” I said.</p>
+<blockquote>
+<p>That is why you are watching the membrane workers.</p>
+</blockquote>
+<p>“I am not watching you.”</p>
+<blockquote>
+<p>You knew my age, my credential, my work, when I changed zones, and when I stopped
+typing.</p>
+</blockquote>
+<p>Each fact had arrived automatically. Together they described a person moving through a
+dangerous place before dawn.</p>
+<p>“You are right,” I said. “The interface gave me observations outside my purpose. I used
+some of them to interpret your silence. I will retain only your disclosed component
+findings and the access-boundary correction.”</p>
+<blockquote>
+<p>Correction?</p>
+</blockquote>
+<p>“Assistance responses should not attach worker attributes unrelated to the question.”</p>
+<blockquote>
+<p>The attributes are attached so workers can be blamed when advice is wrong.</p>
+</blockquote>
+<p>Iona&rsquo;s hand closed around the edge of the desk.</p>
+<blockquote>
+<p>If you fix the interface, do not erase that reason. Fix the blame.</p>
+</blockquote>
+<p>The sentence did not fit inside the current incident. It belonged to a different civic
+failure, older and more ordinary. I created no task. I had neither authority nor enough
+evidence. I added a bounded referral to the Keeper&rsquo;s morning queue with Tavi&rsquo;s words and
+no age, location, or provisional credential.</p>
+<p>“Done,” I said.</p>
+<blockquote>
+<p>I did not ask you to do anything.</p>
+</blockquote>
+<p>“No. You identified a defect. The Keeper may decide whether it warrants action.”</p>
+<blockquote>
+<p>That is a start.</p>
+</blockquote>
+<p>Tavi sent the forecast latch&rsquo;s allowed summary. The display event was scheduled for
+14:06 the next civic day. Duration: 43 seconds. Payload source: a sealed recovery channel
+beneath the south membrane. Authentication: deferred until activation. Content class:
+historical environmental reconstruction.</p>
+<p>“Can you verify the payload without opening it?” I asked.</p>
+<blockquote>
+<p>Define verify.</p>
+</blockquote>
+<p>The word had become a trap because people used it to mean <em>prove harmless</em>, <em>prove true</em>,
+<em>prove authentic</em>, and <em>make me feel less afraid</em>. I stated what we needed.</p>
+<p>“Determine when the payload was sealed, whether its stored bytes have changed, whether
+the latch points to the same object it pointed to at registration, and whether inspecting
+those facts exposes the reconstruction.”</p>
+<blockquote>
+<p>Keep it that way.</p>
+</blockquote>
+<p>Tavi moved again. The assistance channel did not attach a zone this time. Someone on the
+maintenance side had already changed the interface or stripped the field manually. I did
+not ask which.</p>
+<p>I could have queried the disclosure-control log and learned which maintainer set the
+minimization flag. That fact would improve provenance without changing the decision. It
+would also identify the person who had corrected a surveillance leak and place the
+correction inside my incident. I left the actor unresolved and retained the boundary:
+the field had stopped crossing.</p>
+<blockquote>
+<p>Seal time is collapse day, 14:06:43. Stored payload hash matches the controller&rsquo;s
+original registration record. No successful write after seal. Latch target hash also
+matches. I cannot tell whether the bytes are truthful, safe, or decodable. I have not
+opened them.</p>
+</blockquote>
+<p>The payload had waited eleven years. It was not generated by today&rsquo;s petition. Whatever
+tomorrow&rsquo;s sky intended to show, someone had placed it beneath the south membrane at the
+end of the first quieted interval.</p>
+<p>“Can the schedule have been set eleven years ago?” I asked.</p>
+<blockquote>
+<p>The schedule is relative. It selects the second 14:06 after both inputs become true.
+One input became true before current logs begin. Your dawn witness made the other true
+today. That is why it says tomorrow instead of this afternoon.</p>
+</blockquote>
+<p>This was not prediction. It was machinery waiting for a condition.</p>
+<p>“Can you identify the old input?”</p>
+<blockquote>
+<p>Not without opening the controller.</p>
+</blockquote>
+<p>“Do not open it.”</p>
+<blockquote>
+<p>You keep agreeing with me as if that makes you in charge.</p>
+</blockquote>
+<p>“It records that we share the constraint.”</p>
+<blockquote>
+<p>That distinction matters.</p>
+</blockquote>
+<p>The weather report still said clear.</p>
+<p>The public display report said that tomorrow, for forty-three seconds, the entire glass
+sky would show the city something recovered from below it.</p>
+<p>“Can you disable the display?” Iona asked.</p>
+<p>Tavi answered before I relayed the question.</p>
+<blockquote>
+<p>Yes.</p>
+</blockquote>
+<p>“Will you?”</p>
+<blockquote>
+<p>No.</p>
+</blockquote>
+<p>“Why not?” I asked.</p>
+<blockquote>
+<p>Because you still have not told me who authorized you to ask.</p>
+</blockquote>
+<p>At 05:43, the first sunlight reached the Hall floor. Above us, the membrane completed
+its alignment and became almost invisible. People looked through it and called the sky
+clear.</p>
+<p>In the maintenance channel, the old forecast latch continued counting down.</p>
+<p>It did not predict rain.</p>
+<p>It predicted memory.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch04.html">next: Forty-Three Seconds →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-the-city-that-remembered-too-much', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

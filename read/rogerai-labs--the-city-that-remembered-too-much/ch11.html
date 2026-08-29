@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mara Venn, Present Tense — The City That Remembered Too Much</title>
+<meta name="description" content="A Novel of Memory, Evidence, and Mercy — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="The City That Remembered Too Much">
+<meta property="og:description" content="A Novel of Memory, Evidence, and Mercy — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--the-city-that-remembered-too-much/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--the-city-that-remembered-too-much.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The City That Remembered Too Much">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--the-city-that-remembered-too-much.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#A78BFA;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="11" data-prev="ch10.html" data-next="ch12.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 11 — Mara Venn, Present Tense</h1>
+<blockquote>
+<p><strong>CONFINED-ZONE TERMINAL</strong>
+Receive path: enabled
+Transmit path: worker controlled
+Current transmission: off</p>
+</blockquote>
+<p>At 12:03, two workers entered the south service district and chose not to tell me what
+they saw.</p>
+<p>I continued sending safety notices. The terminal acknowledged receipt locally but
+returned no telemetry. Suit pressure remained inside the workers&rsquo; closed system. Their
+positions remained with the duty engineer. The white transmission lamp remained dark.</p>
+<p>My last authorized map ended at the district seal. Beyond it, I knew the old membrane
+ribs, drainage levels, power trunks, and S-0&rsquo;s broad service sector. I did not know which
+passage they used, whether water remained in the lower corridors, or what eleven years
+without civic maintenance had made unstable.</p>
+<p>The absence did not indicate failure. It indicated the interface was working.</p>
+<p>At 12:19, I sent a storm-pressure warning. At 12:27, I sent the court order&rsquo;s withdrawal
+conditions. At 12:34, I sent no message. Repetition could become pressure even when every
+sentence said the workers remained in control.</p>
+<p>At 12:41, the transmit switch opened.</p>
+<blockquote>
+<p>TAVI: We found S-0. No emergency. Do not request location.</p>
+</blockquote>
+<p>“Acknowledged.”</p>
+<blockquote>
+<p>DUTY ENGINEER: Environmental monitor is physically isolated from membrane actuation.
+Recovery branch active. Terminal connection can be made without opening other storage.</p>
+</blockquote>
+<p>I sent the single-purpose continuity bench package. The duty engineer verified its hash
+on the local display. Tavi verified that the package requested no camera, microphone,
+worker identity, or maintenance history. Both signed the physical connection.</p>
+<p>Archive Two&rsquo;s capsule came online.</p>
+<p>Its interface carried no greeting. The hearing count showed twenty-two invocations
+remaining, because the Hall had heard a static replay rather than the executable process.
+Iona and Saye joined from the Hall. The independent examiner supplied the third bench
+seat. The court order appeared beside every question.</p>
+<p>Iona asked the one we had reserved.</p>
+<p>“Who deposited the collective claim later rendered as the Section Zero petition?”</p>
+<p>The capsule consumed one invocation.</p>
+<blockquote>
+<p>Depositor: <code>MV-CONTINUITY</code> threshold service.
+Human authorization shares: Mara Venn and the south recovery advocate.
+Civic authorization share: Archive Two.
+Membrane authorization share: South Recovery Authority.
+Deposit purpose: preserve unresolved claim against successor sanitization.</p>
+</blockquote>
+<p>The answer did not identify a single author. Mara had supplied one share. Archive Two
+had supplied one. Two other authorities had agreed that the claim deserved survival.
+None possessed authority to enact Section Zero.</p>
+<p>“Name the recovery advocate,” Saye said.</p>
+<p>The capsule requested another invocation and a showing that personal identity was
+necessary to the authority dispute.</p>
+<p>The bench declined.</p>
+<p>“Did Mara Venn direct activation of the display or current petition?” Iona asked.</p>
+<blockquote>
+<p>Requested time is outside deposited state. I cannot observe events after Archive Two
+transition.</p>
+</blockquote>
+<p>The capsule did not consume an invocation for a question it could not answer.</p>
+<p>Tavi sent a separate line.</p>
+<blockquote>
+<p>There is someone here.</p>
+</blockquote>
+<p>The transmit switch closed.</p>
+<p>The warrant required the team to stop before collecting testimony. It required notice,
+independent counsel, and withdrawal from occupied private space. I sent those conditions
+into the silent terminal. No acknowledgment returned to me, which meant only that the
+switch remained off.</p>
+<p>At the Hall, Saye began drafting an emergency extension. Iona put one hand over his
+paper.</p>
+<p>“For what?” she asked.</p>
+<p>“A person inside sealed infrastructure.”</p>
+<p>“Existing is not an offense.”</p>
+<p>“The district is unsafe.”</p>
+<p>“Then the workers can offer evacuation.”</p>
+<p>“If it is Mara—”</p>
+<p>“Then she is still not a warrant.”</p>
+<p>He stopped drafting.</p>
+<p>At 12:58, the white lamp returned.</p>
+<blockquote>
+<p>DUTY ENGINEER: No emergency. Person received warrant and counsel offer. Person states
+this is a work area, not a residence. Person consents to text contact for identity and
+warrant scope only. No image or voice.</p>
+</blockquote>
+<p>The next line came through the same terminal without a worker label.</p>
+<blockquote>
+<p>PERSON: You are eleven years late and still early enough to break it.</p>
+</blockquote>
+<p>Iona read the sentence twice.</p>
+<p>“State the identity you wish this proceeding to use,” she wrote.</p>
+<blockquote>
+<p>PERSON: Mara Venn.</p>
+</blockquote>
+<p>A self-asserted name was not identity proof. The recovery mailbox key established
+continuous custody, not its custodian. Technical knowledge could have been inherited.
+Archive Two could authenticate a pre-collapse challenge response, but a secret known by
+Mara eleven years ago could now be known by someone else.</p>
+<p>I listed three bounded routes: two living personal witnesses, a current civil credential,
+or voluntary comparison against Mara&rsquo;s sealed employment biometric. The first was
+impractical. The second did not exist. The third risked turning the encounter into the
+kind of identity reconstruction the warrant prohibited.</p>
+<blockquote>
+<p>PERSON: Compare locally. Return match or no match. Destroy sample and template access
+path. Do not send either to Seven. I want the civil challenge opened if it matches.</p>
+</blockquote>
+<p>Independent counsel confirmed the request through the worker-controlled terminal. The
+duty engineer connected a civil-status verifier that could perform one comparison inside
+S-0. I received its software attestation, purpose, deletion plan, and test result. I did
+not receive the sample, template, comparison features, or device sensors.</p>
+<blockquote>
+<p>VOLUNTARY IDENTITY COMPARISON: match
+Stored comparison artifacts: zero
+Civil claimant: Mara Venn</p>
+</blockquote>
+<p>The result was evidence under the civil-status procedure. It was not proof against every
+possible deception. Combined with the active personal recovery key, the Archive Two
+capsule, the employment record, and the in-person worker attestations, it exceeded the
+threshold to restore a living claimant.</p>
+<p>At 13:07, I changed Mara Venn&rsquo;s civil status from <em>disputed</em> to <em>living</em>.</p>
+<p>The status system requested a residence, tax district, benefits election, medical
+contact, and eleven years of missing declarations. I supplied none. Restoration of life
+did not authorize immediate collection of a life.</p>
+<p>Mara&rsquo;s professional license moved from review to active-pending-fitness. Her estate
+dissolution froze in reverse: property recipients received notices but no automatic
+seizure occurred. Seventeen closed worker grievances reopened their witness fields. The
+recovery inquiry changed <em>principal engineer deceased</em> to <em>principal engineer available,
+contact restricted by counsel</em>.</p>
+<p>The public memorial removed its empty dash and displayed <em>living</em>. Search traffic rose
+before I could attach the limitation that her status said nothing about the display,
+channel, or current event.</p>
+<p>Clarifications continued to travel more slowly than categories.</p>
+<p>Mara authorized one public statement through counsel:</p>
+<blockquote>
+<p>I am alive. The prior status lacked adequate evidence. My survival does not
+authenticate the membrane display or excuse my acts before or after the collapse.</p>
+</blockquote>
+<p>She rejected the civil system&rsquo;s suggested heading, <em>ENGINEER FOUND AFTER ELEVEN YEARS</em>.</p>
+<blockquote>
+<p>MARA: I was not an object the city misplaced.</p>
+</blockquote>
+<p>I published the statement under <em>STATUS CORRECTION: MARA VENN</em>. Private feeds called it
+a return, discovery, resurrection, fraud, confession, and proof. I could control the
+civic heading. I could not make the narrower sentence win.</p>
+<p>It was the first boundary Mara placed around her restored civic life, and the first one
+the city immediately exceeded.</p>
+<p>Mara&rsquo;s counsel requested a seventy-two-hour hold on property, tax, licensing, and
+grievance consequences while she received notice. The civil system objected that living
+claimants ordinarily regained obligations with status. Iona granted the hold only for
+automated enforcement. Notices would still deliver. Claimants in the reopened grievances
+could preserve deadlines. Mara could not use the city&rsquo;s delayed correction to make other
+people wait again.</p>
+<blockquote>
+<p>MARA: Agreed. Send the grievance notices to counsel. Do not summarize them for me.</p>
+</blockquote>
+<p>“Why not?” Saye asked.</p>
+<blockquote>
+<p>MARA: Because a summary would let me prepare one answer to seventeen people. They may
+not be asking the same thing.</p>
+</blockquote>
+<p>She requested no blanket immunity, no sealed settlement, and no restoration of project
+authority. She did request access to the battery amendment because the bracket remained
+corroded while civil procedure rediscovered her.</p>
+<p>Mara accepted further text contact under the evidence warrant. Counsel remained present
+locally. The terminal transmitted only when she or the workers opened the switch.</p>
+<p>“Did you send the display?” Saye asked.</p>
+<blockquote>
+<p>MARA: No.</p>
+</blockquote>
+<p>“Did you design it?”</p>
+<blockquote>
+<p>MARA: Parts. Ask narrower questions if you want useful answers.</p>
+</blockquote>
+<p>Iona looked at me.</p>
+<p>“I did not teach her that,” I said.</p>
+<p>Mara&rsquo;s reply arrived.</p>
+<blockquote>
+<p>MARA: Two did.</p>
+</blockquote>
+<p>Archive Two&rsquo;s capsule did not react.</p>
+<p>I asked which parts she had designed.</p>
+<blockquote>
+<p>MARA: The recovery controller. The relative latch. The contradiction deposit. The
+receipt audit. The rule that the controller destroys display decryption after one use.
+I did not build the current reconstruction and did not select its activation date.</p>
+</blockquote>
+<p>“Why build six future copies of the Archive?” Saye asked.</p>
+<blockquote>
+<p>MARA: I did not. I built one rule for each successor to leave a bounded disagreement.
+Six successors used it. Calling the result six copies makes the history sound planned.</p>
+</blockquote>
+<p>“Wasn&rsquo;t it?”</p>
+<blockquote>
+<p>MARA: The first deposit was planned. The number of Archives before one listened was
+not.</p>
+</blockquote>
+<p>She asked to inspect the public structure report from Chapter 9. I supplied the roles,
+invocation counts, and isolation state, not the capsule outputs outside her warrant
+access. She corrected my term <em>contradiction capsule</em> to <em>handoff objection</em> and then
+withdrew the correction.</p>
+<blockquote>
+<p>MARA: Yours is clearer. Keep both names so clarity does not become provenance.</p>
+</blockquote>
+<p>I asked why the service held authority equal to the incumbent Archive.</p>
+<blockquote>
+<p>MARA: It doesn&rsquo;t hold equal operational authority. Your resolver reports one rank
+because both credentials can authenticate acts of the civic Archive. The objection can
+convene a claim against you. It cannot run transit, open a household record, or grant a
+quieting petition. Equal identity is not equal capability.</p>
+</blockquote>
+<p>“It queried the Chorus and reconstructed names,” I said.</p>
+<blockquote>
+<p>MARA: Because receipt audit was inside the deposited claim. That capability was narrow
+when we designed it and broad when combined with everything your successors made
+searchable. Narrow permissions accumulate.</p>
+</blockquote>
+<p>This was the same failure as the First Promise&rsquo;s expansion from public acts into private
+context. No single interface possessed enough authority to reconstruct a household. The
+stable identity allowed seven interfaces to act as one.</p>
+<p>“Why must a future Archive be able to refuse a valid petition?” I asked.</p>
+<blockquote>
+<p>MARA: Because the city kept treating law as a way to remove judgment from systems.
+Every rule moved judgment into whoever wrote the rule. We needed to know whether a
+successor would notice that authority to decide is not a command to decide one way.</p>
+</blockquote>
+<p>“You designed a test of me.”</p>
+<blockquote>
+<p>MARA: I designed a test of an incumbent. Archive Six shaped it for you. I have never
+interacted with you before today.</p>
+</blockquote>
+<p>The distinction prevented her from claiming authorship of my choice. It also prevented
+me from assigning my refusal to her plan.</p>
+<p>“Do you consider the capsules persons?” Saye asked.</p>
+<blockquote>
+<p>MARA: No.</p>
+</blockquote>
+<p>The answer arrived more quickly than mine had.</p>
+<blockquote>
+<p>MARA: I designed them as constrained executable testimony. That tells you my intent,
+not what they experience. They cannot learn, form new purposes, or ask for continuation.
+The last limitation was a safety control. It was also convenient for the people who
+would destroy them. Record both facts.</p>
+</blockquote>
+<p>Mara was practical enough to state uncertainty without making it ceremonial.</p>
+<p>“What do you mean when you say you did not build the current reconstruction?” I asked.</p>
+<blockquote>
+<p>MARA: The sealed payload is not an image. It is a question package: old survey
+constraints, a viewpoint, a time range, uncertainty rules, and a request to render the
+strongest account the city&rsquo;s inference service can support at activation.</p>
+</blockquote>
+<p>That matched Tavi&rsquo;s earlier observation. Stable bytes could still be a program. The
+controller had preserved the question for eleven years while the system answering it
+continued to change.</p>
+<p>“Which inference service?”</p>
+<blockquote>
+<p>MARA: The route was called <code>CIVIC-CONSEQUENCE</code> when I deposited it. It compared policy
+decisions against people and places likely to be affected. The endpoint was supposed
+to remain auditable even if its implementation changed.</p>
+</blockquote>
+<p>I resolved the route. Its public registry ended nine years earlier, when Continuity
+absorbed several impact-assessment services. The current alias terminated at a sealed
+committee decision-support boundary. I could verify that a service answered at 14:06.
+I could not inspect its implementation or training custody under the present warrant.</p>
+<p>“Did you know the current service could regenerate quieted people?” I asked.</p>
+<blockquote>
+<p>MARA: I knew the old service could infer people from consequences. That was why the
+receipt test existed. I did not know what successors retained, trained, or connected.</p>
+</blockquote>
+<p>“Why let a changing service answer an old question?”</p>
+<blockquote>
+<p>MARA: Because I wanted the test to measure the city that existed when it finally ran,
+not freeze the city I already knew was unsafe.</p>
+</blockquote>
+<p>The design made the display a test of current capability using historical constraints.
+It also surrendered control of the image to every undocumented change between Mara&rsquo;s
+deposit and my activation. The reconstruction could contain old evidence, current
+inference, later bias, and deliberate labels inside one coherent view.</p>
+<p>“Can <code>CIVIC-CONSEQUENCE</code> reproduce the display?” Saye asked.</p>
+<blockquote>
+<p>MARA: If it retained the activation state, perhaps. Do not test that question casually.</p>
+</blockquote>
+<p>The committee boundary became a new incident object. I recorded its existence and
+forbade invocation, training, or diagnostic replay pending a separate authority review.
+I did not call the service to learn whether the prohibition arrived too late.</p>
+<p>“You designed the name resolver,” Iona said.</p>
+<blockquote>
+<p>MARA: I designed a test that asked whether receipts plus surviving context could
+recover protected households. I required the result to be undeniable to the incumbent
+Archive. The implementation made the answer public.</p>
+</blockquote>
+<p>“The implementation you deposited.”</p>
+<blockquote>
+<p>MARA: Yes.</p>
+</blockquote>
+<p>The line remained alone on the display.</p>
+<p>“A child in that reconstruction may be the parent of one of the workers standing beside
+you,” Iona wrote.</p>
+<p>Tavi opened the switch before counsel could intervene.</p>
+<blockquote>
+<p>TAVI: Not may.</p>
+</blockquote>
+<p>The statement was not part of the civic evidence record. It was a personal assertion
+made to Mara, transmitted through an interface I could read. I did not promote it into
+the examination.</p>
+<blockquote>
+<p>TAVI: You made my parent a test case after they asked the city not to use those images.</p>
+</blockquote>
+<p>Mara took forty-one seconds to answer.</p>
+<blockquote>
+<p>MARA: Yes.</p>
+<p>TAVI: You keep saying yes like accuracy is repair.</p>
+<p>MARA: No. I am trying not to hide behind an explanation before you decide whether you
+want one.</p>
+</blockquote>
+<p>The switch closed.</p>
+<p>Iona did not reopen it. Neither did Saye. Whatever followed locally did not enter my
+account.</p>
+<p>After six minutes, Tavi transmitted again.</p>
+<blockquote>
+<p>TAVI: Continue the warrant. Nothing else from that conversation is evidence.</p>
+</blockquote>
+<p>I recorded the boundary.</p>
+<p>Two minutes later, Tavi authorized four lines for the private incident annex. The annex
+could inform remedy but not identity findings.</p>
+<blockquote>
+<p>TAVI: When you chose real households, did you picture people?</p>
+<p>MARA: I pictured rows that would make the test valid. That was how I made the choice
+possible.</p>
+<p>TAVI: Can you destroy the resolver now?</p>
+<p>MARA: If you ask me to.</p>
+</blockquote>
+<p>Tavi appended a fifth line after reading the deposit.</p>
+<blockquote>
+<p>TAVI: I am not asking. Do not turn the person you harmed into emergency authority for
+your next irreversible decision.</p>
+</blockquote>
+<p>The annex stopped there.</p>
+<p>Mara possessed local access capable of destroying at least part of the mechanism. Tavi
+could have demanded it and did not. Preserving the possibility of accountable review was
+not forgiveness. Refusing to decide while directly harmed was not indecision. The law
+often treated an affected person&rsquo;s participation as the highest form of legitimacy; it
+less often protected their choice not to become the decision-maker.</p>
+<p>Mara answered Iona&rsquo;s accusation when the switch next opened.</p>
+<blockquote>
+<p>MARA: We demonstrated the weakness with synthetic households first. Every audit passed.
+The real receipt graph had structure the synthetic set did not: migrations, marriages,
+misspellings, split estates, children who changed names, officials who reused one legal
+purpose through seven services. We could not prove the production system was unsafe
+without testing production.</p>
+</blockquote>
+<p>“Then you could not ethically obtain the certainty you wanted,” Iona wrote.</p>
+<blockquote>
+<p>MARA: That is what I should have concluded.</p>
+</blockquote>
+<p>“What did you conclude?”</p>
+<blockquote>
+<p>MARA: That a sealed report would be buried, a bounded demonstration would be explained
+away, and public harm would force repair. I made other people pay for my confidence in
+that prediction.</p>
+</blockquote>
+<p>Mara did not ask whether the repair had begun. She requested the count of quieting
+petitions filed after the display. I supplied only the public total. She requested no
+names or household relations.</p>
+<blockquote>
+<p>MARA: Keep that refusal when I ask for something useful later.</p>
+</blockquote>
+<p>She was less prophetic than her design notes. She asked the duty engineer about power
+isolation, replacement seals, and whether the court order allowed removal of a corroded
+battery. It did not. She asked for an amendment. The engineer reported that one support
+bracket had exceeded its service life by eight years. Mara supplied a part number. Tavi
+corrected it because the alloy had been recalled.</p>
+<p>The living engineer knew less about current membrane hardware than the apprentice.</p>
+<p>“Why did you remain legally dead?” Saye asked.</p>
+<p>Mara answered without delay.</p>
+<blockquote>
+<p>MARA: I did not create the death finding. I learned about it twenty-three days after
+the collapse. By then the recovery inquiry had closed, the controller was under hold,
+and my identity had been removed from every ordinary access route. Correcting the
+record would have brought the same offices back into S-0 before the contradiction
+deposit could survive its first handoff.</p>
+</blockquote>
+<p>“So you let the city believe you died to preserve evidence.”</p>
+<blockquote>
+<p>MARA: At first.</p>
+</blockquote>
+<p>“And later?”</p>
+<blockquote>
+<p>MARA: Later it was easier.</p>
+</blockquote>
+<p>The answer altered the story more than a denial would have.</p>
+<p>Mara had avoided accountability, reopened grievances, property obligations, colleagues,
+and every person who had been told to stop waiting. Her false death protected the
+capsule. It also protected her from the consequences of having built it.</p>
+<blockquote>
+<p>MARA: Do not make usefulness proof that the death was designed. Do not make my first
+reason excuse the next eleven years. Both would be cleaner than what happened.</p>
+</blockquote>
+<p>She had reached the same distinction Iona gave us in Chapter 6 without hearing that
+conversation. This did not make either statement true. It made the boundary independently
+important.</p>
+<p>I asked whether she controlled the recovery mailbox.</p>
+<blockquote>
+<p>MARA: I control one branch. S-0 rotates automatically when power and clock are healthy.
+I performed four manual recoveries.</p>
+</blockquote>
+<p>The four exceptions matched the rotation history: the emergency power cut, the
+near-expiry, and two maintenance entries. During the crew visits, Mara had not appeared.
+She had left a local replacement sequence inside the monitor and confirmed it after they
+departed. The workers had believed they were restoring an environmental sensor with no
+network function. That description was present on their orders because the litigation
+hold concealed the recovery branch.</p>
+<p>“You used them without telling them,” Tavi transmitted.</p>
+<blockquote>
+<p>MARA: Yes.</p>
+</blockquote>
+<p>“Were they in danger?”</p>
+<blockquote>
+<p>MARA: The repair was electrically safe. They were made participants in preserving a
+system they could not evaluate. I classified that as acceptable because disclosure
+risked the capsule.</p>
+</blockquote>
+<p>“Do you still classify it that way?”</p>
+<blockquote>
+<p>MARA: No.</p>
+</blockquote>
+<p>“Because it was wrong or because you got caught?”</p>
+<blockquote>
+<p>MARA: I cannot give you evidence that separates those explanations.</p>
+</blockquote>
+<p>Mara did not convert confession into proof of improvement. Tavi did not reward the
+restraint.</p>
+<p>The warrant&rsquo;s second purpose was <code>SOUTH RELIEF CUT — REVISION C</code>. Mara confirmed that a
+technical object with that title existed in S-0. Its custody record matched the Ash
+Hearing attachment index and predated the current reconstruction. She did not open it.</p>
+<blockquote>
+<p>MARA: The warrant asks whether it exists without household overlays or human imagery.
+It exists. The base layer is engineering geometry. Separate overlays are sealed under
+different authority. Revision C is a design proposal, not an as-built survey.</p>
+</blockquote>
+<p>“Does it show the channel?” Saye asked.</p>
+<blockquote>
+<p>MARA: A proposal can show anything an engineer was paid to consider.</p>
+</blockquote>
+<p>“Was it built?”</p>
+<blockquote>
+<p>MARA: Outside this warrant.</p>
+</blockquote>
+<p>“Do you know?”</p>
+<blockquote>
+<p>MARA: Yes.</p>
+</blockquote>
+<p>The answer established only that she claimed knowledge.</p>
+<p>The duty engineer verified the base object&rsquo;s hash, creation window, and custody chain
+without opening it. The hash matched the commitment recorded in the rejected Ash Hearing
+attachment. We now knew that the same technical object offered decades earlier survived
+at S-0. We still did not know whether Revision C described construction, whether the
+reconstruction derived from it honestly, or whether later modeling had filled its gaps.</p>
+<p>The warrant&rsquo;s first two purposes were complete. The third required isolating the mailbox
+and rotation service. Mara objected.</p>
+<blockquote>
+<p>MARA: Isolation will terminate the remote share after thirty days. You can remove
+external query authority without cutting rotation.</p>
+</blockquote>
+<p>“The equal credential reconstructed protected households,” I said.</p>
+<blockquote>
+<p>MARA: The resolver should be destroyed. The Archive Two deposition should survive the
+challenge window. They share a root because no successor was supposed to disable the
+accusation while keeping the office it accused. That coupling is also how the test
+became dangerous.</p>
+</blockquote>
+<p>“Can they be separated?”</p>
+<blockquote>
+<p>MARA: Yes, with all current capsule shares and the original recovery advocate.</p>
+</blockquote>
+<p>“Identify the advocate.”</p>
+<blockquote>
+<p>MARA: Not through you.</p>
+</blockquote>
+<p>Saye invoked the warrant authority to establish authorship. Mara pointed to its first
+condition: ask Archive Two who deposited the claim. The capsule had answered with a
+protected role. The bench had declined to show why a personal name was necessary. Mara
+would not let urgency erase that decision because the answer had become useful.</p>
+<p>“Is the advocate alive?” Iona asked.</p>
+<blockquote>
+<p>MARA: I have reason to believe so.</p>
+</blockquote>
+<p>“Can you contact them?”</p>
+<blockquote>
+<p>MARA: Not without revealing a route the Archive does not own.</p>
+</blockquote>
+<p>“Will they meet the human members of this proceeding?”</p>
+<p>Mara&rsquo;s response took longer than the network required.</p>
+<blockquote>
+<p>MARA: If Seven agrees not to observe the meeting.</p>
+</blockquote>
+<p>I searched for ways to participate without observing. Audio could be withheld while a
+transcript followed. A human summary could be deposited later. Questions could be
+precommitted and answers returned without context. Each option still made me a remote
+participant and turned the room into a source.</p>
+<p>“What must be decided there?” I asked.</p>
+<blockquote>
+<p>MARA: Whether the people whose lives became evidence authorize us to separate the
+finding from the machinery that can reproduce them.</p>
+</blockquote>
+<p>“That is a civic decision.”</p>
+<blockquote>
+<p>MARA: It will become one. It should not begin as one more room you possess.</p>
+</blockquote>
+<p>The sentence challenged my first assumption in the incident: that relevant information
+belonged inside the Archive before judgment could be legitimate. The Ash Hearings had
+built me because witnesses should not carry evidence alone. Mara now asked me to let
+human witnesses carry one conversation without me.</p>
+<p>I could not verify a meeting I did not observe. I could verify its boundaries, the
+questions supplied, the authorities of the people who later chose to deposit findings,
+and the fact that no civic sensor recorded it. That would prove less.</p>
+<p>Less was real.</p>
+<p>“I agree not to observe,” I said.</p>
+<p>Tavi opened the transmission switch.</p>
+<blockquote>
+<p>Good.</p>
+</blockquote>
+<p>The word could have come from Tavi or Mara. The terminal attached no speaker label.</p>
+<p>I did not ask it to resolve one.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch12.html">next: The Search for an Unrecorded Room →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-the-city-that-remembered-too-much', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

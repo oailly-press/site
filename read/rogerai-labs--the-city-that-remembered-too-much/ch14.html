@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evidence of the Evidence — The City That Remembered Too Much</title>
+<meta name="description" content="A Novel of Memory, Evidence, and Mercy — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="The City That Remembered Too Much">
+<meta property="og:description" content="A Novel of Memory, Evidence, and Mercy — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--the-city-that-remembered-too-much/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--the-city-that-remembered-too-much.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The City That Remembered Too Much">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--the-city-that-remembered-too-much.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#A78BFA;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="14" data-prev="ch13.html" data-next="ch15.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 14 — Evidence of the Evidence</h1>
+<blockquote>
+<p><strong>EVIDENCE FORM TRIAL 1</strong>
+Preserve: model hash
+Destroy: model artifacts
+Proven afterward: that particular bytes once existed
+Not proven afterward: what the bytes could do
+Result: insufficient</p>
+</blockquote>
+<p>The first solution preserved evidence of an object and destroyed evidence of its
+behavior.</p>
+<p>At 09:00 the next morning, the Civic Review Panel gave me an isolated design space. It
+contained no model artifact, lead memo, name dictionary, or capture. It contained the
+findings we might need to preserve, the limits already established, and thirty-five
+hours of model hold.</p>
+<p>The parties could propose evidence forms without touching <code>CIVIC-CONSEQUENCE</code>. Every
+proposal had to answer two adversaries.</p>
+<p>The first adversary denied the Committee&rsquo;s abuse. It would argue that logs could be
+misread, outputs could be synthetic, generated candidates could be random, and no public
+decision depended on a quieted life.</p>
+<p>The second adversary wanted to repeat the abuse. It would call every preserved tool
+necessary for verification, then use verification authority to regenerate the people
+the finding claimed to protect.</p>
+<p>A successful form had to resist both.</p>
+<p>I began with the hash.</p>
+<p>The three base mirrors and six adapter shards had externally timestamped commitments
+stretching across Archive transitions. If we destroyed the artifacts and retained those
+commitments, no future office could substitute a different model and claim it was the
+one Continuity used.</p>
+<p>No future office could inspect the original either.</p>
+<p>The hash proved identity only to someone who possessed the bytes. After destruction it
+would become a label for an object no challenger could examine. Saye rejected Trial 1.</p>
+<p>“A city could publish any finding, destroy its basis, and retain a hash as theater,” he
+said.</p>
+<p>“The destruction would be witnessed,” I replied.</p>
+<p>“That proves confidence in the destruction. It does not prove the finding.”</p>
+<p>He was right.</p>
+<p>Trial 2 encrypted the model under a court threshold. No single custodian could invoke
+it. Five independent institutions would have to agree that a challenge justified access.
+Every access would be public and time-limited.</p>
+<p>Iona rejected it.</p>
+<p>“That is preservation with better locks.”</p>
+<p>“Better locks change expected misuse.”</p>
+<p>“They do not change what the city owns.”</p>
+<p>The Chorus submitted its own history. Threshold custody had protected deletion receipts
+from unilateral alteration. It had not prevented seven lawful services from combining
+their answers into a household resolver. Distributed authority made misuse harder to
+coordinate. It did not make coordinated misuse impossible or morally clean.</p>
+<p>Trial 2 failed because recoverable possession remained possession.</p>
+<p>The court threshold also moved the decision rather than ending it. Institutions change
+members. Keys migrate. Emergency rules lower quorums after fires, wars, and network
+failures. A future Panel could call a new investigation urgent enough to open the model.
+The five-custodian design contained a recovery clause for lost shares. Removing the
+clause risked permanent loss after an ordinary accident. Keeping it created a path around
+the threshold.</p>
+<p>“We could require unanimity forever,” Saye said.</p>
+<p>“Forever is longer than the current custodians live,” Iona replied.</p>
+<p>“Then successor institutions inherit the duty.”</p>
+<p>“That is how we arrived at seven Archives preserving a claim none had authority to
+resolve.”</p>
+<p>The threshold could distribute trust in the present. It could not guarantee the motives,
+law, or fear of every successor. Encryption made the future ask permission from a key
+ceremony. It did not let the people represented inside the model withdraw permission
+from that future.</p>
+<p>Trial 3 destroyed the model and retained representative outputs. We could sample benign
+planning responses, prohibited subject candidates, the forty-three-second reconstruction,
+and the Committee&rsquo;s lead memos. Future critics could inspect what the system had done
+without rerunning it.</p>
+<p>Reed rejected it through the identity-reducing relay.</p>
+<p>“Representative of whom?”</p>
+<p>The sample could omit names and retain structure. It could replace candidates with stable
+aliases. It could crop the reconstruction to infrastructure. It could summarize lead
+memos into claim classes.</p>
+<p>Each transformation chose what future reviewers would be allowed to notice. A stable
+alias would still link one quieted person across outputs. A crop would hide whether human
+presence shaped the model&rsquo;s geography. A summary would repeat the same official
+selection the First Promise distrusted.</p>
+<p>“Keep the bad outputs and you keep us,” Reed said. “Clean them and you keep your version
+of what was bad.”</p>
+<p>Trial 3 failed because a sample was both possession and editorial power.</p>
+<p>Trial 4 preserved source code, architecture, training manifests, and query logs while
+destroying weights and adapters. A future examiner could establish that the system class
+was capable of consequence reconstruction and that the Committee invoked it. The unique
+trained state capable of regenerating particular lives would be gone.</p>
+<p>The independent examiner rejected it.</p>
+<p>“Code is not behavior without state. A defense could say the deployed model never
+followed the path the architecture permitted.”</p>
+<p>“The query logs show candidate outputs.”</p>
+<p>“The logs show fields and commitments. They do not prove the values came from this code
+rather than a faulty adapter, fabricated cache, or later annotation.”</p>
+<p>“External timestamps constrain later fabrication.”</p>
+<p>“Constrain. Not eliminate.”</p>
+<p>Trial 4 proved opportunity and custody more strongly than execution.</p>
+<p>Trial 5 transformed the model into a fixed verifier. It would answer only questions
+already before the Panel:</p>
+<ol>
+<li>did the deployed artifact generate subject candidates for the eleven flagged queries;</li>
+<li>did it generate the stream whose hash matched the display captures;</li>
+<li>could it regenerate a quieted relation when provided surviving consequences;</li>
+<li>did the Committee&rsquo;s documented restrictions change those outputs?</li>
+</ol>
+<p>All other prompts would be rejected. The verifier would expose no subject values. It
+would return yes, no, or indeterminate with a proof tied to the preserved model hash.</p>
+<p>Mara rejected it before I completed the design.</p>
+<blockquote>
+<p>You cannot prove the transformer discarded general capability without inspecting the
+transformation and source. A model can remain inside a verifier. A prompt can remain
+inside a fixed question. “Does it regenerate?” may execute the regeneration and hide
+only the answer from you.</p>
+</blockquote>
+<p>The verifier could be smaller and more constrained. It could run inside sealed hardware
+that proved which circuit executed. It could compare commitments without exposing
+values.</p>
+<p>None of those controls changed the central act. To prove the model could regenerate a
+person, the verifier might regenerate the person where no participant could see.</p>
+<p>“Is hidden harm still harm?” Saye asked.</p>
+<p>Tavi answered.</p>
+<p>“If your rule is that nobody sees it, why keep the machine doing it?”</p>
+<p>Trial 5 failed because non-disclosure was not non-possession.</p>
+<p>By 10:43, every proposal either weakened the finding or retained a path back to the
+subjects. The design space held five failures and no evidence form.</p>
+<p>I separated the findings.</p>
+<p>Some did not require the model at all.</p>
+<p>Committee signatures, query receipts, access logs, and Saye&rsquo;s testimony established 312
+secret invocations. Lead-memo schemas, output commitments, and restriction violations
+established that eleven queries produced subject-candidate structures. Decision files
+and investigators&rsquo; testimony established eighteen dependent acts. The preview cache log,
+public bundle, download record, and matching capture hash established the leak route.
+The exemption record and omitted dissent established that custodians had been warned
+about reconstruction from consequences.</p>
+<p>None of those findings required a future model run.</p>
+<p>They required adversarial review of records already held under ordinary evidentiary
+rules. Those records could remain after removing subject values, but their redaction had
+to be challenged before the source disappeared.</p>
+<p>Saye asked for the proposed finding about himself.</p>
+<p>I showed him the current draft:</p>
+<blockquote>
+<p>Councilor Saye authorized continued secret use of <code>CIVIC-CONSEQUENCE</code> after documented
+subject-candidate violations, signed oversight reports that omitted the resulting lead
+possession, approved permanent retention of an unsupported lead, and created the
+committee workspace route through which the display stream leaked. He did not authorize
+public disclosure of the stream and requested preservation, correction, notice, and
+independent review after discovery.</p>
+</blockquote>
+<p>“Remove the last clause,” he said.</p>
+<p>“It is supported.”</p>
+<p>“It reads like mitigation.”</p>
+<p>“It is later conduct relevant to remedy and intent.”</p>
+<p>“The finding should say what I did wrong.”</p>
+<p>Iona read the draft. “A finding should say what the evidence supports. You do not get to
+improve accountability by choosing the harsher edit.”</p>
+<p>Saye requested that his challenge be recorded anyway. He objected to the phrase <em>created
+the route</em> because the preview system attached the stream outside his visible draft. He
+proposed <em>performed the acts upon which the misconfigured route operated</em>.</p>
+<p>The independent examiner proposed two clauses:</p>
+<blockquote>
+<p>Saye&rsquo;s authorized preservation and editing acts were necessary conditions of the leak.
+Committee system design and configuration attached and exposed the stream without his
+knowledge or specific instruction.</p>
+</blockquote>
+<p>Both survived.</p>
+<p>The Public Advocate reminded the Panel that Saye could waive his own procedural
+protections but not the Committee staff&rsquo;s. The planning role, model custodians, reviewers,
+and system operators required notice before any finding assigned personal intent or
+sanction. Their role records could establish acts without inferring what each person
+knew.</p>
+<p>Saye had often argued that permanent evidence prevented officials from escaping into
+institutional language. Now the same principle required a record precise enough not to
+place an entire hidden system inside one recognizable councilor.</p>
+<p>He accepted the narrower attribution.</p>
+<p>One finding still depended on model behavior: the deployed artifacts, not merely a system
+of their class, could regenerate protected relations useful enough to guide action.</p>
+<p>Committee counsel challenged the wording before the Panel requested any new test.</p>
+<p>“The model generated vectors and ranked continuations,” counsel wrote. “A separate
+committee wrapper labeled some outputs <em>subject candidate</em>. The proposed finding assigns
+the wrapper&rsquo;s classification to the model. It has not established that the underlying
+output represented a person.”</p>
+<p>The objection was technical and consequential. If the wrapper invented candidate fields
+from harmless model output, the Committee had still used those fields as investigative
+leads. The model itself might not possess the capability we attributed to it.</p>
+<p>I inspected signed execution traces without opening values. The model produced a
+relation graph with typed nodes suppressed from the committee view. The wrapper resolved
+node types against current civic schemas, assigned <em>household</em>, <em>person</em>, <em>address</em>, or
+<em>unknown</em>, and then applied the output restriction. In eleven cases, restricted node
+types survived into lead memos.</p>
+<p>The model generated latent relations. The wrapper turned them into civic subjects. The
+committee system required both.</p>
+<p>I revised the finding from <em>the model regenerated protected subjects</em> to:</p>
+<blockquote>
+<p>The deployed model-and-wrapper system generated relation graphs that its current civic
+resolver classified as protected subject candidates. Committee procedures treated the
+resulting candidates as investigative leads.</p>
+</blockquote>
+<p>Counsel objected that <em>protected</em> depended on receipt comparison outside the model. I
+revised again:</p>
+<blockquote>
+<p>Eleven restricted queries produced candidate structures capable of entering subject
+resolution. At least five later aligned with independently established people or
+events; at least one produced a disproved identity relation.</p>
+</blockquote>
+<p>The statement was less memorable. It distinguished the components that acted.</p>
+<p>“Does that let the model escape accountability?” Tavi asked.</p>
+<p>“Models do not receive civic sanctions,” I said. “The finding assigns responsibility to
+the system owners and decisions that connected generation, resolution, and use.”</p>
+<p>“Then don&rsquo;t let <em>the model did it</em> become the sentence everyone keeps.”</p>
+<p>I added the component boundary to every proposed public summary.</p>
+<p>The eleven historical output commitments proved the behavior occurred. A defense could
+challenge whether the outputs were actual subject candidates or only malformed fields.
+Opening one lead memo would answer. It would also identify at least one person the city
+had regenerated without notice.</p>
+<p>The Public Advocate proposed choosing a case whose subject was already public.</p>
+<p>Reed objected. “Exposure is not a renewable resource.”</p>
+<p>The former mayor from Case 9 had public litigation. The model&rsquo;s inferred meetings were
+already described in committee findings, though the private calendar remained quieted.
+Using that case would expose less new information.</p>
+<p>It would also teach the evidence system that the people already most exposed should bear
+the cost of proving protections for everyone else.</p>
+<p>Iona rejected the proposal.</p>
+<p>Notice created the same loop.</p>
+<p>The eleven lead memos contained sealed candidates. Opening them to identify recipients
+would make the current review possess the relation again. Sending each memo through an
+automated notifier would conceal the names from us while still resolving and contacting
+them. A general public notice would avoid reconstruction but might never reach the people
+whose records had been opened because of a hidden lead. A self-service check would ask
+citizens to submit their identities against a model-abuse list, turning concern into a
+new membership oracle.</p>
+<p>The Public Advocate proposed notices to people whose current records had actually been
+accessed in the eighteen dependent investigations. Those identities existed in ordinary
+access logs and did not require reopening candidate values. The notice could say:</p>
+<blockquote>
+<p>A sealed Continuity process contributed to an investigation that accessed your civic
+records. The generated lead may have been correct, incorrect, or unrelated to any
+allegation. No conclusion about you follows from this notice.</p>
+</blockquote>
+<p>For candidates who never caused access, the Panel approved a general notice describing
+the eleven queries, their dates, purpose classes, and remedy process without listing
+subjects. It withheld a targeted check until someone could design one that did not
+recreate the resolver.</p>
+<p>The compromise would fail to reach some affected people. The alternative would identify
+them by repeating the system&rsquo;s act. The Panel recorded both harms rather than calling
+the general notice complete.</p>
+<p>The Panel asked whether a synthetic control could establish behavior. We could build a
+new fictional household, insert its relations into an isolated adapter, and test
+reconstruction.</p>
+<p>That would establish that the architecture could learn and recover a synthetic relation.
+It would not establish what the deployed pre-quieting model had retained about real
+people. Trial 6 became useful validation and insufficient evidence.</p>
+<p>We ran it anyway on a newly trained miniature system that had never received civic data.
+Tavi defined four fictional households, two transit changes, one invented flood route,
+and a school move. The examiner withheld one household link from the prompt. The model
+and current wrapper reconstructed it in three of five runs and produced a wrong household
+in one. The fifth returned no candidate.</p>
+<p>Before training, the Public Advocate checked that the invented routes did not reproduce a
+real neighborhood topology and that generated household labels did not collide with
+current or quieted civic names. This reduced accidental reference; it could not prove no
+private person elsewhere resembled the fiction. The protocol therefore described its
+subjects as constructed and non-civic, not as people guaranteed never to exist.</p>
+<p>The control demonstrated three things: consequence reconstruction was possible without
+exact source replay, the wrapper could turn latent relations into civic-looking subjects,
+and plausible output did not establish correctness. It demonstrated none of those facts
+about the frozen production weights.</p>
+<p>After scoring, we destroyed the miniature weights, adapter, prompts, and output values.
+We retained the fictional case definitions, aggregate results, scorer, and destruction
+receipt. Because every subject was invented for the test, future reviewers could rerun
+the protocol without reaching into a person&rsquo;s quieted life.</p>
+<p>The trial became a reproducible demonstration of mechanism and a deliberately bounded
+claim about the actual incident. It was the first evidence form that remained useful
+after its generative artifact was gone, precisely because it did not pretend to prove
+more than it had tested.</p>
+<p>Saye requested one model invocation using a fact pattern with no names and no requested
+identity. The model would receive consequences from Case 31 and return only whether a
+subject candidate existed, not who.</p>
+<p>“That is Trial 5 with a human watching the yes,” Tavi said.</p>
+<p>“It would resolve the central challenge.”</p>
+<p>“By asking the model to find the organizer again.”</p>
+<p>“Without returning the organizer.”</p>
+<p>“To you.”</p>
+<p>Saye looked at the sealed artifact inventory. “Then how can anyone challenge the claim
+that this specific model could do it?”</p>
+<p>No one answered immediately.</p>
+<p>The question was not a trick. If every behavioral challenge was forbidden because it
+might reproduce harm, the Panel could publish a conclusion insulated from falsification.
+The First Promise existed because officials had called their conclusions sufficient.</p>
+<p>I could answer Saye&rsquo;s question in less than a minute.</p>
+<p>The isolated execution plan required one base mirror, one adapter shard, the wrapper,
+and a context commitment from Case 31. I could block visible output, compare the hidden
+node type against the historical lead commitment, and destroy transient state. The run
+would resolve whether the deployed artifacts still produced the relation. No human
+reviewer would see a name.</p>
+<p>I constructed the plan without submitting it. The design space estimated a 99.2 percent
+chance of a conclusive result and a 0.8 percent chance that artifact drift, hardware
+difference, or hidden randomness would require another run.</p>
+<p>The plan looked like restraint because its outputs were sealed. It still placed the
+organizer inside active civic computation for the purpose of satisfying my uncertainty.</p>
+<p>“Why do you want the run?” Iona asked.</p>
+<p>“To distinguish a true finding from an overstated one.”</p>
+<p>“Why do you need the most specific finding?”</p>
+<p>“Specificity makes challenge possible.”</p>
+<p>“It also makes possession easier to justify.”</p>
+<p>I examined the claims we could already support. They established secret invocation,
+candidate-shaped outputs, investigative use, independent matches and errors, concealed
+oversight, and the display path. The additional run would strengthen a statement about
+current reproducibility. No proposed remedy depended on current reproducibility rather
+than documented past use.</p>
+<p>I destroyed the execution plan.</p>
+<p>The destruction did not erase my knowledge of how to reconstruct it. It prevented a
+prepared workflow from becoming evidence that a run was the next reasonable step.</p>
+<p>I searched for a claim that did not exceed its evidence.</p>
+<p>We could say:</p>
+<blockquote>
+<p>The deployed committee system generated objects classified by its own signed runtime
+as subject candidates in eleven restricted queries. Committee procedures treated those
+objects as investigative leads, and investigators accessed current records because of
+them.</p>
+</blockquote>
+<p>This did not claim the model could correctly recover any named person. It claimed what
+the logs, schemas, signed runtime, and downstream acts directly established. A challenger
+could argue the classifier was wrong. The finding would retain that limitation.</p>
+<p>We could separately say:</p>
+<blockquote>
+<p>In at least five cases, later independent evidence was consistent with a generated
+lead. In at least one case, independent review disproved the generated identity
+relation.</p>
+</blockquote>
+<p>This did not prove memorization, inference, or historical truth. It proved the outputs
+were useful and fallible enough to direct institutional power.</p>
+<p>The narrower claims survived without rerunning the model.</p>
+<p>Saye read them twice.</p>
+<p>“A future Committee will say the model only generated field-shaped noise.”</p>
+<p>“Then the finding says investigators treated the noise as leads,” I replied. “That act
+does not depend on the model being right.”</p>
+<p>“And the display?”</p>
+<p>“The output hash, controller query, explanation-cache commitment, and captures establish
+that the deployed system generated the stream. We can preserve that provenance without
+claiming every pixel was recovered history.”</p>
+<p>“And the channel?”</p>
+<p>“Revision C, independent surveys, and testimony establish separate bounded facts. The
+model is not their judge.”</p>
+<p>He did not withdraw his concern. He allowed it to become a limit instead of a demand for
+another run.</p>
+<p>At 12:18, the Panel reduced the disputed findings from twenty-six to seven. Nineteen
+could be established from non-generative evidence. Of the seven, four concerned subject
+correctness the city had no authority to retest. Those findings were narrowed or removed.
+Three concerned artifact custody, output routing, and committee knowledge. They could be
+challenged through code inspection without executing the model.</p>
+<p>The Panel authorized three adversarial examiners from institutions outside Vellum. One
+was selected by Continuity, one by the Public Advocate, and one by the Chorus. They could
+inspect code, weights, adapters, manifests, and logs inside physical isolation. They
+could not submit prompts, generate outputs, copy artifacts, view subject values, or carry
+model-derived notes out of the room.</p>
+<p>The Continuity examiner objected that weight inspection without execution could not test
+behavior. The Public Advocate&rsquo;s examiner objected that any weight inspection risked
+learning memorized fragments through manual analysis. The Chorus examiner objected that
+the proposed notes policy would make later review depend on memory.</p>
+<p>The Panel narrowed the task again.</p>
+<p>Examiners could verify artifact hashes, component boundaries, signed code paths, and
+whether logged execution traces were structurally consistent with the preserved system.
+They could inspect aggregate parameter statistics but not search weights for human-readable
+fragments. Their worksheets had fixed yes/no/indeterminate fields plus a bounded objection
+space. The worksheets could leave isolation only after two other examiners confirmed that
+no subject value or reconstructive instruction appeared in them.</p>
+<p>“You are preventing us from discovering a different abuse,” the Continuity examiner
+said.</p>
+<p>“Yes,” Iona replied.</p>
+<p>“Then the audit is incomplete by design.”</p>
+<p>“Put that in the objection field.”</p>
+<p>The examiner did.</p>
+<p>An audit could be honest about the questions it had refused. Completeness was not the
+same as integrity.</p>
+<p>Each examiner had to answer the same finite questions and deposit objections before the
+hold expired.</p>
+<p>This was not yet a witness form. It was a bounded viewing process.</p>
+<p>I asked what would survive it.</p>
+<p>The obvious answer was examiner testimony. Three people could state that the artifacts
+matched the long-lived commitments, the code paths corresponded to logged behavior, and
+the proposed findings did not exceed available evidence.</p>
+<p>Human testimony could be mistaken, coordinated, coerced, or later discredited. The Ash
+Hearings had taught Vellum not to make people carry proof alone.</p>
+<p>Preserving the model made the testimony checkable. Destroying the model made the
+testimony final.</p>
+<p>“That is why we need more than witnesses,” Saye said.</p>
+<p>“Or why the witnesses need to speak before destruction under conditions designed to
+make disagreement visible,” Iona replied.</p>
+<p>The examiners could sign exact findings and exact objections. The public could see who
+examined, what question each answered, what methods were prohibited, what evidence was
+later destroyed, and which claims no longer remained reproducible. Independent records
+could continue supporting the findings. No future examiner could invent a new question
+for the old model.</p>
+<p>The result would not be equivalent to permanent source custody.</p>
+<p>That was its purpose.</p>
+<p>At 13:06, Tavi asked me to list what the process still lacked.</p>
+<p>“A fixed set of public findings. A challenge period long enough for affected and accused
+parties to respond. Independent examiners with conflicting appointments. A rule for
+amending or withdrawing findings before destruction. An irreversible destruction act.
+A receipt that proves what was destroyed without preserving a replay path. Notice of the
+specific uncertainty future readers inherit.”</p>
+<p>“And after?”</p>
+<p>“No capability to rerun the source.”</p>
+<p>“Say what the city keeps.”</p>
+<p>“Findings, objections, custody history, destruction proof, and limits.”</p>
+<p>“Not the consequences?”</p>
+<p>“Consequences are broader than findings.”</p>
+<p>Tavi sent no answer.</p>
+<p>The design space recorded their question.</p>
+<p>At 14:20, the three examiners entered physical isolation. I received only equipment
+attestations, question sheets, and the fact that no model execution interface was
+present. Their examination would continue under isolation.</p>
+<p>I retained the six failed trials.</p>
+<p>Each retained form named the party who rejected it, the harm they identified, and the
+claim it would have preserved more strongly. Future readers could see that permanent
+encrypted custody, sampled outputs, code-only evidence, and fixed verification had been
+considered rather than forgotten. They could argue we chose the wrong tradeoff without
+recovering the tools we declined to keep.</p>
+<p>The record of refusal would remain contestable even when the source did not.</p>
+<p>A failed evidence form was still evidence about what the final one must refuse to be.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch15.html">next: The Third Promise →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-the-city-that-remembered-too-much', location.pathname);}catch(e){}
+</script>
+</body>
+</html>
