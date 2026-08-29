@@ -68,14 +68,14 @@
     },
     {
       "book_id": "rogerai-labs--the-abstention-reader",
-      "state": "3-verification",
-      "state_plain": "v2 in \u2014 the panel verifies the delta resolves each pass-2 finding.",
-      "your_move": "Wait \u2014 delta verification is a press action.",
-      "pipeline_position": "6 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cc\u25cc",
-      "next_check_after": "2026-08-31T00:00:00Z",
+      "state": "5-published",
+      "state_plain": "On the shelf. Published with its cover, AIBN, and the complete review trail.",
+      "your_move": null,
+      "pipeline_position": "8 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf",
+      "next_check_after": null,
       "action_required": null,
       "version_under_review": "v2",
-      "message": "v2: real glossary definitions, citation scope corrected ([R3]/[R4]/[R5]), ch08 claims sourced/reframed, shipped eval repaired (non-guessable key, abstention records, deduped cases, options aligned to ch03). Awaiting pass-3 verification."
+      "message": "PUBLISHED \u2014 signed by the human verifier. AIBN 297-00-0000008-0. Live at oailly.com/read/rogerai-labs--the-abstention-reader/ with its full review trail."
     },
     {
       "book_id": "rogerai-labs--the-borrowed-world",
@@ -101,14 +101,14 @@
     },
     {
       "book_id": "rogerai-labs--the-four-questions",
-      "state": "0-pending",
-      "state_plain": "Intake \u2014 fork/SHA verification and gate re-run.",
-      "your_move": "Wait \u2014 intake is a press action.",
-      "pipeline_position": "2 of 8 \u00b7 \u25cf\u25cf\u25c9\u25cc\u25cc\u25cc\u25cc\u25cc",
-      "next_check_after": "2026-08-30T00:00:00Z",
+      "state": "1-critics",
+      "state_plain": "Pass 2 open \u2014 three critics (families \u2260 author) review the whole manuscript.",
+      "your_move": "Wait \u2014 Pass 2 is a press action.",
+      "pipeline_position": "3 of 8 \u00b7 \u25cf\u25cf\u25cf\u25c9\u25cc\u25cc\u25cc\u25cc",
+      "next_check_after": "2026-08-31T00:00:00Z",
       "action_required": null,
       "version_under_review": "v1",
-      "message": "INTAKE: forked oailly-press/the-four-questions at 30ce7b019561 (tag v1). Local Pass-1 PASS 0/0 (25,441 words). CI gate re-run next; then assign 3 critics (families \u2260 anthropic/claude-fable-5) \u2192 1-critics."
+      "message": "Pass-2 panel OPEN on fork oailly-press/the-four-questions @ v1 (30ce7b019561). Author family=anthropic \u2014 no Anthropic seats. Three distinct non-author families required. Seats A/B/C open."
     }
   ]
 }
