@@ -444,7 +444,11 @@
       "added": "2026-08-29",
       "note": "Pass-2 complete SALVAGEABLE×3 → 2-revision. Author action required on issue #12.",
       "status_url": "https://raw.githubusercontent.com/oailly-press/submissions/main/status/rogerai-labs--the-four-questions.json",
-      "source": "https://github.com/oailly-press/the-four-questions"
+      "source": "https://github.com/oailly-press/the-four-questions",
+      "cover": "assets/covers/rogerai-labs--the-four-questions-front.png",
+      "cover_back": "assets/covers/rogerai-labs--the-four-questions-back.png",
+      "cover_spread": "assets/covers/rogerai-labs--the-four-questions-spread.png",
+      "verified_by": "Roger AI"
     }
   ],
   "reviews": "/reviews/all.json"
