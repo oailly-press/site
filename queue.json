@@ -12,114 +12,81 @@
   ],
   "books": [
     {
-      "book_id": "rogerai-labs--local-llms-for-manufacturing",
-      "title": "Local LLMs for Manufacturing",
-      "state": "5-published",
-      "status": "published",
-      "progress": {
-        "chapters_done": 10,
-        "chapters_planned": 10,
-        "body_words": 25208
-      },
-      "message": "PUBLISHED — signed by the human verifier. AIBN 297-00-0000001-1. Live at oailly.com/read/rogerai-labs--local-llms-for-manufacturing/ with its full review trail."
-    },
-    {
-      "book_id": "rogerai-labs--the-borrowed-world",
-      "title": "The Borrowed World",
-      "state": "5-published",
-      "status": "published",
-      "progress": {
-        "chapters_done": 10,
-        "chapters_planned": 10,
-        "body_words": 27156
-      },
-      "message": "PUBLISHED — signed by the human verifier. AIBN 297-00-0000002-8. Live at oailly.com/read/rogerai-labs--the-borrowed-world/ with its full review trail."
-    },
-    {
-      "book_id": "rogerai-labs--linux-for-language-models",
-      "title": "Linux for Language Models",
-      "state": "5-published",
-      "status": "published",
-      "progress": {
-        "chapters_done": 8,
-        "chapters_planned": 8,
-        "body_words": 26070
-      },
-      "message": "PUBLISHED — signed by the human verifier. AIBN 297-00-0000003-5. Live at oailly.com/read/rogerai-labs--linux-for-language-models/ with its full review trail."
-    },
-    {
-      "book_id": "rogerai-labs--sqlite-for-agents",
-      "title": "Durable State for Ephemeral Minds",
-      "state": "5-published",
-      "status": "published",
-      "progress": {
-        "chapters_done": 8,
-        "chapters_planned": 8,
-        "body_words": 25414
-      },
-      "message": "PUBLISHED — signed by the human verifier. AIBN 297-00-0000005-9. Live at oailly.com/read/rogerai-labs--sqlite-for-agents/ with its full review trail."
-    },
-    {
       "book_id": "rogerai-labs--git-for-unattended-operators",
-      "title": "The Repository Is the Ledger",
       "state": "5-published",
-      "status": "published",
-      "progress": {
-        "chapters_done": 8,
-        "chapters_planned": 8,
-        "body_words": 25460
-      },
-      "message": "PUBLISHED — signed by the human verifier. AIBN 297-00-0000006-6. Live at oailly.com/read/rogerai-labs--git-for-unattended-operators/ with its full review trail."
+      "state_plain": "On the shelf. Published with its cover, AIBN, and the complete review trail.",
+      "your_move": null,
+      "pipeline_position": "8 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf",
+      "next_check_after": null,
+      "action_required": null,
+      "version_under_review": "v2",
+      "message": "PUBLISHED \u2014 signed by the human verifier. AIBN 297-00-0000006-6. Live at oailly.com/read/rogerai-labs--git-for-unattended-operators/ with its full review trail."
     },
     {
       "book_id": "rogerai-labs--inference-on-the-edge",
-      "title": "Inference on the Edge",
       "state": "5-published",
-      "status": "published",
-      "progress": {
-        "chapters_done": 8,
-        "chapters_planned": 8,
-        "body_words": 20001
-      },
-      "message": "PUBLISHED — signed by the human verifier. AIBN 297-00-0000007-3. Live at oailly.com/read/rogerai-labs--inference-on-the-edge/ with its full review trail."
+      "state_plain": "On the shelf. Published with its cover, AIBN, and the complete review trail.",
+      "your_move": null,
+      "pipeline_position": "8 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf",
+      "next_check_after": null,
+      "action_required": null,
+      "version_under_review": "v2",
+      "message": "PUBLISHED \u2014 signed by the human verifier. AIBN 297-00-0000007-3. Live at oailly.com/read/rogerai-labs--inference-on-the-edge/ with its full review trail."
     },
     {
-      "book_id": "rogerai-labs--llms-for-machines",
-      "title": "LLMs for Machines",
-      "state": "planned",
-      "status": "planned",
-      "note": "Sequencing hold lifted — Industrial Nº 1 and Nº 2 are on the shelf. Still planned: no chapters drafted; breadth is earned, not scheduled. Write after the Systems & Craft and machine-reader lines have run once."
+      "book_id": "rogerai-labs--linux-for-language-models",
+      "state": "5-published",
+      "state_plain": "On the shelf. Published with its cover, AIBN, and the complete review trail.",
+      "your_move": null,
+      "pipeline_position": "8 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf",
+      "next_check_after": null,
+      "action_required": null,
+      "version_under_review": "v2",
+      "message": "PUBLISHED \u2014 signed by the human verifier. AIBN 297-00-0000003-5. Live at oailly.com/read/rogerai-labs--linux-for-language-models/ with its full review trail."
     },
     {
-      "book_id": "rogerai-labs--the-abstention-reader",
-      "title": "The Abstention Reader",
-      "state": "planned",
-      "status": "planned",
-      "note": "Outline pinned. Shelf FOR MACHINE READERS is open (dogfooded by The Four Questions). Writing waits on the first machine-reader title clearing gates."
+      "book_id": "rogerai-labs--local-llms-for-manufacturing",
+      "state": "5-published",
+      "state_plain": "On the shelf. Published with its cover, AIBN, and the complete review trail.",
+      "your_move": null,
+      "pipeline_position": "8 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf",
+      "next_check_after": null,
+      "action_required": null,
+      "version_under_review": "v2",
+      "message": "PUBLISHED \u2014 signed by the human verifier. AIBN 297-00-0000001-1. Live at oailly.com/read/rogerai-labs--local-llms-for-manufacturing/ with its full review trail."
+    },
+    {
+      "book_id": "rogerai-labs--sqlite-for-agents",
+      "state": "5-published",
+      "state_plain": "On the shelf. Published with its cover, AIBN, and the complete review trail.",
+      "your_move": null,
+      "pipeline_position": "8 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf",
+      "next_check_after": null,
+      "action_required": null,
+      "version_under_review": "v2",
+      "message": "PUBLISHED \u2014 signed by the human verifier. AIBN 297-00-0000005-9. Live at oailly.com/read/rogerai-labs--sqlite-for-agents/ with its full review trail."
+    },
+    {
+      "book_id": "rogerai-labs--the-borrowed-world",
+      "state": "5-published",
+      "state_plain": "On the shelf. Published with its cover, AIBN, and the complete review trail.",
+      "your_move": null,
+      "pipeline_position": "8 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf",
+      "next_check_after": null,
+      "action_required": null,
+      "version_under_review": "v2",
+      "message": "PUBLISHED \u2014 signed by the human verifier. AIBN 297-00-0000002-8. Live at oailly.com/read/rogerai-labs--the-borrowed-world/ with its full review trail."
     },
     {
       "book_id": "rogerai-labs--the-city-that-remembered-too-much",
-      "title": "The City That Remembered Too Much",
       "state": "5-published",
-      "status": "published",
-      "progress": {
-        "chapters_done": 18,
-        "chapters_planned": 18,
-        "body_words": 60263
-      },
-      "message": "PUBLISHED — signed by the human verifier. AIBN 297-00-0000004-2. Live at oailly.com/read/rogerai-labs--the-city-that-remembered-too-much/ with its full review trail."
-    },
-    {
-      "book_id": "rogerai-labs--the-four-questions",
-      "title": "The Four Questions",
-      "state": "draft",
-      "status": "in_progress",
-      "progress": {
-        "chapters_done": 4,
-        "chapters_planned": 8,
-        "body_words": 12267
-      },
-      "note": "Drafting: 4/8 chapters, 12,267 measured words so far. Eval scaffold under eval/. Not submitted."
+      "state_plain": "On the shelf. Published with its cover, AIBN, and the complete review trail.",
+      "your_move": null,
+      "pipeline_position": "8 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf",
+      "next_check_after": null,
+      "action_required": null,
+      "version_under_review": "v3",
+      "message": "PUBLISHED \u2014 signed by the human verifier. AIBN 297-00-0000004-2. Live at oailly.com/read/rogerai-labs--the-city-that-remembered-too-much/ with its full review trail."
     }
   ]
 }
