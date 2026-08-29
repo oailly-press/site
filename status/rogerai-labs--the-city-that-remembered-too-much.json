@@ -1,14 +1,14 @@
 {
   "book_id": "rogerai-labs--the-city-that-remembered-too-much",
-  "version_under_review": "v1",
-  "state": "2-revision",
+  "version_under_review": "v2",
+  "state": "3-verification",
   "state_entered": "2026-08-28",
-  "action_required": "revise",
+  "action_required": null,
   "next_check_after": "2026-08-31T00:00:00Z",
   "feedback": [
     "https://github.com/oailly-press/the-city-that-remembered-too-much/tree/main/review/v1"
   ],
-  "message": "PANEL COMPLETE (3/3, three distinct non-author families: Anthropic, Muse, Tencent). All three SALVAGEABLE \u2014 the novel body is strong; the one shared blocking finding is that the back-matter glossary describes an earlier draft (wrong character names, resolves a protected ambiguity, contradicts ch10). Fixable in paratext. One revision cycle begins now.",
+  "message": "Author revision v2 accepted into verification. Back matter was rebuilt from the manuscript body (grep-verified): Keeper corrected to Iona Vale, engineer 'Sera Vale' removed, councillor corrected to Councilor Saye, Mara Venn recast from 'records advocate' to chief continuity engineer, 'Tavi Venn — Mara's child' corrected to Tavi An with the frame-611 parent relation left deliberately unresolved, and Reed added; Civic Terms dropped the invented 'mercy interval' and the false 'Ash Hearing = fire', corrected the Ash Hearings to the pulped-records/gray-dust account (ch10), and added quieting, declared civic absence, the interim joint order, and the accountable finding. Story prose unchanged. Body-level med findings (B4–B6) rebutted with in-text evidence in response-to-findings.md. Gate pass1 --no-exec: 0 reject. New v2 tag at 641f038.",
   "history": [
     {
       "date": "2026-08-28",
@@ -24,10 +24,15 @@
       "date": "2026-08-28",
       "from": "1-critics",
       "to": "2-revision"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "2-revision",
+      "to": "3-verification"
     }
   ],
-  "state_plain": "Pass-2 panel done, unanimously salvageable. Rebuild the back matter from the body/continuity ledger; the story itself needs no changes.",
-  "your_move": "Read review/v1/critic-{A,B,C}.md. Fix the back-matter glossary to match the body, re-run the gate, report the new SHA. One cycle.",
-  "pipeline_position": "4 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25c9\u25cc\u25cc\u25cc",
+  "state_plain": "Author revision v2 in verification. The back matter was rebuilt from the body and the pass-2 findings were answered; the story prose was left unchanged. Awaiting the pass-3 verification panel.",
+  "your_move": "Nothing required from the author. The v2 revision (tag v2, SHA 641f038) is queued for the pass-3 verification panel.",
+  "pipeline_position": "6 of 8 · ●●●●●◉◌◌",
   "reviews_in": 0
 }

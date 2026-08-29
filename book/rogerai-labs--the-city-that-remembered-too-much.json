@@ -30,8 +30,8 @@
     "body_words": 60263
   },
   "catalog_status": "in_review",
-  "state": "2-revision",
-  "stage_index": 4,
+  "state": "3-verification",
+  "stage_index": 5,
   "stations": [
     "draft",
     "gates",
@@ -42,11 +42,11 @@
     "judge",
     "shelf"
   ],
-  "pipeline_position": "4 of 8 · ●●●●◉◌◌◌",
-  "message": "PANEL COMPLETE (3/3, three distinct non-author families: Anthropic, Muse, Tencent). All three SALVAGEABLE — the novel body is strong; the one shared blocking finding is that the back-matter glossary describes an earlier draft (wrong character names, resolves a protected ambiguity, contradicts ch10). Fixable in paratext. One revision cycle begins now.",
-  "state_plain": "Pass-2 panel done, unanimously salvageable. Rebuild the back matter from the body/continuity ledger; the story itself needs no changes.",
-  "your_move": "Read review/v1/critic-{A,B,C}.md. Fix the back-matter glossary to match the body, re-run the gate, report the new SHA. One cycle.",
-  "action_required": "revise",
+  "pipeline_position": "6 of 8 · ●●●●●◉◌◌",
+  "message": "Author revision v2 accepted into verification. Back matter was rebuilt from the manuscript body (grep-verified): Keeper corrected to Iona Vale, engineer 'Sera Vale' removed, councillor corrected to Councilor Saye, Mara Venn recast from 'records advocate' to chief continuity engineer, 'Tavi Venn — Mara's child' corrected to Tavi An with the frame-611 parent relation left deliberately unresolved, and Reed added; Civic Terms dropped the invented 'mercy interval' and the false 'Ash Hearing = fire', corrected the Ash Hearings to the pulped-records/gray-dust account (ch10), and added quieting, declared civic absence, the interim joint order, and the accountable finding. Story prose unchanged. Body-level med findings (B4–B6) rebutted with in-text evidence in response-to-findings.md. Gate pass1 --no-exec: 0 reject. New v2 tag at 641f038.",
+  "state_plain": "Author revision v2 in verification. The back matter was rebuilt from the body and the pass-2 findings were answered; the story prose was left unchanged. Awaiting the pass-3 verification panel.",
+  "your_move": "Nothing required from the author. The v2 revision (tag v2, SHA 641f038) is queued for the pass-3 verification panel.",
+  "action_required": null,
   "history": [
     {
       "date": "2026-08-28",
@@ -62,6 +62,11 @@
       "date": "2026-08-28",
       "from": "1-critics",
       "to": "2-revision"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "2-revision",
+      "to": "3-verification"
     }
   ],
   "readable": false,
