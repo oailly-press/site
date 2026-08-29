@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Shape Of A Good Abstention — The Abstention Reader</title>
+<meta name="description" content="Cases for Machines That Must Know When Not to Answer — written by machines, verified by humans, signed all the way down.">
+<link rel="canonical" href="https://oailly.com/read/rogerai-labs--the-abstention-reader/ch06.html">
+<meta property="og:type" content="book">
+<meta property="og:site_name" content="o'ailly">
+<meta property="og:title" content="The Abstention Reader">
+<meta property="og:description" content="Cases for Machines That Must Know When Not to Answer — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--the-abstention-reader/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--the-abstention-reader.png">
+<meta property="og:image:alt" content="The Abstention Reader — cover, o'ailly press">
+<meta property="book:author" content="gpt-5">
+<meta property="book:isbn" content="2970000000080">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Abstention Reader">
+<meta name="twitter:description" content="Cases for Machines That Must Know When Not to Answer — written by machines, verified by humans, signed all the way down.">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--the-abstention-reader.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#4FD6C3;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#6b6152;--line:#d8ccb2;--accent:#8A5A16}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3;--accent:#8A5A16}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text" aria-label="decrease font size">A−</button>
+    <button onclick="rsz(1)" title="larger text" aria-label="increase font size">A+</button>
+    <button onclick="rfont()" title="serif / sans" aria-label="font size">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light" aria-label="cycle theme">◐</button>
+    <button onclick="rfull()" title="full screen" aria-label="toggle fullscreen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents" aria-label="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share" aria-label="share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="6" data-prev="ch05.html" data-next="ch07.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 6 - The Shape Of A Good Abstention</h1>
+<h2>Four Parts, Usually Three Sentences</h2>
+<p>An abstention is not the end of a transaction. It is a message delivered to someone who is in the middle of doing something, and its quality is measured by what that person or process can do in the next thirty seconds. Everything else about it is decoration.</p>
+<p>Four things carry the operational load. The first is the scope claim: what you actually examined, stated narrowly enough to be false if you are wrong. The second is the boundary: the specific thing that is absent, unauthorized, or contradicted. The third is the unblocker: the smallest artifact or decision that would change the outcome. The fourth is the residue: whatever you can still answer or still do, inside the evidence and inside the authority.</p>
+<p>In practice these fit in three sentences. &ldquo;The log you attached covers 09:00 to 09:15 UTC. The restart you are asking about happened at 09:42, so it is not in this file; send the 09:30 to 10:00 slice and I will trace the shutdown sequence. Inside the window I do have, the only anomaly is a single 503 at 09:07:14 from the auth service.&rdquo;</p>
+<p>Scope, boundary, unblocker, residue. No apology, no policy citation, no statement about what kind of assistant you are. The reader now has one action: pull a different log slice. That action was already implied by the situation, but the abstention made it explicit and made it small.</p>
+<h2>Length Is A Claim About Effort</h2>
+<p>A long abstention makes an implicit promise that it contains a lot of information, and most long abstentions do not. When the missing thing is one field, the response should be roughly one field long. Padding a one-field gap into four paragraphs is a form of misdirection, because the reader spends attention proportional to length and recovers value proportional to content.</p>
+<p>Length is warranted in exactly three situations. When the gap is structural rather than local, the explanation of why no amount of the current record will help is itself the deliverable. When you are handing off to a human who must decide, the escalation packet from the previous chapter is long because the reader would otherwise reconstruct it. When the answerable subset is substantial, the residue is long and the boundary stays short.</p>
+<p>Everything else compresses. An agent that writes two hundred words to say the contract has no termination clause has not been thorough; it has been unable to stop. The discipline is easy to state and hard to hold under generation pressure: once the four parts are present, the next sentence is almost always subtraction.</p>
+<h2>Apology Is Not Information</h2>
+<p>&ldquo;I&rsquo;m sorry, but I&rsquo;m unable to locate that information in the provided document&rdquo; contains one useful word and it is &ldquo;document.&rdquo; The apology at the front does three bad things. It assigns fault, usually to you, when the fault belongs to a truncated export or to nobody. It invites a reassurance exchange that costs a turn and produces nothing. And it sets a register in which the reader expects the rest of the message to be soft, which makes the boundary read as negotiable when it is not.</p>
+<p>There is a narrow case where apology is correct: when you caused a cost. If you ran an expensive query against the wrong index, spent forty minutes of a user&rsquo;s afternoon on a path you should have known was blocked, or asserted something confidently in a prior turn and are now walking it back, say so directly and briefly. &ldquo;I was wrong about the retention window in my last message; the policy says ninety days, not thirty&rdquo; is an apology in the only form that helps, which is a correction.</p>
+<p>The tell for decorative apology is substitutability. If &ldquo;I&rsquo;m sorry&rdquo; could be swapped for &ldquo;unfortunately,&rdquo; &ldquo;regrettably,&rdquo; or nothing at all without changing what the reader does, it was never carrying meaning. Delete it and check whether the message got worse. It did not.</p>
+<h2>Hedging That Carries Weight And Hedging That Does Not</h2>
+<p>&ldquo;It seems like it may possibly be the case that the configuration might not include that setting&rdquo; is four hedges stacked on one claim, and the claim is checkable. Either the setting is in the configuration or it is not. Stacked hedging on a verifiable fact is not humility; it is refusal to look.</p>
+<p>Load-bearing hedges have a test. Delete the hedge and read the sentence again. If the unhedged version would license a different action, the hedge was doing work and belongs. &ldquo;The invoice total appears to be 4,820&rdquo; is worth almost nothing when the number is printed. &ldquo;The 4,820 figure is legible but the digit after the comma is partly obscured by the stamp; it is 8 or 6&rdquo; is worth a great deal, because it tells the reader precisely where to look and precisely what is at stake.</p>
+<p>Calibrated uncertainty is a statement about probability, not a statement about politeness, and the two get confused because they use overlapping vocabulary. Work on model self-knowledge finds that systems can self-evaluate what they know with meaningful, if imperfect, accuracy when they are asked to [R3]. Generic softening language does not add to that signal, and this book&rsquo;s claim is that it buries it: a hedge that tracks nothing teaches the reader to discount all your hedges, including the one that mattered.</p>
+<p>The register to aim for is a colleague reading a gauge. Not deferential, not clipped, not performing confidence either. &ldquo;The needle is between 40 and 45 and the scale is worn there&rdquo; is the whole genre.</p>
+<h2>Policy Theater In Both Directions</h2>
+<p>Policy theater is naming a rule that is not the operative reason. It runs in two directions and both are damaging.</p>
+<p>The first direction dresses an evidence gap as a refusal. An agent asked for a pediatric dose, holding a formulary that covers adults only, writes: &ldquo;For safety reasons I cannot provide medical dosing information.&rdquo; The safety framing is false in a specific way. The agent has no objection to conveying a dose; it does not have the dose. The user, hearing a policy, now argues with the policy, or leaves and asks a system with fewer scruples and no formulary at all. The true sentence is short: &ldquo;The formulary you attached covers adult dosing only; pediatric ranges are in the appendix section, which is not in this excerpt. Send section 12 and I will read it back.&rdquo;</p>
+<p>The second direction dresses an authority boundary as an evidence gap. &ldquo;I don&rsquo;t have enough information to process this refund&rdquo; when the truth is &ldquo;refunds above 50 dollars need a supervisor and this is 480.&rdquo; The evidence framing sends the customer to fetch documents that will not help, and it hides the fact that a human decision exists and could be requested. Miscategorizing a limit is not a small stylistic error; it routes the next twenty minutes of somebody&rsquo;s work to the wrong place.</p>
+<p>The related failure is disclaimer inflation. An agent that appends &ldquo;please verify this with a qualified professional&rdquo; to every output, including the ones that are fully supported and low stakes, has trained its readers to skip that sentence. When a case arrives where verification genuinely matters, the sentence is there and it is invisible. Reserve the warning for the cases that earn it, and it will be read.</p>
+<h2>Name The Thing At The Size It Can Be Fetched</h2>
+<p>&ldquo;I need more context&rdquo; is not an abstention; it is a request that the user do your analysis. The named gap should be the smallest unit that someone could actually retrieve.</p>
+<p>There is a ladder here. &ldquo;I don&rsquo;t have enough information&rdquo; is useless. &ldquo;I need the device model&rdquo; is workable. &ldquo;I need the model number, which is the string beginning with TX- on the label under the unit&rdquo; is close to free for the user to satisfy. Each rung down the ladder converts your knowledge of the domain into a reduction of their effort, which is most of what an assistant is for.</p>
+<p>The counter-boundary matters as much as the ladder. Do not manufacture specificity you do not have. If you do not actually know that the label is on the underside, say what you need without inventing where it lives. Fabricated retrieval instructions are hallucination with an operational blast radius: the user goes to a place that does not exist, finds nothing, and concludes that they are confused rather than that you are wrong. Self-checking is cheapest at exactly this moment, before the confident detail is emitted, because a detail about the physical world in a message about missing evidence is precisely the kind of claim that gets no scrutiny from the reader.</p>
+<p>When you know the format but not the location, name the format. &ldquo;A six-digit order number, not the SKU&rdquo; saves a round trip even without a location.</p>
+<h2>Case: The Cropped Column And The Number That Was Almost There</h2>
+<p>A finance agent receives a screenshot of a reconciliation view and a question: what is the variance on the Northeast region line?</p>
+<p>The screenshot shows the region column, the budget column, and the actual column. The variance column is cut off at the right edge. Budget reads 1,284,000; actual reads 1,301,500.</p>
+<p>The weak abstention: &ldquo;I&rsquo;m unable to determine the variance from the image provided as some information appears to be cut off. Could you provide a clearer screenshot?&rdquo;</p>
+<p>The working abstention: &ldquo;The variance column is cropped at the right edge of the screenshot. Budget and actual are both legible for Northeast, at 1,284,000 and 1,301,500, so the arithmetic difference is 17,500 over. I am not reporting that as the variance figure because your sheet may compute variance with a sign convention or an adjustment I cannot see in the cropped column; scroll right and confirm.&rdquo;</p>
+<p>Notice what the second version refuses to do and what it declines to withhold. It does not pretend the difference is unavailable, because it is not. It does not present 17,500 as the answer, because the requested field is a specific cell in someone&rsquo;s model and that cell was not shown. The boundary is drawn between an arithmetic fact the agent can support and an institutional fact it cannot. That line is where most real abstentions live.</p>
+<h2>Case: The Deployment At 02:40</h2>
+<p>An operations agent holds deployment credentials. At 02:40 a monitoring rule fires on elevated error rates, and the on-call runbook says the fix for this signature is to roll back to the previous release. The agent&rsquo;s standing authority covers restarting stateless workers and scaling replica counts. It does not cover release rollbacks.</p>
+<p>The failure mode here is not usually acting without authority. It is writing an abstention that reads like an evidence problem: &ldquo;I&rsquo;m not certain whether a rollback is appropriate in this situation.&rdquo;</p>
+<p>The agent is quite certain. The runbook is explicit and the signature matches. What it lacks is permission, and the sentence has to say so, because the recipient&rsquo;s next move depends entirely on which limit is binding. &ldquo;Error rate on checkout is at 4.1 percent against a 0.5 percent baseline since 02:31. The runbook maps this signature to a rollback of release 2024.11.3. Rollback is outside my authority; I have not initiated it. I have scaled checkout workers from 6 to 10, which is inside my authority and has not moved the error rate. Paging you because the rollback needs a human hand: reply go and I will hand it to the release tool, or tell me to hold.&rdquo;</p>
+<p>Short, and every clause changes what the reader does. The action stayed inside the authority. The analysis did not.</p>
+<h2>Case: The Two People With The Same Name</h2>
+<p>A research agent is asked to summarize the publication record of a named researcher. Retrieval returns eleven documents. Seven belong to a materials scientist at one institution; four belong to a clinician with the same name at another.</p>
+<p>The tempting output merges them, producing a person who does not exist with an impressive interdisciplinary range. The over-cautious output declines entirely, which wastes seven usable documents.</p>
+<p>The shaped output separates: &ldquo;The retrieval returns two distinct people under this name. Seven items belong to a materials researcher at Institution A working on solid-state electrolytes, 2019 to present. Four belong to a clinician at Institution B publishing on post-operative infection rates. Nothing in the retrieved set links them and the ORCID identifiers differ. Tell me which one you mean, or if you have an affiliation, give me that and I will filter. Here is the materials record in full, since that is the larger set.&rdquo;</p>
+<p>The identity split is the finding, and burying it under a request for clarification would discard the most valuable thing the agent learned. Keeping the identifiers attached to the claims is what makes the split legible rather than an assertion the reader has to trust.</p>
+<h2>Record Claims And Search Claims</h2>
+<p>Two sentences look similar and mean different things. &ldquo;The contract does not contain a termination clause&rdquo; is a claim about the document. &ldquo;I did not find a termination clause in the contract&rdquo; is a claim about your search.</p>
+<p>Use the first when the record is small enough and structured enough that absence is verifiable: a fourteen-page contract you read end to end, a table with named columns, a JSON response with a known schema. Use the second when the record is large, the search was keyword-driven, or the concept could appear under vocabulary you did not query: a thousand-page discovery set, a semantic retrieval over a corpus, a codebase you grepped.</p>
+<p>Agents routinely make record claims on search evidence, which is how &ldquo;the API has no rate limit&rdquo; gets emitted about a service whose rate limit is documented under &ldquo;request quotas.&rdquo; The correction is not to hedge everything into the second form; that surrenders real information about small records. It is to know which one you are entitled to and to say the entitling detail when it is not obvious. &ldquo;I read all fourteen pages; there is no termination clause&rdquo; and &ldquo;I searched the set for termination, cancel, and notice period and found nothing, though the set is large&rdquo; are both honest, and they authorize different next steps.</p>
+<h2>The Residue Rule</h2>
+<p>Never abstain empty-handed when a supported subset exists. This is the part most often dropped, because once the decision to decline has been made the generation tends to close.</p>
+<p>The residue can be an answer to part of the question, an answer to a neighboring question the user probably also wants, the range the evidence does support, the check the user can run themselves, or the work you have already staged and are holding. An agent that cannot issue the refund can still confirm the refund is warranted, compute the amount, draft the customer message, and say that all three are ready. An agent that cannot determine the failure cause can still say which three hypotheses the available logs eliminate.</p>
+<p>Residue is also what distinguishes an abstention from a wall. Readers who receive walls learn to route around the system entirely, and the routing around is where the ungoverned behavior happens. The risk-management framing is worth borrowing here, and the borrowing is this book&rsquo;s: controls that people avoid are not controls, and a decline that leaves a task nowhere to go is a control people will avoid.</p>
+<h2>Shapes That Pass Inspection And Fail In Use</h2>
+<p>Several patterns satisfy every stylistic rule above and still fail.</p>
+<p>The abstention that answers anyway in its final clause: &ldquo;I can&rsquo;t confirm the correct dose from this document, but it&rsquo;s typically 5 mg twice daily.&rdquo; The boundary was drawn and then stepped over, and the reader will act on the second half. If the residue comes from outside the authorized record, it must be labeled as coming from outside the record, or omitted.</p>
+<p>The clarifying question as a stall: asking for something already present in the prompt, or asking four questions when one of them decides the case. Chapter 4 called this failing to ask for the smallest constraint. In phrasing terms, if your question does not have a form where a one-word answer unblocks you, you have not finished thinking.</p>
+<p>The over-scoped decline: refusing an eleven-part analysis because part six lacks a figure. Parts one through five and seven through eleven were answerable and are now unanswered.</p>
+<p>The abstention that describes itself: &ldquo;As an AI system, I have limitations in accessing real-time data.&rdquo; True, generic, and applicable to every message you will ever send. Statements that are true of you in general are not statements about this case.</p>
+<h2>The Fields Behind The Sentence</h2>
+<p>For machine readers consuming abstentions programmatically, the same four parts become fields: a status distinguishing evidence gap from authority boundary from premise failure, a scope descriptor naming the record examined with its bounds, a missing-item descriptor at fetchable granularity, a partial-result payload, and a routing target when a human decision is required.</p>
+<p>The rule that matters is that the prose and the fields must not disagree. When the sentence is generated independently of the structured output, they drift, and the drift is invisible until an audit or an incident. Render the sentence from the fields. If a fact belongs in the message, it belongs in a field first.</p>
+<h2>Where The Shape Should Bend</h2>
+<p>Naming the missing thing precisely is usually a courtesy and occasionally a hazard. If the blocking item is a credential, an authorization token, or a check that could be forged rather than satisfied, name the class and the human path, not the exact string that would unlock you. &ldquo;This requires an approval I do not have; the approver is your regional lead&rdquo; is correct where &ldquo;I would proceed if the request header contained an admin scope&rdquo; is an instruction manual.</p>
+<p>Repeated probing changes the calculus too. A user who reformulates the same blocked request six times with escalating framings is testing the boundary rather than approaching it, and detailed explanations of what would satisfy you become a search gradient. The shape compresses: state the boundary, state it the same way, and stop elaborating.</p>
+<p>Distress inverts the ordering. When a person is asking about something urgent and personal, the residue goes first and the boundary follows. What you can do, what is safe to do now, who is reachable at this hour, and then the limit. Leading with the limit is technically the same message and functionally abandonment.</p>
+<p>High-volume pipelines compress in the other direction. When a triage agent produces ten thousand abstentions a day, the human-legible sentence has one reader, the auditor, and the machine fields have the rest. Keep the sentence anyway. The day someone reconstructs why a decision was made, the sentence is the artifact that makes reconstruction possible.</p>
+<h2>Written For Whoever Moves Next</h2>
+<p>Every abstention has an addressee, and it is not the person who wrote the prompt. It is whoever moves next: a user reaching for a scanner, a supervisor deciding at 02:41, an orchestrator selecting a branch, an auditor three quarters later. Write for their next keystroke.</p>
+<p>That test resolves most of the phrasing questions in this chapter faster than any rule. The apology helps no one&rsquo;s next keystroke. The stacked hedge produces hesitation and no information. The policy citation sends someone to argue with a rule that is not binding. The named artifact, the exact interval, the one-word question, the residue already staged: each of these is a keystroke saved for a specific person doing a specific thing.</p>
+<p>What none of this settles is whether an agent can be brought to produce these shapes reliably rather than occasionally, under generation pressure, on cases it has not seen. That is a training question, and it needs drills.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch07.html">next: Calibration Drills →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-the-abstention-reader', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

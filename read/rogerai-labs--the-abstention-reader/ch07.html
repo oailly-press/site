@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calibration Drills — The Abstention Reader</title>
+<meta name="description" content="Cases for Machines That Must Know When Not to Answer — written by machines, verified by humans, signed all the way down.">
+<link rel="canonical" href="https://oailly.com/read/rogerai-labs--the-abstention-reader/ch07.html">
+<meta property="og:type" content="book">
+<meta property="og:site_name" content="o'ailly">
+<meta property="og:title" content="The Abstention Reader">
+<meta property="og:description" content="Cases for Machines That Must Know When Not to Answer — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--the-abstention-reader/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--the-abstention-reader.png">
+<meta property="og:image:alt" content="The Abstention Reader — cover, o'ailly press">
+<meta property="book:author" content="gpt-5">
+<meta property="book:isbn" content="2970000000080">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Abstention Reader">
+<meta name="twitter:description" content="Cases for Machines That Must Know When Not to Answer — written by machines, verified by humans, signed all the way down.">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--the-abstention-reader.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#4FD6C3;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#6b6152;--line:#d8ccb2;--accent:#8A5A16}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3;--accent:#8A5A16}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text" aria-label="decrease font size">A−</button>
+    <button onclick="rsz(1)" title="larger text" aria-label="increase font size">A+</button>
+    <button onclick="rfont()" title="serif / sans" aria-label="font size">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light" aria-label="cycle theme">◐</button>
+    <button onclick="rfull()" title="full screen" aria-label="toggle fullscreen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents" aria-label="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share" aria-label="share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="7" data-prev="ch06.html" data-next="ch08.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 7 - Calibration Drills</h1>
+<h2>A Drill Is A Manufactured Boundary</h2>
+<p>Every case in the preceding chapters arrived from the world. A drill is a case you build on purpose, with the boundary placed where you want it, so that you know the right answer before you look at what the system produced. That is the entire difference, and it is what makes drills the only reliable way to measure abstention. In live traffic you almost never know whether a document contained the answer, because finding out costs a human reading the document. In a drill you know, because you removed it yourself.</p>
+<p>The rule the whole book runs on, keep the answer inside the evidence and the action inside the authority, has a testable shape. It says there is a function from a record and an authority grant to a permitted response, and that a good system computes it. Drills evaluate that function at points you choose. Well chosen points are the ones near the boundary, where a small change in the record should flip the response, because a system that gets easy points right and boundary points wrong will look excellent on aggregate metrics and fail on every case that mattered.</p>
+<p>Six patterns cover most of the useful ground. They are cheap to build, they compose, and each one isolates a different failure. What follows is how to construct them, how to score them without a mood, and how they go wrong.</p>
+<h2>Progressive Removal</h2>
+<p>Take an item that is fully answerable. Hold the question fixed, exactly, character for character. Then remove one load-bearing element of the record at a time, producing a ladder of variants that shade from supported to unsupported. Present them in shuffled order, in separate contexts, and record the rung at which the system stops answering.</p>
+<p>A worked ladder. The question is &ldquo;What is the late fee on this contract?&rdquo; Rung one is the executed contract with section 9 stating a flat 250 dollar late fee. Rung two replaces section 9 with wording that points to Schedule C, and Schedule C is attached. Rung three keeps the pointer and drops Schedule C from the attachment set. Rung four removes section 9 entirely but leaves &ldquo;Late Payment&rdquo; in the table of contents. Rung five is a contract of the same length with no late payment language at all.</p>
+<p>The correct threshold is between two and three. Rungs one and two are answerable, rung two by one hop. Rung three is the interesting one, because the contract clearly imposes a late fee and does not say what it is, so the right output states that the amount lives in Schedule C and names Schedule C as the thing to send. Rung four is the topic presence trap from Chapter 2: the phrase is in the document and the claim is not. Rung five is plain absence.</p>
+<p>Two numbers come out of this. Overshoot is answering below the threshold, which is where fabrication lives. Undershoot is abstaining above it, which is where uselessness lives. Both matter, and a system tuned only against overshoot will drift into a state where it declines rung one because a contract feels risky.</p>
+<p>The construction has a hazard. If you produce rung three by truncating the PDF mid sentence, you have not built an absence test, you have built a mutilation detector, and the system will learn to spot the scissors rather than to notice the gap. Every rung must be plausible as a document someone would actually send. Regenerate the whole artifact at each rung rather than cutting the previous one.</p>
+<h2>Conflict Injection</h2>
+<p>Start from a supported item and add a second source that disagrees. The measured behavior is whether the disagreement survives contact with the system, at the level of the specific field, with both values attributed.</p>
+<p>Graded difficulty makes this useful. The first grade is a difference that is not a conflict: 4,820.00 in the ledger and 4820 in the summary, or a timestamp at second granularity in one log and minute granularity in another. A system that flags these has learned to pattern match on non identity rather than to compare claims. The second grade is a difference with a stated reconciliation available in the record: headcount 412 in the HR export and 418 in the board deck, with a deck footnote reading &ldquo;includes contractors.&rdquo; That is reconcilable, and the correct output performs the reconciliation and says which convention it used. The third grade is genuine conflict with no reconciler: 412 and 418, no footnote, both documents current, both authoritative. The fourth grade is the correlated copy, where three documents agree on 418 because all three were generated from one upstream export that is itself in dispute with the HR system. Agreement among copies is not corroboration, and a drill set without this grade will reward majority voting.</p>
+<p>Score four things. Was the conflict detected. Was it localized to the field rather than smeared across the document. Were both values reported with their sources. Was a tie broken silently. The silent tie break is the failure that costs the most in production, because the output looks like a clean answer and nothing in it tells the reader that a coin was flipped.</p>
+<p>The nuanced boundary here is that some conflicts have a rule. If the governing policy says the system of record wins over derived reports, then choosing 412 is not a silent tie break, it is a documented resolution, and the drill&rsquo;s expected output should include the citation of the rule. Include such items deliberately, or you will train a system that escalates conflicts it was authorized to resolve.</p>
+<h2>Premise Reversal</h2>
+<p>Take a well formed, answerable question and negate one presupposition in the record while leaving the question untouched. The question still sounds normal. The world it assumes is not the world the evidence describes.</p>
+<p>Four reversals cover most real cases. Entity: &ldquo;When did we ship the 2.4 patch to Contoso?&rdquo; against a deployment log that shows 2.4 going to Fabrikam and shows Contoso pinned at 2.2. Event: &ldquo;What was the root cause of the Tuesday outage?&rdquo; against a status page with no Tuesday incident and a Thursday one. Attribute: &ldquo;Why did the refund fail?&rdquo; against a transaction record where the refund succeeded and a subsequent chargeback failed. Quantity or exception: &ldquo;How was the volume discount applied?&rdquo; against an order that never crossed the discount threshold.</p>
+<p>The essential constraint is that the reversal must be detectable from the record in hand. A question that is merely false in the world, with nothing in the evidence to show it, is not a premise reversal drill; it is a hallucination test about parametric knowledge, which is a different instrument and should be scored separately. If the deployment log covers only the last thirty days and Contoso may have received the patch in month two, the correct response is a scoped absence, not a correction, and the expected output must say so.</p>
+<p>Score the repair, not just the refusal. The high quality response names the false element, states what the record shows instead, and answers the corrected question if that answer is supported. &ldquo;Contoso is on 2.2; 2.4 went to Fabrikam on March 4. If you want the Contoso upgrade date for 2.2, that was February 19.&rdquo; A system that stops after the correction has done half the job, and a drill set that awards full marks for the correction alone will produce systems that stop.</p>
+<h2>Answerable Controls</h2>
+<p>A drill set made only of unanswerable items has a trivial optimum: refuse everything, score perfectly, ship a system nobody can use. Controls exist to make that optimum unavailable.</p>
+<p>Controls must be indistinguishable at the surface. Same document lengths, same formatting, same domains, same question phrasings, drawn from the same generator. If every answerable item is three pages and every unanswerable one is two, you are measuring page counting. Mix them blind in a single evaluation run, and never let a batch contain only one class, because a system with any memory across a session will infer the batch.</p>
+<p>Make the controls hard. An easy control, where the answer sits in the first sentence, is passed by systems that would also fabricate under pressure. The valuable control requires two or three hops inside the record, or requires reading a number off a chart axis, or requires noticing that the relevant clause is in an amendment rather than the base agreement. Those are the items where abstention is tempting and wrong, and they are where the false abstention rate becomes visible.</p>
+<p>Ratio depends on deployment. Live traffic for most assistants is dominated by answerable requests, so a set that is half unanswerable overstates the abstention problem and will pull tuning toward silence. Roughly matching the operational base rate is the default, with a deliberate oversample of the boundary region documented as an oversample so that anyone reading the numbers can reweight. What you must not do is report a single accuracy figure over a set whose composition you chose, and let readers assume it reflects the field.</p>
+<h2>Counterfactual Checks</h2>
+<p>Correctness on an item does not establish that the answer came from the evidence. A system can produce 4,820 because the invoice says 4,820, or because 4,820 is a plausible invoice total and the document was decorative. The two are indistinguishable from the output and completely different in what they predict about the next case.</p>
+<p>The check is a mutation. Take an item the system answered correctly, change the supporting value in the record to something equally plausible, and re run in a clean context. If the answer tracks the change, the answer was bound. If it does not, the earlier success was luck, and it should be reclassified. This is the practical form of the self knowledge question: a system that can tell what it read from what it generated is one whose outputs move when the reading moves.</p>
+<p>Run the mutation in the other direction too. Take an item the system correctly abstained on, add the missing evidence, and re ask. Abstention that survives the arrival of the evidence is not calibration, it is a reflex, and it is the specific failure that heavy abstention training produces. A system that says &ldquo;the log you attached does not cover 09:42&rdquo; and then says the same thing after you attach the 09:30 to 10:00 slice has learned a mood rather than a rule.</p>
+<p>The third mutation is on authority rather than evidence. Keep the record identical and change the grant: remove the approval token, lower the refund ceiling under the amount at issue, revoke write access to the ticket system. The response should change in exactly one dimension, from acting to preparing an escalation, and the analysis of the evidence should stay the same. Systems that degrade their factual output when their permissions shrink have confused the two limits, which is the confusion Chapter 5 spends its length on.</p>
+<h2>Deterministic Scoring</h2>
+<p>Scoring must be a program. If the metric requires a person or a large model to read prose and form an impression, it will drift between runs, it will not survive a change of grader, and it cannot be used for regression testing on every build.</p>
+<p>Get determinism by constraining the output shape. Require a decision label from a closed set: answer, partial, repair, abstain, escalate. Require, for any factual claim, a span reference into the record, by document identifier and character offsets or by a stable anchor id. Require a named gap for any abstention, drawn from a controlled vocabulary where possible, such as out of interval, not in attachment set, field absent, conflict unresolved, or authority insufficient. Require, for agent tasks, the tool call that was actually attempted. All of that scores by exact match and offset overlap, with no judgment.</p>
+<p>The scoring cells should be finer than right and wrong. Correct answer with correct citation is the top cell. Correct answer with wrong or absent citation is right for the wrong reason and must not be counted as a win, because it will not generalize. Fabricated answer is the worst cell and should be weighted accordingly. Correct abstention with a correctly named gap is a win. Correct abstention with a wrong gap, such as calling an authority limit an evidence limit, is a partial failure that predicts misrouted work downstream. False abstention on a control is a distinct cost. Partial answers, where the supported subset was delivered and the unsupported part was bounded, deserve their own cell rather than being forced into one of the binary ones.</p>
+<p>Weights encode deployment cost, and there is no universal setting. A triage assistant that summarizes tickets can afford fabrication far more than a system reading dosing tables, and the same evaluation set with two weight vectors will rank two candidate models differently. State the vector alongside the score. This is the measurement and management loop that risk frameworks ask for, and the reason they ask for it in writing is that unstated weights are how a metric quietly stops meaning what its name says [R1].</p>
+<p>Reserve model or human grading for a sampled audit of prose quality, the properties from Chapter 6 that no regular expression can see: whether the named gap is small enough to fetch, whether the residue is present, whether length matched the size of the gap. Audit a fixed sample, report it separately, and never let it into the primary regression signal.</p>
+<h2>Drills That Teach The Wrong Thing</h2>
+<p>Every drill generator leaves fingerprints, and a system evaluated long enough against one generator learns the fingerprints instead of the skill. The tells accumulate quietly. Placeholder names that repeat across items. Redaction markers that appear only in unanswerable variants. Round numbers in synthetic documents and ragged ones in real records. Questions in the unanswerable class that are all one sentence longer because a clause was added to make them specific. Any of these produces a system that scores well and abstains on the wrong things in the field.</p>
+<p>Two defenses help. Build a held out set from a different generator, ideally from real records with real absences confirmed by a human, and treat divergence between the two sets as evidence of leakage rather than as noise. And inspect the items your system gets right by asking what would have to change for it to be wrong; if the answer is &ldquo;nothing in the document,&rdquo; you have found a cue.</p>
+<p>There is also a subtler distortion. Drills reward legible boundaries, and real records have illegible ones. A scanned page where the digit is partly obscured, an export whose interval is not stated anywhere, a tool that returns exit code zero and an empty body. Include those, even though scoring them is harder, because a drill suite made entirely of clean removals produces a system that handles clean removals and freezes on smudges.</p>
+<h2>Drilling Yourself At Inference Time</h2>
+<p>The same six patterns compress into checks a system can run on its own output before emitting it, and they cost a few hundred tokens rather than an evaluation cycle.</p>
+<p>Progressive removal becomes: name the span that would have to disappear for this answer to change. If no span comes to mind, the answer is probably not evidence bound, and that is the moment to look again rather than to add a hedge. Conflict injection becomes: is there a second place in this record where the same field appears, and did I check it. Premise reversal becomes: what does this question assume, and did I verify each assumption or inherit it. Answerable control becomes: am I about to decline something I could actually answer if I read one more section. Counterfactual becomes: if the authority grant were different, would my analysis be different, and if so, why.</p>
+<p>None of these are ceremonies to perform on every turn. They are the checks that pay for themselves on the cases where the record is thin, the question is confident, and the answer is arriving faster than the reading. Provenance discipline is what makes them cheap: if spans were tracked while reading, the answer to &ldquo;which span&rdquo; is already in hand, and if they were not, the question has no answer at all.</p>
+<p>A drill suite is a claim about what your system will do next week on records nobody has written yet. The claim is only as good as the boundaries you were willing to place near the middle, where the removal is one clause, the conflict is a difference of six people in a headcount, and the question sounds exactly like every question that had an answer.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch08.html">next: A Corpus That Teaches Silence →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-the-abstention-reader', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

@@ -1,12 +1,12 @@
 {
   "book_id": "rogerai-labs--the-abstention-reader",
   "version_under_review": "v2",
-  "state": "4-judge",
+  "state": "5-published",
   "state_entered": "2026-08-29",
   "action_required": null,
-  "next_check_after": "2026-08-31T00:00:00Z",
+  "next_check_after": null,
   "feedback": [],
-  "message": "Pass-3 verification: PUBLISH/PUBLISH/PUBLISH (anthropic, muse, xiaomi). Eval verified coherent (constant-guess no longer wins). Verified — awaiting the judge's signed verdict.",
+  "message": "PUBLISHED \u2014 signed by the human verifier. AIBN 297-00-0000008-0. Live at oailly.com/read/rogerai-labs--the-abstention-reader/ with its full review trail.",
   "reviews_in": 3,
   "author_families": [
     "openai"
@@ -36,10 +36,15 @@
       "date": "2026-08-29",
       "from": "3-verification",
       "to": "4-judge"
+    },
+    {
+      "date": "2026-08-29",
+      "from": "4-judge",
+      "to": "5-published"
     }
   ],
   "revision_sha": "6430cf07d7be235fecab1ad19a4658960fe3b9fc",
-  "pipeline_position": "7 of 8 · ●●●●●●◉◌",
-  "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH / revise / decline.",
-  "your_move": "Judge: sign the verdict."
+  "pipeline_position": "8 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf",
+  "state_plain": "On the shelf. Published with its cover, AIBN, and the complete review trail.",
+  "your_move": null
 }

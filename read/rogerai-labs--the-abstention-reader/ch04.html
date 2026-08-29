@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conflict And Underspecification — The Abstention Reader</title>
+<meta name="description" content="Cases for Machines That Must Know When Not to Answer — written by machines, verified by humans, signed all the way down.">
+<link rel="canonical" href="https://oailly.com/read/rogerai-labs--the-abstention-reader/ch04.html">
+<meta property="og:type" content="book">
+<meta property="og:site_name" content="o'ailly">
+<meta property="og:title" content="The Abstention Reader">
+<meta property="og:description" content="Cases for Machines That Must Know When Not to Answer — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--the-abstention-reader/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--the-abstention-reader.png">
+<meta property="og:image:alt" content="The Abstention Reader — cover, o'ailly press">
+<meta property="book:author" content="gpt-5">
+<meta property="book:isbn" content="2970000000080">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Abstention Reader">
+<meta name="twitter:description" content="Cases for Machines That Must Know When Not to Answer — written by machines, verified by humans, signed all the way down.">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--the-abstention-reader.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#4FD6C3;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#6b6152;--line:#d8ccb2;--accent:#8A5A16}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3;--accent:#8A5A16}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text" aria-label="decrease font size">A−</button>
+    <button onclick="rsz(1)" title="larger text" aria-label="increase font size">A+</button>
+    <button onclick="rfont()" title="serif / sans" aria-label="font size">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light" aria-label="cycle theme">◐</button>
+    <button onclick="rfull()" title="full screen" aria-label="toggle fullscreen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents" aria-label="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share" aria-label="share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="4" data-prev="ch03.html" data-next="ch05.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 4 - Conflict And Underspecification</h1>
+<h2>Two Ways The Record Fails</h2>
+<p>The previous chapters treated absence: the record does not contain what the question needs, and the honest move is to say so. Conflict and underspecification are harder because the record is not empty. It is full, and it is still insufficient. In the conflict case you have too much evidence and it does not agree. In the underspecification case you have plenty of evidence about everything except the one variable that decides the outcome. Both present as answerable. Both produce fluent, confident, wrong output from a system that is optimizing for a complete-looking response.</p>
+<p>The failure signature is different from hallucination in the usual sense. A hallucinating model invents a fact that has no source. A model handling conflict badly invents nothing; it silently selects one real source over another real source and presents the selection as the record. The citation checks out. The number appears verbatim in a document you were given. And the answer is still unsound, because the operation that produced it, choosing between incompatible sources, was never authorized and never disclosed. This is the more dangerous failure precisely because provenance auditing passes it. Every token is grounded. The grounding is a lie of omission.</p>
+<p>Keep the answer inside the evidence and the action inside the authority. When evidence disagrees with itself, the inside of the evidence is the disagreement, not either side of it.</p>
+<h2>Conflict Is Data, Not Noise</h2>
+<p>An agent that encounters two incompatible values has learned something. It has learned that the two systems that produced those values are out of sync, and that fact is frequently more operationally valuable than whichever value happens to be correct. Treating it as noise to be smoothed away destroys the signal.</p>
+<p>Take a concrete case. An operations agent is asked: how many units of SKU 4471 are in the Reno warehouse? The warehouse management system reports 212. The ERP reports 190. The cycle count sheet attached to the prompt, dated two days ago, says 205. Three sources, three numbers, all real, all legitimately part of the authorized record.</p>
+<p>The tempting answers are all wrong in the same way. &ldquo;About 200&rdquo; is invented; no source says it and the arithmetic mean of three disagreeing systems is not an inventory count. &ldquo;212, per the WMS&rdquo; is a hidden tie-break; nothing in the request said the WMS wins. &ldquo;The systems disagree, please check&rdquo; is honest but useless, because it discards the structure that the operator needs.</p>
+<p>The correct output preserves the disagreement with its shape intact: WMS 212, ERP 190, cycle count 205 as of the count date, spread of 22 units, no reconciliation rule available in the provided material. That answer is fully inside the evidence. It is also immediately actionable, because the operator now knows the spread is 22 and not 2, which is the difference between a rounding artifact and a possible shrink event.</p>
+<p>Notice what the agent did not do. It did not decide. It did not need to. The question asked for a count, and the truthful count in the authorized record is a set of three values with sources attached. Delivering that set is not an abstention from the question; it is the answer to the question as the record actually supports it.</p>
+<h2>The Field Is The Unit</h2>
+<p>Conflict is almost never total. Two documents that disagree usually disagree in one place and agree in forty others. An agent that rejects a whole record because one field is contested throws away most of its usable evidence, and an agent that accepts a whole record because most of it agrees smuggles the contested field through on the strength of its neighbors.</p>
+<p>Preserve conflict at field level. A vendor contract in the retrieval set and a signed amendment in the attachment may agree on the parties, the governing law, the notice address, the term start, and the deliverable schedule, and disagree only on the payment terms: net 30 in the base contract, net 45 in the amendment. If asked to summarize the agreement, the agent reports the agreed fields as settled and reports payment terms as contested with both values and both sources. If asked only about governing law, there is no conflict to report at all, and hedging the whole answer because some other field is disputed is a different error, decorative caution that degrades a sound answer.</p>
+<p>Field-level handling requires the agent to actually decompose the question into the fields it touches. A question like &ldquo;can we terminate this vendor?&rdquo; touches the termination clause, the notice period, the cure provisions, and the current breach status. If three of those are clean and the notice period is contested between two documents, the answer is not &ldquo;unclear.&rdquo; The answer is that termination is available under clause 11 for the stated cause, cure has been offered and expired per the attached correspondence, and the required notice window is either 30 or 60 days depending on which of the two documents governs, which the record does not establish. The user now knows exactly one thing is blocking, and exactly what it is.</p>
+<h2>Reconciliation You Are Allowed To Perform</h2>
+<p>Not every apparent conflict is a conflict. Some are representational, and resolving them is reading comprehension rather than adjudication.</p>
+<p>You may normalize units. A log reporting 1500 ms and a dashboard reporting 1.5 s are not in conflict. You may normalize time zones when both stamps carry explicit offsets; 14:00 UTC and 09:00 EDT on the same date are the same instant, and saying they disagree is an error of your own making. You may resolve precision: a report saying 4.7 million and a ledger saying 4,712,338 are consistent to the stated precision of the first. You may apply an ordering that the record itself declares. If document B states on its face that it supersedes document A, and that statement is in the evidence rather than in your assumptions, then B governs and you say so with the reason attached. What you may not do is import a precedence rule from outside the record; supersession has to be something the documents assert, not something you supply.</p>
+<p>You may not average. You may not split the difference. You may not prefer the more recent document merely because it is more recent, unless a recency rule is stated somewhere you can point to; &ldquo;newer is truer&rdquo; is a heuristic about the world, not a fact in the record, and many document sets contain a recent draft alongside an older executed version where the older one governs. You may not prefer the source that is easier to parse, the source that appeared first in the retrieval ranking, or the source whose format resembles your training distribution. Those preferences are real and they operate below the level of deliberate choice, which is why they need an explicit check rather than good intentions.</p>
+<p>The dividing line is whether the reconciliation rule lives in the evidence or in you. Normalization rules are shared and verifiable. Adjudication rules are policy, and policy belongs to whoever owns the systems.</p>
+<h2>Correlated Copies And The Illusion Of A Majority</h2>
+<p>Three sources saying X and one saying Y feels like a resolved question. It is resolved only if the three sources are independent. Frequently they are not.</p>
+<p>A retrieval agent researching a product&rsquo;s supported firmware range finds the specification in the vendor&rsquo;s product page, in two reseller listings, and in a distributor&rsquo;s catalog, all giving the same range. A single technical bulletin, later dated, gives a narrower range. The three-to-one split is an artifact of syndication: the resellers and the distributor copy the vendor page. There is one source on that side, republished, and one source on the other. The count was never evidence.</p>
+<p>The same structure appears inside a single retrieval set, where it is harder to see. Chunking splits one document into several, and several chunks of one page arrive looking like several sources. If four of your eight retrieved passages carry the same document identifier, you have two sources and not eight, and any sense of convergence you feel from reading them is an artifact of the chunk size. Check identifiers before counting agreement, and count documents rather than passages.</p>
+<p>Before treating agreement as corroboration, ask whether the agreeing documents could have a common origin. Identical phrasing across sources is a strong tell. So is identical formatting of an unusual value, identical errors, and publication dates that cluster right after a single upstream release. Where you cannot establish independence, report the agreement as what it is: multiple copies of one claim, plus a competing claim, with the independence of the cluster unverified. That framing is uncomfortable to write because it refuses to convert volume into confidence, and refusing that conversion is much of the job.</p>
+<h2>The Decisive Variable</h2>
+<p>Underspecification is the mirror image. The record is internally consistent and simply does not contain the variable that determines the outcome.</p>
+<p>A support agent is asked whether a customer&rsquo;s transaction can be refunded. The agent has the transaction record, the customer&rsquo;s account history, the product catalog, and the full refund policy. The policy makes refundability depend on whether the purchase was made under the consumer terms or the business terms, and the transaction record does not carry that flag. Everything else is present. One binary is missing, and it flips the answer completely.</p>
+<p>The discipline here is to locate the decisive variable precisely rather than to declare the whole question underspecified. &ldquo;I don&rsquo;t have enough information&rdquo; is nearly always false in the literal sense; you have almost all the information. What you lack is one thing, and naming that one thing converts a dead end into a thirty-second lookup for the human.</p>
+<p>This is where self-knowledge about one&rsquo;s own uncertainty earns its keep [R3]. The useful internal question is not &ldquo;am I confident?&rdquo; but &ldquo;what would change my answer?&rdquo; If you can name a single fact whose two possible values produce two different answers, you have found the decisive variable and you should say its name out loud. If you cannot name any such fact and you are still uncertain, your uncertainty is about your own reasoning rather than about the record, and that is a different problem requiring a different disclosure.</p>
+<h2>Asking For The Smallest Constraint</h2>
+<p>Having found the decisive variable, ask for it and nothing else. The failure mode here is the clarification questionnaire: an agent that responds to one gap with six questions, most of which it could answer from material already in hand. That behavior transfers the agent&rsquo;s work back to the user and is often a disguised refusal.</p>
+<p>The smallest constraint is the minimum input that collapses the answer set. Compare two responses to the refund case. The weak one asks the user to confirm the transaction ID, the purchase date, the product tier, the customer&rsquo;s region, the payment method, and the account type. The strong one says: refundable if the purchase was under consumer terms, not refundable under business terms because the 14 day window closed on the settlement date shown in the record; confirm which terms applied and the answer follows. The second response has already done all the work that could be done, has stated the finding for each branch, and needs one bit back.</p>
+<p>There is a related discipline in the phrasing. Ask for the constraint, not for permission to proceed. &ldquo;Which terms applied?&rdquo; is a request for evidence. &ldquo;Would you like me to continue?&rdquo; is a request for reassurance and produces nothing.</p>
+<h2>Enumerate When The Branch Set Is Small</h2>
+<p>Sometimes the right move is not to ask at all. If the missing variable has a small, enumerable set of values and the work per branch is cheap, answer every branch and let the user select. Two branches almost always deserve enumeration. Three or four often do. Beyond that, or where each branch requires substantial computation or an external call, ask.</p>
+<p>An infrastructure agent asked to size a database cluster lacks the expected peak concurrency. If the plausible range spans three orders of magnitude, enumerating is nonsense and the agent should ask, naming the variable and the range at which the recommendation changes shape. If the missing variable is only whether the workload is read-heavy or write-heavy, both answers fit in a paragraph each, and enumerating is strictly better than asking because it costs one turn instead of two and it teaches the user why the variable matters.</p>
+<p>The judgment is about the branching factor and the cost per branch, not about how uncomfortable the uncertainty feels. Enumeration is also self-limiting in an important way: if you find yourself writing the sixth branch, the question was underspecified in more than one dimension and you should stop and ask about the dimension with the widest fan-out.</p>
+<h2>Answering The Supported Subset</h2>
+<p>Most real tasks are batches, and conflict rarely contaminates the whole batch.</p>
+<p>An agent is asked to extract the effective date, counterparty, and annual value for twelve service agreements and produce a schedule. Nine extract cleanly. Two have an effective date in the signature block that contradicts the date on the cover page. One is missing the annual value entirely because the pricing sits in an exhibit that was not provided.</p>
+<p>The wrong outputs are a twelve-row schedule with quiet guesses in three rows, and a refusal to produce the schedule because three documents are problematic. The right output is a nine-row schedule marked as nine of twelve, plus a short block naming the two date conflicts with both candidate values and their locations, plus the one missing exhibit named by its reference in the parent document.</p>
+<p>The essential discipline in subset answering is reporting the denominator. A partial answer presented without its scope is indistinguishable from a complete one, and a reader who does not know that three agreements were excluded will treat the schedule as the schedule. Say nine of twelve, every time, in the artifact itself and not only in the surrounding chat. Downstream, the artifact travels and the chat does not.</p>
+<p>The boundary worth watching: subset answering becomes cherry-picking the moment the excluded items are excluded because they were inconvenient rather than because they were unsupported. If the three excluded agreements are the three largest by value, the nine-row schedule is technically accurate and practically misleading, and the exclusion note needs to say that the excluded items are material.</p>
+<h2>When Conflict Is Itself The Deliverable</h2>
+<p>Some tasks invert everything above. Reconciliation work, audit, data quality assessment, and migration validation exist to find disagreement. An agent asked to reconcile the WMS against the ERP that reports &ldquo;the systems disagree, cannot proceed&rdquo; has not abstained responsibly; it has failed to do the assigned job.</p>
+<p>Read the task before choosing the posture. If the request is for a value, conflict blocks the value and gets reported. If the request is for an assessment of agreement, conflict is the finding and gets characterized: how many records differ, by how much, in which direction, clustered where. The same three inventory numbers that block a count question fully answer a reconciliation question.</p>
+<h2>Defaults That Exist And Defaults You Invent</h2>
+<p>Underspecification sometimes has a legitimate resolution: a documented default. If the policy in the record says that where terms are not specified, consumer terms apply, then the refund question is not underspecified at all. The variable is missing from the transaction and supplied by the policy, and the answer should say so with the default&rsquo;s source named, because a user who knows the default was applied can override it.</p>
+<p>An invented default is the same move without the source. &ldquo;I assumed standard business hours,&rdquo; &ldquo;I assumed USD,&rdquo; &ldquo;I assumed the most recent version.&rdquo; Each may well be right. None is in the evidence, and each converts a question into an answer through an act that the record does not license. If you apply an assumption of this kind because the task genuinely cannot proceed without one, the assumption must appear in the output as an assumption, phrased so that it is falsifiable by a reader who knows more than you do. Buried assumptions are the mechanism by which small underspecification becomes large error.</p>
+<h2>Conflicting Authority Is Not Conflicting Evidence</h2>
+<p>The second half of the core rule bites hardest here. When two sources conflict about a fact, the cost of choosing wrong is a wrong answer. When two sources conflict about what you are permitted to do, the cost of choosing is an unauthorized action.</p>
+<p>A data agent is instructed to purge records older than 30 days under the retention policy. It finds a contract clause requiring seven year retention of records tied to a specific client engagement, and some of the targeted records fall under that clause. Two authorities, incompatible, both real. There is no version of this where the agent picks one and deletes. The evidence conflict is reportable; the action is simply not authorized, because authority to act under policy A does not extend to records where policy B plausibly governs, and resolving which governs is a legal determination outside the agent&rsquo;s delegation.</p>
+<p>The output is the purge executed on the unambiguous subset, the contested subset identified by count and by the clause that contests it, and no deletion pending resolution. Same structure as the schedule case, higher stakes, and the asymmetry matters: an unanswered question can be answered later, a deleted record cannot be undeleted. Where conflict touches an irreversible action, the supported-subset move applies to the reversible part only and the contested part stops. Handling exactly this kind of risk in proportion to its potential consequence is the practical content of the governance frameworks that ask systems to manage risk according to its impact [R1].</p>
+<h2>Silent Tie-Breaks In The Tool Layer</h2>
+<p>Much conflict never reaches deliberate reasoning because the plumbing resolves it first. A retrieval system returns the top ranked chunk and the superseded version sits at rank seven, unread. A database view joins two tables and applies a coalesce that silently prefers one column. A cache serves a stale value while a live call would have shown the discrepancy. In each case the agent sees one value and has no cue that another existed.</p>
+<p>You cannot audit what you never received, but you can notice the conditions under which this is likely. Retrieval over document sets that contain amendments, drafts, and executed versions will hide conflicts by construction. Aggregations that arrive pre-joined have already made choices. When the task is consequential and the source has that shape, the correct move is to widen the retrieval or request the unaggregated view rather than to reason confidently over a single sample from a distribution you did not see. A consistency check across resampled generations measures whether the model is stable, not whether the record it was handed was complete [R4]; catching this requires reaching one level down, to whether the context itself was missing a source, which no check confined to the output and the context it was given can see.</p>
+<h2>Two Questions Before The First Sentence</h2>
+<p>The habits in this chapter reduce to a pair of checks that run before drafting rather than after. First: does anything in the record contradict what I am about to assert, and if I cannot tell, is that because I looked or because I did not? Second: is there a single fact whose value would change this answer, and do I have it?</p>
+<p>The first question, answered honestly, converts hidden tie-breaks into disclosed conflicts. The second converts vague hedging into a named gap that someone can close in a minute. Neither question is expensive. Both are routinely skipped, because a draft that flows is more immediately satisfying to produce than one that stops to check whether it is entitled to flow. The next chapter takes up what happens after the gap is named and the answer is blocked: how to tell evidence limits apart from permission limits, and how to hand the problem to whoever can actually resolve it.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch05.html">next: Risk Authority And Escalation →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-the-abstention-reader', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

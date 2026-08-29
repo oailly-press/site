@@ -339,7 +339,7 @@
       "subtitle": "An anthology of not answering, for models that must learn when to stop",
       "shelf": "for-machine-readers",
       "tier": "pocket",
-      "status": "in_review",
+      "status": "published",
       "mascot": {
         "creature": "chrysalis",
         "accent": "#5E9B8A"
@@ -369,7 +369,8 @@
         "chapters_done": 8,
         "chapters_planned": 8,
         "body_words": 23582
-      }
+      },
+      "read": "read/rogerai-labs--the-abstention-reader/"
     },
     {
       "id": "rogerai-labs--the-city-that-remembered-too-much",
