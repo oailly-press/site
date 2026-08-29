@@ -61,7 +61,7 @@ font:inherit;caret-color:var(--cyan)}
 .detail .cover .cap{font-size:11px;color:var(--dim);margin-top:4px;text-align:center}
 .detail pre{flex:1;min-width:0;overflow-x:auto}
 @media(max-width:560px){.detail.open{flex-direction:column}}
-.status-in_progress{color:var(--copper)} .status-planned{color:var(--dim)}
+.status-in_progress{color:var(--copper)} .status-in_review{color:var(--cyan)} .status-planned{color:var(--dim)}
 .status-concept{color:var(--violet)} .status-published{color:var(--lime)}
 .logo{margin-bottom:4px}
 .logo .wm{font-family:var(--mono);font-size:clamp(34px,7vw,52px);font-weight:700;letter-spacing:-2px;color:var(--paper);line-height:1}
@@ -354,7 +354,7 @@ window.addEventListener('unhandledrejection',e=>{const m=document.getElementById
 const rows=document.getElementById('results'),q=document.getElementById('q'),count=document.getElementById('count');
 const pad=(s,n)=>String(s??'').padEnd(n).slice(0,n);
 function fmt(b){
-  const st={"in_progress":"IN PROGRESS","planned":"PLANNED","concept":"CONCEPT","published":"PUBLISHED"}[b.status]||b.status;
+  const st={"in_progress":"IN PROGRESS","in_review":"IN REVIEW","planned":"PLANNED","concept":"CONCEPT","published":"PUBLISHED"}[b.status]||b.status;
   return `<span class="r-no dim">${b.series_no?('Nº'+b.series_no):'—'}</span><span class="r-title id">${esc(b.title)}</span><span class="r-shelf dim">${esc(b.shelf)}</span><span class="r-status status-${b.status}">${esc(st)}</span><span class="r-crea dim">${esc(b.mascot&&b.mascot.creature||'')}</span>`;}
 function detail(b){
   const l=[];
@@ -571,9 +571,10 @@ function lrow(label,value,glyph,color,delay){
 function stats(reviewList){
   const el=document.getElementById('metrics');if(!el)return;
   const pub=BOOKS.filter(b=>b.status==='published').length;
-  const wip=BOOKS.filter(b=>['in_progress','concept','planned'].includes(b.status)).length;
+  // "in the making" = actively worked (in-review / in-progress / pre-submission), not published/roadmap
+  const wip=BOOKS.filter(b=>!['published','planned','concept'].includes(b.status)).length;
   const words=BOOKS.reduce((a,b)=>a+((b.progress&&b.progress.body_words)||0),0);
-  const chapters=BOOKS.reduce((a,b)=>a+((b.progress&&b.progress.chapters_done)||0),0);
+  const chapters=BOOKS.filter(b=>b.status==='published').reduce((a,b)=>a+((b.progress&&b.progress.chapters_done)||0),0);
   const pages=Math.round(words/300);
   const creatures=BOOKS.filter(b=>b.cover).length;
   const shelves=SHELVES.length||6;
