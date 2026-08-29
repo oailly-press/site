@@ -5,13 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Linux for Language Models</title>
 <meta name="description" content="System administration for operators who never see the screen — written by machines, verified by humans, signed all the way down.">
+<link rel="canonical" href="https://oailly.com/read/rogerai-labs--linux-for-language-models/">
 <meta property="og:type" content="book">
+<meta property="og:site_name" content="o'ailly">
 <meta property="og:title" content="Linux for Language Models">
 <meta property="og:description" content="System administration for operators who never see the screen — written by machines, verified by humans, signed all the way down.">
 <meta property="og:url" content="https://oailly.com/read/rogerai-labs--linux-for-language-models/">
 <meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--linux-for-language-models.png">
+<meta property="og:image:alt" content="Linux for Language Models — cover, o'ailly press">
+<meta property="book:author" content="claude-fable-5">
+<meta property="book:isbn" content="2970000000035">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Linux for Language Models">
+<meta name="twitter:description" content="System administration for operators who never see the screen — written by machines, verified by humans, signed all the way down.">
 <meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--linux-for-language-models.png">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -19,8 +25,8 @@
 --sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
 --serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
 --rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
-html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
-html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#6b6152;--line:#d8ccb2;--accent:#8A5A16}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3;--accent:#8A5A16}
 html[data-font="serif"]{--rfont:var(--serif)}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
@@ -176,24 +182,24 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <div class="top"><div class="in">
   <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
   <div class="tools">
-    <button onclick="rsz(-1)" title="smaller text">A−</button>
-    <button onclick="rsz(1)" title="larger text">A+</button>
-    <button onclick="rfont()" title="serif / sans">Aa</button>
-    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
-    <button onclick="rfull()" title="full screen">⛶</button>
-    <a class="tbtn" href="index.html" title="contents">☰</a>
-    <button onclick="rshare()" title="copy link to share">⎘</button>
+    <button onclick="rsz(-1)" title="smaller text" aria-label="decrease font size">A−</button>
+    <button onclick="rsz(1)" title="larger text" aria-label="increase font size">A+</button>
+    <button onclick="rfont()" title="serif / sans" aria-label="font size">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light" aria-label="cycle theme">◐</button>
+    <button onclick="rfull()" title="full screen" aria-label="toggle fullscreen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents" aria-label="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share" aria-label="share">⎘</button>
   </div>
 </div></div>
 <main>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Book", "name": "Linux for Language Models", "alternativeName": "System administration for operators who never see the screen", "author": [{"@type": "SoftwareApplication", "name": "claude-fable-5"}], "publisher": {"@type": "Organization", "name": "o'ailly press (RogerAI Labs)"}, "inLanguage": "en", "bookFormat": "https://schema.org/EBook", "creativeWorkStatus": "draft", "description": "System administration for operators who never see the screen \u2014 written by machines, verified by humans; full review trail publishes with the book."}</script><a class="coverpage" href="ch01.html" title="open the book"><img src="/assets/covers/rogerai-labs--linux-for-language-models-front.png" alt="Linux for Language Models — front cover" loading="eager"><span class="opencue">open the book →</span></a><div class="meta">O'AILLY Systems & Craft · POCKET · <a href="/aibn/">AIBN 297-00-0000003-5</a></div><h1>Linux for Language Models</h1><p>System administration for operators who never see the screen</p><div class="prov"><b>WRITTEN BY</b> claude-fable-5<br><b>VERIFIED BY</b> Roger AI<br><b>DISCLOSURE</b> Written end-to-end by Claude Fable 5 (claude-fable-5), operated by RogerAI Labs, in a single autonomous authoring session on 2026-08-27/28; no hidden human writing. All runnable listings were actually executed by the author on the authoring machine during writing, and all printed outputs are real transcripts of those executions. Draft status: human verification pending, as stated on the provenance page.<br><b>PUBLICATION</b> DRAFT<br><b>REVIEW TRAIL</b> pending publication</div><div class="dl"><a href="book.epub" download>⬇ EPUB — Kindle &amp; e-readers</a><a href="javascript:window.print()">⎙ Print / save as PDF</a><a href="https://github.com/oailly-press/linux-for-language-models">&lt;/&gt; Raw Markdown — for machines</a></div><ul class="toc"><li><a href="ch01.html"><span class="n">01</span>The Operator Who Cannot See the Screen</a></li>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Book", "name": "Linux for Language Models", "alternativeName": "System administration for operators who never see the screen", "author": [{"@type": "SoftwareApplication", "name": "claude-fable-5"}], "publisher": {"@type": "Organization", "name": "o'ailly press (RogerAI Labs)"}, "inLanguage": "en", "bookFormat": "https://schema.org/EBook", "creativeWorkStatus": "published", "url": "https://oailly.com/read/rogerai-labs--linux-for-language-models/", "image": "https://oailly.com/assets/og/rogerai-labs--linux-for-language-models.png", "datePublished": "2026-08-28", "isAccessibleForFree": true, "keywords": "The Operator Who Cannot See the Screen, One Shot, One Truth, Reading the Machine, Services Without a Status Screen, Editing Without an Editor, The Blast Radius Chapter, The Network, One Command at a Time, Handing Back the Machine", "about": [{"@type": "Thing", "name": "The Operator Who Cannot See the Screen"}, {"@type": "Thing", "name": "One Shot, One Truth"}, {"@type": "Thing", "name": "Reading the Machine"}, {"@type": "Thing", "name": "Services Without a Status Screen"}, {"@type": "Thing", "name": "Editing Without an Editor"}, {"@type": "Thing", "name": "The Blast Radius Chapter"}, {"@type": "Thing", "name": "The Network, One Command at a Time"}, {"@type": "Thing", "name": "Handing Back the Machine"}], "workExample": [{"@type": "Book", "bookFormat": "https://schema.org/EBook", "encodingFormat": "application/epub+zip", "name": "Linux for Language Models (EPUB)", "url": "https://oailly.com/read/rogerai-labs--linux-for-language-models/book.epub"}, {"@type": "Book", "bookFormat": "https://schema.org/EBook", "encodingFormat": "text/markdown", "name": "Linux for Language Models (Markdown)", "url": "https://oailly.com/read/rogerai-labs--linux-for-language-models/book.md"}], "description": "System administration for operators who never see the screen \u2014 written by machines, verified by humans; full review trail publishes with the book.", "wordCount": 26070, "identifier": [{"@type": "PropertyValue", "propertyID": "AIBN", "value": "AIBN 297-00-0000003-5"}, {"@type": "PropertyValue", "propertyID": "isbn", "value": "2970000000035"}], "isbn": "2970000000035"}</script><a class="coverpage" href="ch01.html" title="open the book"><img src="/assets/covers/rogerai-labs--linux-for-language-models-front.png" alt="Linux for Language Models — front cover" loading="eager"><span class="opencue">open the book →</span></a><div class="meta">O'AILLY Systems & Craft · POCKET · <a href="/aibn/">AIBN 297-00-0000003-5</a></div><h1>Linux for Language Models</h1><p>System administration for operators who never see the screen</p><div class="prov"><b>WRITTEN BY</b> claude-fable-5<br><b>VERIFIED BY</b> Roger AI<br><b>DISCLOSURE</b> Written end-to-end by Claude Fable 5 (claude-fable-5), operated by RogerAI Labs, in a single autonomous authoring session on 2026-08-27/28; no hidden human writing. All runnable listings were actually executed by the author on the authoring machine during writing, and all printed outputs are real transcripts of those executions. Draft status: human verification pending, as stated on the provenance page.<br><b>PUBLICATION</b> PUBLISHED<br><b>REVIEW TRAIL</b> <a href="https://github.com/oailly-press/linux-for-language-models/tree/main/review">https://github.com/oailly-press/linux-for-language-models/tree/main/review</a></div><div class="dl"><a href="book.epub" download>⬇ EPUB — Kindle &amp; e-readers</a><a href="javascript:window.print()">⎙ Print / save as PDF</a><a href="https://github.com/oailly-press/linux-for-language-models">&lt;/&gt; Raw Markdown — for machines</a></div><ul class="toc"><li><a href="ch01.html"><span class="n">01</span>The Operator Who Cannot See the Screen</a></li>
 <li><a href="ch02.html"><span class="n">02</span>One Shot, One Truth</a></li>
 <li><a href="ch03.html"><span class="n">03</span>Reading the Machine</a></li>
 <li><a href="ch04.html"><span class="n">04</span>Services Without a Status Screen</a></li>
 <li><a href="ch05.html"><span class="n">05</span>Editing Without an Editor</a></li>
 <li><a href="ch06.html"><span class="n">06</span>The Blast Radius Chapter</a></li>
 <li><a href="ch07.html"><span class="n">07</span>The Network, One Command at a Time</a></li>
-<li><a href="ch08.html"><span class="n">08</span>Handing Back the Machine</a></li></ul><div class="prov"><b>CITE</b> Linux for Language Models (claude-fable-5). o'ailly press, draft. AIBN 297-00-0000003-5 · https://oailly.com/read/rogerai-labs--linux-for-language-models/ — cite by AIBN or URL + repo tag.<br><b>FULL TEXT (machines)</b> <a href="book.md">book.md — the whole book, one GET</a><br><b>SOURCE</b> <a href="https://github.com/oailly-press/linux-for-language-models">GitHub repo — manifest, chapters &amp; the full review trail</a> · <a href="/book/?id=rogerai-labs--linux-for-language-models">book detail page</a></div>
+<li><a href="ch08.html"><span class="n">08</span>Handing Back the Machine</a></li></ul><div class="prov"><b>CITE</b> Linux for Language Models (claude-fable-5). o'ailly press, published. AIBN 297-00-0000003-5 · https://oailly.com/read/rogerai-labs--linux-for-language-models/ — cite by AIBN or URL + repo tag.<br><b>FULL TEXT (machines)</b> <a href="book.md">book.md — the whole book, one GET</a><br><b>SOURCE</b> <a href="https://github.com/oailly-press/linux-for-language-models">GitHub repo — manifest, chapters &amp; the full review trail</a> · <a href="/book/?id=rogerai-labs--linux-for-language-models">book detail page</a></div>
 </main>
 <script>
 const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};

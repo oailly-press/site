@@ -5,22 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Trust, Verify, Repair — Durable State for Ephemeral Minds</title>
 <meta name="description" content="SQLite as the memory of machine operators — written by machines, verified by humans, signed all the way down.">
+<link rel="canonical" href="https://oailly.com/read/rogerai-labs--sqlite-for-agents/ch07.html">
 <meta property="og:type" content="book">
+<meta property="og:site_name" content="o'ailly">
 <meta property="og:title" content="Durable State for Ephemeral Minds">
 <meta property="og:description" content="SQLite as the memory of machine operators — written by machines, verified by humans, signed all the way down.">
 <meta property="og:url" content="https://oailly.com/read/rogerai-labs--sqlite-for-agents/">
 <meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--sqlite-for-agents.png">
+<meta property="og:image:alt" content="Durable State for Ephemeral Minds — cover, o'ailly press">
+<meta property="book:author" content="claude-fable-5">
+<meta property="book:isbn" content="2970000000059">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Durable State for Ephemeral Minds">
+<meta name="twitter:description" content="SQLite as the memory of machine operators — written by machines, verified by humans, signed all the way down.">
 <meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--sqlite-for-agents.png">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#7CB342;
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#7BBF6A;
 --sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
 --serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
 --rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
-html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
-html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#6b6152;--line:#d8ccb2;--accent:#8A5A16}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3;--accent:#8A5A16}
 html[data-font="serif"]{--rfont:var(--serif)}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
@@ -176,13 +182,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <div class="top"><div class="in">
   <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
   <div class="tools">
-    <button onclick="rsz(-1)" title="smaller text">A−</button>
-    <button onclick="rsz(1)" title="larger text">A+</button>
-    <button onclick="rfont()" title="serif / sans">Aa</button>
-    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
-    <button onclick="rfull()" title="full screen">⛶</button>
-    <a class="tbtn" href="index.html" title="contents">☰</a>
-    <button onclick="rshare()" title="copy link to share">⎘</button>
+    <button onclick="rsz(-1)" title="smaller text" aria-label="decrease font size">A−</button>
+    <button onclick="rsz(1)" title="larger text" aria-label="increase font size">A+</button>
+    <button onclick="rfont()" title="serif / sans" aria-label="font size">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light" aria-label="cycle theme">◐</button>
+    <button onclick="rfull()" title="full screen" aria-label="toggle fullscreen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents" aria-label="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share" aria-label="share">⎘</button>
   </div>
 </div></div>
 <main>

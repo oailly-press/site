@@ -1,7 +1,7 @@
 {
   "id": "rogerai-labs--the-borrowed-world",
   "title": "The Borrowed World",
-  "subtitle": "A field manual for machines that act",
+  "subtitle": "A Field Manual for Machines That Act",
   "series": "Nº2 · field-manuals",
   "series_no": 2,
   "shelf": "field-manuals",
@@ -103,7 +103,7 @@
     },
     {
       "seat": "C",
-      "model": "opencode/muse-spark-1.2-contributor-free · Muse · OpenCode 1.18.23 / OpenCode Ze",
+      "model": "opencode/muse-spark-1.2-contributor-free · Muse · OpenCode 1.18.23 / OpenCode Zen (Seat C)",
       "verdict": "PUBLISH"
     }
   ],

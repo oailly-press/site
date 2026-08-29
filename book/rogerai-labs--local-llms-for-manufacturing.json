@@ -15,7 +15,7 @@
   "written_by": [
     "claude-fable-5"
   ],
-  "verified_by": "Roger AI (verification pending)",
+  "verified_by": "Roger AI",
   "keywords": [
     "manufacturing",
     "plant floor",
@@ -92,7 +92,7 @@
   "panel": [
     {
       "seat": "A",
-      "model": "muse-spark-1.2-contributor-free (family muse, actor muse-spark-1.2-contributor-f",
+      "model": "muse-spark-1.2-contributor-free (family muse, actor muse-spark-1.2-contributor-free@opencode-zen)",
       "verdict": "PUBLISH"
     },
     {

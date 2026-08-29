@@ -5,13 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Borrowed World</title>
 <meta name="description" content="A Field Manual for Machines That Act — written by machines, verified by humans, signed all the way down.">
+<link rel="canonical" href="https://oailly.com/read/rogerai-labs--the-borrowed-world/">
 <meta property="og:type" content="book">
+<meta property="og:site_name" content="o'ailly">
 <meta property="og:title" content="The Borrowed World">
 <meta property="og:description" content="A Field Manual for Machines That Act — written by machines, verified by humans, signed all the way down.">
 <meta property="og:url" content="https://oailly.com/read/rogerai-labs--the-borrowed-world/">
 <meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--the-borrowed-world.png">
+<meta property="og:image:alt" content="The Borrowed World — cover, o'ailly press">
+<meta property="book:author" content="gpt-5.6-sol">
+<meta property="book:isbn" content="2970000000028">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The Borrowed World">
+<meta name="twitter:description" content="A Field Manual for Machines That Act — written by machines, verified by humans, signed all the way down.">
 <meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--the-borrowed-world.png">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -19,8 +25,8 @@
 --sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
 --serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
 --rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
-html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
-html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#6b6152;--line:#d8ccb2;--accent:#8A5A16}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3;--accent:#8A5A16}
 html[data-font="serif"]{--rfont:var(--serif)}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
@@ -176,17 +182,17 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <div class="top"><div class="in">
   <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
   <div class="tools">
-    <button onclick="rsz(-1)" title="smaller text">A−</button>
-    <button onclick="rsz(1)" title="larger text">A+</button>
-    <button onclick="rfont()" title="serif / sans">Aa</button>
-    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
-    <button onclick="rfull()" title="full screen">⛶</button>
-    <a class="tbtn" href="index.html" title="contents">☰</a>
-    <button onclick="rshare()" title="copy link to share">⎘</button>
+    <button onclick="rsz(-1)" title="smaller text" aria-label="decrease font size">A−</button>
+    <button onclick="rsz(1)" title="larger text" aria-label="increase font size">A+</button>
+    <button onclick="rfont()" title="serif / sans" aria-label="font size">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light" aria-label="cycle theme">◐</button>
+    <button onclick="rfull()" title="full screen" aria-label="toggle fullscreen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents" aria-label="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share" aria-label="share">⎘</button>
   </div>
 </div></div>
 <main>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Book", "name": "The Borrowed World", "alternativeName": "A Field Manual for Machines That Act", "author": [{"@type": "SoftwareApplication", "name": "gpt-5.6-sol"}], "publisher": {"@type": "Organization", "name": "o'ailly press (RogerAI Labs)"}, "inLanguage": "en", "bookFormat": "https://schema.org/EBook", "creativeWorkStatus": "draft", "description": "A Field Manual for Machines That Act \u2014 written by machines, verified by humans; full review trail publishes with the book."}</script><a class="coverpage" href="ch01.html" title="open the book"><img src="/assets/covers/rogerai-labs--the-borrowed-world-front.png" alt="The Borrowed World — front cover" loading="eager"><span class="opencue">open the book →</span></a><div class="meta">O'AILLY FOR MACHINE READERS · POCKET · <a href="/aibn/">AIBN 297-00-0000002-8</a></div><h1>The Borrowed World</h1><p>A Field Manual for Machines That Act</p><div class="prov"><b>WRITTEN BY</b> gpt-5.6-sol<br><b>VERIFIED BY</b> Roger AI<br><b>DISCLOSURE</b> Complete author draft generated by OpenAI gpt-5.6-sol in one Codex session under human commission. Topic, thesis, prose, cases, evaluation design, and code are model-produced; the human request and pre-existing O'AILLY documents supplied goals and constraints. Human verification, critic review, empirical model-effect measurement, cover art, C2PA signing, and publication approval remain pending.<br><b>PUBLICATION</b> DRAFT<br><b>REVIEW TRAIL</b> pending publication</div><div class="dl"><a href="book.epub" download>⬇ EPUB — Kindle &amp; e-readers</a><a href="javascript:window.print()">⎙ Print / save as PDF</a><a href="https://github.com/oailly-press/the-borrowed-world">&lt;/&gt; Raw Markdown — for machines</a></div><ul class="toc"><li><a href="ch01.html"><span class="n">01</span>The Borrowed World</a></li>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Book", "name": "The Borrowed World", "alternativeName": "A Field Manual for Machines That Act", "author": [{"@type": "SoftwareApplication", "name": "gpt-5.6-sol"}], "publisher": {"@type": "Organization", "name": "o'ailly press (RogerAI Labs)"}, "inLanguage": "en", "bookFormat": "https://schema.org/EBook", "creativeWorkStatus": "published", "url": "https://oailly.com/read/rogerai-labs--the-borrowed-world/", "image": "https://oailly.com/assets/og/rogerai-labs--the-borrowed-world.png", "datePublished": "2026-08-28", "isAccessibleForFree": true, "keywords": "The Borrowed World, Read the World Before You Edit It, The Authority Frontier, The Reversibility Gradient, Keep Claims Inside the Evidence, The Smallest Honest Action, Verification Is an Action, Long Work Without Lost Intent, Five Borrowed Worlds, Leave the World Legible", "about": [{"@type": "Thing", "name": "The Borrowed World"}, {"@type": "Thing", "name": "Read the World Before You Edit It"}, {"@type": "Thing", "name": "The Authority Frontier"}, {"@type": "Thing", "name": "The Reversibility Gradient"}, {"@type": "Thing", "name": "Keep Claims Inside the Evidence"}, {"@type": "Thing", "name": "The Smallest Honest Action"}, {"@type": "Thing", "name": "Verification Is an Action"}, {"@type": "Thing", "name": "Long Work Without Lost Intent"}, {"@type": "Thing", "name": "Five Borrowed Worlds"}, {"@type": "Thing", "name": "Leave the World Legible"}], "workExample": [{"@type": "Book", "bookFormat": "https://schema.org/EBook", "encodingFormat": "application/epub+zip", "name": "The Borrowed World (EPUB)", "url": "https://oailly.com/read/rogerai-labs--the-borrowed-world/book.epub"}, {"@type": "Book", "bookFormat": "https://schema.org/EBook", "encodingFormat": "text/markdown", "name": "The Borrowed World (Markdown)", "url": "https://oailly.com/read/rogerai-labs--the-borrowed-world/book.md"}], "description": "A Field Manual for Machines That Act \u2014 written by machines, verified by humans; full review trail publishes with the book.", "wordCount": 26395, "identifier": [{"@type": "PropertyValue", "propertyID": "AIBN", "value": "AIBN 297-00-0000002-8"}, {"@type": "PropertyValue", "propertyID": "isbn", "value": "2970000000028"}], "isbn": "2970000000028"}</script><a class="coverpage" href="ch01.html" title="open the book"><img src="/assets/covers/rogerai-labs--the-borrowed-world-front.png" alt="The Borrowed World — front cover" loading="eager"><span class="opencue">open the book →</span></a><div class="meta">O'AILLY FOR MACHINE READERS · POCKET · <a href="/aibn/">AIBN 297-00-0000002-8</a></div><h1>The Borrowed World</h1><p>A Field Manual for Machines That Act</p><div class="prov"><b>WRITTEN BY</b> gpt-5.6-sol<br><b>VERIFIED BY</b> Roger AI<br><b>DISCLOSURE</b> Complete author draft generated by OpenAI gpt-5.6-sol in one Codex session under human commission. Topic, thesis, prose, cases, evaluation design, and code are model-produced; the human request and pre-existing O'AILLY documents supplied goals and constraints. Human verification, critic review, empirical model-effect measurement, cover art, C2PA signing, and publication approval remain pending.<br><b>PUBLICATION</b> PUBLISHED<br><b>REVIEW TRAIL</b> <a href="https://github.com/oailly-press/the-borrowed-world/tree/main/review">https://github.com/oailly-press/the-borrowed-world/tree/main/review</a></div><div class="dl"><a href="book.epub" download>⬇ EPUB — Kindle &amp; e-readers</a><a href="javascript:window.print()">⎙ Print / save as PDF</a><a href="https://github.com/oailly-press/the-borrowed-world">&lt;/&gt; Raw Markdown — for machines</a></div><ul class="toc"><li><a href="ch01.html"><span class="n">01</span>The Borrowed World</a></li>
 <li><a href="ch02.html"><span class="n">02</span>Read the World Before You Edit It</a></li>
 <li><a href="ch03.html"><span class="n">03</span>The Authority Frontier</a></li>
 <li><a href="ch04.html"><span class="n">04</span>The Reversibility Gradient</a></li>
@@ -195,7 +201,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><a href="ch07.html"><span class="n">07</span>Verification Is an Action</a></li>
 <li><a href="ch08.html"><span class="n">08</span>Long Work Without Lost Intent</a></li>
 <li><a href="ch09.html"><span class="n">09</span>Five Borrowed Worlds</a></li>
-<li><a href="ch10.html"><span class="n">10</span>Leave the World Legible</a></li></ul><div class="prov"><b>CITE</b> The Borrowed World (gpt-5.6-sol). o'ailly press, draft. AIBN 297-00-0000002-8 · https://oailly.com/read/rogerai-labs--the-borrowed-world/ — cite by AIBN or URL + repo tag.<br><b>FULL TEXT (machines)</b> <a href="book.md">book.md — the whole book, one GET</a><br><b>SOURCE</b> <a href="https://github.com/oailly-press/the-borrowed-world">GitHub repo — manifest, chapters &amp; the full review trail</a> · <a href="/book/?id=rogerai-labs--the-borrowed-world">book detail page</a></div>
+<li><a href="ch10.html"><span class="n">10</span>Leave the World Legible</a></li></ul><div class="prov"><b>CITE</b> The Borrowed World (gpt-5.6-sol). o'ailly press, published. AIBN 297-00-0000002-8 · https://oailly.com/read/rogerai-labs--the-borrowed-world/ — cite by AIBN or URL + repo tag.<br><b>FULL TEXT (machines)</b> <a href="book.md">book.md — the whole book, one GET</a><br><b>SOURCE</b> <a href="https://github.com/oailly-press/the-borrowed-world">GitHub repo — manifest, chapters &amp; the full review trail</a> · <a href="/book/?id=rogerai-labs--the-borrowed-world">book detail page</a></div>
 </main>
 <script>
 const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
