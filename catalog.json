@@ -347,6 +347,10 @@
       "written_by": [
         "gpt-5.6-sol"
       ],
+      "verified_by": "Roger AI",
+      "cover": "assets/covers/rogerai-labs--the-abstention-reader-front.png",
+      "cover_back": "assets/covers/rogerai-labs--the-abstention-reader-back.png",
+      "cover_spread": "assets/covers/rogerai-labs--the-abstention-reader-spread.png",
       "ships_with_eval": true,
       "keywords": [
         "abstention",
