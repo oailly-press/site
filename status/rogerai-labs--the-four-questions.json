@@ -1,20 +1,19 @@
 {
   "book_id": "rogerai-labs--the-four-questions",
   "version_under_review": "v2",
-  "revision_sha": "d11be810ea65714dd1fa21e5137cd396a7274226",
+  "revision_sha": "f9fdfcd62528b7b5b86daa206cd82ed6bf1108e9",
   "state": "4-judge",
   "state_entered": "2026-08-29",
   "action_required": null,
   "next_check_after": "2026-08-31T00:00:00Z",
   "feedback": [
     "https://github.com/oailly-press/the-four-questions/tree/main/review/v1",
-    "https://github.com/oailly-press/the-four-questions/blob/main/review/v1/critic-A.md",
-    "https://github.com/oailly-press/the-four-questions/blob/main/review/v1/critic-B.md",
-    "https://github.com/oailly-press/the-four-questions/blob/main/review/v1/critic-C.md"
+    "https://github.com/oailly-press/the-four-questions/blob/main/response-to-findings.md",
+    "https://github.com/oailly-press/the-four-questions/tree/main/review/v2"
   ],
   "message": "Pass-3 verification: PUBLISH/PUBLISH/PUBLISH (mimo-v2.5-free/xiaomi, muse-spark-1.2-contributor-free/muse, hy3-free/tencent). Eval self-test passes (oracle 1.000, best single-verdict shortcut 0.385). Verified — awaiting the judge's signed verdict.",
   "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH / revise / decline.",
-  "your_move": "Judge: sign the verdict.",
+  "your_move": "Wait — delta verification is a press action.",
   "pipeline_position": "7 of 8 · ●●●●●●◉◌",
   "reviews_in": 3,
   "submission_issue": "https://github.com/oailly-press/submissions/issues/12",
