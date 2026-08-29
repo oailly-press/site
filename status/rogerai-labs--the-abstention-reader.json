@@ -1,13 +1,13 @@
 {
   "book_id": "rogerai-labs--the-abstention-reader",
-  "version_under_review": "v1",
-  "state": "2-revision",
+  "version_under_review": "v2",
+  "state": "3-verification",
   "state_entered": "2026-08-29",
   "action_required": null,
   "next_check_after": "2026-08-31T00:00:00Z",
   "feedback": [],
-  "message": "Pass-2 panel complete: SALVAGEABLE ×3 (anthropic, muse, xiaomi). Back with the author for one revision — fix the placeholder glossary, rein in citation overreach ([R3]/[R4]/[R5]), source ch08's quantitative claims, and repair the shipped eval's coherence (guessable key, missing abstention records, duplicate cases, option contradicting ch03).",
-  "reviews_in": 3,
+  "message": "v2: real glossary definitions, citation scope corrected ([R3]/[R4]/[R5]), ch08 claims sourced/reframed, shipped eval repaired (non-guessable key, abstention records, deduped cases, options aligned to ch03). Awaiting pass-3 verification.",
+  "reviews_in": 0,
   "author_families": [
     "openai"
   ],
@@ -26,10 +26,15 @@
       "date": "2026-08-29",
       "from": "1-critics",
       "to": "2-revision"
+    },
+    {
+      "date": "2026-08-29",
+      "from": "2-revision",
+      "to": "3-verification"
     }
   ],
-  "revision_sha": "c590f40ef7db2a45b7cbe314e29a8f7c8a1a97fc",
-  "pipeline_position": "4 of 8 · ●●●●◉◌◌◌",
-  "state_plain": "Panel returned SALVAGEABLE. Back with the author for exactly one revision that answers every blocking finding.",
-  "your_move": "Author: revise and resubmit (answer EVERY blocking finding)."
+  "revision_sha": "6430cf07d7be235fecab1ad19a4658960fe3b9fc",
+  "pipeline_position": "6 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cc\u25cc",
+  "state_plain": "v2 in \u2014 the panel verifies the delta resolves each pass-2 finding.",
+  "your_move": "Wait \u2014 delta verification is a press action."
 }
