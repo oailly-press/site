@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What a Token Costs — Inference on the Edge</title>
+<meta name="description" content="Quantization, speculation, and the physics of local models — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="Inference on the Edge">
+<meta property="og:description" content="Quantization, speculation, and the physics of local models — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--inference-on-the-edge/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--inference-on-the-edge.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Inference on the Edge">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--inference-on-the-edge.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#4FD6C3;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="1" data-prev="index.html#end" data-next="ch02.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 1 — What a Token Costs</h1>
+<p><em>(v2, 2026-08-28 — written by rogerai-dj for RogerAI Labs, verified by Roger AI.
+Numbers carrying a <code>[LAB:]</code> marker are RogerAI Labs&rsquo; own bench measurements, taken on the
+reference machine described in Chapter 1 and recorded in the lab notebook; each is
+reproducible by re-running the stated recipe — engine build, artifact, and flags. Claims
+without a marker are labeled unmeasured.)</em></p>
+<h2>The wrong unit</h2>
+<p>People talk about local inference in the units marketing handed them: parameters,
+tokens per second, &ldquo;a 70B on your desk.&rdquo; Those numbers are not fake. They are just the
+wrong place to start. A parameter count tells you how large the weight file is. A
+tok/s number tells you how the run felt on one machine, one day, one engine. Neither
+tells you what the machine was actually paying.</p>
+<p>The machine pays in <strong>bytes moved</strong>.</p>
+<p>Every generated token is the result of reading a large weight tensor, combining it with
+a smaller activation, and writing a little state forward. The arithmetic is cheap on
+modern silicon. The memory movement is not. That is the single fact this chapter is
+built on, and every later chapter is a consequence of it: quantization exists to move
+fewer bytes; speculative decoding exists to make the bytes you do move buy more than
+one token; the KV cache is a second working set you are also streaming; a bad load log
+is almost always a placement story about which bytes landed on which bus.</p>
+<p>If you already knew that, stay anyway. The chapter is not the slogan. It is the
+measurement of what the slogan costs on one real box, and the habits that keep you from
+lying to yourself with a tok/s number.</p>
+<h2>The box this book measures against</h2>
+<p>Unless a sentence says otherwise, the numbers in this book come from one laboratory
+machine:</p>
+<ul>
+<li>4× RTX PRO 4500 Blackwell, 128 GB VRAM total</li>
+<li>Threadripper 9970X</li>
+<li>128 GB DDR5-4800 host memory</li>
+<li>llama.cpp unless a row says vLLM</li>
+</ul>
+<p>That envelope is not universal. It is a <strong>reference</strong>. A laptop will be slower. A
+datacenter H100 node will be faster. A Raspberry Pi will be a different regime entirely,
+and chapter 8 will say so without romance. The point of a reference is not to pretend
+your hardware matches it. The point is that every comparison in the book is pinned to a
+named machine, so a claim can be re-run or rejected.</p>
+<p>Warm single-stream decode is the default tok/s figure. Prefill (prompt evaluation) is
+called out when it matters. Aggregate throughput under concurrency is a different
+number again, and chapter 3 will spend time on why confusing those three is how people
+buy the wrong GPU.</p>
+<h2>A tok/s is a receipt, not a personality</h2>
+<p>Take one model, hold it fixed, and change only the engine. The lab did that with a
+102 GB UD-IQ3_XXS build of DeepSeek-V4-Flash:</p>
+<table>
+<thead>
+<tr>
+<th>Build</th>
+<th>Indexer</th>
+<th>Warm decode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pre-#25545 era</td>
+<td>CPU</td>
+<td>~2 tok/s</td>
+</tr>
+<tr>
+<td>mainline CUDA</td>
+<td>CPU</td>
+<td>~10.8 tok/s (bimodal)</td>
+</tr>
+<tr>
+<td>taco build</td>
+<td>CPU/disabled</td>
+<td>13.1 tok/s (bimodal)</td>
+</tr>
+<tr>
+<td>pr25545</td>
+<td><strong>GPU</strong></td>
+<td><strong>26.2 tok/s (24.5–28.5, stable)</strong></td>
+</tr>
+<tr>
+<td>combined prototype</td>
+<td>GPU</td>
+<td>28.4 tok/s (±0.04)</td>
+</tr>
+</tbody>
+</table>
+<p><code>[LAB: RESULTS-MATRIX §A]</code></p>
+<p>Every cell above is <strong>warm single-stream decode</strong> on the same 102 GB UD-IQ3_XXS artifact,
+short fixed prompt, on the reference box. The CPU-indexer rows carry an approximate figure
+(<code>~2</code>, <code>~10.8</code>) rather than a tight range on purpose: those builds were <em>bimodal and
+unstable</em> — the instability is the measurement, not a hidden orphan number. The stable GPU
+row carries a real range (24.5–28.5 across runs) because it was stable enough to have one.
+This book&rsquo;s own rule (Chapter 5) is to refuse a number without a range; the honest form of
+that rule for a pathological configuration is to publish the approximation <strong>and</strong> name it
+as unstable, not to invent a false precision. The historical <code>~26</code> old-production baseline
+is likewise a warm single-stream approximation on this artifact, not a promoted, ranged
+production number.</p>
+<p>Same weights. Same cards. Same host. Decode moved from a cratered ~2 tok/s to a stable
+26 tok/s because the lightning indexer stopped living on the CPU. Prefill moved with
+it: roughly 50–80 tok/s on CPU-indexer builds versus ~130 tok/s once the indexer was on
+the GPU.</p>
+<p>If tokens-per-second were a property of &ldquo;the model,&rdquo; that table would be illegal. It
+is not a property of the model. It is a property of <strong>which bytes crossed which bus on
+each step</strong>. The early builds were not &ldquo;bad at language.&rdquo; They were paying a host-side
+tax on every token that no amount of prompt engineering could refund.</p>
+<p>This is the first practical habit of the book:</p>
+<blockquote>
+<p>When a tok/s number is surprising, ask what moved, not what the model &ldquo;is.&rdquo;</p>
+</blockquote>
+<p>Chapter 6 will turn that habit into a load-log discipline. Here it is enough to notice
+that a twelve-fold swing appeared before any quantization experiment, any speculative
+decoding trick, or any change to the weights at all.</p>
+<h2>Bandwidth as a budget you can feel</h2>
+<p>You do not need a cycle-accurate simulator to use the bandwidth idea. You need a
+back-of-envelope that keeps you honest.</p>
+<p>Suppose a decode step must touch roughly the active weights for the layers involved,
+plus a slice of KV cache, plus overhead. The exact fraction depends on architecture
+(dense versus mixture-of-experts), batch size, and how much of the model lives on GPU
+versus host. What does not depend on those details is the shape of the limit:</p>
+<p><strong>tokens per second cannot exceed (effective bytes per second) / (bytes per token).</strong></p>
+<p>Raise effective bandwidth — better placement, fewer host round-trips, less spill — and
+tok/s rises. Raise bytes per token — higher-precision weights, fatter KV, wider active
+expert sets — and tok/s falls. Everything marketed as a &ldquo;speed tip&rdquo; is one of those two
+moves in costume.</p>
+<p>That is why a smaller file is not automatically faster. A 175 GB Q4 that spills hard
+into host memory can lose to a 160 GB master that stays resident, even though the Q4
+looks &ldquo;more quantized&rdquo; on a spreadsheet. The lab&rsquo;s promotion decision later in the
+matrix is exactly that story: tool quality preferred over the last few tok/s, but only
+after measuring that the master could still land at old-production speed with
+speculative decoding paying back the spill <code>[LAB: RESULTS-MATRIX headline
+before/after + §E]</code>. Chapter 2 takes the quality side. Chapter 3 takes the speculation
+side. This chapter only needs the bandwidth reading: <strong>residence beats folklore.</strong></p>
+<h2>Three speeds people crush into one number</h2>
+<p>Local-inference conversations mash three different speeds together. Separate them or
+you will misread every table in this book.</p>
+<p><strong>Prefill (prompt eval).</strong> The cost of reading the prompt and building the initial KV
+cache. Dominated by large matrix multiplies over many tokens at once. On the reference
+box, GPU-indexer builds prefilled the same DeepSeek IQ3 around 130 tok/s; CPU-indexer
+builds sat nearer 50–80 <code>[LAB: RESULTS-MATRIX §A]</code>. Prefill cares about batchable work
+and memory throughput into big GEMMs.</p>
+<p><strong>Decode (single-stream).</strong> The cost of producing the next token after the prompt is
+in. Often memory-bandwidth bound because each step re-reads weights for a tiny amount
+of arithmetic. This is the number people quote as &ldquo;tok/s.&rdquo; On the same IQ3 model, the
+promoted engine held 26.2 warm decode with a tight range (24.5–28.5) once the indexer
+tax was gone <code>[LAB: RESULTS-MATRIX §A]</code>.</p>
+<p><strong>Aggregate throughput under concurrency.</strong> Several requests at once. Per-stream decode
+usually drops; total tokens across streams may rise. On the same pr25545 IQ3 build with
+PAR=4, c=1 measured 26.2 tok/s while c=4 measured 46.1 aggregate <code>[LAB: RESULTS-MATRIX
+§B]</code>. That is not a contradiction. It is two different receipts.</p>
+<p>If a vendor quotes &ldquo;60 tok/s,&rdquo; ask which of the three they measured, on what batch, at
+what context length, after what warm-up, and whether the range across runs was smaller
+than the claim. Chapter 5 is about that honesty. Chapter 1 only installs the split.</p>
+<h2>Same box, different models: the §C decode column</h2>
+<p>Hold the engine culture roughly fixed and look across models on the reference machine
+<code>[LAB: RESULTS-MATRIX §C]</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Model / quant</th>
+<th>Size</th>
+<th>Warm tok/s</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DeepSeek-V4-Flash IQ3 (old prod)</td>
+<td>102 GB</td>
+<td>~26</td>
+<td>baseline production</td>
+</tr>
+<tr>
+<td>DeepSeek-V4-Flash community Q4</td>
+<td>175 GB</td>
+<td>16.5</td>
+<td>bigger file, slower decode</td>
+</tr>
+<tr>
+<td>DeepSeek-V4-Flash Q3-MTP</td>
+<td>143 GB</td>
+<td><strong>30.5</strong> @ MTP n=1</td>
+<td>speculation on</td>
+</tr>
+<tr>
+<td>DeepSeek-V4-Flash Q8-MTP master</td>
+<td>160 GB</td>
+<td>26–27 @ MTP n=1</td>
+<td>quality ceiling, old speed</td>
+</tr>
+<tr>
+<td>Qwen3.6-27B dense Q8_0</td>
+<td>29 GB</td>
+<td>~27</td>
+<td>much smaller dense model</td>
+</tr>
+<tr>
+<td>gpt-oss-120b MXFP4 (vLLM TP=4)</td>
+<td>~60 GB</td>
+<td>60 wall-clock</td>
+<td>different engine</td>
+</tr>
+</tbody>
+</table>
+<p>Read it as bandwidth, not as a leaderboard.</p>
+<p>The community Q4 is larger than the IQ3 and slower on decode. That is the bytes-per-token
+term biting. The Q3-MTP build is larger than IQ3 and <em>faster</em> on decode because
+speculative decoding changed how many tokens each weight read bought — not because Q3
+magically streams better than IQ3 in isolation. The Q8 master is larger still and lands
+back near the old ~26 tok/s once MTP n_max=1 is on: quality recovered without stranding
+latency. The dense 27B Q8 sits near 27 tok/s at 29 GB: a different architecture with a
+much smaller working set, in the same speed neighborhood as a heavily engineered MoE
+stack an order of magnitude larger in file size.</p>
+<p>None of those sentences require you to believe a vendor blog. They require you to
+believe a table measured on one box and labeled with the recipes that produced it.</p>
+<h2>Why &ldquo;parameters&rdquo; keep surviving</h2>
+<p>Parameter counts survive because they are easy. They fit on a slide. They sort a
+Hugging Face page. They are also a decent proxy for <em>file size at a given precision</em>,
+which is a decent proxy for <em>bytes you might have to move</em>, which is why they are not
+useless.</p>
+<p>They become harmful when they smuggle in assumptions:</p>
+<ol>
+<li><strong>That all parameters are active on every token.</strong> Mixture-of-experts models break
+   this. Active parameters per token can be a fraction of total parameters; total still
+   drives storage and often drives how much spill you accept to make the model fit.</li>
+<li><strong>That precision is uniform and free.</strong> It is not. Expert precision moved tool-use
+   scores in the lab when total-bit folklore said the models should be close <code>[LAB:
+   RESULTS-MATRIX §C/§D]</code>. Chapter 2 is the full argument.</li>
+<li><strong>That two models with the same parameter count have the same decode cost.</strong> Engine,
+   placement, KV precision, batching, and spill can dominate.</li>
+</ol>
+<p>Use parameters as a rough size class. Pay for tokens with bandwidth accounting.</p>
+<h2>The 2 tok/s lesson, in slow motion</h2>
+<p>The cratered ~2 tok/s era on the reference box is worth sitting with, because it is the
+purest bandwidth failure mode in the matrix.</p>
+<p>Operators did what operators do: change GPU splits, poke batch flags, blame the model,
+blame the quant, rerun benchmarks that all agreed the machine was &ldquo;slow.&rdquo; The load path
+was the problem. With the indexer on CPU, every token paid a host-side tax. The cards
+were present. The weights were present. The bytes were taking the long road.</p>
+<p>When the GPU indexer landed in pr25545, warm decode jumped to 26.2 and the range
+tightened to something you could plan around (24.5–28.5). Prefill roughly doubled. No
+romance, no new weights — a placement fix <code>[LAB: RESULTS-MATRIX §A]</code>.</p>
+<p>Chapter 6 will teach you to read the load log for the modern versions of this failure:
+layers on the wrong device, mmap surprises, repack flags, compute-buffer OOMs. Chapter 1
+only needs the moral:</p>
+<blockquote>
+<p>A pathological tok/s is often a map of where bytes went. Tuning sampling parameters
+will not move that map.</p>
+</blockquote>
+<h2>Concurrency without self-deception</h2>
+<p>Once single-stream decode is stable, someone will ask whether the box can serve more
+than one user. Measure aggregate and per-stream separately.</p>
+<p>On the promoted pr25545 IQ3 configuration, PAR=4 concurrency looked like this <code>[LAB:
+RESULTS-MATRIX §B]</code>:</p>
+<table>
+<thead>
+<tr>
+<th>c</th>
+<th>tok/s (as reported in the matrix)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>26.2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>16.9</td>
+</tr>
+<tr>
+<td>3</td>
+<td>24.7</td>
+</tr>
+<tr>
+<td>4</td>
+<td>46.1 aggregate</td>
+</tr>
+</tbody>
+</table>
+<p>There is a reproducible dip at c=2/c=3 with zero re-prefills logged — a scheduling
+quirk the matrix still marks unresolved. That honesty matters more than a smooth curve.
+A real system has seams. If your concurrency table is perfectly monotonic in a way your
+engine has no right to produce, your methodology may be warmer than your claim.</p>
+<p>A taco PAR=8 line in the same section reaches 65.7 aggregate at c=8. A vLLM TP=4
+gpt-oss-120b reference climbs from 60.2 at c=1 to 888 at c=16. Those rows are not
+&ldquo;better hardware myths.&rdquo; They are different engines and different models on the same
+reporting discipline. Steal the discipline, not a cross-row fantasy that every stack
+should hit 888.</p>
+<p>For capacity planning, the useful questions are:</p>
+<ol>
+<li>What per-stream latency does a user still accept?</li>
+<li>What aggregate tok/s does the box deliver at that concurrency?</li>
+<li>What fails first — VRAM, host RAM, scheduler quirk, thermal throttle?</li>
+</ol>
+<p>Question 3 is why chapter 7 exists. Question 1 and 2 are bandwidth accounting with a
+queue attached.</p>
+<h2>Speculative decoding is a bandwidth trade in advance</h2>
+<p>You do not need the full chapter 3 treatment to see the shape. Speculative decoding
+asks a cheaper draft to propose tokens and a stronger path to verify them. When it
+works, each heavy weight read buys more than one accepted token. When it fails, you
+paid extra movement for rejects.</p>
+<p>On the reference matrix <code>[LAB: RESULTS-MATRIX §E]</code>:</p>
+<ul>
+<li>A dense Qwen3.6-27B Q8 with stock MTP and zero spill reaches <strong>2.2×</strong> (27.0 → 59.3)
+  at n_max=3.</li>
+<li>DeepSeek Q8-MTP with 14 layers spilled gets <strong>1.18×</strong> at n_max=1 with <strong>100%</strong>
+  first-token acceptance, and slows down if you push n_max while spill stays high.</li>
+<li>DeepSeek Q3-MTP with 10 layers spilled gets <strong>1.30×</strong> at n_max=1, again at 100%
+  first-token acceptance.</li>
+<li>The same DeepSeek Q8-MTP with 24 layers spilled falls below baseline at n_max=3
+  (0.86×): speculation can lose.</li>
+</ul>
+<p>The matrix states the pattern in one line: speedup grows as spill shrinks; on spill-bound
+MoE, batch-verify costs pile into DDR5 expert reads, so n_max=1 is the sweet spot; and on
+these two DeepSeek cells the first drafted token was accepted every step (100%). Chapter 3
+carries the caveat this summary compresses: that 100% is two cells on one stack, and
+attributing it to &ldquo;the head&rsquo;s training objective&rdquo; is the lab&rsquo;s interpretation, not a
+result isolated by a control.</p>
+<p>That is pure chapter-1 material. Speculation does not repeal bandwidth limits. It
+changes the numerator: accepted tokens per expensive read. If your draft forces extra
+spill traffic, you can invent a perpetual-motion engine on a whiteboard and still lose
+on the bench.</p>
+<h2>Quality and speed are coupled through the same budget</h2>
+<p>It is tempting to put &ldquo;quality&rdquo; in one document and &ldquo;speed&rdquo; in another. Real deployments
+choose a point on a single curve.</p>
+<p>The lab&rsquo;s production headline is the cleanest example <code>[LAB: RESULTS-MATRIX headline
+before/after]</code>:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Old IQ3</th>
+<th>Q3-MTP</th>
+<th>Q8-MTP master</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MMLU</td>
+<td>79.6</td>
+<td>84.0</td>
+<td><strong>88.3</strong></td>
+</tr>
+<tr>
+<td>Tool hardmode</td>
+<td>43–47</td>
+<td>40–50</td>
+<td>mean 55 (best floor)</td>
+</tr>
+<tr>
+<td>Warm decode</td>
+<td>~26</td>
+<td>30.5</td>
+<td>26–27</td>
+</tr>
+<tr>
+<td>Size / spill</td>
+<td>102 GB / 4 layers</td>
+<td>143 GB / 10</td>
+<td>160 GB / 14</td>
+</tr>
+</tbody>
+</table>
+<p>The promotion rationale is on the record: tool quality over the last 4 tok/s. The
+master kept native expert precision, speculative decoding paid the spill back, and the
+box landed at old-production speed with a better quality floor. A sideways Q4 requant
+was aborted when the log showed conversion growing expert tensors while adding loss —
+requantizing below the master only made sense to shrink (Q3), never to move sideways
+into a &ldquo;friendlier&rdquo; label.</p>
+<p>Chapter 2 will unpack the quality mechanics. Chapter 1 only needs the coupling: <strong>the
+bytes you keep, the bytes you spill, and the tokens you accept per read are one
+decision.</strong> Pretending speed is a runtime flag and quality is a training flag is how
+teams ship a impressive demo and an unusable service.</p>
+<h2>What this chapter refuses to claim</h2>
+<p>Boundaries, in plain text:</p>
+<ul>
+<li>We do not claim the reference box is the only serious hardware class.</li>
+<li>We do not claim llama.cpp is always the right engine. The matrix itself includes a
+  vLLM reference row because engines differ.</li>
+<li>We do not claim that 26 tok/s is &ldquo;enough&rdquo; for your product. Enough is a product
+  requirement, not a physics constant.</li>
+<li>We do not claim a closed-form bytes-per-token formula for every architecture. The
+  accounting is directional and measured; architecture-specific constants belong to
+  the model card and the profiler, not to a motivational poster.</li>
+<li>We have not published a full roofline plot for every row in §C. Where this chapter
+  speaks in roofline language, it is as an explanatory frame over measured tok/s and
+  placement facts, not as a substitute for them.</li>
+</ul>
+<p>If a sentence in this chapter sounds like it would survive without the lab tables, it
+has gone too far.</p>
+<h2>Working habits to take into the rest of the book</h2>
+<ol>
+<li><strong>Pin the machine.</strong> Write down GPU, host RAM, engine, and build identity before you
+   quote tok/s.</li>
+<li><strong>Name the speed.</strong> Prefill, single-stream decode, or aggregate under concurrency.</li>
+<li><strong>When surprised, find the bus.</strong> Host versus GPU, spill versus resident, indexer
+   placement, KV reads — before temperature or prompt shape.</li>
+<li><strong>Treat speculation as accepted-tokens-per-read.</strong> If spill rises with draft length,
+   you can lose.</li>
+<li><strong>Refuse orphan numbers.</strong> A tok/s without context length, warm/cold, and range is a
+   rumor.</li>
+</ol>
+<h2>A note on rooflines without theater</h2>
+<p>Hardware people draw rooflines: arithmetic intensity versus bandwidth ceilings. This book stays lower to the ground because the lab evidence is tok/s, placement, and spill, not a full published roofline campaign for every row. Still, the roofline moral applies: once you are bandwidth-bound, cleverer arithmetic does not save you, and once you are bound by host round-trips, more GPU FLOPS do not save you.</p>
+<p>If you want a roofline study, do it on your stack and attach it the way this book attaches §A/§C. Do not sprinkle FLOPS marketing onto a 2 tok/s placement bug.</p>
+<h2>Cost per million tokens, qualitatively</h2>
+<p>Operators eventually ask for dollars. This book will not invent cloud list prices. It will say:</p>
+<ul>
+<li>local cost is dominated by capex amortization, power, and engineering time</li>
+<li>waste is dominated by bad recipes (spilled verifies, CPU indexers, oversized context)</li>
+<li>a 12× decode bug is a 12× burn rate bug on the latency path</li>
+</ul>
+<p>Fixing placement is often the highest-ROI &ldquo;FinOps&rdquo; move available to a local stack, and it shows up in the load log before it shows up in finance.</p>
+<h2>Field story: the day the indexer moved</h2>
+<p>Before pr25545, the reference box could look fully configured and still feel broken. GPUs were present. The model file was present. Clients got answers. The answers arrived at a pace that made tool loops unusable. The team did what every team does: change sampler settings, blame MoE, blame quant, rerun the same dashboard.</p>
+<p>The fix was not a new model. It was reading the engine table that became §A and noticing the indexer column <code>[LAB: RESULTS-MATRIX §A]</code>. Once the indexer lived on the GPU, warm decode jumped into the mid-20s and the range tightened enough to plan capacity. Prefill roughly doubled. The &ldquo;model personality&rdquo; narrative collapsed into a bus narrative.</p>
+<p>If you take only one operational memory from chapter 1, take that sequence: surprising tok/s → placement hypothesis → measured recipe change → range re-check. Everything else in this book is a specialization of that loop.</p>
+<h2>Teaching bandwidth to a mixed audience</h2>
+<p>Engineers who write CUDA and engineers who write product prompts need different doors into the same fact.</p>
+<p>For systems people: show the §A table and the 12× swing.
+For product people: show that a tool loop needing 20 model turns cannot tolerate 2 tok/s if humans are waiting on the loop.
+For finance people: show that a placement bug multiplies cost without multiplying value.</p>
+<p>Same physics. Three slides. No folklore.</p>
+<h2>Operator lab: estimate before you bench</h2>
+<p>Before you run a new artifact, write a one-page estimate:</p>
+<ol>
+<li>Artifact size on disk.</li>
+<li>Expected residency (all GPU / split / heavy host).</li>
+<li>Expected order-of-magnitude tok/s relative to a known row in §C.</li>
+<li>Which chapter-1 failure class you will check first if wrong (CPU tax, spill commute, wrong speed metric).</li>
+</ol>
+<p>Then bench. If reality is 2× off your estimate, you learned something about either the artifact or your mental model. Both are valuable. The point of estimates is not pride. It is to make surprises legible.</p>
+<p>Compare any surprise to the §A swing: a 12× miss is placement until proven otherwise <code>[LAB: RESULTS-MATRIX §A]</code>. A 1.2× miss may be thermal, speculation, or context. Use the magnitude to choose the chapter.</p>
+<h2>Glossary for chapter 1</h2>
+<ul>
+<li><strong>Prefill</strong> — prompt ingestion; builds initial KV.</li>
+<li><strong>Decode</strong> — per-token generation after prefill.</li>
+<li><strong>Aggregate throughput</strong> — total tokens/second across concurrent streams.</li>
+<li><strong>Spill</strong> — layers or experts living off the fast device path.</li>
+<li><strong>Residence</strong> — weights kept on the device path you intended.</li>
+<li><strong>Recipe</strong> — the full flag+binary+artifact bundle that produced a number.</li>
+</ul>
+<p>Use these words in tickets. Tickets that say only &ldquo;slow&rdquo; waste everyone&rsquo;s cache.</p>
+<h2>What you should do Monday</h2>
+<ol>
+<li>Pin your engine build identity in the unit file and in every speed ticket.</li>
+<li>Split your dashboards into prefill, single-stream decode, and aggregate-under-c.</li>
+<li>Take one production model and write its bytes story: resident vs spilled, host vs GPU.</li>
+<li>Re-read the last &ldquo;model is slow&rdquo; ticket and mark whether a bus was investigated.</li>
+<li>Save one warm decode range (three runs) for the current production recipe as baseline.</li>
+</ol>
+<p>If Monday ends without a baseline range, Tuesday&rsquo;s incident will invent one under pressure. The §A lesson is that baselines belong to recipes, not to model names <code>[LAB: RESULTS-MATRIX §A]</code>.</p>
+<h2>Cross-links inside this book</h2>
+<p>When decode is cratered, go to chapter 6 before chapter 2. When decode is merely mediocre under concurrency, re-read the aggregate section here and then chapter 3&rsquo;s concurrency note. When someone answers a bandwidth problem with a new quant label, send them to chapter 2&rsquo;s sideways-requant stop sign and chapter 8&rsquo;s fit worksheet. When the graph looks good and the users do not, chapter 5&rsquo;s speed template probably asked a different question than production traffic.</p>
+<h2>A closing arithmetic habit</h2>
+<p>When a vendor or a teammate quotes a single tok/s number, force it into a sentence:</p>
+<blockquote>
+<p>On hardware H, engine E, artifact A, flags F, context K, concurrency C, warm/cold W, the decode range was R across N runs.</p>
+</blockquote>
+<p>If they cannot speak the sentence, they do not have a measurement. They have a mood. This book is a training manual for refusing moods with tables. The reference box rows are examples of sentences that can be audited <code>[LAB: RESULTS-MATRIX §A/§B/§C]</code>. Your job is to make your own fleet speak in the same grammar.</p>
+<h2>Who this chapter is for</h2>
+<p>If you have ever stared at a tok/s graph and argued about models when you should have argued about buses, this chapter is the reset. If you are new to local serving, it is the map. If you are experienced, it is a checklist you can hand to the next hire so they do not repeat the 2 tok/s archaeology. The later chapters assume you accept the receipt model of speed: named machine, named recipe, named speed kind, named range. Reject that, and the rest of the book will look like taste. Accept it, and the lab tables become tools instead of trivia <code>[LAB: RESULTS-MATRIX §A/§C]</code>.</p>
+<h2>Looking ahead</h2>
+<p>Chapter 2 stays on the same box and asks why expert precision moved quality when total
+bits said it should not. Chapter 3 turns the MTP table into economics. Chapter 4 puts
+the KV cache on the balance sheet as a second model. Chapter 5 attacks benchmark noise
+directly — including the ±10 point tool-suite swing at temperature 0 that already
+haunts the §C footnote <code>[LAB: RESULTS-MATRIX §C footnote]</code>. Chapter 6 teaches the load
+log. Chapter 7 puts heat and power loss into the same accounting. Chapter 8 answers
+what fits on a 128 GB class box, and what does not, without insulting smaller machines
+by pretending they are broken 128 GB boxes.</p>
+<p>The rest of the book is downstream of one sentence:</p>
+<p><strong>A token costs bytes moved, under a recipe, on a named machine.</strong></p>
+<p>Everything else is engineering on top of that receipt.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ cover</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch02.html">next: Quantization without Folklore →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-inference-on-the-edge', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

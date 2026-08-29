@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quantization without Folklore — Inference on the Edge</title>
+<meta name="description" content="Quantization, speculation, and the physics of local models — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="Inference on the Edge">
+<meta property="og:description" content="Quantization, speculation, and the physics of local models — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--inference-on-the-edge/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--inference-on-the-edge.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Inference on the Edge">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--inference-on-the-edge.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#4FD6C3;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="2" data-prev="ch01.html" data-next="ch03.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 2 — Quantization without Folklore</h1>
+<p><em>(v2, 2026-08-28 — written by rogerai-dj for RogerAI Labs, verified by Roger AI.
+Numbers carrying a <code>[LAB:]</code> marker are RogerAI Labs&rsquo; own bench measurements, taken on the
+reference machine described in Chapter 1 and recorded in the lab notebook; each is
+reproducible by re-running the stated recipe — engine build, artifact, and flags. Claims
+without a marker are labeled unmeasured.)</em></p>
+<h2>The story everyone already knows</h2>
+<p>Quantization is supposed to be simple. Store the weights with fewer bits. The file
+shrinks. The model fits. Maybe you lose a little quality. Maybe you do not notice.</p>
+<p>That story is not entirely wrong. It is the right story for a first afternoon with a
+dense 7B. It becomes folklore the moment you treat &ldquo;Q4&rdquo; as a moral category — as if
+the label on the file were the same thing as the precision that actually mattered
+inside the network.</p>
+<p>This chapter is the lab&rsquo;s refusal of that folklore. On a mixture-of-experts model big
+enough to hurt, <strong>which tensors kept their precision</strong> moved quality more than <strong>how
+small the file looked</strong>. A community Q4 that was larger on disk lost to a master build
+that preserved expert precision and used speculative decoding to pay the spill back.
+A sideways requant into a friendlier-looking Q4 was aborted when the conversion log
+showed the experts growing while quality had nowhere to go but down.</p>
+<p>If chapter 1 said a token costs bytes moved, chapter 2 says: not all bytes are equal,
+and the spreadsheet column titled &ldquo;quant&rdquo; is not a substitute for knowing which bytes
+you kept.</p>
+<h2>What quantization is, without romance</h2>
+<p>A trained weight is a number. Numbers can be stored at different precisions. Full
+training might live in high precision. Inference often ships lower: 8-bit, 4-bit,
+exotic typed formats, mixtures across layers.</p>
+<p>Two bills arrive when you lower precision:</p>
+<ol>
+<li><strong>A memory bill, usually smaller.</strong> Fewer bits per weight means a smaller file and,
+   if the weights stay resident, fewer bytes to stream per step.</li>
+<li><strong>A quality bill, sometimes sharp.</strong> Some parts of a network tolerate coarse
+   quantization. Some do not. The damage is not evenly distributed just because the
+   average bit-width looks neat.</li>
+</ol>
+<p>Folklore collapses those bills into one sentence: &ldquo;Q4 is fine.&rdquo; Engineering keeps them
+separate: which tensors, which method, which calibration, which eval, which hardware
+recipe.</p>
+<p>This book will not teach every quant method. It will teach the reading habit that
+survived contact with one hard MoE stack on one reference box.</p>
+<h2>The reference comparison that broke the slogan</h2>
+<p>Hold the machine fixed (chapter 1&rsquo;s box). Look at DeepSeek-V4-Flash builds from the
+capability table <code>[LAB: RESULTS-MATRIX §C]</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Build</th>
+<th>Size</th>
+<th>MMLU</th>
+<th>Tool hardmode</th>
+<th>Warm tok/s</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UD-IQ3_XXS (old prod)</td>
+<td>102 GB</td>
+<td>79.6</td>
+<td>47</td>
+<td>~26</td>
+</tr>
+<tr>
+<td>community Q4_K_M-XL (teamblobfish)</td>
+<td>175 GB</td>
+<td>85.0</td>
+<td>60</td>
+<td>16.5</td>
+</tr>
+<tr>
+<td>Q3_K_M-MTP (lab, morning prod)</td>
+<td>143 GB</td>
+<td>84.0</td>
+<td>40–50</td>
+<td><strong>30.5</strong> @ MTP n=1</td>
+</tr>
+<tr>
+<td><strong>Q8-MTP master (lab, new prod)</strong></td>
+<td><strong>160 GB</strong></td>
+<td><strong>88.3</strong></td>
+<td>mean <strong>55</strong> (43–73)</td>
+<td>26–27 @ MTP n=1</td>
+</tr>
+</tbody>
+</table>
+<p>Read it slowly.</p>
+<p>The community Q4 is the folklore champion on paper: &ldquo;Q4,&rdquo; widely shared, 85.0 MMLU,
+60 tool hardmode. It is also <strong>175 GB</strong>, slower on decode (16.5 tok/s), and not the
+end of the story.</p>
+<p>The lab master keeps experts at their <strong>original release precision</strong> (native MXFP4
+passed through untouched in the conversion). By <em>passed through untouched</em> this book means
+a specific, checkable thing: the expert weight tensors ship in the model&rsquo;s original MXFP4
+block-float encoding, copied verbatim into the GGUF during conversion rather than
+re-encoded onto a different quant grid. Only the surrounding tissue (router, attention,
+norms, the MTP head&rsquo;s metadata) is handled by the converter; the experts&rsquo; bytes are the
+release bytes. It is <strong>160 GB</strong>, scores <strong>88.3 MMLU</strong>, posts the best tool-scenario floor
+in the DeepSeek series on that harness, and still lands at <strong>26–27 tok/s</strong> once MTP
+n_max=1 is on.</p>
+<p>So the smaller-looking &ldquo;more quantized&rdquo; community artifact did not win. The build that
+refused to mistreat the experts won on quality and, with speculation, tied old
+production on speed.</p>
+<p>That is not a vibe. It is a row.</p>
+<h2>Expert precision is the MoE lever</h2>
+<p>Mixture-of-experts models do not spend all parameters on every token. They route each
+token to a subset of experts. The router and the expert bodies are different kinds of
+tissue. Smashing both with the same blunt quant policy is convenient for packaging and
+often wrong for behavior.</p>
+<p>The lab&rsquo;s tool-gap attribution series on DeepSeek hardmode made the lever visible
+<code>[LAB: RESULTS-MATRIX §D]</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Intervention</th>
+<th>Hardmode</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>baseline IQ3 (generic parser)</td>
+<td>47</td>
+<td>baseline</td>
+</tr>
+<tr>
+<td>chat-template patch → native parser</td>
+<td>43</td>
+<td>parser was <strong>not</strong> the bottleneck</td>
+</tr>
+<tr>
+<td><strong>Q4 experts instead of IQ2_S</strong></td>
+<td><strong>60</strong></td>
+<td><strong>quant was most of the gap (+13)</strong></td>
+</tr>
+<tr>
+<td>residual vs gpt-oss 73</td>
+<td>—</td>
+<td>remaining ~13 looks like model gap</td>
+</tr>
+</tbody>
+</table>
+<p>Changing the parser did not fix tool use. Restoring expert precision did most of the
+repair. The matrix&rsquo;s own ladder on tools reads: 2-bit ≈ Q3_K (~46) &lt; Q4_K (60) ≈
+native MXFP4 (~55, better scenario floor) <code>[LAB: RESULTS-MATRIX §C notes]</code>.</p>
+<p>MMLU, meanwhile, recovered earlier than tools. Q3_K experts already sat near Q4 on
+MMLU (84.0 vs 85.0) while tool use stayed in the IQ3 band (~40–50) until experts were
+right. <strong>Knowledge and tool-following did not share a single bit-width story.</strong></p>
+<p>One honest limitation belongs on this ladder. Each rung changes <strong>more than one thing at
+once</strong>: IQ2_S, Q3_K, Q4_K, and native-MXFP4 experts differ in <em>bit-width</em> and in <em>quant
+method/recipe</em> (grid, block structure, calibration) simultaneously, and the runs were not
+pinned to a single converter tool-and-version with a published tensor list. So the ladder
+supports the directional claim it is used for — <em>expert precision, not the parser, moved
+tool-use here</em> — and it does <strong>not</strong> cleanly separate &ldquo;two more bits&rdquo; from &ldquo;a better
+encoding method.&rdquo; The cross-check that keeps it honest is that the parser control (43 vs
+47) falsified the competing explanation, and that MMLU and tools moved on different
+schedules, which a pure tool-and-version artifact would not produce. Read the +13 as
+&ldquo;precision policy dominated,&rdquo; not as a calibrated coefficient on bit-width alone.</p>
+<p>If you only watch a general knowledge sample, you can promote a quant that still
+butchers the behavior your product actually needs. If you only watch a glossy file
+size, you can reject a master that is both better and, under a sane recipe, fast
+enough.</p>
+<h2>Sideways requants: the conversion log as a stop sign</h2>
+<p>Folklore loves a sideways move: take a master, emit a Q4, ship the friendly label.
+The lab tried the spirit of that move and aborted it for a boring, decisive reason.</p>
+<p>On the record, a Q4_K_M requant attempt was stopped mid-run when the log showed
+MXFP4→Q4_K conversion <strong>growing expert tensors while adding requant loss</strong>. The matrix
+states the rule in operator English: requantizing below the master only makes sense to
+<strong>shrink</strong> (Q3), never <strong>sideways</strong> (Q4) <code>[LAB: RESULTS-MATRIX headline before/after]</code>.</p>
+<p>That sentence should be on a sticky note above every conversion job:</p>
+<blockquote>
+<p>If the conversion does not buy residence or bandwidth headroom, it is not a
+quant — it is vandalism with a progress bar.</p>
+</blockquote>
+<p>Sideways requants are attractive because they match community naming. They are
+dangerous because they can add loss without buying fit. The stop condition is in the
+log, not in the marketing name of the output file.</p>
+<h2>IQ3, Q3, Q4, Q8: labels are not a ladder of virtue</h2>
+<p>The same matrix teaches a second anti-folklore lesson: the alphabetical soup is not a
+moral ladder.</p>
+<ul>
+<li>IQ3 old production: 102 GB, weakest MMLU of the DeepSeek set shown (79.6), fine as a
+  historical baseline, not as an aspirational end state.</li>
+<li>Q3-MTP: 143 GB, MMLU 84.0, tools still noisy in the 40–50 band, but decode <strong>30.5</strong>
+  tok/s with MTP n=1 — a speed/quality compromise that was real morning production.</li>
+<li>community Q4: 175 GB, strong headline tools (60), slower decode, not master quality.</li>
+<li>Q8 master: 160 GB, best MMLU, best DeepSeek tool floor on the harness, old-prod speed
+  with MTP.</li>
+</ul>
+<p>Notice that &ldquo;higher Q number&rdquo; did not monotonically mean &ldquo;better&rdquo; or &ldquo;slower&rdquo; or
+&ldquo;larger.&rdquo; The community Q4 is larger than the Q8 master and slower than the Q3-MTP
+build. The only safe reading is per-row: size, quality suite, decode, recipe.</p>
+<p>If your team sorts artifacts by the substring <code>Q4</code> versus <code>Q8</code> as if that were a total
+order, you are sorting labels, not systems.</p>
+<h2>Noise: the ±10 point tax before you brag</h2>
+<p>Before anyone turns a single hardmode number into a brand, read the footnote the matrix
+carries like a scar <code>[LAB: RESULTS-MATRIX §C footnote]</code>.</p>
+<p>Q3-MTP hardmode was measured three times on 07-13: 40, 47, and 50 (MTP off control).
+Five of fifteen scenarios flipped between identical back-to-back runs. The harness sends
+temperature 0.0. The flips were attributed to PAR=2 batch-packing nondeterminism
+amplified by MoE routing, not to sampling temperature.</p>
+<p><strong>Treat single-run hardmode numbers as ±10</strong> — on <em>this</em> suite, model, and PAR=2 shape;
+Chapter 5 scopes why that magnitude does not automatically transfer to other suites or
+architectures. Conclusions that survived that noise:</p>
+<ol>
+<li>Q3_K experts land near IQ3-level tool use, not near Q4&rsquo;s 60.</li>
+<li>MTP speculation did not measurably harm tool use (MTP-off control within noise).</li>
+<li>Some scenarios were consistent wins or losses across runs; the mean hides them if you
+   only quote the mean.</li>
+</ol>
+<p>Q8-MTP master&rsquo;s three runs (73 / 50 / 43, mean 55) likewise hide scenario-consistent
+structure: TC-71 passed 3/3 after failing all five prior DeepSeek runs; TC-78 3/3;
+TC-70 3/3.</p>
+<p>Chapter 5 is the methodology chapter. Chapter 2 only needs the quant-facing moral:</p>
+<blockquote>
+<p>Do not promote a quant on a one-shot tool score. Demand a range, a control, and a
+scenario story.</p>
+</blockquote>
+<h2>Dense models still quantize — they just fail differently</h2>
+<p>Not every row in §C is MoE. Qwen3.6-27B dense Q8_0 sits at 29 GB, 79.0 MMLU, 67 tool
+hardmode, ~27 tok/s. Qwen3.6-35B-A3B Q8_K_XL sits at 38 GB, 71.0 MMLU, <strong>87</strong> tool
+hardmode. gpt-oss-120b MXFP4 under vLLM TP=4 posts 71.0 MMLU, 73 tools, 60 tok/s
+wall-clock <code>[LAB: RESULTS-MATRIX §C]</code>.</p>
+<p>These rows exist here to prevent a false universal:</p>
+<ul>
+<li><strong>Dense Q8 can be &ldquo;boring good&rdquo;</strong> — small enough to place, strong enough to use, not
+  the subject of the expert-precision drama.</li>
+<li><strong>Tool rank and MMLU rank disagree across families.</strong> The 35B-A3B line wins tools on
+  this harness while losing MMLU to DeepSeek masters. Ranking quants by a single suite
+  will reshuffle your heroes.</li>
+<li><strong>Engine identity is part of the quant story.</strong> gpt-oss numbers above are vLLM TP=4,
+  not llama.cpp. A quant comparison that silently changes engines is not a quant
+  comparison.</li>
+</ul>
+<p>If your deployment is a dense 7B–30B, you may never meet the MoE expert lever. You
+still meet bytes, residence, and eval noise. Do not import MoE folklore into dense
+stacks, or dense folklore into MoE stacks.</p>
+<h2>Fit is a quant feature</h2>
+<p>Quantization that does not load is not a quant; it is a brick.</p>
+<p>Section F of the matrix is the fit companion to §C <code>[LAB: RESULTS-MATRIX §F]</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Working recipe</th>
+<th>Failed configs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IQ3_XXS 102 GB</td>
+<td>n-cpu-moe 4, ts 31,25,24,20</td>
+<td>—</td>
+</tr>
+<tr>
+<td>blobfish Q4 175 GB</td>
+<td>n-cpu-moe 24, ts 25,6,6,6, <strong>&ndash;no-repack</strong>, mmap, lean RAM</td>
+<td>n-cpu-moe 14 VRAM-OOM; ≥18 without &ndash;no-repack segfault; &ndash;no-mmap host-OOM (&gt;125 GB RAM)</td>
+</tr>
+<tr>
+<td>Q8-MTP 160 GB</td>
+<td>n-cpu-moe 14, ts 20,8,8,8 (+ &ndash;no-repack, mmap)</td>
+<td>ts 21,8,8,7 → compute-buffer OOM card0</td>
+</tr>
+<tr>
+<td>Q3-MTP 143 GB</td>
+<td>n-cpu-moe 10… / prod n-cpu-moe 11, ts 18,9,9,8, PAR 2</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>The community-shaped 175 GB Q4 does not merely &ldquo;run slower.&rdquo; It runs only inside a
+narrow recipe. Miss <code>--no-repack</code> and you can segfault. Miss mmap and you can host-OOM
+beyond 125 GB RAM. Choose the wrong n-cpu-moe and you VRAM-OOM.</p>
+<p>A quant card that omits the recipe is incomplete. A blog screenshot of file size is not
+a recipe.</p>
+<p>Chapter 8 returns to fit as a first-class problem. Chapter 2 needs only this coupling:
+<strong>precision choices change both quality and the placement surface.</strong> The master that
+preserved experts was not only a quality win; it was a different spill and flag story
+than the 175 GB Q4.</p>
+<h2>Promotion is a multi-objective decision</h2>
+<p>The lab did not promote the master because MMLU is sacred. The recorded rationale is
+explicit: <strong>tool quality over the last 4 tok/s</strong> <code>[LAB: RESULTS-MATRIX headline
+before/after]</code>. MTP n_max=1 recovered old-production speed. The master dominated the
+community Q4 on the axes they cared about (+3.3 MMLU, comparable tools with a better
+floor, +60% speed versus that Q4&rsquo;s 16.5, −15 GB).</p>
+<p>That is what non-folklore promotion looks like:</p>
+<ol>
+<li>Name the product-critical suite (here: tools, not only MMLU).</li>
+<li>Measure a range, not a hero run.</li>
+<li>Measure decode on the target engine recipe.</li>
+<li>Measure fit and flags.</li>
+<li>Accept an explicit trade (quality &gt; last few tok/s) and write it down.</li>
+</ol>
+<p>If your promotion story is &ldquo;the Q4 is popular,&rdquo; you are doing release engineering by
+folklore.</p>
+<h2>What quantization cannot buy you</h2>
+<p>Plain boundaries:</p>
+<ul>
+<li>Quantization cannot fix a wrong engine placement. Chapter 1&rsquo;s 2 tok/s crater was not
+  a quant problem.</li>
+<li>Quantization cannot invent eval honesty. ±10 points of harness noise remains ±10
+  after you quant.</li>
+<li>Quantization cannot make a task the model cannot do into a task it can. Chapter 5
+  and the manufacturing book&rsquo;s abstention work are about refusal and coverage; bits
+  will not substitute.</li>
+<li>Quantization cannot repeal architecture. MoE routing pathologies and dense attention
+  costs remain themselves at every bit-width.</li>
+</ul>
+<p>If a pitch says &ldquo;we Q4&rsquo;d it, so it should be fine,&rdquo; ask: fine on which suite, which
+range, which machine, which flags?</p>
+<h2>Practical checklist for a quant decision</h2>
+<ol>
+<li><strong>Write the active tensors you care about.</strong> For MoE, experts and router at minimum.</li>
+<li><strong>Pick the suite that matches the product.</strong> MMLU alone is not a tool product.</li>
+<li><strong>Run at least three times</strong> when the harness has known nondeterminism. Keep the
+   range.</li>
+<li><strong>Record decode and fit on the target box</strong>, including failed flags.</li>
+<li><strong>Reject sideways requants</strong> that add loss without buying residence.</li>
+<li><strong>Prefer masters that preserve fragile tissue</strong>, then buy speed with speculation or
+   placement — not with hopeful bit-chopping.</li>
+<li><strong>Document the trade</strong> you accepted (quality vs tok/s vs VRAM).</li>
+</ol>
+<h2>A quant review board agenda</h2>
+<p>When someone proposes a new GGUF:</p>
+<ol>
+<li>What product suite does it need to hold?</li>
+<li>What is the range across ≥3 runs?</li>
+<li>What is decode on the target engine?</li>
+<li>What is the fit recipe and failed recipes?</li>
+<li>What tissue changed precision (experts, attn, KV)?</li>
+<li>Is this a shrink, a sideways move, or a master preserve?</li>
+<li>Who owns the tombstone if it fails in a week?</li>
+</ol>
+<p>If the proposer cannot answer 5 and 6, stop. That is how folklore enters — as an unnamed tissue change.</p>
+<h2>Documenting expert policy</h2>
+<p>For MoE artifacts, keep a one-liner in the manifest of the service:</p>
+<p><code>EXPERT_PRECISION=native-MXFP4 preserved; router=...; attn=...</code></p>
+<p>The §D result that Q4 experts recovered tools is the reason this line exists <code>[LAB: RESULTS-MATRIX §D]</code>. If you cannot say what happened to experts, you do not know what you shipped.</p>
+<h2>Field story: the sideways requant that did not ship</h2>
+<p>The aborted MXFP4→Q4_K attempt is easy to under-teach because it never became a hero row. That is why it matters. Most bad quants do not fail the demo. They fail the conversion log while still producing a file someone could have published <code>[LAB: RESULTS-MATRIX headline before/after]</code>.</p>
+<p>A culture that only celebrates successful GGUFs will keep shipping sideways losses. A culture that files aborted conversions with reasons will not.</p>
+<p>Add aborted experiments to the tombstone file with:</p>
+<ul>
+<li>source artifact</li>
+<li>tool and flags</li>
+<li>log line that triggered the stop</li>
+<li>who stopped it</li>
+<li>date</li>
+</ul>
+<p>The master that did ship is partly protected by the requant that did not.</p>
+<h2>What to say when someone asks for &ldquo;just Q4&rdquo;</h2>
+<p>Answer with questions:</p>
+<ol>
+<li>Q4 of which tensors?</li>
+<li>Compared to which master?</li>
+<li>On which suite range?</li>
+<li>On which machine recipe?</li>
+<li>Does the conversion shrink bytes that were actually the bottleneck?</li>
+</ol>
+<p>If they cannot answer, your job is to refuse the label until it becomes a recipe.</p>
+<h2>Operator lab: read a GGUF like a bill of materials</h2>
+<p>When a new file arrives, do not only look at the filename&rsquo;s Q-tag. Inspect:</p>
+<ul>
+<li>total size</li>
+<li>whether experts are native precision or requantized</li>
+<li>attention/KV related tensors if exposed</li>
+<li>converter tool and version</li>
+<li>any log from the conversion job</li>
+</ul>
+<p>The master versus community Q4 story is a bill-of-materials story: native experts versus a different tissue policy, different size, different speed, different suite range <code>[LAB: RESULTS-MATRIX §C/§D]</code>. Filenames compress that into a token like &ldquo;Q4&rdquo; that cannot carry the truth.</p>
+<p>If your organization accepts GGUFs from chat links without conversion logs, you are consuming unmarked food.</p>
+<h2>Suite pairing for quants</h2>
+<p>Always pair:</p>
+<ul>
+<li>one general suite (MMLU-class or your domain knowledge)</li>
+<li>one product behavior suite (tools, JSON schema, abstention)</li>
+</ul>
+<p>§C shows why: ranks disagree across families and across quants <code>[LAB: RESULTS-MATRIX §C]</code>. A quant that only wins the suite you do not sell is a trophy, not a product.</p>
+<h2>What you should do Monday</h2>
+<ol>
+<li>For every MoE artifact you serve, write one line on expert precision policy.</li>
+<li>Refuse a new GGUF that arrives without conversion notes.</li>
+<li>Pair your trophy suite with a product suite before any promote meeting.</li>
+<li>Add aborted conversions to the tombstone file on purpose.</li>
+<li>Re-check whether any &ldquo;Q4 default&rdquo; in your docs is actually a sideways requant.</li>
+</ol>
+<p>The master versus community Q4 row is your teaching aid when someone argues labels over tissue <code>[LAB: RESULTS-MATRIX §C/§D]</code>.</p>
+<h2>Cross-links inside this book</h2>
+<p>Quant changes that &ldquo;should be faster&rdquo; but are not are often chapter 1 placement or chapter 6 mmap/repack stories. Quant changes that are faster but flaky under tools are chapter 5 range problems. Quant changes that only load on sacred flags are chapter 8 fit problems. Speculative decoding can pay back a quality-preserving master&rsquo;s latency — that bridge is chapter 3, and it is not optional if you want the promotion ledger to close.</p>
+<h2>Last word</h2>
+<p>Labels are not tissue. Preserve what hurts to lose; shrink what buys residence; never requant sideways out of peer pressure.</p>
+<h2>Looking ahead</h2>
+<p>Chapter 3 takes the MTP rows seriously as economics: draft length, spill, acceptance,
+and when speculation loses. Chapter 4 adds the KV cache as a second precision surface
+people forget to budget. Chapter 5 formalizes the noise and controls already haunting
+this chapter&rsquo;s footnotes. Chapter 6 shows how a &ldquo;quant is slow&rdquo; report often turns into
+a load-log placement report under daylight.</p>
+<p>The folklore version of quantization is a label. The engineering version is a claim
+about <strong>which numbers survived, on which tensors, under which recipe, on which
+machine</strong>, with a range attached.</p>
+<p>Ship the second one.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch03.html">next: Speculative Decoding Economics →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-inference-on-the-edge', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

@@ -273,7 +273,7 @@
       "subtitle": "Quantization, speculation, and the physics of local models",
       "shelf": "industrial",
       "tier": "standard",
-      "status": "in_review",
+      "status": "published",
       "mascot": {
         "creature": "dragonfly",
         "accent": "#4FD6C3"
@@ -303,7 +303,8 @@
         "body_words": 20001
       },
       "status_url": "https://raw.githubusercontent.com/oailly-press/submissions/main/status/rogerai-labs--inference-on-the-edge.json",
-      "added": "2026-08-28"
+      "added": "2026-08-28",
+      "read": "read/rogerai-labs--inference-on-the-edge/"
     },
     {
       "id": "rogerai-labs--llms-for-machines",

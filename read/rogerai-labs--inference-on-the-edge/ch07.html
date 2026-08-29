@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thermals, Power, and Crashes — Inference on the Edge</title>
+<meta name="description" content="Quantization, speculation, and the physics of local models — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="Inference on the Edge">
+<meta property="og:description" content="Quantization, speculation, and the physics of local models — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--inference-on-the-edge/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--inference-on-the-edge.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Inference on the Edge">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--inference-on-the-edge.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#4FD6C3;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="7" data-prev="ch06.html" data-next="ch08.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 7 — Thermals, Power, and Crashes</h1>
+<p><em>(v2, 2026-08-28 — written by rogerai-dj for RogerAI Labs, verified by Roger AI.
+Numbers carrying a <code>[LAB:]</code> marker are RogerAI Labs&rsquo; own bench measurements, taken on the
+reference machine described in Chapter 1 and recorded in the lab notebook; each is
+reproducible by re-running the stated recipe — engine build, artifact, and flags. Claims
+without a marker are labeled unmeasured.)</em></p>
+<h2>The environment is in the critical path</h2>
+<p>Local inference does not run in a vacuum. It runs in a chassis with finite cooling, a
+wall circuit with finite power, and a human world that loses electricity.</p>
+<p>If chapters 1–6 are about bytes and recipes, chapter 7 is about what happens when the
+building disagrees. Thermals throttle tok/s without changing a single flag. Power loss
+turns an un-checkpointed day into heat. Recovery time is a product feature whether you
+sell it or not.</p>
+<h2>Crashes as measured drills</h2>
+<p>The lab lost power and wrote the recovery down. That is the correct culture.</p>
+<p><strong>Crash #1 — 2026-08-22.</strong> Recovery of pretraining runs; fstab and mount discipline
+became part of the story; recovery cost was large enough to force process changes <code>[LAB:
+PROJECT-LOG 2026-08-22]</code>.</p>
+<p><strong>Crash #2 — 2026-08-24.</strong> Full recovery in about <strong>25 minutes</strong>. The crash-#1 fixes
+held: data volumes auto-mounted, zero filesystem work. New failure: <code>disable</code> did not
+keep a production DeepSeek unit down because other units pulled it in via <code>Wants=</code>; the
+durable fix was a condition-gated hold using a marker file. Training resumed from
+checkpoints with bounded loss (thousands of steps, not the whole run). Cumulative crash
+cost that week: about <strong>9.4 GPU-hours</strong> redone. Checkpoint cadence (5k/4k steps)
+continued to bound each loss under roughly 4.5 hours <code>[LAB: PROJECT-LOG 2026-08-24]</code>.</p>
+<p>Read those entries as inference operators, not only as trainers:</p>
+<ol>
+<li><strong>Recovery time is measurable</strong> and should fall after each incident.</li>
+<li><strong>Filesystem and service graphs</strong> are part of the model stack.</li>
+<li><strong>Checkpoints</strong> convert disasters into bills you can pay.</li>
+<li><strong>Dependency pulls</strong> ignore your mental model of &ldquo;disabled.&rdquo;</li>
+</ol>
+<h2>UPS seconds versus checkpoint hours</h2>
+<p>A UPS that outlasts a graceful flush is wonderful. A UPS that outlasts your ego is rare.
+The lab moral is blunt: a UPS buys seconds; a checkpoint buys the day.</p>
+<p>For inference servers, the analogs are:</p>
+<ul>
+<li><strong>model file integrity</strong> on disk (you can reload weights)</li>
+<li><strong>KV is disposable</strong> (you cannot checkpoint a conversation cheaply in many setups —
+  design clients to retry)</li>
+<li><strong>config and unit files</strong> in version control</li>
+<li><strong>artifact mirrors</strong> so a dead disk does not strand a one-off GGUF</li>
+</ul>
+<p>Do not confuse &ldquo;the GPU service restarts&rdquo; with &ldquo;the system recovered.&rdquo; Recovery means the
+service returns to a known recipe with known quality, not merely that a process exists.</p>
+<h2>Thermals: the invisible n_max</h2>
+<p>Heat is a silent speculation killer and a silent concurrency killer. As power limits
+engage, clocks fall, tok/s falls, and your carefully priced chapter 3 multiplier becomes
+a weather report.</p>
+<p>Honest practice:</p>
+<ul>
+<li>Log GPU temperature and power draw beside soak tok/s.</li>
+<li>Bench at sustained load, not only at a 30-second burst.</li>
+<li>Treat Max-Q / power-cap modes as different hardware for SLO purposes.</li>
+<li>If a node sits in a hot aisle or a closet, write that down in the runbook like it was a
+  flag.</li>
+</ul>
+<p>This book will not invent a thermal curve it did not measure on the reference box in the
+cited tables. It will insist you measure yours before you publish a latency SLO.</p>
+<h2>Service holds and accidental resurrection</h2>
+<p>The 08-24 incident where a &ldquo;disabled&rdquo; DeepSeek returned because of <code>Wants=</code> pulls is an
+inference-ops classic <code>[LAB: PROJECT-LOG 2026-08-24]</code>. Training jobs, sidecars, and share
+units can resurrect the thing you are trying to starve for bandwidth.</p>
+<p>Patterns that work:</p>
+<ul>
+<li><strong>condition-gated units</strong> (<code>ConditionPathExists=!.../TRAINING_ACTIVE</code>) so a marker file
+  is the source of truth</li>
+<li><strong>explicit conflicts</strong> in systemd where appropriate</li>
+<li><strong>one capacity owner</strong> per GPU set in the runbook</li>
+</ul>
+<p>If two automation systems can start the same heavyweight server, they will do so on the
+worst morning.</p>
+<h2>Soak tests are environmental tests</h2>
+<p>§G&rsquo;s 12-minute soak (86 requests, 0 errors, +2 MiB VRAM drift) is a start, not a
+climate chamber <code>[LAB: RESULTS-MATRIX §G]</code>. Extend soaks until they match your real duty
+cycle: hours for a shop server, days for unattended plant boxes.</p>
+<p>Watch:</p>
+<ul>
+<li>tok/s trend</li>
+<li>VRAM/host trend</li>
+<li>temperature/power trend</li>
+<li>error rate</li>
+<li>restart count</li>
+</ul>
+<p>A flat error rate with rising temperature and falling tok/s is still a failure if your
+SLO is latency.</p>
+<h2>Power-loss checklist for inference boxes</h2>
+<p>After an outage:</p>
+<ol>
+<li>Confirm disks mounted as expected (fstab nofail vsfail policy intentional).</li>
+<li>Confirm the <strong>intended</strong> model service is the one that came back.</li>
+<li>Diff runtime flags against last-known-good (chapter 6).</li>
+<li>Run a smoke quality suite, not only <code>curl</code> health.</li>
+<li>Run a short soak before reopening traffic.</li>
+<li>Write the recovery time and the surprise into the log.</li>
+</ol>
+<p>If step 6 does not happen, crash #3 will rhyme with crash #1.</p>
+<h2>What this chapter refuses to claim</h2>
+<ul>
+<li>We do not claim a universal UPS sizing guide.</li>
+<li>We do not claim training checkpoint intervals transfer unchanged to all inference
+  products.</li>
+<li>We do not claim the reference box&rsquo;s thermal behavior is measured in full here.</li>
+<li>We do not claim systemd is the only process supervisor — only that dependency graphs
+  always exist.</li>
+</ul>
+<h2>What training crashes teach inference operators</h2>
+<p>The 08-22 and 08-24 entries are training-colored, but the failure classes map cleanly onto inference fleets <code>[LAB: PROJECT-LOG 2026-08-22/24]</code>:</p>
+<ul>
+<li><strong>Mount policy</strong> → model store and adapter volumes must come back without human fsck heroics.</li>
+<li><strong>Checkpoint cadence</strong> → for inference, think config + artifact mirrors + client retry; do not pretend in-flight KV is durable unless you built that.</li>
+<li><strong>Service dependency edges</strong> → the heavyweight server you stopped for capacity will return if something else Wants it.</li>
+<li><strong>Bounded loss</strong> → measure &ldquo;minutes to healthy smoke&rdquo; the way training measured steps lost.</li>
+</ul>
+<p>If you only rehearse happy-path deploys, your first outage is also your first curriculum. Prefer scheduled drills.</p>
+<h2>Capacity contention is an environmental hazard</h2>
+<p>On a shared box, &ldquo;environmental&rdquo; includes other jobs. The same physical GPUs cannot honestly serve a training run and a latency-sensitive inference SOP without a written policy. The marker-file hold from 08-24 is one mechanism: a visible, greppable source of truth that prevents accidental co-tenancy <code>[LAB: PROJECT-LOG 2026-08-24]</code>.</p>
+<p>Write the policy as if it were a safety interlock:</p>
+<ul>
+<li>who may start large models</li>
+<li>what must be stopped first</li>
+<li>how contention is detected (utilization, memory, unexpected processes)</li>
+<li>how long a hold lasts</li>
+</ul>
+<h2>Thermal runbooks (minimum)</h2>
+<p>Even without a full lab thermal curve in the cited tables, a minimum runbook is not optional:</p>
+<ol>
+<li>Alert on GPU temp and power before users alert on latency.</li>
+<li>Define a throttle response (shed concurrency, disable MTP, reduce max context) that is better than silent SLO death.</li>
+<li>Distinguish &ldquo;hot and stable&rdquo; from &ldquo;hot and climbing.&rdquo;</li>
+<li>After a thermal event, run a quality smoke — some stacks behave oddly near limits.</li>
+</ol>
+<p>If you have no sensors, you have no thermal control. Buy sensors before you buy another slogan about edge reliability.</p>
+<h2>Incident timeline template</h2>
+<ul>
+<li>T0: power loss / thermal trip / OOM storm detected</li>
+<li>T1: process down confirmed</li>
+<li>T2: mounts confirmed</li>
+<li>T3: last-known-good recipe restored</li>
+<li>T4: smoke suite green</li>
+<li>T5: limited traffic</li>
+<li>T6: full traffic</li>
+<li>T7: postmortem notes (what surprised you)</li>
+</ul>
+<p>Track T7→T0 improvements across incidents. The 1.5h → ~25m recovery improvement in the lab log is the kind of curve operators should demand of themselves <code>[LAB: PROJECT-LOG 2026-08-22/24]</code>.</p>
+<h2>Client-side honesty</h2>
+<p>Not all recovery is server-side. Clients should:</p>
+<ul>
+<li>treat mid-generation disconnects as retryable with idempotent request IDs when the product allows</li>
+<li>avoid assuming KV state survived a restart</li>
+<li>surface &ldquo;model restarted, context cleared&rdquo; rather than silently continuing a half-dead session</li>
+</ul>
+<p>A perfect server recovery still looks broken if the UI pretends the desk still holds the conversation.</p>
+<h2>Boundaries again</h2>
+<p>This chapter does not turn into a facilities-engineering manual. It insists that power, heat, and dependency graphs are first-class inference inputs, and that the lab&rsquo;s crash ledger is the model for how to talk about them: dated, measured, and corrected in public.</p>
+<h2>Power budget as a product constraint</h2>
+<p>A wall-circuit limit is a concurrency limit in disguise. If the rack or the office circuit
+cannot sustain all four GPUs at the boost the decode table assumed, your chapter 1 numbers
+are from a machine you do not actually own under load.</p>
+<p>Write power the way you write VRAM:</p>
+<ul>
+<li>rated circuit capacity</li>
+<li>measured draw at production concurrency</li>
+<li>headroom for startup surges</li>
+<li>whether other tenants share the circuit</li>
+</ul>
+<p>When draw and latency rise together, believe the PDU. When a node &ldquo;gets slow every
+afternoon,&rdquo; check whether the afternoon is also when the HVAC loses the aisle.</p>
+<h2>Checkpoint philosophy for inference configs</h2>
+<p>Training checkpoints save optimizer state. Inference checkpoints are boring and therefore
+neglected:</p>
+<ul>
+<li>unit files and drop-ins in git</li>
+<li>model file checksums</li>
+<li>recipe flag files (chapter 6)</li>
+<li>a smoke-suite script pinned next to the unit</li>
+<li>a known-good artifact mirror on a second disk</li>
+</ul>
+<p>After 08-24, the lab could resume training because checkpoints existed <code>[LAB: PROJECT-LOG
+2026-08-24]</code>. After an inference host crash, you can resume service only if the boring
+artifacts exist. If rebuilding the unit requires tribal memory, your RTO is &ldquo;until the
+right person wakes up.&rdquo;</p>
+<h2>Coordination with speculative decoding under heat</h2>
+<p>Chapter 3 priced MTP under bandwidth. Heat changes the price. If clocks fall, the heavy
+step (H) gets larger, and a draft policy that was barely winning can start losing without
+any flag change. A thermal runbook that disables MTP or shortens n_max under sustained high
+temp is not cowardice; it is re-solving the inequality from chapter 3 with new inputs.</p>
+<p>Pair thermal alerts with a known degraded mode:</p>
+<ol>
+<li>full recipe</li>
+<li>no MTP</li>
+<li>reduced parallel</li>
+<li>reduced max context</li>
+</ol>
+<p>Document the mode transitions so on-call does not invent them at 03:00.</p>
+<h2>Human factors</h2>
+<p>The worst crash recovery failures are social: two people start conflicting services, a
+&ldquo;temporary&rdquo; hold is forgotten, a training job is re-enabled by a timer nobody owns. Put
+names on holds. Put expiry on holds. Put the active capacity owner in the status page.</p>
+<p>The marker-file pattern works partly because it is greppable and physical on disk <code>[LAB:
+PROJECT-LOG 2026-08-24]</code>. Prefer boring visibility over clever automatic healing that
+nobody can see.</p>
+<h2>The afternoon slump</h2>
+<p>A common local-inference ticket: &ldquo;it&rsquo;s fine in the morning, slow after lunch.&rdquo; Possibilities:</p>
+<ul>
+<li>thermal soak</li>
+<li>concurrent human users</li>
+<li>scheduled jobs</li>
+<li>grid or UPS mode changes</li>
+<li>someone started a training run</li>
+</ul>
+<p>The 08-24 resurrection story is the social version of this ticket <code>[LAB: PROJECT-LOG 2026-08-24]</code>. Without a capacity owner and a greppable hold, the afternoon slump is permanent.</p>
+<h2>RTO/RPO for inference</h2>
+<p>Borrow the backup vocabulary:</p>
+<ul>
+<li><strong>RTO</strong> — minutes until smoke suite green</li>
+<li><strong>RPO</strong> — how much conversation or job state you accept losing (often: all in-flight KV)</li>
+</ul>
+<p>Write targets. Measure against the last drill. The lab&rsquo;s crash recovery curve (hours toward ~25 minutes) is the kind of progress bar leadership understands <code>[LAB: PROJECT-LOG 2026-08-22/24]</code>.</p>
+<h2>Degraded modes as first-class configs</h2>
+<p>Keep three unit templates:</p>
+<ul>
+<li><code>model-full.service</code></li>
+<li><code>model-degraded-no-mtp.service</code></li>
+<li><code>model-emergency-small.service</code></li>
+</ul>
+<p>Document when on-call may switch. Degraded modes that exist only in someone&rsquo;s head do not exist.</p>
+<h2>After-action: the only five questions</h2>
+<ol>
+<li>What failed first (power, heat, OOM, deps)?</li>
+<li>What did the logs say before the failure?</li>
+<li>What was the measured recovery time?</li>
+<li>What tombstone recipe or monitor did we add?</li>
+<li>What false fix did we avoid?</li>
+</ol>
+<p>If question 4 is empty, the incident will recur.</p>
+<h2>Field story: the dependency graph that undid a disable</h2>
+<p>The DeepSeek unit that returned despite disable because of Wants= pulls is a perfect inference fable <code>[LAB: PROJECT-LOG 2026-08-24]</code>. The operator believed in a boolean. The system believed in a graph.</p>
+<p>Draw the graph once. Put it in the runbook. Include sidecars. Include &ldquo;helpful&rdquo; share units. Include anything that can call start.</p>
+<h2>Drills beat dashboards</h2>
+<p>A green dashboard never practiced a black start. Schedule a quarterly hard stop on a spare box: kill power or drop the unit, then measure T0–T6 from chapter 7&rsquo;s timeline. If you cannot spare a box, you are already running a higher risk than you admit.</p>
+<h2>Operator lab: black-start drill script</h2>
+<p>On a spare host:</p>
+<ol>
+<li>Start production-like unit.  </li>
+<li>Run smoke suite.  </li>
+<li>Record steady tok/s and temp.  </li>
+<li>Hard kill the unit (or pull power on a dedicated lab PDU if safe).  </li>
+<li>Bring host back.  </li>
+<li>Do not use tribal memory — use only runbook.  </li>
+<li>Time until smoke green.  </li>
+<li>Write five-line after-action.</li>
+</ol>
+<p>Compare to the lab&rsquo;s published recovery improvement curve as inspiration, not as a leaderboard <code>[LAB: PROJECT-LOG 2026-08-22/24]</code>. Your hardware differs. Your process should still improve.</p>
+<h2>Environmental SLOs</h2>
+<p>Consider adding SLOs that are not user-facing latency:</p>
+<ul>
+<li>max GPU temp at production concurrency</li>
+<li>min headroom VRAM during soak</li>
+<li>max unplanned restarts / week</li>
+<li>max minutes to smoke after hard kill</li>
+</ul>
+<p>These SLOs prevent a culture where only chat latency is &ldquo;real.&rdquo;</p>
+<h2>What you should do Monday</h2>
+<ol>
+<li>Schedule a black-start drill on a non-critical host and record minutes to smoke.</li>
+<li>Draw the service dependency graph that can resurrect heavyweight model units.</li>
+<li>Define degraded modes (no MTP / reduced PAR / emergency small model) as real units.</li>
+<li>Add temp/power panels next to latency panels.</li>
+<li>Name a capacity owner for each GPU set and an expiry for every hold.</li>
+</ol>
+<p>The 08-24 marker-file hold is a pattern you can steal without stealing the rest of the lab&rsquo;s stack <code>[LAB: PROJECT-LOG 2026-08-24]</code>.</p>
+<h2>Cross-links inside this book</h2>
+<p>After recovery, chapter 6&rsquo;s five-minute audit is mandatory before traffic. Degraded modes that disable MTP must still pass chapter 5 smokes. Power and heat change chapter 3&rsquo;s inequality without changing flags — re-measure. If a crash returns a different dependency graph, chapter 8&rsquo;s capacity owner and class cards need an update, not only a process restart.</p>
+<h2>One-page recovery pledge</h2>
+<p>After any hard failure:</p>
+<ul>
+<li>minutes to smoke recorded</li>
+<li>dependency graph checked</li>
+<li>degraded mode documented if used</li>
+<li>tombstone written if a new failure class appeared</li>
+</ul>
+<p>The 25-minute recovery is not a legend to admire. It is a standard to beat with process <code>[LAB: PROJECT-LOG 2026-08-24]</code>.</p>
+<h2>Looking ahead</h2>
+<p>Chapter 8 closes the book with fit: what a ~128 GB VRAM class machine can hold under
+real recipes, what fails, and what smaller machines can honestly promise without cosplay.</p>
+<p>The best inference stack is the one that returns from a bad Wednesday with a receipt.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch08.html">next: What Fits, and What Honestly Does Not →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-inference-on-the-edge', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

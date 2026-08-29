@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Speculative Decoding Economics — Inference on the Edge</title>
+<meta name="description" content="Quantization, speculation, and the physics of local models — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="Inference on the Edge">
+<meta property="og:description" content="Quantization, speculation, and the physics of local models — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--inference-on-the-edge/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--inference-on-the-edge.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Inference on the Edge">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--inference-on-the-edge.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#4FD6C3;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="3" data-prev="ch02.html" data-next="ch04.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 3 — Speculative Decoding Economics</h1>
+<p><em>(v2, 2026-08-28 — written by rogerai-dj for RogerAI Labs, verified by Roger AI.
+Numbers carrying a <code>[LAB:]</code> marker are RogerAI Labs&rsquo; own bench measurements, taken on the
+reference machine described in Chapter 1 and recorded in the lab notebook; each is
+reproducible by re-running the stated recipe — engine build, artifact, and flags. Claims
+without a marker are labeled unmeasured.)</em></p>
+<h2>The slogan</h2>
+<p>Speculative decoding says: let a cheap draft propose several tokens, let the strong
+model verify them in a batch, keep the prefix that matches. If the draft is good, you
+bought multiple tokens per expensive step. If the draft is bad, you paid overhead for
+rejects.</p>
+<p>As a slogan, it is almost always sold as a free speedup. As an accounting problem, it
+is a bet on <strong>accepted tokens per heavy read</strong>, minus the cost of drafting and verifying
+under your real spill and batch constraints.</p>
+<p>This chapter is the bet, priced on the reference box.</p>
+<h2>The only equation that matters</h2>
+<p>Let:
+- (H) be the cost of one heavy (target) step without speculation
+- (D) be the cost of drafting a candidate span
+- (V(n)) be the cost of verifying (n) draft tokens in a batch
+- (a) be the number of draft tokens actually accepted on average</p>
+<p>A speculative step is a win when:</p>
+<p><strong>((D + V(n)) / a &lt; H)</strong></p>
+<p>Everything else is commentary.</p>
+<p>People lose money on speculation three ways:</p>
+<ol>
+<li><strong>(a) collapses</strong> — draft quality is poor, so you accept ~1 token after paying (D+V).</li>
+<li><strong>(V(n)) explodes</strong> — verification is not a cheap batch on your hardware recipe;
+   it rereads spilled experts (n) ways.</li>
+<li><strong>(D) is not actually cheap</strong> — the draft model or draft head is large, cold, or
+   contending for the same bus.</li>
+</ol>
+<p>You do not need Greek letters in production. You need to notice which term broke.</p>
+<h2>What the lab implemented</h2>
+<p>On the DeepSeek V4 line, the lab ran multi-token prediction (MTP) heads — draft tokens
+from a head trained for that job — through llama.cpp on the reference box. The matrix
+labels the DeepSeek rows as the lab&rsquo;s MTP implementation and includes a dense Qwen
+stock-MTP row as a near-zero-spill contrast <code>[LAB: RESULTS-MATRIX §E]</code>.</p>
+<p>This chapter does not claim a survey of every speculative system (Medusa, EAGLE,
+independent draft models, etc.). It claims a measured economic pattern: <strong>speedup
+tracks spill and acceptance, not enthusiasm.</strong></p>
+<h2>The §E table, in full</h2>
+<table>
+<thead>
+<tr>
+<th>Model / spill</th>
+<th>Baseline</th>
+<th>n_max=1</th>
+<th>n_max=2</th>
+<th>n_max=3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qwen3.6-27B Q8 (zero spill, stock MTP)</td>
+<td>27.0</td>
+<td>—</td>
+<td>—</td>
+<td><strong>59.3 (2.2×)</strong></td>
+</tr>
+<tr>
+<td>DeepSeek Q8-MTP · 24 layers spilled</td>
+<td>19.3</td>
+<td>—</td>
+<td>—</td>
+<td>16.6 (0.86×) @ 82%</td>
+</tr>
+<tr>
+<td>DeepSeek Q8-MTP · 14 layers spilled</td>
+<td>22.2</td>
+<td><strong>26.3 (1.18×) @ 100%</strong></td>
+<td>21.6 @ 89%</td>
+<td>18.8 @ 78%</td>
+</tr>
+<tr>
+<td>DeepSeek Q3-MTP · 10 layers spilled</td>
+<td>23.5</td>
+<td><strong>30.5 (1.30×) @ 100%</strong></td>
+<td>24.8 @ 93%</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><code>[LAB: RESULTS-MATRIX §E]</code></p>
+<p>The matrix&rsquo;s own law:</p>
+<blockquote>
+<p>Speedup grows as spill shrinks (1.18× → 1.30× → 2.2×); on spill-bound MoE,
+batch-verify costs ~N× DDR5 expert reads → n_max=1 is the sweet spot; first-token
+drafts accept at 100% (the head&rsquo;s training objective).</p>
+</blockquote>
+<p>Memorize the shape, not just the hero cell — and read the last clause as an
+<strong>observation with an interpretation attached, not a proven law</strong>. &ldquo;Accept at 100%&rdquo; here
+means the first drafted token (position 0) was verified and kept on every step of these
+two runs; the acceptance denominator is first-token draft proposals. That 100% is
+measured on exactly <strong>two</strong> DeepSeek MTP cells (Q8 at 14-spill, Q3 at 10-spill) at
+n_max=1, on one engine build and one box. The clause &ldquo;(the head&rsquo;s training objective)&rdquo; is
+the lab&rsquo;s <em>explanation</em> for why first-token acceptance is so high — it is not isolated by
+a control that would rule out alternatives (an independent-draft head, the same MTP head
+disabled and re-drafted, or a different context length were not run against these exact
+cells). Treat &ldquo;trained heads make cheap, near-certain first guesses&rdquo; as a well-supported
+working hypothesis on this stack, and re-measure acceptance on yours before quoting 100%.</p>
+<h2>Zero spill is a different planet</h2>
+<p>The dense Qwen row is the optimistic planet: <strong>2.2×</strong> at n_max=3, baseline 27.0 → 59.3,
+with zero spill. Verification can batch without shipping expert bodies across host
+memory for each candidate. The draft length can open up.</p>
+<p>If your mental model of speculation was formed on dense, resident models, you will
+over-promise on MoE-with-spill. The Qwen row is real. It is also not a license to quote
+2.2× on a DeepSeek recipe that spills fourteen layers.</p>
+<h2>Spill turns verification into a bill</h2>
+<p>Watch the DeepSeek Q8-MTP 14-spill row as draft length grows:</p>
+<ul>
+<li>n_max=1: <strong>1.18×</strong> at <strong>100%</strong> acceptance</li>
+<li>n_max=2: 0.97×-ish territory (21.6 from 22.2) at 89% acceptance</li>
+<li>n_max=3: 18.8 at 78% acceptance — slower than baseline</li>
+</ul>
+<p>The draft is not &ldquo;getting stupid&rdquo; in a narrative sense alone. Acceptance falls, and
+verification cost rises with (n) while each verify still risks DDR5 expert traffic.
+The matrix is blunt: batch-verify costs scale with N times those reads.</p>
+<p>Now the 24-spill row at n_max=3: <strong>0.86×</strong> at 82% acceptance. Speculation loses
+outright. You paid to go slower.</p>
+<p>This is chapter 1&rsquo;s bandwidth thesis wearing an MTP hat. If verification multiplies
+expensive host reads, longer drafts are not brave — they are leveraged debt.</p>
+<h2>Why n_max=1 won on the MoE recipes</h2>
+<p>On both DeepSeek MTP rows that show n_max=1, first-token acceptance is <strong>100%</strong>, and
+that cell is the local optimum:</p>
+<ul>
+<li>Q8-MTP 14 spill: 1.18× @ 100%</li>
+<li>Q3-MTP 10 spill: 1.30× @ 100%</li>
+</ul>
+<p>The matrix attributes 100% first-token acceptance to the head&rsquo;s training objective.
+Practically, n_max=1 means: take the head&rsquo;s best single guess, verify it cheaply
+relative to a long draft, keep the win rate high, do not open a large batch-verify
+surface against spilled experts.</p>
+<p>Longer drafts are not forbidden forever. They become rational when spill shrinks (more
+resident experts, different placement) or when the architecture is dense and resident
+like the Qwen row. The economic mistake is copying n_max=3 from a blog about a dense
+model onto a spilled MoE and calling the slowdown &ldquo;weird.&rdquo;</p>
+<h2>Acceptance rate is a first-class metric</h2>
+<p>Tok/s without acceptance is how folklore hides losses.</p>
+<p>A run can show busy GPUs, high internal throughput, and still lose end-to-end if rejects
+dominate. The §E cells pair speedup with acceptance percentages for a reason. On the
+14-spill Q8 line, acceptance slides 100% → 89% → 78% as n_max climbs, and speedup slides
+with it into a loss.</p>
+<p>Instrument acceptance beside tok/s:</p>
+<ul>
+<li>mean accepted length</li>
+<li>per-position accept rate if you have it</li>
+<li>reject cost (time spent on discarded drafts)</li>
+</ul>
+<p>If you only watch tok/s, a bad draft policy can look &ldquo;busy-fast&rdquo; while users wait
+longer.</p>
+<h2>Speculation and quality: the tool-suite control</h2>
+<p>Speed features that quietly wreck behavior are not speed features. The lab checked MTP
+against tool hardmode on Q3-MTP: three runs at MTP n=1 (40, 47) and an MTP-off control
+(50). Within the suite&rsquo;s ±10 noise, MTP did not measurably harm tool use <code>[LAB:
+RESULTS-MATRIX §C footnote]</code>.</p>
+<p>That is not a universal safety certificate for all speculative methods. It is a
+recorded control on this implementation and harness. When you adopt any draft scheme,
+keep a product-critical suite on a leash. Speculation that buys 1.2× and loses your
+tool contracts is a bad trade even if the latency dashboard celebrates.</p>
+<h2>Coupling to the production promotion</h2>
+<p>Chapter 2&rsquo;s promotion story depends on this chapter&rsquo;s economics. The Q8 master kept
+native expert precision (quality) and used MTP n_max=1 to land at 26–27 tok/s — old
+production speed — despite a larger resident footprint and fourteen layers of spill in
+the related MTP rows <code>[LAB: RESULTS-MATRIX headline before/after + §E]</code>.</p>
+<p>Without speculation, the quality-preserving master might have been &ldquo;too slow&rdquo; under a
+naive decode comparison. With speculation priced correctly (n_max=1, not n_max=3),
+quality and latency could cohabit.</p>
+<p>That is the industrial pattern: <strong>buy quality in the weights; buy back latency with a
+speculation recipe that respects spill; do not buy latency by vandalizing experts.</strong></p>
+<h2>Failure modes checklist</h2>
+<ol>
+<li><strong>Blog-default draft length.</strong> n_max=3 copied from dense zero-spill onto spilled MoE.</li>
+<li><strong>Unmeasured acceptance.</strong> Tok/s reported alone.</li>
+<li><strong>Verification across host spill.</strong> Batch-verify multiplies DDR traffic.</li>
+<li><strong>Draft contention.</strong> Draft and target fight for the same scarce bandwidth.</li>
+<li><strong>Silent quality drift.</strong> No tool/product suite paired with the speed claim.</li>
+<li><strong>Cold vs warm confusion.</strong> Speculation numbers measured only in a warm steady state
+   that production never sees (unmeasured here as a general warning; pin your own).</li>
+</ol>
+<h2>How to price a speculation change on your box</h2>
+<p>A minimal recipe:</p>
+<ol>
+<li>Fix model, engine build, placement flags, and context length.</li>
+<li>Measure baseline single-stream decode (range of ≥3 runs if noisy).</li>
+<li>Enable speculation at n_max=1; measure tok/s and acceptance.</li>
+<li>Step n_max upward only while acceptance stays high and tok/s rises.</li>
+<li>Stop at the first step that loses end-to-end speed or breaks the product suite.</li>
+<li>Record spill / residency (how much of the model is off-GPU) beside the winning cell.</li>
+</ol>
+<p>If step 4 never leaves n_max=1, that is a result, not a failure of nerve.</p>
+<h2>What this chapter refuses to claim</h2>
+<ul>
+<li>We do not claim MTP is the only speculative method worth using.</li>
+<li>We do not claim 2.2× is available on MoE with heavy spill.</li>
+<li>We do not claim 100% first-token acceptance generalizes beyond the recorded head and
+  setup.</li>
+<li>We do not claim speculation replaces the need for fit recipes (chapter 8) or load-log
+  literacy (chapter 6).</li>
+<li>We have not published a full cost model in microseconds for (D) and (V(n)) on every
+  row; the table is the evidence, the inequality is the frame.</li>
+</ul>
+<h2>Worked reading: three cells, three decisions</h2>
+<p>Take the Qwen zero-spill 2.2× cell first. Decision: open draft length. Reason: verification
+is not paying host expert traffic, acceptance stays useful enough to clear a double, and
+the baseline is already a clean dense decode. Copying this cell into a spilled MoE runbook
+is a category error.</p>
+<p>Take the DeepSeek Q3-MTP 1.30× @ n_max=1 cell second. Decision: keep drafts short, keep
+the head&rsquo;s first token, bank a solid single-stream gain, promote only if tool controls stay
+inside noise. This is the cell that made a quality-preserving production story possible at
+old latency.</p>
+<p>Take the DeepSeek Q8-MTP 24-spill 0.86× cell third. Decision: stop. Reason: acceptance is
+not terrible (82%), but the bandwidth math still loses. The correct response is not &ldquo;train
+a braver draft.&rdquo; It is &ldquo;reduce spill or shorten drafts until the inequality flips.&rdquo;</p>
+<p>If your postmortem after a slow rollout starts with sampler tweaks instead of spill and
+n_max, you are debugging the wrong layer.</p>
+<h2>Interaction with concurrency</h2>
+<p>Chapter 1 separated single-stream decode from aggregate throughput. Speculation complicates
+both.</p>
+<p>A single stream may show a clean 1.2–1.3× while multi-slot serving changes batch-verify
+economics, cache pressure, and scheduler behavior. The concurrency table in §B was measured
+on the promoted engine path without turning this chapter into a full factorial, and the
+matrix still records an unresolved c=2/c=3 dip on PAR=4 <code>[LAB: RESULTS-MATRIX §B]</code>. That
+dip is a reminder: scheduler seams exist even before MTP.</p>
+<p>Practical rule: <strong>re-measure speculation at the concurrency you will actually serve</strong>, not
+only at c=1 on a quiet box. If you only ever bench solitary warm decode, you will ship a
+lab speedup and a production shrug.</p>
+<h2>Prefill versus decode under speculation</h2>
+<p>Speculation is usually a decode-path bet. Prefill still builds the KV cache and still
+dominates short-prompt / long-generation handoffs differently than long-prompt / short-
+generation jobs. The §A prefill note (about 130 tok/s GPU indexer vs 50–80 CPU indexer on
+the IQ3 builds) remains the prefill story <code>[LAB: RESULTS-MATRIX §A]</code>.</p>
+<p>Do not advertise an MTP decode multiplier as an end-to-end latency multiplier for
+prompt-heavy workloads without measuring time-to-first-token and time-to-last-token
+separately. Operators who crush those into one &ldquo;tok/s&rdquo; will mis-price queues.</p>
+<h2>A short field worksheet</h2>
+<p>When someone proposes enabling or widening speculation, fill this before merging flags:</p>
+<ol>
+<li>Model identity and precision recipe (master? Q3? community Q4?).</li>
+<li>Spill / residency summary (what is on GPU vs host).</li>
+<li>Baseline decode range at target context.</li>
+<li>n_max tried; acceptance at each step.</li>
+<li>Product-suite delta (tools or equivalent) on/off.</li>
+<li>Concurrency target and re-bench at that c.</li>
+<li>Decision: keep, widen, narrow, or disable — with the inequality term that dominated.</li>
+</ol>
+<p>If the worksheet cannot be filled, the change is not priced. Unpriced speculation is how
+free-speedup folklore re-enters through a side door.</p>
+<h2>Accounting worksheet you can copy</h2>
+<p>When a teammate says &ldquo;just turn on MTP,&rdquo; make them fill this table before the flag ships:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Baseline</th>
+<th>Candidate</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>engine build</td>
+<td></td>
+<td></td>
+<td>pin SHA</td>
+</tr>
+<tr>
+<td>model artifact</td>
+<td></td>
+<td></td>
+<td>path + checksum</td>
+</tr>
+<tr>
+<td>spill / n-cpu-moe</td>
+<td></td>
+<td></td>
+<td>from load log</td>
+</tr>
+<tr>
+<td>n_max</td>
+<td>off</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>mean accept length</td>
+<td>n/a</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>warm decode tok/s (3 runs)</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>tool suite runs</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>production concurrency</td>
+<td></td>
+<td></td>
+<td>re-bench mandatory</td>
+</tr>
+<tr>
+<td>decision</td>
+<td></td>
+<td>keep/reject</td>
+<td>owner name</td>
+</tr>
+</tbody>
+</table>
+<p>If the candidate column cannot beat baseline on the product&rsquo;s real concurrency without wrecking the suite range, the feature is not a feature. It is a lab toy. The §E rows that fall below 1.0× exist to give you permission to reject <code>[LAB: RESULTS-MATRIX §E]</code>.</p>
+<h2>Draft quality is a systems property</h2>
+<p>People say &ldquo;the draft model is weak&rdquo; when acceptance is low. Sometimes that is true. Often the draft is fine and the system is feeding it a bad deal: too much spill, too much batch verify, too little residency, thermal throttle mid-span, or a context length that changes the head&rsquo;s calibration.</p>
+<p>Before you train a new draft head, check whether n_max=1 already clears a win. On the DeepSeek MTP rows, it did, with 100% first-token acceptance <code>[LAB: RESULTS-MATRIX §E]</code>. Training is expensive. Flag economics are cheap.</p>
+<h2>Speculation and the promotion ledger</h2>
+<p>Write speculation into the same promotion ledger as quant:</p>
+<ul>
+<li>quality delta (suite ranges)</li>
+<li>speed delta (decode ranges)</li>
+<li>fit delta (headroom, failed flags)</li>
+<li>operational delta (new failure modes)</li>
+</ul>
+<p>The Q8 master promotion is the template: quality first, MTP pays latency back, decode lands near old prod <code>[LAB: RESULTS-MATRIX headline before/after]</code>. If your ledger only has a green latency arrow, you will ship a faster wrong system.</p>
+<h2>Teaching the inequality without math trauma</h2>
+<p>For operators who bounce off formulas, use the one-sentence form:</p>
+<blockquote>
+<p>Did each expensive read buy more accepted tokens than it cost in draft+verify traffic?</p>
+</blockquote>
+<p>Walk the §E 14-spill row out loud: at n_max=1, yes; at n_max=3, no. The machine already did the arithmetic. Your job is to believe it.</p>
+<h2>Field story: n_max=3 as peer pressure</h2>
+<p>In many chats, longer drafts sound stronger. The §E 14-spill row is the antidote: acceptance fell and end-to-end speed fell as n_max rose, into a loss at n_max=3 <code>[LAB: RESULTS-MATRIX §E]</code>. The peer-pressure move is to keep widening drafts until the graph looks aggressive. The operator move is to stop at the maximum of the inequality.</p>
+<p>Put the losing cell in the runbook on purpose. Teams need permission to ship n_max=1 without feeling under-ambitious.</p>
+<h2>Speculation under product load shapes</h2>
+<ul>
+<li><strong>Short question, long answer chat:</strong> decode-heavy; MTP can matter a lot.</li>
+<li><strong>Long prompt, short answer classification:</strong> prefill-heavy; MTP may barely show up end-to-end.</li>
+<li><strong>Tool loops:</strong> many short decodes; acceptance and tool-suite controls matter more than peak tok/s.</li>
+</ul>
+<p>Bench the shape you sell, not the shape that flatters the feature.</p>
+<h2>Operator lab: n_max sweep protocol</h2>
+<ol>
+<li>Fix recipe without MTP; capture 3 decode runs.  </li>
+<li>Enable MTP n_max=1; capture decode + acceptance + tool suite.  </li>
+<li>If win, try n_max=2; stop if end-to-end falls or acceptance falls hard.  </li>
+<li>Never jump to n_max=3 on spilled MoE because a dense blog did.  </li>
+<li>Re-run winner at production concurrency.  </li>
+<li>Commit the winning n_max into the recipe file.</li>
+</ol>
+<p>This is just §E turned into a checklist <code>[LAB: RESULTS-MATRIX §E]</code>.</p>
+<h2>What you should do Monday</h2>
+<ol>
+<li>If MTP/spec is on, record n_max and mean acceptance beside tok/s.</li>
+<li>Run the n_max sweep protocol on a staging host once, even if production &ldquo;seems fine.&rdquo;</li>
+<li>Re-bench the winner at production concurrency, not only c=1.</li>
+<li>Put the losing §E-style cell (speedup less than 1) in the runbook as permission to stop.</li>
+<li>Tie any speculation change to a product-suite control run.</li>
+</ol>
+<p>Speculation that is not priced will still move your latency graph. Pricing it is the job <code>[LAB: RESULTS-MATRIX §E]</code>.</p>
+<h2>Cross-links inside this book</h2>
+<p>If acceptance is high and speed still falls, suspect spill and verification traffic (chapter 1) or heat (chapter 7). If acceptance is low, do not start with training a new draft until n_max=1 and residency are checked. If enabling MTP coincides with weird multi-turn outputs, chapter 4&rsquo;s cache-reuse and KV precision traps are in scope. If the speedup vanishes at production c, you benched the wrong speed kind in chapter 1&rsquo;s terms.</p>
+<h2>Acceptance without speed is a museum piece</h2>
+<p>A beautiful accept rate attached to a losing end-to-end latency is not a win. Ship the inequality, not the trophy metric.</p>
+<h2>Looking ahead</h2>
+<p>Chapter 4 budgets the KV cache — another working set speculation and long context both
+stress. Chapter 5 handles the measurement noise already visible in the tool controls.
+Chapter 6 shows how &ldquo;speculation is slow&rdquo; often starts as a placement graph. Chapter 7
+asks what happens to these recipes when the box hits thermal or power limits.</p>
+<p>Speculative decoding is not magic. It is a leveraged bet on acceptance under a bandwidth
+budget. Price the bet. Keep the receipt.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch04.html">next: KV Cache, Context, and the Traps →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-inference-on-the-edge', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

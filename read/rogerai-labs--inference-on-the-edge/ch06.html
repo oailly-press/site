@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Load Log Tells the Truth — Inference on the Edge</title>
+<meta name="description" content="Quantization, speculation, and the physics of local models — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="Inference on the Edge">
+<meta property="og:description" content="Quantization, speculation, and the physics of local models — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--inference-on-the-edge/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--inference-on-the-edge.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Inference on the Edge">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--inference-on-the-edge.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#4FD6C3;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="6" data-prev="ch05.html" data-next="ch07.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 6 — The Load Log Tells the Truth</h1>
+<p><em>(v2, 2026-08-28 — written by rogerai-dj for RogerAI Labs, verified by Roger AI.
+Numbers carrying a <code>[LAB:]</code> marker are RogerAI Labs&rsquo; own bench measurements, taken on the
+reference machine described in Chapter 1 and recorded in the lab notebook; each is
+reproducible by re-running the stated recipe — engine build, artifact, and flags. Claims
+without a marker are labeled unmeasured.)</em></p>
+<h2>When the knobs lie</h2>
+<p>A model that should do ~26 tok/s does ~2. The chat is fine. The GPU utility graph is a
+Rorschach test. Someone lowers temperature. Someone raises batch. Someone rebuilds with
+&ldquo;performance flags.&rdquo; Someone blames the quant.</p>
+<p>The load log already knows.</p>
+<p>Pathological decode is usually not a personality problem and not a prompt problem. It is
+a <strong>placement problem</strong>: which tensors landed on which device, which layers spilled, which
+indexer runs where, which flags turned a resident recipe into a host-memory commute. The
+startup log and the per-layer placement summary are the primary sources. Sampling flags
+are secondary literature.</p>
+<h2>The pure case: 2 tok/s with the weights right there</h2>
+<p>Chapter 1 already showed the cleanest load-log story in the matrix. Same 102 GB UD-IQ3
+DeepSeek file, same cards, different engine builds <code>[LAB: RESULTS-MATRIX §A]</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Build</th>
+<th>Indexer</th>
+<th>Warm decode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pre-#25545</td>
+<td>CPU</td>
+<td>~2 tok/s</td>
+</tr>
+<tr>
+<td>mainline CUDA</td>
+<td>CPU</td>
+<td>~10.8 bimodal</td>
+</tr>
+<tr>
+<td>taco</td>
+<td>CPU/disabled</td>
+<td>13.1 bimodal</td>
+</tr>
+<tr>
+<td><strong>pr25545</strong></td>
+<td><strong>GPU</strong></td>
+<td><strong>26.2 stable</strong></td>
+</tr>
+</tbody>
+</table>
+<p>The weights were not &ldquo;slow.&rdquo; The lightning indexer was on the CPU. Every token paid a
+host-side tax. No amount of prompt craft refunds that tax. Reading the build identity and
+the indexer placement ends the mystery; turning knobs extends it.</p>
+<p><strong>First rule of this chapter:</strong> when tok/s collapses by an order of magnitude, look for a
+bus, not a better temperature.</p>
+<h2>What to read before you tune</h2>
+<p>A useful startup sequence answers:</p>
+<ol>
+<li><strong>Engine identity</strong> — build SHA / binary name / backend.</li>
+<li><strong>Model identity</strong> — path, quant tag, size on disk.</li>
+<li><strong>Device map</strong> — which GPUs, tensor split, n-cpu-moe / offload counts.</li>
+<li><strong>Per-slot context</strong> after parallel division (chapter 4).</li>
+<li><strong>KV precision and cache-reuse flags.</strong></li>
+<li><strong>mmap / repack / no-mmap choices.</strong></li>
+<li><strong>Any warning about fallbacks</strong> (CPU layers, failed CUDA graphs, OOM recoveries).</li>
+</ol>
+<p>If your server prints a placement table or layer device list, archive it with the run. If
+it does not, improve the logging before you improve the model. A regression without a
+placement snapshot is a ghost story.</p>
+<h2>Fit failures are load-log failures</h2>
+<p>Section F is a catalog of recipes that look like &ldquo;model issues&rdquo; and are actually flag
+issues <code>[LAB: RESULTS-MATRIX §F]</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Works when…</th>
+<th>Fails when…</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IQ3 102 GB</td>
+<td>n-cpu-moe 4, split 31,25,24,20</td>
+<td>—</td>
+</tr>
+<tr>
+<td>community Q4 175 GB</td>
+<td>n-cpu-moe 24, split 25,6,6,6, <strong>&ndash;no-repack</strong>, mmap, lean RAM</td>
+<td>n-cpu-moe 14 VRAM-OOM; ≥18 without &ndash;no-repack <strong>segfault</strong>; &ndash;no-mmap <strong>host-OOM &gt;125 GB</strong></td>
+</tr>
+<tr>
+<td>Q8-MTP 160 GB</td>
+<td>n-cpu-moe 14, split 20,8,8,8 (+ no-repack, mmap)</td>
+<td>split 21,8,8,7 → <strong>compute-buffer OOM card0</strong></td>
+</tr>
+<tr>
+<td>Q3-MTP 143 GB</td>
+<td>n-cpu-moe 10… / prod 11 with split 18,9,9,8, PAR 2</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>Three different &ldquo;the model crashed&rdquo; reports, three different log truths:</p>
+<ul>
+<li><strong>VRAM-OOM</strong> — too much forced on-GPU for this split.</li>
+<li><strong>segfault without &ndash;no-repack</strong> — a packaging/runtime interaction, not a user prompt.</li>
+<li><strong>host-OOM without mmap</strong> — the host RAM budget was the real GPU.</li>
+<li><strong>compute-buffer OOM on card0</strong> — a one-card buffer cliff from a split that looked
+  &ldquo;almost the same&rdquo; (20,8,8,8 works; 21,8,8,7 dies).</li>
+</ul>
+<p>The load log and the OOM killer messages are more informative than a screenshot of the
+chat UI. Save them.</p>
+<h2>Tiny split changes are not tiny</h2>
+<p>Operators often nudge tensor split &ldquo;a little&rdquo; to chase headroom. The Q8-MTP row is the
+warning label: <code>20,8,8,8</code> loads; <code>21,8,8,7</code> compute-buffer OOMs card0 <code>[LAB:
+RESULTS-MATRIX §F]</code>.</p>
+<p>Treat split vectors as <strong>discrete recipes</strong>, not continuous knobs. When you change them,
+you are not &ldquo;tuning.&rdquo; You are shipping a new placement. Re-run:</p>
+<ul>
+<li>load success</li>
+<li>smoke decode</li>
+<li>product suite if quality-sensitive</li>
+<li>soak if production-bound (chapter 7)</li>
+</ul>
+<h2>mmap, repack, and the host as a silent GPU</h2>
+<p>The community Q4 recipe only behaves when mmap is on and repack is off, with lean host
+RAM discipline. Disable mmap and the host can OOM above 125 GB RAM trying to hold what
+you thought was a GPU problem <code>[LAB: RESULTS-MATRIX §F]</code>.</p>
+<p>This is why chapter 1 refused to treat file size as speed. A 175 GB artifact can thrash
+the host path and look like a slow GPU model. The log line about mmap and the host OOM
+trace are the explanation. &ldquo;Q4 is slow&rdquo; is the folklore paraphrase.</p>
+<h2>Offload counts: n-cpu-moe as a bandwidth valve</h2>
+<p>For MoE stacks, how many expert layers live on CPU is a bandwidth valve. Too few on CPU
+and you VRAM-OOM. Too many on CPU and every token walks DDR. The working recipes in §F
+are not aesthetics; they are measured compromises.</p>
+<p>When tok/s is mediocre rather than cratered, compare:</p>
+<ul>
+<li>n-cpu-moe / offload layers</li>
+<li>measured spill traffic if the engine exposes it</li>
+<li>whether speculation is multiplying spilled verifies (chapter 3)</li>
+</ul>
+<p>Mediocre is often &ldquo;too much commute,&rdquo; not &ldquo;bad GPU silicon.&rdquo;</p>
+<h2>Parallel and context: the silent closet</h2>
+<p>Chapter 4&rsquo;s trap belongs in the load log checklist again: <code>--parallel N</code> divides context.
+If the startup log says <code>n_ctx_slot=1365</code> while the model thinks for 1200 tokens, quality
+failures are placement/budget failures <code>[LAB: RESULTS-MATRIX concurrency notes]</code>.</p>
+<p>Read the slot size before you file a &ldquo;model loops&rdquo; ticket.</p>
+<h2>A debug order that saves days</h2>
+<p>When decode is wrong, walk this order:</p>
+<ol>
+<li><strong>Confirm binary and model path</strong> (wrong file is undefeated).</li>
+<li><strong>Read placement / split / offload</strong> from startup.</li>
+<li><strong>Read n_ctx_slot, KV precision, cache-reuse.</strong></li>
+<li><strong>Compare to last known good recipe</strong> (diff the flags, not the vibes).</li>
+<li><strong>Check host RAM and mmap/repack</strong> if the artifact is huge.</li>
+<li><strong>Only then</strong> touch sampler, batch, or prompt template.</li>
+<li><strong>Only then</strong> rebuild engines or re-quant.</li>
+</ol>
+<p>Teams that start at step 6 donate weekends to the machine.</p>
+<h2>Production soak as a load-log continuation</h2>
+<p>A load that succeeds is not a load that lasts. The promoted Q3-MTP soak recorded 86
+requests in 12 minutes, 0 errors, 100% mean acceptance, <strong>+2 MiB VRAM drift</strong> <code>[LAB:
+RESULTS-MATRIX §G]</code>. Drift is a load-log story stretched across time: leaks, fragmentation,
+cache growth, mis-sized pools.</p>
+<p>If your &ldquo;it got slow after an hour&rdquo; report has no VRAM/host series, you are debugging
+without the patient chart.</p>
+<h2>Case patterns (short)</h2>
+<p><strong>Pattern A — cratered tok/s, GPUs look idle-ish.</strong> Suspect host-side tax (indexer, spill,
+mmap miss). Historical twin: §A ~2 tok/s era.</p>
+<p><strong>Pattern B — hard crash on load.</strong> Suspect split, compute-buffer, repack, VRAM. Twin: §F
+failed configs.</p>
+<p><strong>Pattern C — loads, answers garbage on multi-turn.</strong> Suspect KV precision or cache-reuse.
+Twin: chapter 4 corruption notes.</p>
+<p><strong>Pattern D — loops / short thinking.</strong> Suspect n_ctx_slot too small under parallel. Twin:
+PAR context division.</p>
+<p><strong>Pattern E — fine at c=1, dies under load.</strong> Suspect concurrency scheduling, KV budget,
+or aggregate placement. Twin: §B dips and chapter 3&rsquo;s re-bench-at-c rule.</p>
+<h2>What this chapter refuses to claim</h2>
+<ul>
+<li>We do not claim every engine prints perfect placement logs; we claim you should not
+  trust speeds without them.</li>
+<li>We do not claim one universal split vector for all MoE models.</li>
+<li>We do not claim segfaults are always &ndash;no-repack; we claim the matrix has a documented
+  case you should know exists.</li>
+<li>We do not replace vendor debuggers — we replace knob-first superstition.</li>
+</ul>
+<h2>A worked false trail</h2>
+<p>Symptom: &ldquo;DeepSeek Q4 is broken; chat is slow and sometimes dies.&rdquo;</p>
+<p>False trail: try GGUF from another packer, change temperature, disable tools, rebuild
+from <code>main</code>.</p>
+<p>Load-log trail:</p>
+<ol>
+<li>File is ~175 GB community Q4.</li>
+<li>Startup shows no <code>--no-repack</code>, mmap off, n-cpu-moe 14.</li>
+<li>Host RAM climbs past 125 GB; OOM killer lands — or a segfault hits on repack paths.</li>
+<li>Compare to §F working recipe: n-cpu-moe 24, split 25,6,6,6, <code>--no-repack</code>, mmap, lean
+   host RAM <code>[LAB: RESULTS-MATRIX §F]</code>.</li>
+</ol>
+<p>After the recipe matches, decode is merely slow relative to a resident master (16.5 vs
+26+), which is now a chapter 1/2 problem, not a haunted model.</p>
+<p>The difference between the trails is a day of life.</p>
+<h2>Diff recipes like code</h2>
+<p>Keep a <code>last-known-good</code> flag file next to the unit:</p>
+<div class="codehilite"><pre><span></span><code>BINARY=...
+MODEL=...
+N_CPU_MOE=...
+TENSOR_SPLIT=...
+PAR=...
+CTX=...
+KV=...
+CACHE_REUSE=...
+MMAP=...
+REPACK=...
+MTP=...
+</code></pre></div>
+
+<p>When something breaks, <code>diff</code> that file against today&rsquo;s flags before you touch weights.
+Placement regressions love to hide in &ldquo;temporary&rdquo; environment variables that became
+permanent.</p>
+<h2>Headroom is part of the log</h2>
+<p>§G&rsquo;s production line recorded 3.3–6.6 GB headroom per card on the promoted Q3-MTP recipe
+<code>[LAB: RESULTS-MATRIX §G]</code>. Headroom is not vanity. It is the difference between surviving
+a concurrent spike and dying on compute-buffer allocation when a second stream arrives.</p>
+<p>If load succeeds with 0.1 GB free, you have a demo, not a service. Log headroom beside
+tok/s in soaks.</p>
+<h2>Reading a bad load like a postmortem</h2>
+<p>Write the incident in four lines before you change anything:</p>
+<ol>
+<li>Symptom (tok/s, crash, loop, garbage multi-turn).</li>
+<li>Last-known-good recipe hash or flag file.</li>
+<li>Diff of today&rsquo;s flags vs that file.</li>
+<li>First log line that disagrees with the good run.</li>
+</ol>
+<p>Most &ldquo;mysteries&rdquo; die on line 3. The rest die on line 4. If you cannot produce a last-known-good, your operational problem is upstream of inference physics: you are flying without a flight data recorder.</p>
+<h2>Engine upgrades are placement events</h2>
+<p>Upgrading llama.cpp or swapping a backend is not a no-op. The §A table is an engine-upgrade story that moved decode from ~2 to ~26 without touching weights <code>[LAB: RESULTS-MATRIX §A]</code>. The inverse also happens: a new binary can reintroduce CPU paths, change default offload, or alter cache behavior.</p>
+<p>Policy:</p>
+<ul>
+<li>pin engine versions in the unit file</li>
+<li>on upgrade, force a full recipe re-validation (load, smoke, suite, soak)</li>
+<li>never roll engine and model file in the same change window unless the change unit is explicitly &ldquo;recipe vNext&rdquo;</li>
+</ul>
+<h2>When the log is quiet and the speed is still wrong</h2>
+<p>Sometimes placement looks correct and tok/s is still mediocre. Then expand the investigation sideways, still without sampler folklore:</p>
+<ul>
+<li>thermal throttle (chapter 7)</li>
+<li>power cap / Max-Q mode</li>
+<li>another process on the GPUs (training pull-ins from chapter 7)</li>
+<li>speculation settings multiplying spill (chapter 3)</li>
+<li>context so long that KV bandwidth dominates (chapter 4)</li>
+</ul>
+<p>The load log remains the first read. It is not the only read. It is the read that prevents you from spending Tuesday on temperature 0.7.</p>
+<h2>Operator drill</h2>
+<p>Once a month, on a non-production clone:</p>
+<ol>
+<li>Break one flag deliberately (mmap off on a huge artifact, or a bad split).</li>
+<li>Capture the log.</li>
+<li>Restore last-known-good.</li>
+<li>Time the diagnosis.</li>
+</ol>
+<p>If diagnosis takes longer than restore, your logging is insufficient. Fix logging before the real outage.</p>
+<h2>Load log annex: fields worth parsing</h2>
+<p>If you automate one thing, automate extraction of:</p>
+<ul>
+<li>model path and size</li>
+<li>GPU UUID list</li>
+<li>tensor split</li>
+<li>offload / n-cpu-moe</li>
+<li>n_ctx and n_ctx_slot</li>
+<li>KV type</li>
+<li>cache reuse</li>
+<li>mmap/repack</li>
+<li>warnings and fallbacks</li>
+<li>estimated VRAM per device</li>
+</ul>
+<p>Store them as JSON next to the systemd unit start. When tok/s regresses, diff JSON. Humans miss flags; diffs do not.</p>
+<h2>The &ldquo;almost same split&rdquo; postmortem</h2>
+<p>Take §F&rsquo;s Q8-MTP working <code>20,8,8,8</code> versus failing <code>21,8,8,7</code> <code>[LAB: RESULTS-MATRIX §F]</code>. A human reviewing a PR might approve the change as harmless. A machine comparing against last-known-good would block it until a load test passed.</p>
+<p>That is the standard: <strong>placement PRs require load tests</strong>, not just LGTM.</p>
+<h2>Correlating dashboards to logs</h2>
+<p>Dashboards show symptoms. Logs show placement. A good on-call loop:</p>
+<ol>
+<li>latency spike alert</li>
+<li>open current recipe JSON</li>
+<li>open previous good recipe JSON</li>
+<li>open startup log of current process</li>
+<li>only then open Grafana for thermals and traffic</li>
+</ol>
+<p>If you start at step 5, you will optimize traffic charts while a bad deploy sits in plain sight.</p>
+<h2>Training the team</h2>
+<p>Once a quarter, give each operator a broken recipe on a scratch host and time them to root cause. Keep the broken recipes from §F-like failures. Celebrate fast diagnosis. Do not celebrate heroic silent fixes that leave no notes.</p>
+<h2>Field story: host OOM as a &ldquo;GPU issue&rdquo;</h2>
+<p>The §F &ndash;no-mmap host-OOM case is a classic mis-tag <code>[LAB: RESULTS-MATRIX §F]</code>. The ticket says GPU. The killer says host RAM. The folklore says quant. The fix says mmap and lean host discipline.</p>
+<p>Train on-call to read dmesg and host RAM alongside nvidia-smi. A GPU-only dashboard is a partial cockpit.</p>
+<h2>Recipe registry</h2>
+<p>Beyond last-known-good, keep a registry of recipes with states: experimental, candidate, production, retired, failed. Failed is permanent. Retired keeps history. Experimental is allowed to be wild. Production is boring and pinned.</p>
+<p>Most outages are an experimental flag that accidentally became production.</p>
+<h2>Operator lab: the five-minute load audit</h2>
+<p>Set a timer for five minutes at every deploy:</p>
+<p>Minute 1: confirm binary hash and model checksum.<br />
+Minute 2: capture startup log to <code>logs/start-$(date -u +%Y%m%dT%H%M%SZ).txt</code>.<br />
+Minute 3: extract placement fields to JSON.<br />
+Minute 4: diff against last-known-good JSON.<br />
+Minute 5: run a 20-second smoke generation and record tok/s.</p>
+<p>If you cannot do this in five minutes, automate it. Humans under pressure skip steps. Scripts do not feel pressure.</p>
+<h2>Mapping symptoms to §F</h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>First §F lookalike</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>segfault on load</td>
+<td>missing &ndash;no-repack on picky artifacts</td>
+</tr>
+<tr>
+<td>host RAM death</td>
+<td>mmap off on huge artifacts</td>
+</tr>
+<tr>
+<td>VRAM OOM</td>
+<td>n-cpu-moe too low / split too greedy</td>
+</tr>
+<tr>
+<td>compute-buffer OOM</td>
+<td>&ldquo;almost same&rdquo; split vector</td>
+</tr>
+<tr>
+<td>slow but stable</td>
+<td>spill commute / wrong engine path</td>
+</tr>
+</tbody>
+</table>
+<p>Keep this table in the on-call doc. It is not complete. It is fast.</p>
+<h2>What you should do Monday</h2>
+<ol>
+<li>Implement the five-minute load audit on staging, then on production deploys.</li>
+<li>Diff recipe JSON on every restart; page if production drifts from last-known-good.</li>
+<li>Store startup logs with timestamps next to the unit, not only in a volatile journal.</li>
+<li>Practice one §F lookalike failure on a scratch host with the on-call rotation.</li>
+<li>Require placement diffs on engine upgrades before traffic returns.</li>
+</ol>
+<p>If the log is not archived, the truth was available and then thrown away <code>[LAB: RESULTS-MATRIX §A/§F]</code>.</p>
+<h2>Cross-links inside this book</h2>
+<p>This chapter is the debug front door. Chapter 1 gives magnitude heuristics. Chapter 8 gives the fit tombstones you should already have on disk. Chapter 7 covers the cases where the log looks fine and the environment does not. Chapter 5 tells you how to record the before/after so the fix becomes a recipe, not a legend.</p>
+<h2>One-page load pledge</h2>
+<p>No production restart without:</p>
+<ul>
+<li>archived startup log</li>
+<li>recipe JSON diff</li>
+<li>smoke tok/s</li>
+<li>owner initials</li>
+</ul>
+<p>If any item is missing, the restart is an experiment on users. The §A crater and §F tombstones exist because someone eventually read the log; the pledge makes that the default rather than the rescue <code>[LAB: RESULTS-MATRIX §A/§F]</code>.</p>
+<h2>Looking ahead</h2>
+<p>Chapter 7 keeps reading the machine when the failure is heat or power, not placement.
+Chapter 8 turns successful recipes into a fit map: what a 128 GB class box can hold, and
+what smaller machines can honestly claim.</p>
+<p>The load log is not ancillary output. It is the ground truth of local inference. If the
+log and the dashboard disagree, believe the log.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch07.html">next: Thermals, Power, and Crashes →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-inference-on-the-edge', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

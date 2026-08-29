@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KV Cache, Context, and the Traps — Inference on the Edge</title>
+<meta name="description" content="Quantization, speculation, and the physics of local models — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="Inference on the Edge">
+<meta property="og:description" content="Quantization, speculation, and the physics of local models — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--inference-on-the-edge/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--inference-on-the-edge.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Inference on the Edge">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--inference-on-the-edge.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#4FD6C3;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="4" data-prev="ch03.html" data-next="ch05.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 4 — KV Cache, Context, and the Traps</h1>
+<p><em>(v2, 2026-08-28 — written by rogerai-dj for RogerAI Labs, verified by Roger AI.
+Numbers carrying a <code>[LAB:]</code> marker are RogerAI Labs&rsquo; own bench measurements, taken on the
+reference machine described in Chapter 1 and recorded in the lab notebook; each is
+reproducible by re-running the stated recipe — engine build, artifact, and flags. Claims
+without a marker are labeled unmeasured.)</em></p>
+<h2>The second model</h2>
+<p>People budget the weight file and forget the working set that grows with every token of
+context: the <strong>KV cache</strong>.</p>
+<p>Weights are the encyclopedia on the shelf. The KV cache is the desk where the model
+keeps the conversation it is having <em>right now</em>. Desk space is not free. It scales with
+layers, heads, head dimension, precision, batch, and sequence length. It can exceed the
+weight footprint on long contexts. It can silently shrink when you raise concurrency. It
+can corrupt outputs when precision or cache-reuse flags are wrong.</p>
+<p>Chapter 1 said a token costs bytes moved. Chapter 4 says: some of those bytes are the
+past you are re-reading every step. Treat the cache as a second model you are also
+serving.</p>
+<h2>What the cache is for</h2>
+<p>Autoregressive generation reuses attention keys and values from earlier tokens so the
+model does not recompute the whole prompt on every step. That reuse is the KV cache.</p>
+<p>Two operator facts follow:</p>
+<ol>
+<li><strong>Prefill writes a lot of cache at once</strong> (prompt evaluation).</li>
+<li><strong>Decode appends a little cache per token</strong> and reads a growing history.</li>
+</ol>
+<p>If your latency pain is time-to-first-token on long prompts, you are often in prefill and
+cache allocation. If your pain is tokens-per-second on long generations, you are often in
+decode bandwidth against weights <strong>and</strong> against an ever-larger cache.</p>
+<p>Confusing those pains produces the wrong fix: quantizing weights harder will not cure a
+context budget you divided by <code>--parallel</code>, and buying another GPU will not cure a
+cache-reuse corruption flag.</p>
+<h2>Context is a budget, not a vibe</h2>
+<p>Engines expose a context ceiling (<code>n_ctx</code> and friends). That ceiling is RAM and VRAM
+policy, not a personality trait of the model.</p>
+<p>On the lab&rsquo;s production burn-in line, the promoted Q3-MTP recipe ran <strong>PAR=2, 64K
+ctx/slot</strong> among other flags <code>[LAB: RESULTS-MATRIX §G]</code>. That is a deliberate allocation:
+two slots, each with a large ceiling. It is also a reminder that context numbers in a
+server log are <strong>per-slot</strong> after parallelism divides the pie.</p>
+<p>The matrix records the trap in plain language during K3-Encode work <code>[LAB:
+RESULTS-MATRIX H.4.2 / concurrency notes]</code>:</p>
+<blockquote>
+<p><code>--parallel N</code> DIVIDES the context budget — <code>n_ctx_slot = CTX/N</code>. A first attempt at
+PAR=6 with CTX=8192 silently produced <strong>1365 tokens per slot</strong>, far too little for a
+model that spends 1200 tokens thinking. Size CTX as <code>PAR × per_slot_need</code>, and read
+<code>n_ctx_slot</code> in the startup log to confirm.</p>
+</blockquote>
+<p>The arithmetic is worth doing out loud, because it is exactly the kind of number an
+operator eyeballs and gets wrong: 8192 ÷ 6 = 1365 (1365.3, floored), not the round-looking
+1536 a slightly larger CTX of 9216 would have produced. The trap is not that the division
+is hard; it is that a plausible-looking per-slot number hides a closet.</p>
+<p>That is one of the highest-value sentences in this book. Silent undersizing does not
+error loudly. It thinks in a closet and then loops, truncates, or looks &ldquo;dumb.&rdquo;</p>
+<p><strong>Habit:</strong> after every parallel or context flag change, read <code>n_ctx_slot</code> (or equivalent)
+from the startup log before you trust a single quality sample.</p>
+<h2>Parallelism confounds: do not compare unequal desks</h2>
+<p>When the lab first compared PAR=1 and PAR=4 behavior, unequal per-slot context
+confounded the story. Re-running with matched <code>n_ctx_slot</code> fixed the science <code>[LAB:
+RESULTS-MATRIX concurrency / control notes]</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Server</th>
+<th>slots</th>
+<th>n_ctx_slot</th>
+<th>control-fact</th>
+<th>control-code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PAR=1, CTX=16384</td>
+<td>1</td>
+<td>16384</td>
+<td>answered</td>
+<td>answered</td>
+</tr>
+<tr>
+<td>PAR=1, CTX=4096</td>
+<td>1</td>
+<td>4096</td>
+<td>answered</td>
+<td>answered</td>
+</tr>
+<tr>
+<td>PAR=4, CTX=16384</td>
+<td>4</td>
+<td>4096</td>
+<td><strong>loops</strong></td>
+<td>loops at 4-in-flight</td>
+</tr>
+</tbody>
+</table>
+<p>The point is not that PAR=4 is cursed. The point is that a fair comparison holds the desk
+size fixed. Earlier rows that mixed PAR=1 at 16384 with PAR=4 at 4096 per slot were
+comparing different products.</p>
+<p>Chapter 5 will call this a control. Chapter 4 calls it furniture: <strong>if the desks differ,
+the exam results are not about the student alone.</strong></p>
+<h2>Precision: the cache has a bit-width too</h2>
+<p>Weights are quantized in public. Cache precision is often a quiet flag (<code>f16</code>, <code>q8_0</code>,
+etc.) that still moves both memory and behavior.</p>
+<p>Here is a lab observation, stated as one — not a universal law. On the <strong>DeepSeek-V4-Flash
+stack, on this box</strong>, setting the KV cache to <code>q8_0</code> produced <strong>degraded, garbled decode
+output</strong> (the generation lost coherence, not merely a point of quality), while the same
+recipe with <code>f16</code> KV produced correct output. The apparatus is the reference machine and
+engine build used throughout this book; the variable changed was KV type alone. The
+conclusion is narrow and load-bearing: <em>for V4 on this stack, keep KV at f16.</em> It is <strong>not</strong>
+a claim that <code>q8_0</code> KV is unsafe on every architecture — plenty of models serve quantized
+KV correctly. The operational stance that survived is therefore conservative rather than
+absolute: prefer a known-good KV precision for the architecture you are serving, verify it
+before trusting a quantized-KV default, and treat &ldquo;more quantized KV&rdquo; as an experiment with
+a product suite attached. An operator who reads this as &ldquo;never quantize KV&rdquo; would wrongly
+avoid a configuration that is safe elsewhere; the correct reading is &ldquo;prove it per stack.&rdquo;</p>
+<p>You will also see recipes that pin f16 KV explicitly beside other carefully chosen flags
+— for example a Kimi-K3 streaming bring-up line that lists <code>f16 KV</code> next to <code>--no-repack</code>,
+mmap, and <code>--cache-reuse 0</code> <code>[LAB: RESULTS-MATRIX H bring-up flags]</code>. That is not
+decoration. It is a stack of foot-guns with the safeties written in the on position.</p>
+<p>If you change KV precision, change <strong>one variable</strong>, keep context and parallel fixed, and
+run the same honesty suite you use for weight quants (chapter 2 and chapter 5).</p>
+<h2>Cache reuse: speed feature, corruption feature</h2>
+<p>Prefix cache reuse can avoid re-prefilling shared prompt prefixes. It can also corrupt.</p>
+<p>During K3-Encode work the lab recorded a hard requirement: <strong><code>--cache-reuse 0</code> is
+mandatory (KDA prefix-cache corruption, PR #26185)</strong> <code>[LAB: PROJECT-LOG K3-Encode /
+cache-reuse notes]</code>. Name the mode so it is actionable rather than superstitious: with
+prefix-cache reuse enabled on the <strong>KDA (Kimi Delta Attention) path</strong>, requests that shared
+a prompt prefix reused KV state that did not actually match the new request&rsquo;s attention
+computation, and the served output was <strong>corrupted</strong> — wrong tokens, not merely slower.
+It presents on <strong>multi-turn or shared-system-prompt traffic</strong> (exactly the traffic reuse is
+meant to accelerate) and stays invisible on single-shot prompts. Scope and status matter
+for an operator deciding today: this was observed on a specific architecture and engine
+era, and PR #26185 is the upstream thread that tracks it — so treat &ldquo;reuse off&rdquo; as
+mandatory <em>on the affected stack/build</em> and <strong>re-check whether your current build carries
+the fix</strong> before assuming the foot-gun is still loaded. The flag that looks like free
+prefill is sometimes a correctness regression with a delayed fuse.</p>
+<p>Rule:</p>
+<ol>
+<li>Default to reuse off until you have a harness that would catch the corruption mode.</li>
+<li>When you enable reuse, pin engine version and architecture notes; do not inherit reuse
+   across unrelated models because a blog said it was faster.</li>
+<li>If outputs get weird only on multi-turn or shared-system-prompt traffic, suspect reuse
+   before you suspect &ldquo;the quant is bad.&rdquo;</li>
+</ol>
+<h2>KV cost as a first-class design axis (hybrid lesson)</h2>
+<p>Not every architecture pays the same KV tax. In from-scratch hybrid experiments, the lab
+measured bits/byte against KV cost per token and found ordering that was <strong>monotonic in
+KV cost at every length</strong> on the reported arms, with a flat-KV hybrid winning on the
+combined reading <code>[LAB: PROJECT-LOG / matrix hybrid KV arms]</code>.</p>
+<table>
+<thead>
+<tr>
+<th>arm (sketch)</th>
+<th>KV cost class</th>
+<th>role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>full attention control</td>
+<td>highest KB/token</td>
+<td>baseline desk tax</td>
+</tr>
+<tr>
+<td>hybrids with more full attention</td>
+<td>medium</td>
+<td>compromise</td>
+</tr>
+<tr>
+<td>hybrid / flat-KV leaning arms</td>
+<td>low or flat</td>
+<td>desk tax collapses</td>
+</tr>
+</tbody>
+</table>
+<p>The detailed bits/byte numbers and σ claims live in the lab record; the operator lesson
+does not need them memorized. <strong>Architecture choice is sometimes a KV choice.</strong> If your
+product is long-context, a model that is slightly worse on a short-context leaderboard
+but dramatically cheaper per token of history can win the deployment. If your product is
+short prompts, you may be buying flat-KV complexity you will never amortize.</p>
+<p>Chapter 8&rsquo;s &ldquo;what fits&rdquo; question is partly a KV question once context targets leave the
+demo range.</p>
+<h2>Long context is a residency plan</h2>
+<p>A 64K per-slot ceiling is not only an engine number. It is a claim about memory headroom
+under real traffic. Production soak on Q3-MTP included 28K-token long-context recall
+checks beside tool-calling and dual-stream MTP <code>[LAB: RESULTS-MATRIX §G]</code>. That is the
+right posture: long context is a <strong>feature you test</strong>, not a slider you max.</p>
+<p>When headroom dies, systems start paging, shrinking batches, or OOMing on the next spike.
+Chapter 7 will talk about thermal and power. Here the cache-specific failure is quieter:
+quality falls first, then speed, then the process dies — and the root cause is that the
+desk ate the room.</p>
+<h2>Traps, in one checklist</h2>
+<ol>
+<li><strong>Parallel divides context.</strong> Always compute and log per-slot context.</li>
+<li><strong>Unequal desks confound quality comparisons.</strong> Match <code>n_ctx_slot</code> before blaming PAR.</li>
+<li><strong>KV precision is a quant.</strong> Experiment with suites; do not casual-toggle.</li>
+<li><strong>Cache reuse can corrupt.</strong> Require a harness before enabling.</li>
+<li><strong>Long context without soak tests is a demo.</strong> Prove recall and stability at target
+   length.</li>
+<li><strong>Architecture KV tax differs.</strong> Leaderboards at 2K tokens hide 32K economics.</li>
+<li><strong>Spill + long context + speculation stack.</strong> Each multiplies bytes; price the stack
+   (chapters 1 and 3).</li>
+</ol>
+<h2>A minimal measurement recipe</h2>
+<p>For any new model or flag set:</p>
+<ol>
+<li>Print startup allocation: weights, KV budget, per-slot context, parallel.</li>
+<li>Run a short fixed prompt at c=1; capture tok/s and smoke quality.</li>
+<li>Run a long-prompt prefill case at target context; capture time-to-first-token.</li>
+<li>Run a long-generation case; watch VRAM/host trend, not only mean tok/s.</li>
+<li>If enabling parallel, repeat with matched per-slot context and with production-like
+   concurrency separately.</li>
+<li>If enabling cache reuse or KV quant, run a multi-turn / shared-prefix suite designed to
+   fail loudly on corruption.</li>
+</ol>
+<p>If you cannot state the per-slot context and KV precision of a &ldquo;bad output&rdquo; report, you
+do not yet have a bug report. You have a mood.</p>
+<h2>What this chapter refuses to claim</h2>
+<ul>
+<li>We do not claim one universal KV precision for all models.</li>
+<li>We do not claim cache reuse is always unsafe — only that it has been mandatory-off for
+  recorded corruption modes on specific stacks.</li>
+<li>We do not claim flat-KV hybrids always win products; they win a measured tax curve in
+  the lab record under stated conditions.</li>
+<li>We do not provide a closed-form KV byte formula for every architecture here; use the
+  engine&rsquo;s own allocation log and the model card.</li>
+</ul>
+<h2>Context length as a product feature with a bill</h2>
+<p>Product managers love &ldquo;128k context&rdquo; on a slide. The bill arrives as:</p>
+<ul>
+<li>KV bytes per token times layers times precision</li>
+<li>prefill time to first token</li>
+<li>decode slowdown as history grows</li>
+<li>sharper failure modes under parallel</li>
+</ul>
+<p>If the customer actually uses 2k tokens median, you may be paying a tax for a brochure line. If they truly use 32k, then chapter 1&rsquo;s bandwidth story and this chapter&rsquo;s desk story dominate the design. Measure the real context histogram before you buy the marketing ceiling.</p>
+<h2>Prefix-heavy workloads</h2>
+<p>Many enterprise deployments share a large system prompt or tool schema across requests. That is exactly where cache reuse is tempting and exactly where corruption flags matter. The K3-Encode note that forced <code>--cache-reuse 0</code> is your reminder that shared prefixes are not free speed <code>[LAB: PROJECT-LOG cache-reuse / PR #26185]</code>.</p>
+<p>A safe rollout pattern:</p>
+<ol>
+<li>ship with reuse off</li>
+<li>build a multi-turn shared-prefix corruption suite</li>
+<li>enable reuse on a canary</li>
+<li>compare suite + latency</li>
+<li>only then widen</li>
+</ol>
+<p>Skipping to step 5 is how silent wrongness enters.</p>
+<h2>Conversation durability vs KV durability</h2>
+<p>Users think conversations live in the model. Usually they live in a client-side or app-side transcript, and the KV is a disposable acceleration of that transcript. After a restart, the desk is empty even if the chat scrollback still shows text.</p>
+<p>Design implications:</p>
+<ul>
+<li>reconnect should resend necessary history or accept cold quality</li>
+<li>do not promise &ldquo;the model remembers&rdquo; across process death unless you built durable state (see <em>Durable State for Ephemeral Minds</em> if you need that stack)</li>
+<li>load-shed by dropping KV and re-prefilling rather than serving half-corrupt desks</li>
+</ul>
+<h2>Per-slot math drill</h2>
+<p>Suppose CTX=8192 and PAR=8. Per slot 1024. If your agent prompt uses 700 tokens of tools+policy and the user question is 200, you have ~124 tokens of generation before you are in trouble. This is not theoretical; the matrix&rsquo;s 1365-slot caution is the same class of foot-gun <code>[LAB: RESULTS-MATRIX concurrency notes]</code>.</p>
+<p>Always compute:</p>
+<p><code>usable_generation ≈ n_ctx_slot - prompt_tokens - safety_margin</code></p>
+<p>If usable_generation is smaller than your product&rsquo;s median answer, your parallel setting is a quality bug.</p>
+<h2>Field story: the silent 1365-slot deploy</h2>
+<p>The matrix note about PAR=6 with CTX=8192 producing 1365 tokens per slot is a complete short story <code>[LAB: RESULTS-MATRIX concurrency notes]</code>. Nobody intends to ship a closet-sized desk. The flags look reasonable in isolation. The division does the damage.</p>
+<p>Add a CI check if you can: parse startup logs and fail if <code>n_ctx_slot &lt; product_min_context</code>. If you cannot CI it, put it in the smoke script. If you cannot smoke it, you will learn from users.</p>
+<h2>KV and multi-tenant fairness</h2>
+<p>When multiple tenants share a server, KV is the fairness battleground. One tenant with a huge context can crowd out others even if weight residency is fine. Per-slot caps, per-tenant max context, and admission control are fit tools as much as they are product tools.</p>
+<p>Chapter 8&rsquo;s headroom targets apply to KV too: if the box only works when nobody uses long context, you did not ship long context. You shipped a brochure.</p>
+<h2>Operator lab: context admission test</h2>
+<p>Write a script that:</p>
+<ol>
+<li>Parses n_ctx_slot from startup.  </li>
+<li>Builds a prompt of size <code>n_ctx_slot - 256</code>.  </li>
+<li>Asks for a 512-token answer.  </li>
+<li>Fails if the server loops, truncates immediately, or OOMs.</li>
+</ol>
+<p>Run it whenever PAR or CTX changes. The silent 1365-slot failure mode should never reach users twice <code>[LAB: RESULTS-MATRIX concurrency notes]</code>.</p>
+<h2>What you should do Monday</h2>
+<ol>
+<li>Parse <code>n_ctx_slot</code> from every server startup and alert if below product minimum.</li>
+<li>Confirm KV precision and cache-reuse settings are explicit in the recipe file.</li>
+<li>Run one matched-desk parallel control before blaming PAR for quality.</li>
+<li>Measure a real context-length histogram from production logs if you have them.</li>
+<li>Add a shared-prefix multi-turn case to the smoke suite before enabling reuse.</li>
+</ol>
+<p>The silent 1365-slot failure mode is too cheap to leave unguarded <code>[LAB: RESULTS-MATRIX concurrency notes]</code>.</p>
+<h2>Cross-links inside this book</h2>
+<p>Context division bugs present as &ldquo;model quality&rdquo; and get handed to chapter 2 or 5 by mistake. Always read n_ctx_slot first (chapter 6 audit). Long context without headroom becomes a chapter 8 fit failure mid-week, not at load time. Speculation plus long context multiplies bytes; re-price chapter 3 after any CTX change. Crash recovery rarely restores KV; chapter 7&rsquo;s client honesty section matters for user-visible continuity.</p>
+<h2>Desk space is product space</h2>
+<p>If the desk does not fit the work, the model never gets a fair exam.</p>
+<h2>Looking ahead</h2>
+<p>Chapter 5 turns the honesty problem into a method: error bars, controls, and the ±10
+point tool-suite noise already stalking chapters 2 and 3. Chapter 6 stays in the startup
+and load logs where context division and placement show up before users do. Chapter 8
+asks what fits when weights, KV, concurrent slots, and headroom must cohabit on a 128 GB
+class box.</p>
+<p>You are never serving only a weight file. You are serving a weight file <strong>and</strong> a growing
+desk. Budget both, or the desk will budget itself.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch05.html">next: Benchmarking Honestly →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-inference-on-the-edge', location.pathname);}catch(e){}
+</script>
+</body>
+</html>
