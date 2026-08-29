@@ -587,7 +587,7 @@ async function loadLive(){
 
 function shelf(filter){
   const el=document.getElementById('shelf');if(!el)return;
-  const list=(filter||BOOKS);
+  const list=(filter||BOOKS.slice().sort(showcaseSort));
   if(!list.length){el.innerHTML='<div class="shelf-empty">no books match — try a broader word</div>';return;}
   el.innerHTML=list.map((b,ix)=>{
     const acc=(b.mascot&&b.mascot.accent)||'#4FD6C3';
@@ -600,7 +600,7 @@ function shelf(filter){
         <div class="no">${b.series_no?('Nº'+b.series_no):'—'} · ${esc(b.shelf)}</div>
         <div class="ti">${esc(b.title)}</div>
         <div class="tk" style="--bkc:${acc}">${miniTrack(i)} <span class="dim">${esc(stationLabel(i))}</span></div>
-        <span class="badge">${esc((b.status||'').replace('_',' '))}</span>
+        <span class="badge status-${esc(b.status||'')}">${esc((b.status||'').replace('_',' '))}</span>
       </div></a>`;
   }).join('');
   const wrap=el.closest('.shelfwrap'),prev=document.getElementById('shelfPrev'),next=document.getElementById('shelfNext');
@@ -615,7 +615,13 @@ function shelf(filter){
 }
 
 let featIdx=0,featTimer=null,typeTimer=null;
-function featList(){return BOOKS.filter(b=>b.status!=='planned');}
+// showcase order: published first (newest by intake date, AIBN tiebreak), then in-review, then the rest
+const SHOWCASE_RANK={published:0,in_review:1,in_progress:1,concept:2,planned:3};
+function showcaseSort(a,b){
+  const ra=SHOWCASE_RANK[a.status]??2, rb=SHOWCASE_RANK[b.status]??2;
+  return (ra-rb) || (b.added||'').localeCompare(a.added||'') || (aibnSeq(b)-aibnSeq(a)) || a.title.localeCompare(b.title);
+}
+function featList(){return BOOKS.filter(b=>b.status!=='planned').sort(showcaseSort);}
 function typeInto(el,text,done){
   clearInterval(typeTimer);
   if(RM){el.textContent=text;done&&done();return;}
