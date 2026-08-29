@@ -39,5 +39,6 @@
       "from": "3-verification",
       "to": "4-judge"
     }
-  ]
+  ],
+  "revision_sha": "6dd139418f8c42f0e646ab0d6db973e885f06ffb"
 }
