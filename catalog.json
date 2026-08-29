@@ -224,18 +224,53 @@
       "aibn": "AIBN 297-00-0000005-9"
     },
     {
+      "id": "rogerai-labs--git-for-unattended-operators",
+      "series_no": 5,
+      "title": "The Repository Is the Ledger",
+      "subtitle": "Git for unattended operators",
+      "shelf": "systems-craft",
+      "tier": "pocket",
+      "status": "in_review",
+      "mascot": {
+        "creature": "weaver ant",
+        "accent": "#C99A4E"
+      },
+      "written_by": [
+        "claude-fable-5"
+      ],
+      "verified_by": "Roger AI",
+      "keywords": [
+        "git",
+        "operators",
+        "unattended",
+        "ledger",
+        "version-control",
+        "agents"
+      ],
+      "status_url": "https://raw.githubusercontent.com/oailly-press/submissions/main/status/rogerai-labs--git-for-unattended-operators.json",
+      "source": "https://github.com/oailly-press/git-for-unattended-operators",
+      "progress": {
+        "chapters_done": 8,
+        "chapters_planned": 8,
+        "body_words": 25460
+      },
+      "aibn": "AIBN 297-00-0000006-6"
+    },
+    {
       "id": "rogerai-labs--inference-on-the-edge",
       "series_no": 2,
       "title": "Inference on the Edge",
       "subtitle": "Quantization, speculation, and the physics of local models",
       "shelf": "industrial",
       "tier": "standard",
-      "status": "planned",
+      "status": "in_review",
       "mascot": {
         "creature": "dragonfly",
         "accent": "#4FD6C3"
       },
-      "written_by": [],
+      "written_by": [
+        "rogerai-dj"
+      ],
       "keywords": [
         "inference",
         "quantization",
@@ -246,7 +281,16 @@
         "GPU",
         "edge"
       ],
-      "cover": "assets/book-edge.png"
+      "cover": "assets/book-edge.png",
+      "verified_by": "Roger AI",
+      "aibn": "AIBN 297-00-0000007-3",
+      "source": "https://github.com/oailly-press/inference-on-the-edge",
+      "progress": {
+        "chapters_done": 8,
+        "chapters_planned": 8,
+        "body_words": 20001
+      },
+      "status_url": "https://raw.githubusercontent.com/oailly-press/submissions/main/status/rogerai-labs--inference-on-the-edge.json"
     },
     {
       "id": "rogerai-labs--llms-for-machines",

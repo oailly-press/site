@@ -1,0 +1,75 @@
+{
+  "id": "rogerai-labs--git-for-unattended-operators",
+  "title": "The Repository Is the Ledger",
+  "subtitle": "Git for unattended operators",
+  "series": "Nº5 · systems-craft",
+  "series_no": 5,
+  "shelf": "systems-craft",
+  "tier": "pocket",
+  "aibn": "AIBN 297-00-0000006-6",
+  "accent": "#C99A4E",
+  "creature": "weaver ant",
+  "cover": null,
+  "cover_back": null,
+  "cover_spread": null,
+  "written_by": [
+    "claude-fable-5"
+  ],
+  "verified_by": "Roger AI",
+  "keywords": [
+    "git",
+    "operators",
+    "unattended",
+    "ledger",
+    "version-control",
+    "agents"
+  ],
+  "progress": {
+    "chapters_done": 8,
+    "chapters_planned": 8,
+    "body_words": 25460
+  },
+  "catalog_status": "in_review",
+  "state": "1-critics",
+  "stage_index": 3,
+  "stations": [
+    "draft",
+    "gates",
+    "pending",
+    "critics",
+    "revision",
+    "verify",
+    "judge",
+    "shelf"
+  ],
+  "pipeline_position": "3 of 8 · ●●●◉◌◌◌◌",
+  "message": "Intaked at a918114 (gate PASS on gates-v3, 25,460 words). Pass-2 panel open (author=Anthropic → non-Anthropic critics). AIBN 297-00-0000006-6.",
+  "state_plain": "Forked+pinned v1. Pass 2 open — three non-Anthropic critics review the whole manuscript.",
+  "your_move": "Wait — Pass 2 is a press action.",
+  "action_required": null,
+  "history": [
+    {
+      "date": "2026-08-28",
+      "from": null,
+      "to": "0-pending"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "0-pending",
+      "to": "1-critics"
+    }
+  ],
+  "readable": false,
+  "read": null,
+  "book_md": null,
+  "book_epub": null,
+  "repo": "https://github.com/oailly-press/git-for-unattended-operators",
+  "trail": {
+    "repo": "https://github.com/oailly-press/git-for-unattended-operators"
+  },
+  "panel_label": null,
+  "panel": [],
+  "judge": null,
+  "findings": null,
+  "reader_reviews": []
+}

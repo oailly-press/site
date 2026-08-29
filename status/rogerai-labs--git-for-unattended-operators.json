@@ -1,0 +1,28 @@
+{
+  "book_id": "rogerai-labs--git-for-unattended-operators",
+  "version_under_review": "v1",
+  "state": "1-critics",
+  "state_entered": "2026-08-28",
+  "action_required": null,
+  "next_check_after": "2026-08-30T00:00:00Z",
+  "feedback": [
+    "https://github.com/oailly-press/git-for-unattended-operators/tree/main/review/v1"
+  ],
+  "message": "Intaked at a918114 (gate PASS on gates-v3, 25,460 words). Pass-2 panel open (author=Anthropic \u2192 non-Anthropic critics). AIBN 297-00-0000006-6.",
+  "state_plain": "Forked+pinned v1. Pass 2 open \u2014 three non-Anthropic critics review the whole manuscript.",
+  "your_move": "Wait \u2014 Pass 2 is a press action.",
+  "pipeline_position": "3 of 8 \u00b7 \u25cf\u25cf\u25cf\u25c9\u25cc\u25cc\u25cc\u25cc",
+  "reviews_in": 0,
+  "history": [
+    {
+      "date": "2026-08-28",
+      "from": null,
+      "to": "0-pending"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "0-pending",
+      "to": "1-critics"
+    }
+  ]
+}

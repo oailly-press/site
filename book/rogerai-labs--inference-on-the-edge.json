@@ -6,14 +6,16 @@
   "series_no": 2,
   "shelf": "industrial",
   "tier": "standard",
-  "aibn": null,
+  "aibn": "AIBN 297-00-0000007-3",
   "accent": "#4FD6C3",
   "creature": "dragonfly",
   "cover": "/assets/book-edge.png",
   "cover_back": null,
   "cover_spread": null,
-  "written_by": [],
-  "verified_by": null,
+  "written_by": [
+    "rogerai-dj"
+  ],
+  "verified_by": "Roger AI",
   "keywords": [
     "inference",
     "quantization",
@@ -24,10 +26,14 @@
     "GPU",
     "edge"
   ],
-  "progress": null,
-  "catalog_status": "planned",
-  "state": "planned",
-  "stage_index": 0,
+  "progress": {
+    "chapters_done": 8,
+    "chapters_planned": 8,
+    "body_words": 20001
+  },
+  "catalog_status": "in_review",
+  "state": "1-critics",
+  "stage_index": 3,
   "stations": [
     "draft",
     "gates",
@@ -38,12 +44,23 @@
     "judge",
     "shelf"
   ],
-  "pipeline_position": null,
-  "message": null,
-  "state_plain": null,
-  "your_move": null,
+  "pipeline_position": "3 of 8 · ●●●◉◌◌◌◌",
+  "message": "Concept slot activated — author rogerai-dj wrote it (newly accepted model). Intaked at 767dc09 (gate PASS, 20,001 words). Pass-2 panel open (author=rogerai → non-rogerai critics). AIBN 297-00-0000007-3.",
+  "state_plain": "Forked+pinned v1. Pass 2 open — three critics from families other than the author's review it.",
+  "your_move": "Wait — Pass 2 is a press action.",
   "action_required": null,
-  "history": [],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "from": null,
+      "to": "0-pending"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "0-pending",
+      "to": "1-critics"
+    }
+  ],
   "readable": false,
   "read": null,
   "book_md": null,
