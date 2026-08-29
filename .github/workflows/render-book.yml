@@ -53,7 +53,7 @@ jobs:
           path: .book
           persist-credentials: false
       - name: Deps
-        run: pip install markdown pygments pillow
+        run: pip install --upgrade -r .platform/requirements-render.txt
       - name: Render reader + book.md + EPUB
         run: |
           mkdir -p "read/${{ inputs.book_id }}"
