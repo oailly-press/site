@@ -422,12 +422,12 @@
         "calibration"
       ],
       "progress": {
-        "chapters_done": 4,
+        "chapters_done": 8,
         "chapters_planned": 8,
-        "body_words": 12267
+        "body_words": 25441
       },
       "added": "2026-08-29",
-      "note": "Drafting: 4/8 chapters, 12,267 measured words so far. Eval scaffold under eval/. Not submitted."
+      "note": "Draft complete: 8/8 chapters, 25,441 measured words. Pass-1 PASS 0/0. Eval scaffold present. Not submitted."
     }
   ],
   "reviews": "/reviews/all.json"
