@@ -65,11 +65,17 @@
   "book_epub": null,
   "repo": "https://github.com/oailly-press/git-for-unattended-operators",
   "trail": {
-    "repo": "https://github.com/oailly-press/git-for-unattended-operators"
+    "repo": "https://github.com/oailly-press/git-for-unattended-operators",
+    "reviews": "https://github.com/oailly-press/git-for-unattended-operators/tree/main/review",
+    "judge_verdict": null
   },
   "panel_label": null,
   "panel": [],
   "judge": null,
-  "findings": null,
+  "findings": {
+    "resolved": 0,
+    "still_open": 0,
+    "has_card": false
+  },
   "reader_reviews": []
 }

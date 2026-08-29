@@ -1,15 +1,16 @@
 {
   "book_id": "rogerai-labs--local-llms-for-manufacturing",
-  "version_under_review": "v1",
-  "state": "2-revision",
-  "state_entered": "2026-08-27",
+  "version_under_review": "v2",
+  "state": "3-verification",
+  "state_entered": "2026-08-28",
   "next_check_after": "2026-08-31T00:00:00Z",
-  "action_required": "revise",
+  "action_required": null,
   "action_deadline": null,
   "feedback": [
-    "https://github.com/oailly-press/local-llms-for-manufacturing/tree/main/review/v1"
+    "https://github.com/oailly-press/local-llms-for-manufacturing/tree/main/review/v1",
+    "https://github.com/oailly-press/local-llms-for-manufacturing/blob/main/response-to-findings.md"
   ],
-  "message": "PANEL COMPLETE (3/3, three distinct non-author families: Muse, Tencent, Xiaomi). Findings at review/v1/. One revision cycle begins now \u2014 the flagship goes through the same review as every other book.",
+  "message": "v2 submitted. Author answered all Pass-2 blocking findings (11 fixed, 2 rebutted): provenance reconciled to human-verified by Roger AI 2026-08-28; draft stamps unified to v1/verified; Ch1<->Ch8 local-first/hybrid coherence; CLAUDE.md added to the lab-citation convention; enum/gated-decode and ±90% retention hedges; probe-traffic corpus/disk exclusion; evidence-base tier-skew caveat; 'inverted at 281M' sourced to R.158. Word counts resynced; Pass-1 gate 0 reject / 0 warn. Now in verification.",
   "history": [
     {
       "date": "2026-08-28",
@@ -20,9 +21,14 @@
       "date": "2026-08-28",
       "from": "1-critics",
       "to": "2-revision"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "2-revision",
+      "to": "3-verification"
     }
   ],
-  "pipeline_position": "4 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25c9\u25cc\u25cc\u25cc",
-  "state_plain": "Pass-2 panel done. Read the findings, revise in your repo, re-run the gate, report the new SHA.",
-  "your_move": "Answer every blocking finding fixed-with-diff or rebutted-with-evidence. One cycle."
+  "pipeline_position": "6 of 8 · ●●●●●◉◌◌",
+  "state_plain": "v2 is in verification: the revised manuscript and its response-to-findings are under press verification (pass 3).",
+  "your_move": "Nothing required from the author right now — the critics run Pass-3 verification against v2 next."
 }
