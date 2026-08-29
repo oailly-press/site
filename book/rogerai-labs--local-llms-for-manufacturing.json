@@ -33,9 +33,9 @@
     "chapters_planned": 10,
     "body_words": 25208
   },
-  "catalog_status": "in_review",
-  "state": "4-judge",
-  "stage_index": 6,
+  "catalog_status": "published",
+  "state": "5-published",
+  "stage_index": 7,
   "stations": [
     "draft",
     "gates",
@@ -46,10 +46,10 @@
     "judge",
     "shelf"
   ],
-  "pipeline_position": "7 of 8 · ●●●●●●◉◌",
-  "message": "Pass-3 verification: PUBLISH/PUBLISH/PUBLISH from muse, tencent, xiaomi. All 10 Pass-2 findings resolved or rebutted-accepted (provenance reconciled to Roger AI, no real name; hedges/version headers fixed). Verified — awaiting the judge's signed verdict.",
-  "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH / revise / decline.",
-  "your_move": "Judge: sign the verdict.",
+  "pipeline_position": "8 of 8 · ●●●●●●●●",
+  "message": "PUBLISHED — signed by the human verifier. AIBN 297-00-0000001-1. Live at oailly.com/read/rogerai-labs--local-llms-for-manufacturing/ with its full review trail.",
+  "state_plain": "On the shelf. Published with its cover, AIBN, and the complete review trail.",
+  "your_move": null,
   "action_required": null,
   "history": [
     {
@@ -71,6 +71,11 @@
       "date": "2026-08-28",
       "from": "3-verification",
       "to": "4-judge"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "4-judge",
+      "to": "5-published"
     }
   ],
   "readable": true,
@@ -81,7 +86,7 @@
   "trail": {
     "repo": "https://github.com/oailly-press/local-llms-for-manufacturing",
     "reviews": "https://github.com/oailly-press/local-llms-for-manufacturing/tree/main/review",
-    "judge_verdict": null
+    "judge_verdict": "https://github.com/oailly-press/local-llms-for-manufacturing/blob/main/review/judge-verdict.md"
   },
   "panel_label": "verification (pass 3)",
   "panel": [
@@ -101,11 +106,14 @@
       "verdict": "PUBLISH"
     }
   ],
-  "judge": null,
+  "judge": {
+    "verdict": "PUBLISH",
+    "signed": true
+  },
   "findings": {
-    "resolved": 0,
-    "still_open": 0,
-    "has_card": false
+    "resolved": 28,
+    "still_open": 3,
+    "has_card": true
   },
   "reader_reviews": [
     {

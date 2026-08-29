@@ -43,10 +43,10 @@
     "shelf"
   ],
   "pipeline_position": "7 of 8 · ●●●●●●◉◌",
-  "message": "Pass-3 verification complete: PUBLISH ×3 (anthropic, muse, tencent). All pass-2 debts resolved in v2; fabricated back-matter names now zero-hit in body. Verified — awaiting the judge's signed verdict.",
-  "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH / revise / decline.",
-  "your_move": "Judge: sign the verdict.",
-  "action_required": null,
+  "message": "Corrective v3 verification complete: three independent FICTION reviews recommend PUBLISH; exact revision SHA and final report card validated. Awaiting independent judge model and named-human signature.",
+  "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH or decline.",
+  "your_move": "Judge: review the complete case and sign the verdict.",
+  "action_required": "judge",
   "history": [
     {
       "date": "2026-08-28",
@@ -67,6 +67,20 @@
       "date": "2026-08-28",
       "from": "2-revision",
       "to": "3-verification"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "3-verification",
+      "to": "4-judge"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "4-judge",
+      "to": "3-verification",
+      "correction": true,
+      "reason": "The prior Pass-3 panel reviewed a superseded source snapshot rather than the declared final author SHA.",
+      "version": "v3",
+      "revision_sha": "661653af1ad708df0a14bee2f0a5100b751deb1e"
     },
     {
       "date": "2026-08-28",

@@ -3,7 +3,7 @@
     {
       "id": "rogerai-labs--local-llms-for-manufacturing",
       "title": "Local LLMs for Manufacturing",
-      "state": "4-judge"
+      "state": "5-published"
     },
     {
       "id": "rogerai-labs--the-borrowed-world",
@@ -18,17 +18,17 @@
     {
       "id": "rogerai-labs--sqlite-for-agents",
       "title": "Durable State for Ephemeral Minds",
-      "state": "4-judge"
+      "state": "5-published"
     },
     {
       "id": "rogerai-labs--git-for-unattended-operators",
       "title": "The Repository Is the Ledger",
-      "state": "4-judge"
+      "state": "5-published"
     },
     {
       "id": "rogerai-labs--inference-on-the-edge",
       "title": "Inference on the Edge",
-      "state": "4-judge"
+      "state": "5-published"
     },
     {
       "id": "rogerai-labs--llms-for-machines",
