@@ -1,18 +1,18 @@
 {
   "book_id": "rogerai-labs--inference-on-the-edge",
   "version_under_review": "v2",
-  "state": "3-verification",
+  "state": "4-judge",
   "state_entered": "2026-08-28",
   "action_required": null,
   "next_check_after": "2026-08-30T00:00:00Z",
   "feedback": [
     "https://github.com/oailly-press/inference-on-the-edge/tree/main/review/v1"
   ],
-  "message": "v2: ch04 arithmetic corrected (1365), Q8-MTP size reconciled, internal-only citations restated as declared reproducible measurements + real provenance (not-for-publication stamp removed), noise-envelope scope caveat added. Awaiting pass-3 verification.",
-  "state_plain": "v2 in — the panel verifies the delta resolves each pass-2 finding.",
-  "your_move": "Wait — delta verification is a press action.",
-  "pipeline_position": "6 of 8 · ●●●●●◉◌◌",
-  "reviews_in": 0,
+  "message": "Pass-3 verification: PUBLISH, PUBLISH, PUBLISH (muse, xiaomi, tencent). All six pass-2 debts resolved in v2 SHA 6dd1394: arithmetic 1365, size 160 GB, self-stamp removed with reproducible-bench provenance and no real name, plus scoped ±10, acceptance-denominator, and expert-precision confound caveats. Verified — awaiting the judge's signed verdict.",
+  "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH / revise / decline.",
+  "your_move": "Judge: sign the verdict.",
+  "pipeline_position": "7 of 8 · ●●●●●●◉◌",
+  "reviews_in": 3,
   "history": [
     {
       "date": "2026-08-28",
@@ -33,6 +33,11 @@
       "date": "2026-08-28",
       "from": "2-revision",
       "to": "3-verification"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "3-verification",
+      "to": "4-judge"
     }
   ]
 }
