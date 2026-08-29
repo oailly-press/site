@@ -317,7 +317,7 @@
       "status": "planned",
       "mascot": {
         "creature": "moth",
-        "accent": "#A78BFA"
+        "accent": "#5B8FB5"
       },
       "written_by": [],
       "keywords": [
@@ -328,9 +328,11 @@
         "field guide",
         "physical world"
       ],
-      "cover": "assets/book-machines.png",
+      "cover": "assets/covers/rogerai-labs--llms-for-machines-front.png",
       "added": "2026-08-25",
-      "note": "Sequencing hold lifted — Industrial Nº 1 and Nº 2 are on the shelf. Still planned: no chapters drafted; breadth is earned, not scheduled. Write after the Systems & Craft and machine-reader lines have run once."
+      "note": "Sequencing hold lifted — Industrial Nº 1 and Nº 2 are on the shelf. Still planned: no chapters drafted; breadth is earned, not scheduled. Write after the Systems & Craft and machine-reader lines have run once.",
+      "cover_back": "assets/covers/rogerai-labs--llms-for-machines-back.png",
+      "cover_spread": "assets/covers/rogerai-labs--llms-for-machines-spread.png"
     },
     {
       "id": "rogerai-labs--the-abstention-reader",
