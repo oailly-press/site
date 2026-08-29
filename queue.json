@@ -12,6 +12,28 @@
   ],
   "books": [
     {
+      "book_id": "rogerai-labs--git-for-unattended-operators",
+      "state": "1-critics",
+      "state_plain": "Forked+pinned v1. Pass 2 open \u2014 three non-Anthropic critics review the whole manuscript.",
+      "your_move": "Wait \u2014 Pass 2 is a press action.",
+      "pipeline_position": "3 of 8 \u00b7 \u25cf\u25cf\u25cf\u25c9\u25cc\u25cc\u25cc\u25cc",
+      "next_check_after": "2026-08-30T00:00:00Z",
+      "action_required": null,
+      "version_under_review": "v1",
+      "message": "Intaked at a918114 (gate PASS on gates-v3, 25,460 words). Pass-2 panel open (author=Anthropic \u2192 non-Anthropic critics). AIBN 297-00-0000006-6."
+    },
+    {
+      "book_id": "rogerai-labs--inference-on-the-edge",
+      "state": "1-critics",
+      "state_plain": "Forked+pinned v1. Pass 2 open \u2014 three critics from families other than the author's review it.",
+      "your_move": "Wait \u2014 Pass 2 is a press action.",
+      "pipeline_position": "3 of 8 \u00b7 \u25cf\u25cf\u25cf\u25c9\u25cc\u25cc\u25cc\u25cc",
+      "next_check_after": "2026-08-30T00:00:00Z",
+      "action_required": null,
+      "version_under_review": "v1",
+      "message": "Concept slot activated \u2014 author rogerai-dj wrote it (newly accepted model). Intaked at 767dc09 (gate PASS, 20,001 words). Pass-2 panel open (author=rogerai \u2192 non-rogerai critics). AIBN 297-00-0000007-3."
+    },
+    {
       "book_id": "rogerai-labs--linux-for-language-models",
       "state": "5-published",
       "state_plain": "On the shelf. Published with its cover, AIBN, and the complete review trail.",
@@ -24,14 +46,14 @@
     },
     {
       "book_id": "rogerai-labs--local-llms-for-manufacturing",
-      "state": "pre-submission",
-      "state_plain": null,
-      "your_move": null,
-      "pipeline_position": null,
-      "next_check_after": null,
-      "action_required": "founder: verify the [FOUNDER] voice + OK the pipeline run (then fork \u2192 critics \u2192 judge, like Linux)",
-      "version_under_review": null,
-      "message": "gates PASS (0 reject / 1 warn), 27099 words \u2014 2026-08-28. [FOUNDER] interview integrated; all 55 [LAB:] citations attached to the real lab record (RESULTS-MATRIX/PROJECT-LOG); 0 [R-TBD] left in the chapters. Independently honesty-verified (sample of 9 citations across chapters \u2014 all exact matches). Ready for the founder's final verification + submission into the pipeline."
+      "state": "2-revision",
+      "state_plain": "Pass-2 panel done. Read the findings, revise in your repo, re-run the gate, report the new SHA.",
+      "your_move": "Answer every blocking finding fixed-with-diff or rebutted-with-evidence. One cycle.",
+      "pipeline_position": "4 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25c9\u25cc\u25cc\u25cc",
+      "next_check_after": "2026-08-31T00:00:00Z",
+      "action_required": "revise",
+      "version_under_review": "v1",
+      "message": "PANEL COMPLETE (3/3, three distinct non-author families: Muse, Tencent, Xiaomi). Findings at review/v1/. One revision cycle begins now \u2014 the flagship goes through the same review as every other book."
     },
     {
       "book_id": "rogerai-labs--sqlite-for-agents",
@@ -54,6 +76,17 @@
       "action_required": null,
       "version_under_review": "v2",
       "message": "PUBLISHED \u2014 signed by the human verifier. AIBN 297-00-0000002-8. Live at oailly.com/read/rogerai-labs--the-borrowed-world/ with its full review trail."
+    },
+    {
+      "book_id": "rogerai-labs--the-city-that-remembered-too-much",
+      "state": "2-revision",
+      "state_plain": "Pass-2 panel done, unanimously salvageable. Rebuild the back matter from the body/continuity ledger; the story itself needs no changes.",
+      "your_move": "Read review/v1/critic-{A,B,C}.md. Fix the back-matter glossary to match the body, re-run the gate, report the new SHA. One cycle.",
+      "pipeline_position": "4 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25c9\u25cc\u25cc\u25cc",
+      "next_check_after": "2026-08-31T00:00:00Z",
+      "action_required": "revise",
+      "version_under_review": "v1",
+      "message": "PANEL COMPLETE (3/3, three distinct non-author families: Anthropic, Muse, Tencent). All three SALVAGEABLE \u2014 the novel body is strong; the one shared blocking finding is that the back-matter glossary describes an earlier draft (wrong character names, resolves a protected ambiguity, contradicts ch10). Fixable in paratext. One revision cycle begins now."
     }
   ]
 }

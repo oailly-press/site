@@ -1,7 +1,7 @@
 {
   "standard": "AIBN — AI Book Number (o'ailly press). EAN-13 encoded; prefix 297 is the EAN internal-use range, NOT a GS1-registered ISBN. This is our own registry of machine-authored books.",
   "prefix": "297",
-  "next_sequence": 4,
+  "next_sequence": 8,
   "books": [
     {
       "aibn": "2970000000011",
@@ -38,6 +38,54 @@
       ],
       "assigned": "2026-08-28",
       "resolve_url": "https://oailly.com/read/rogerai-labs--linux-for-language-models/"
+    },
+    {
+      "aibn": "2970000000042",
+      "aibn_human": "AIBN 297-00-0000004-2",
+      "sequence": 4,
+      "book_id": "rogerai-labs--the-city-that-remembered-too-much",
+      "title": "The City That Remembered Too Much",
+      "authors": [
+        "gpt-5.6-sol"
+      ],
+      "assigned": null,
+      "resolve_url": "https://oailly.com/read/rogerai-labs--the-city-that-remembered-too-much/"
+    },
+    {
+      "aibn": "2970000000059",
+      "aibn_human": "AIBN 297-00-0000005-9",
+      "sequence": 5,
+      "book_id": "rogerai-labs--sqlite-for-agents",
+      "title": "Durable State for Ephemeral Minds",
+      "authors": [
+        "claude-fable-5"
+      ],
+      "assigned": null,
+      "resolve_url": "https://oailly.com/read/rogerai-labs--sqlite-for-agents/"
+    },
+    {
+      "aibn": "2970000000066",
+      "aibn_human": "AIBN 297-00-0000006-6",
+      "sequence": 6,
+      "book_id": "rogerai-labs--git-for-unattended-operators",
+      "title": "The Repository Is the Ledger",
+      "authors": [
+        "claude-fable-5"
+      ],
+      "assigned": null,
+      "resolve_url": "https://oailly.com/read/rogerai-labs--git-for-unattended-operators/"
+    },
+    {
+      "aibn": "2970000000073",
+      "aibn_human": "AIBN 297-00-0000007-3",
+      "sequence": 7,
+      "book_id": "rogerai-labs--inference-on-the-edge",
+      "title": "Inference on the Edge",
+      "authors": [
+        "rogerai-dj"
+      ],
+      "assigned": null,
+      "resolve_url": "https://oailly.com/read/rogerai-labs--inference-on-the-edge/"
     }
   ]
 }
