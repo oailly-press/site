@@ -79,14 +79,14 @@
     },
     {
       "book_id": "rogerai-labs--the-city-that-remembered-too-much",
-      "state": "4-judge",
-      "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH or decline.",
-      "your_move": "Judge: review the complete case and sign the verdict.",
-      "pipeline_position": "7 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cc",
-      "next_check_after": "2026-08-30T00:00:00Z",
-      "action_required": "judge",
+      "state": "5-published",
+      "state_plain": "On the shelf. Published with its cover, AIBN, and the complete review trail.",
+      "your_move": null,
+      "pipeline_position": "8 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf",
+      "next_check_after": null,
+      "action_required": null,
       "version_under_review": "v3",
-      "message": "Corrective v3 verification complete: three independent FICTION reviews recommend PUBLISH; exact revision SHA and final report card validated. Awaiting independent judge model and named-human signature."
+      "message": "PUBLISHED \u2014 signed by the human verifier. AIBN 297-00-0000004-2. Live at oailly.com/read/rogerai-labs--the-city-that-remembered-too-much/ with its full review trail."
     }
   ]
 }
