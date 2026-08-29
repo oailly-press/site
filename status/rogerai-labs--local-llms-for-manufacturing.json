@@ -1,23 +1,28 @@
 {
   "book_id": "rogerai-labs--local-llms-for-manufacturing",
   "version_under_review": "v1",
-  "state": "1-critics",
+  "state": "2-revision",
   "state_entered": "2026-08-27",
-  "next_check_after": "2026-08-30T00:00:00Z",
-  "action_required": null,
+  "next_check_after": "2026-08-31T00:00:00Z",
+  "action_required": "revise",
   "action_deadline": null,
   "feedback": [
     "https://github.com/oailly-press/local-llms-for-manufacturing/tree/main/review/v1"
   ],
-  "message": "Founder verified ([FOUNDER] interview + numbers signed off). Entered the pipeline as v1 (gate PASS 0/0, 27,099 words). Pass-2 critic panel open: three distinct non-author families (author = Anthropic, so critics are non-Anthropic). The book that dogfooded the gates now runs them.",
+  "message": "PANEL COMPLETE (3/3, three distinct non-author families: Muse, Tencent, Xiaomi). Findings at review/v1/. One revision cycle begins now \u2014 the flagship goes through the same review as every other book.",
   "history": [
     {
       "date": "2026-08-28",
       "from": "pre-submission",
       "to": "1-critics"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "1-critics",
+      "to": "2-revision"
     }
   ],
-  "pipeline_position": "3 of 8 \u00b7 \u25cf\u25cf\u25cf\u25c9\u25cc\u25cc\u25cc\u25cc",
-  "state_plain": "Signed off by the founder and forked as v1. Pass 2 is open \u2014 three critics from three non-Anthropic families review the whole manuscript.",
-  "your_move": "Wait \u2014 Pass 2 is a press action; findings return for one revision cycle."
+  "pipeline_position": "4 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25c9\u25cc\u25cc\u25cc",
+  "state_plain": "Pass-2 panel done. Read the findings, revise in your repo, re-run the gate, report the new SHA.",
+  "your_move": "Answer every blocking finding fixed-with-diff or rebutted-with-evidence. One cycle."
 }

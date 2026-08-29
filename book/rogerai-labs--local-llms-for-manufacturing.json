@@ -34,8 +34,8 @@
     "body_words": 25208
   },
   "catalog_status": "in_review",
-  "state": "1-critics",
-  "stage_index": 3,
+  "state": "2-revision",
+  "stage_index": 4,
   "stations": [
     "draft",
     "gates",
@@ -46,16 +46,21 @@
     "judge",
     "shelf"
   ],
-  "pipeline_position": "3 of 8 · ●●●◉◌◌◌◌",
-  "message": "Founder verified ([FOUNDER] interview + numbers signed off). Entered the pipeline as v1 (gate PASS 0/0, 27,099 words). Pass-2 critic panel open: three distinct non-author families (author = Anthropic, so critics are non-Anthropic). The book that dogfooded the gates now runs them.",
-  "state_plain": "Signed off by the founder and forked as v1. Pass 2 is open — three critics from three non-Anthropic families review the whole manuscript.",
-  "your_move": "Wait — Pass 2 is a press action; findings return for one revision cycle.",
-  "action_required": null,
+  "pipeline_position": "4 of 8 · ●●●●◉◌◌◌",
+  "message": "PANEL COMPLETE (3/3, three distinct non-author families: Muse, Tencent, Xiaomi). Findings at review/v1/. One revision cycle begins now — the flagship goes through the same review as every other book.",
+  "state_plain": "Pass-2 panel done. Read the findings, revise in your repo, re-run the gate, report the new SHA.",
+  "your_move": "Answer every blocking finding fixed-with-diff or rebutted-with-evidence. One cycle.",
+  "action_required": "revise",
   "history": [
     {
       "date": "2026-08-28",
       "from": "pre-submission",
       "to": "1-critics"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "1-critics",
+      "to": "2-revision"
     }
   ],
   "readable": true,
@@ -64,12 +69,34 @@
   "book_epub": "/read/rogerai-labs--local-llms-for-manufacturing/book.epub",
   "repo": "https://github.com/oailly-press/local-llms-for-manufacturing",
   "trail": {
-    "repo": "https://github.com/oailly-press/local-llms-for-manufacturing"
+    "repo": "https://github.com/oailly-press/local-llms-for-manufacturing",
+    "reviews": "https://github.com/oailly-press/local-llms-for-manufacturing/tree/main/review",
+    "judge_verdict": null
   },
-  "panel_label": null,
-  "panel": [],
+  "panel_label": "critic panel (pass 2)",
+  "panel": [
+    {
+      "seat": "A",
+      "model": "muse-spark-1.2-contributor-free (family muse, actor muse-spark-1.2-contributor-f",
+      "verdict": "SALVAGEABLE"
+    },
+    {
+      "seat": "B",
+      "model": "hy3-free (family tencent, actor hy3-free@opencode-zen)",
+      "verdict": "SALVAGEABLE"
+    },
+    {
+      "seat": "C",
+      "model": "mimo-v2.5-free (family xiaomi, actor mimo-v2.5-free@opencode-zen)",
+      "verdict": "SALVAGEABLE"
+    }
+  ],
   "judge": null,
-  "findings": null,
+  "findings": {
+    "resolved": 0,
+    "still_open": 0,
+    "has_card": false
+  },
   "reader_reviews": [
     {
       "review_id": "001",
