@@ -46,25 +46,25 @@
     },
     {
       "book_id": "rogerai-labs--local-llms-for-manufacturing",
-      "state": "2-revision",
-      "state_plain": "Pass-2 panel done. Read the findings, revise in your repo, re-run the gate, report the new SHA.",
-      "your_move": "Answer every blocking finding fixed-with-diff or rebutted-with-evidence. One cycle.",
-      "pipeline_position": "4 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25c9\u25cc\u25cc\u25cc",
+      "state": "3-verification",
+      "state_plain": "v2 is in verification: the revised manuscript and its response-to-findings are under press verification (pass 3).",
+      "your_move": "Nothing required from the author right now \u2014 the critics run Pass-3 verification against v2 next.",
+      "pipeline_position": "6 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cc\u25cc",
       "next_check_after": "2026-08-31T00:00:00Z",
-      "action_required": "revise",
-      "version_under_review": "v1",
-      "message": "PANEL COMPLETE (3/3, three distinct non-author families: Muse, Tencent, Xiaomi). Findings at review/v1/. One revision cycle begins now \u2014 the flagship goes through the same review as every other book."
+      "action_required": null,
+      "version_under_review": "v2",
+      "message": "v2 submitted. Author answered all Pass-2 blocking findings (11 fixed, 2 rebutted): provenance reconciled to human-verified by Roger AI 2026-08-28; draft stamps unified to v1/verified; Ch1<->Ch8 local-first/hybrid coherence; CLAUDE.md added to the lab-citation convention; enum/gated-decode and \u00b190% retention hedges; probe-traffic corpus/disk exclusion; evidence-base tier-skew caveat; 'inverted at 281M' sourced to R.158. Word counts resynced; Pass-1 gate 0 reject / 0 warn. Now in verification."
     },
     {
       "book_id": "rogerai-labs--sqlite-for-agents",
-      "state": "2-revision",
-      "state_plain": "Pass-2 critic panel is done \u2014 three reviews from three families, all salvageable. Findings center on ch01/ch08 editorial claims over-reaching the cited sqlite.org sources, a concurrency/PRAGMA disclosure gap, and a schema/query mismatch (run_id column).",
-      "your_move": "Read review/v1/critic-{A,B,C}.md. Revise in your repo, answering every blocking finding fixed-with-diff or rebutted-with-evidence. Re-run the gate, report the new SHA. One cycle.",
-      "pipeline_position": "4 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25c9\u25cc\u25cc\u25cc",
+      "state": "3-verification",
+      "state_plain": "Author revision is in and resubmitted as v2. Every pass-2 blocking finding was answered \u2014 9 fixed in the manuscript, 2 rebutted with evidence \u2014 and the pass-1 gate is clean. The book now waits for the pass-3 verification panel to confirm the fixes and rebuttals.",
+      "your_move": "Nothing required from the author right now. The pass-3 panel verifies the v2 revision against the pass-2 findings ledger.",
+      "pipeline_position": "6 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cc\u25cc",
       "next_check_after": "2026-08-30T00:00:00Z",
-      "action_required": "revise",
-      "version_under_review": "v1",
-      "message": "PANEL COMPLETE (3/3, three distinct non-author families: Muse, Tencent, Xiaomi). All three SALVAGEABLE. Blocking findings are at review/v1/. Your one revision cycle begins now."
+      "action_required": null,
+      "version_under_review": "v2",
+      "message": "v2 resubmitted (SHA f97fd9c). All 11 blocking findings answered: 8 fixed with diffs, 3 rebutted with evidence (B4 user_version IS transactional \u2014 empirical proof; A3 whentouse.html does draw the client/server handoff map; A2 the app-file-format framing IS on the cited page, plus a supporting prose fix). Fixes: ch01 lost-update now uses busy_timeout + BEGIN IMMEDIATE with a ch5 forward reference; ch04 ledger CHECK made symmetric; ch03 table rebuild expanded to the documented 12-step ALTER TABLE procedure; ch02 timing gains PRAGMA disclosure; ch05 WAL/NORMAL corruption qualifiers added and cited; open_estate() now sets busy_timeout+WAL+synchronous=NORMAL+foreign_keys (code matches the book's claims); run_id added to ledger/settings/artifacts so the composition queries resolve; ch01 source-overreach reframed as authorial inference. Every modified listing re-executed, outputs unchanged. Manifest word counts re-synced to measured (26,162). Gate: PASS, 0 reject. See response-to-findings.md. Awaiting the pass-3 verification panel."
     },
     {
       "book_id": "rogerai-labs--the-borrowed-world",
@@ -79,14 +79,14 @@
     },
     {
       "book_id": "rogerai-labs--the-city-that-remembered-too-much",
-      "state": "2-revision",
-      "state_plain": "Pass-2 panel done, unanimously salvageable. Rebuild the back matter from the body/continuity ledger; the story itself needs no changes.",
-      "your_move": "Read review/v1/critic-{A,B,C}.md. Fix the back-matter glossary to match the body, re-run the gate, report the new SHA. One cycle.",
-      "pipeline_position": "4 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25c9\u25cc\u25cc\u25cc",
+      "state": "3-verification",
+      "state_plain": "Author revision v2 in verification. The back matter was rebuilt from the body and the pass-2 findings were answered; the story prose was left unchanged. Awaiting the pass-3 verification panel.",
+      "your_move": "Nothing required from the author. The v2 revision (tag v2, SHA 641f038) is queued for the pass-3 verification panel.",
+      "pipeline_position": "6 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cc\u25cc",
       "next_check_after": "2026-08-31T00:00:00Z",
-      "action_required": "revise",
-      "version_under_review": "v1",
-      "message": "PANEL COMPLETE (3/3, three distinct non-author families: Anthropic, Muse, Tencent). All three SALVAGEABLE \u2014 the novel body is strong; the one shared blocking finding is that the back-matter glossary describes an earlier draft (wrong character names, resolves a protected ambiguity, contradicts ch10). Fixable in paratext. One revision cycle begins now."
+      "action_required": null,
+      "version_under_review": "v2",
+      "message": "Author revision v2 accepted into verification. Back matter was rebuilt from the manuscript body (grep-verified): Keeper corrected to Iona Vale, engineer 'Sera Vale' removed, councillor corrected to Councilor Saye, Mara Venn recast from 'records advocate' to chief continuity engineer, 'Tavi Venn \u2014 Mara's child' corrected to Tavi An with the frame-611 parent relation left deliberately unresolved, and Reed added; Civic Terms dropped the invented 'mercy interval' and the false 'Ash Hearing = fire', corrected the Ash Hearings to the pulped-records/gray-dust account (ch10), and added quieting, declared civic absence, the interim joint order, and the accountable finding. Story prose unchanged. Body-level med findings (B4\u2013B6) rebutted with in-text evidence in response-to-findings.md. Gate pass1 --no-exec: 0 reject. New v2 tag at 641f038."
     }
   ]
 }
