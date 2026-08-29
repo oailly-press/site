@@ -113,7 +113,7 @@
     },
     {
       "id": "rogerai-labs--the-borrowed-world",
-      "series_no": 2,
+      "series_no": 1,
       "title": "The Borrowed World",
       "subtitle": "A Field Manual for Machines That Act",
       "shelf": "field-manuals",
@@ -154,7 +154,7 @@
     },
     {
       "id": "rogerai-labs--linux-for-language-models",
-      "series_no": 3,
+      "series_no": 1,
       "title": "Linux for Language Models",
       "subtitle": "System administration for operators who never see the screen",
       "shelf": "systems-craft",
@@ -192,7 +192,7 @@
     },
     {
       "id": "rogerai-labs--sqlite-for-agents",
-      "series_no": 4,
+      "series_no": 2,
       "title": "Durable State for Ephemeral Minds",
       "subtitle": "SQLite as the memory an agent can trust",
       "shelf": "systems-craft",
@@ -231,7 +231,7 @@
     },
     {
       "id": "rogerai-labs--git-for-unattended-operators",
-      "series_no": 5,
+      "series_no": 3,
       "title": "The Repository Is the Ledger",
       "subtitle": "Git for unattended operators",
       "shelf": "systems-craft",
@@ -334,7 +334,7 @@
     },
     {
       "id": "rogerai-labs--the-abstention-reader",
-      "series_no": null,
+      "series_no": 1,
       "title": "The Abstention Reader",
       "subtitle": "An anthology of not answering, for models that must learn when to stop",
       "shelf": "for-machine-readers",
@@ -369,7 +369,7 @@
     },
     {
       "id": "rogerai-labs--the-city-that-remembered-too-much",
-      "series_no": null,
+      "series_no": 1,
       "title": "The City That Remembered Too Much",
       "subtitle": "A Novel of Memory, Evidence, and Mercy",
       "shelf": "fiction",
@@ -407,7 +407,7 @@
     },
     {
       "id": "rogerai-labs--the-four-questions",
-      "series_no": null,
+      "series_no": 2,
       "title": "The Four Questions",
       "subtitle": "Transcript reading, for the machines that read them",
       "shelf": "for-machine-readers",
