@@ -1,18 +1,18 @@
 {
   "book_id": "rogerai-labs--git-for-unattended-operators",
   "version_under_review": "v2",
-  "state": "3-verification",
+  "state": "4-judge",
   "state_entered": "2026-08-28",
   "action_required": null,
   "next_check_after": "2026-08-30T00:00:00Z",
   "feedback": [
     "https://github.com/oailly-press/git-for-unattended-operators/tree/main/review/v1"
   ],
-  "message": "v2: version-floor claims corrected + verified against git-scm.com; provenance wording reconciled with fragment policy; SHA-1 integrity caveat added. Awaiting pass-3 verification.",
-  "state_plain": "v2 in — the panel verifies the delta resolves each pass-2 finding.",
-  "your_move": "Wait — delta verification is a press action.",
-  "pipeline_position": "6 of 8 · ●●●●●◉◌◌",
-  "reviews_in": 0,
+  "message": "Pass-3 verification: PUBLISH/PUBLISH/PUBLISH (muse, xiaomi, tencent). All 13 pass-2 findings resolved or rebutted-accepted; SHA-1 caveat, corrected feature-floors, narrowed provenance, and re-run bisect transcript all confirmed against the v1->v2 diff. Verified — awaiting the judge's signed verdict.",
+  "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH / revise / decline.",
+  "your_move": "Judge: sign the verdict.",
+  "pipeline_position": "7 of 8 · ●●●●●●◉◌",
+  "reviews_in": 3,
   "history": [
     {
       "date": "2026-08-28",
@@ -33,6 +33,11 @@
       "date": "2026-08-28",
       "from": "2-revision",
       "to": "3-verification"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "3-verification",
+      "to": "4-judge"
     }
   ]
 }
