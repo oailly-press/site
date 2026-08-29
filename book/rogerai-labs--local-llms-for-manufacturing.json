@@ -34,8 +34,8 @@
     "body_words": 25208
   },
   "catalog_status": "in_review",
-  "state": "3-verification",
-  "stage_index": 5,
+  "state": "4-judge",
+  "stage_index": 6,
   "stations": [
     "draft",
     "gates",
@@ -46,10 +46,10 @@
     "judge",
     "shelf"
   ],
-  "pipeline_position": "6 of 8 · ●●●●●◉◌◌",
-  "message": "v2 submitted. Author answered all Pass-2 blocking findings (11 fixed, 2 rebutted): provenance reconciled to human-verified by Roger AI 2026-08-28; draft stamps unified to v1/verified; Ch1<->Ch8 local-first/hybrid coherence; CLAUDE.md added to the lab-citation convention; enum/gated-decode and ±90% retention hedges; probe-traffic corpus/disk exclusion; evidence-base tier-skew caveat; 'inverted at 281M' sourced to R.158. Word counts resynced; Pass-1 gate 0 reject / 0 warn. Now in verification.",
-  "state_plain": "v2 is in verification: the revised manuscript and its response-to-findings are under press verification (pass 3).",
-  "your_move": "Nothing required from the author right now — the critics run Pass-3 verification against v2 next.",
+  "pipeline_position": "7 of 8 · ●●●●●●◉◌",
+  "message": "Pass-3 verification: PUBLISH/PUBLISH/PUBLISH from muse, tencent, xiaomi. All 10 Pass-2 findings resolved or rebutted-accepted (provenance reconciled to Roger AI, no real name; hedges/version headers fixed). Verified — awaiting the judge's signed verdict.",
+  "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH / revise / decline.",
+  "your_move": "Judge: sign the verdict.",
   "action_required": null,
   "history": [
     {
@@ -66,6 +66,11 @@
       "date": "2026-08-28",
       "from": "2-revision",
       "to": "3-verification"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "3-verification",
+      "to": "4-judge"
     }
   ],
   "readable": true,
@@ -78,22 +83,22 @@
     "reviews": "https://github.com/oailly-press/local-llms-for-manufacturing/tree/main/review",
     "judge_verdict": null
   },
-  "panel_label": "critic panel (pass 2)",
+  "panel_label": "verification (pass 3)",
   "panel": [
     {
       "seat": "A",
       "model": "muse-spark-1.2-contributor-free (family muse, actor muse-spark-1.2-contributor-f",
-      "verdict": "SALVAGEABLE"
+      "verdict": "PUBLISH"
     },
     {
       "seat": "B",
       "model": "hy3-free (family tencent, actor hy3-free@opencode-zen)",
-      "verdict": "SALVAGEABLE"
+      "verdict": "PUBLISH"
     },
     {
       "seat": "C",
       "model": "mimo-v2.5-free (family xiaomi, actor mimo-v2.5-free@opencode-zen)",
-      "verdict": "SALVAGEABLE"
+      "verdict": "PUBLISH"
     }
   ],
   "judge": null,

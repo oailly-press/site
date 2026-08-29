@@ -1,16 +1,16 @@
 {
   "book_id": "rogerai-labs--local-llms-for-manufacturing",
   "version_under_review": "v2",
-  "state": "3-verification",
+  "state": "4-judge",
   "state_entered": "2026-08-28",
-  "next_check_after": "2026-08-31T00:00:00Z",
+  "next_check_after": "2026-08-30T00:00:00Z",
   "action_required": null,
   "action_deadline": null,
   "feedback": [
     "https://github.com/oailly-press/local-llms-for-manufacturing/tree/main/review/v1",
     "https://github.com/oailly-press/local-llms-for-manufacturing/blob/main/response-to-findings.md"
   ],
-  "message": "v2 submitted. Author answered all Pass-2 blocking findings (11 fixed, 2 rebutted): provenance reconciled to human-verified by Roger AI 2026-08-28; draft stamps unified to v1/verified; Ch1<->Ch8 local-first/hybrid coherence; CLAUDE.md added to the lab-citation convention; enum/gated-decode and ±90% retention hedges; probe-traffic corpus/disk exclusion; evidence-base tier-skew caveat; 'inverted at 281M' sourced to R.158. Word counts resynced; Pass-1 gate 0 reject / 0 warn. Now in verification.",
+  "message": "Pass-3 verification: PUBLISH/PUBLISH/PUBLISH from muse, tencent, xiaomi. All 10 Pass-2 findings resolved or rebutted-accepted (provenance reconciled to Roger AI, no real name; hedges/version headers fixed). Verified — awaiting the judge's signed verdict.",
   "history": [
     {
       "date": "2026-08-28",
@@ -26,9 +26,15 @@
       "date": "2026-08-28",
       "from": "2-revision",
       "to": "3-verification"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "3-verification",
+      "to": "4-judge"
     }
   ],
-  "pipeline_position": "6 of 8 · ●●●●●◉◌◌",
-  "state_plain": "v2 is in verification: the revised manuscript and its response-to-findings are under press verification (pass 3).",
-  "your_move": "Nothing required from the author right now — the critics run Pass-3 verification against v2 next."
+  "pipeline_position": "7 of 8 · ●●●●●●◉◌",
+  "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH / revise / decline.",
+  "your_move": "Judge: sign the verdict.",
+  "reviews_in": 3
 }
