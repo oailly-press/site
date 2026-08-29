@@ -548,7 +548,7 @@ function render(list){
   count.textContent = shown.length<total
     ? `showing ${shown.length} of ${total}`
     : `${total} book${total===1?'':'s'}${total<BOOKS.length?` · filtered from ${BOOKS.length}`:''}`;
-  let html=shown.map((b,i)=>{const cov=b.cover?`<div class="cover"><img src="${b.cover}" alt="${b.title} cover — ${b.mascot&&b.mascot.creature||''}" loading="lazy"><div class="cap">${b.mascot&&b.mascot.creature||''} · platform-drawn</div></div>`:'';return `<button type="button" class="row" data-i="${i}" aria-expanded="false">${fmt(b)}</button><div class="detail">${cov}<pre>${detail(b)}</pre></div>`;}).join('');
+  let html=shown.map((b,i)=>{const cov=b.cover?`<div class="cover"><img src="${thumbUrl(safeUrl(b.cover))}" onerror="this.onerror=null;this.src='${safeUrl(b.cover)}'" alt="${esc(b.title)} cover — ${b.mascot&&b.mascot.creature||''}" loading="lazy"><div class="cap">${b.mascot&&b.mascot.creature||''} · platform-drawn</div></div>`:'';return `<button type="button" class="row" data-i="${i}" aria-expanded="false">${fmt(b)}</button><div class="detail">${cov}<pre>${detail(b)}</pre></div>`;}).join('');
   if(!shown.length) html='<div class="none">no books match — clear a filter or the search box.</div>';
   const hidden=total-shown.length;
   if(hidden>0) html+=`<button class="morebtn" id="moreBtn">▾ show all ${total} (${hidden} more)</button>`;
@@ -640,11 +640,14 @@ function miniTrack(cur){
 function stationLabel(cur){return STATIONS[Math.min(cur,STATIONS.length-1)].toUpperCase();}
 const LIVELABEL={'pre-submission':'in gates','0-pending':'awaiting critics','1-critics':'in review','2-revision':'in revision','3-verification':'verifying','4-judge':'at the judge','5-published':'published','rejected':'returned'};
 function badgeOf(b){const lv=LIVE[b.id];return lv&&LIVELABEL[lv.state]?LIVELABEL[lv.state]:(b.status||'').replace('_',' ');}
+// small webp thumbnails for the shelf/cards (full covers stay on the book page); falls back to the png if a thumb is missing
+const thumbUrl=u=>{u=String(u||'');return /assets\/covers\/[^/]+\.png$/.test(u)?u.replace('/covers/','/covers/thumbs/').replace(/\.png$/,'.webp'):u;};
 function coverHTML(b,alt){
   if(!b.cover)return '<pre class="dim">[ no cover yet ]</pre>';
-  const f=safeUrl(b.cover);
-  if(b.cover_back)return `<span class="flip"><img class="cf" src="${f}" alt="${esc(b.title)} ${alt||'cover'}" loading="lazy"><img class="cb" data-src="${safeUrl(b.cover_back)}" alt="${esc(b.title)} back cover" loading="lazy"></span>`;
-  return `<img src="${f}" alt="${esc(b.title)} ${alt||'cover'}" loading="lazy">`;
+  const f=safeUrl(b.cover), ft=thumbUrl(f);
+  if(b.cover_back){const bk=safeUrl(b.cover_back);
+    return `<span class="flip"><img class="cf" src="${ft}" onerror="this.onerror=null;this.src='${f}'" alt="${esc(b.title)} ${alt||'cover'}" loading="lazy"><img class="cb" data-src="${thumbUrl(bk)}" onerror="this.onerror=null;this.src='${bk}'" alt="${esc(b.title)} back cover" loading="lazy"></span>`;}
+  return `<img src="${ft}" onerror="this.onerror=null;this.src='${f}'" alt="${esc(b.title)} ${alt||'cover'}" loading="lazy">`;
 }
 function wireFlips(root){
   (root||document).querySelectorAll('.flip').forEach(c=>{
