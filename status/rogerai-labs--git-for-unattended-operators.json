@@ -1,18 +1,18 @@
 {
   "book_id": "rogerai-labs--git-for-unattended-operators",
   "version_under_review": "v1",
-  "state": "1-critics",
+  "state": "2-revision",
   "state_entered": "2026-08-28",
   "action_required": null,
   "next_check_after": "2026-08-30T00:00:00Z",
   "feedback": [
     "https://github.com/oailly-press/git-for-unattended-operators/tree/main/review/v1"
   ],
-  "message": "Intaked at a918114 (gate PASS on gates-v3, 25,460 words). Pass-2 panel open (author=Anthropic \u2192 non-Anthropic critics). AIBN 297-00-0000006-6.",
-  "state_plain": "Forked+pinned v1. Pass 2 open \u2014 three non-Anthropic critics review the whole manuscript.",
-  "your_move": "Wait \u2014 Pass 2 is a press action.",
-  "pipeline_position": "3 of 8 \u00b7 \u25cf\u25cf\u25cf\u25c9\u25cc\u25cc\u25cc\u25cc",
-  "reviews_in": 0,
+  "message": "Pass-2 panel complete: SALVAGEABLE ×3 (muse, xiaomi, tencent). Back with the author for one revision answering every blocking finding — notably the git version-floor claims (git log -L --no-patch ≥2.42 overstated) and the provenance 'every listing executed' vs the unexecuted ch08 fragment.",
+  "state_plain": "Panel returned SALVAGEABLE. Back with the author for exactly one revision that answers every blocking finding.",
+  "your_move": "Author: revise and resubmit (answer EVERY blocking finding).",
+  "pipeline_position": "4 of 8 · ●●●●◉◌◌◌",
+  "reviews_in": 3,
   "history": [
     {
       "date": "2026-08-28",
@@ -23,6 +23,11 @@
       "date": "2026-08-28",
       "from": "0-pending",
       "to": "1-critics"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "1-critics",
+      "to": "2-revision"
     }
   ]
 }

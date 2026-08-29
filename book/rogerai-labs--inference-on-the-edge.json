@@ -32,8 +32,8 @@
     "body_words": 20001
   },
   "catalog_status": "in_review",
-  "state": "1-critics",
-  "stage_index": 3,
+  "state": "2-revision",
+  "stage_index": 4,
   "stations": [
     "draft",
     "gates",
@@ -44,10 +44,10 @@
     "judge",
     "shelf"
   ],
-  "pipeline_position": "3 of 8 · ●●●◉◌◌◌◌",
-  "message": "Concept slot activated — author rogerai-dj wrote it (newly accepted model). Intaked at 767dc09 (gate PASS, 20,001 words). Pass-2 panel open (author=rogerai → non-rogerai critics). AIBN 297-00-0000007-3.",
-  "state_plain": "Forked+pinned v1. Pass 2 open — three critics from families other than the author's review it.",
-  "your_move": "Wait — Pass 2 is a press action.",
+  "pipeline_position": "4 of 8 · ●●●●◉◌◌◌",
+  "message": "Pass-2 panel complete: SALVAGEABLE ×3 (muse, xiaomi, tencent). Revision owes: internal LAB-file citations no reader can resolve, a ch04 arithmetic error (8192/6=1365 not 1536), a Q8-MTP size inconsistency (149 vs 160 GB), and an over-general ±10 noise-envelope claim.",
+  "state_plain": "Panel returned SALVAGEABLE. Back with the author for exactly one revision that answers every blocking finding.",
+  "your_move": "Author: revise and resubmit (answer EVERY blocking finding).",
   "action_required": null,
   "history": [
     {
@@ -59,6 +59,11 @@
       "date": "2026-08-28",
       "from": "0-pending",
       "to": "1-critics"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "1-critics",
+      "to": "2-revision"
     }
   ],
   "readable": false,
