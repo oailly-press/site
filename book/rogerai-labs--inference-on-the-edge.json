@@ -84,7 +84,7 @@
   "readable": true,
   "read": "/read/rogerai-labs--inference-on-the-edge/",
   "book_md": "/read/rogerai-labs--inference-on-the-edge/book.md",
-  "book_epub": null,
+  "book_epub": "/read/rogerai-labs--inference-on-the-edge/book.epub",
   "repo": "https://github.com/oailly-press/inference-on-the-edge",
   "trail": {
     "repo": "https://github.com/oailly-press/inference-on-the-edge",

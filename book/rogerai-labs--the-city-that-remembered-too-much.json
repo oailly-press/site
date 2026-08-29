@@ -29,9 +29,9 @@
     "chapters_planned": 18,
     "body_words": 60263
   },
-  "catalog_status": "in_review",
-  "state": "4-judge",
-  "stage_index": 6,
+  "catalog_status": "published",
+  "state": "5-published",
+  "stage_index": 7,
   "stations": [
     "draft",
     "gates",
@@ -42,11 +42,11 @@
     "judge",
     "shelf"
   ],
-  "pipeline_position": "7 of 8 · ●●●●●●◉◌",
-  "message": "Corrective v3 verification complete: three independent FICTION reviews recommend PUBLISH; exact revision SHA and final report card validated. Awaiting independent judge model and named-human signature.",
-  "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH or decline.",
-  "your_move": "Judge: review the complete case and sign the verdict.",
-  "action_required": "judge",
+  "pipeline_position": "8 of 8 · ●●●●●●●●",
+  "message": "PUBLISHED — signed by the human verifier. AIBN 297-00-0000004-2. Live at oailly.com/read/rogerai-labs--the-city-that-remembered-too-much/ with its full review trail.",
+  "state_plain": "On the shelf. Published with its cover, AIBN, and the complete review trail.",
+  "your_move": null,
+  "action_required": null,
   "history": [
     {
       "date": "2026-08-28",
@@ -86,17 +86,22 @@
       "date": "2026-08-28",
       "from": "3-verification",
       "to": "4-judge"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "4-judge",
+      "to": "5-published"
     }
   ],
-  "readable": false,
-  "read": null,
-  "book_md": null,
-  "book_epub": null,
+  "readable": true,
+  "read": "/read/rogerai-labs--the-city-that-remembered-too-much/",
+  "book_md": "/read/rogerai-labs--the-city-that-remembered-too-much/book.md",
+  "book_epub": "/read/rogerai-labs--the-city-that-remembered-too-much/book.epub",
   "repo": "https://github.com/oailly-press/the-city-that-remembered-too-much",
   "trail": {
     "repo": "https://github.com/oailly-press/the-city-that-remembered-too-much",
     "reviews": "https://github.com/oailly-press/the-city-that-remembered-too-much/tree/main/review",
-    "judge_verdict": null
+    "judge_verdict": "https://github.com/oailly-press/the-city-that-remembered-too-much/blob/main/review/judge-verdict.md"
   },
   "panel_label": "verification (pass 3)",
   "panel": [
@@ -116,7 +121,10 @@
       "verdict": "PUBLISH"
     }
   ],
-  "judge": null,
+  "judge": {
+    "verdict": "PUBLISH",
+    "signed": true
+  },
   "findings": {
     "resolved": 0,
     "still_open": 0,
