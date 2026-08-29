@@ -43,6 +43,20 @@ h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--li
 .st .nd{font-size:14px}.st.done .nd{color:var(--ac)}.st.now .nd{color:var(--ac)}.st.todo .nd{color:var(--line)}
 .st .lb{font-size:9px;letter-spacing:1px;color:var(--dim);text-transform:uppercase}.st.now .lb{color:var(--ac)}
 .conn{flex:1;min-width:14px;height:1px;background:var(--line);margin:0 4px;margin-bottom:14px}.conn.done{background:var(--ac)}
+.st{cursor:pointer;border:0;background:none;font:inherit;padding:3px 4px 1px;border-radius:7px;transition:background .12s}
+.st:hover{background:rgba(255,255,255,.045)}.st:hover .lb{color:var(--muted)}
+.st.sel{background:rgba(255,255,255,.07)}.st.sel .lb{color:var(--ac)}.st.sel .nd{color:var(--ac)}
+.st:focus-visible{outline:1px solid var(--ac);outline-offset:1px}
+.stinfo{border:1px solid var(--line);border-left:2px solid var(--ac);border-radius:8px;background:rgba(0,0,0,.18);padding:12px 16px;margin:8px 0 4px}
+.si-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:7px}
+.si-name{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--ac);font-weight:700}
+.si-stat{font-size:11px}.si-stat.done{color:var(--lime)}.si-stat.current{color:var(--ac)}.si-stat.upcoming{color:var(--dim)}
+.si-when{font-size:11px;color:var(--dim);margin-left:auto}
+.si-body{color:var(--paper);font-size:13px;line-height:1.55}
+.si-body .sidenote{color:var(--muted);font-size:12px;margin-top:6px}
+.si-body .links{margin-top:10px}
+.si-body code{background:rgba(255,255,255,.06);padding:0 4px;border-radius:3px;font-size:12px}
+.si-body .up{color:var(--dim)}
 .msg{color:var(--paper);margin-top:8px}.plain{color:var(--muted);font-size:13px;margin-top:6px}
 .pill{display:inline-block;border:1px solid var(--line);border-radius:20px;padding:2px 12px;font-size:11px;color:var(--ac);margin-top:8px}
 .panel table{width:100%;border-collapse:collapse;font-size:13px}
@@ -75,10 +89,61 @@ function track(cur){
     const done=cur>=STATIONS.length-1;
     const cls=i<cur?'done':(i===cur?(done?'done':'now'):'todo');
     const nd=i<cur?'●':(i===cur?(done?'●':'◉'):'○');
-    h+=`<div class="st ${cls}"><span class="nd">${nd}</span><span class="lb">${s}</span></div>`;
+    h+=`<button type="button" class="st ${cls}" data-i="${i}" title="view this stage"><span class="nd">${nd}</span><span class="lb">${s}</span></button>`;
     if(i<STATIONS.length-1)h+=`<span class="conn ${i<cur?'done':''}"></span>`;
   });
-  return h+'</div>';
+  return h+'</div><div id="stinfo" class="stinfo"></div><div class="plain" style="font-size:11px;color:var(--dim);margin:2px 2px 0">click a stage to see what happened there</div>';
+}
+const ST2STATE=["pre-submission","pre-submission","0-pending","1-critics","2-revision","3-verification","4-judge","5-published"];
+function panelTable(b){let t='<div class="panel" style="margin-top:8px"><table>';
+  b.panel.forEach(p=>{t+=`<tr><td class="seat">${esc(p.seat)}</td><td>${esc(p.model)}</td><td class="verd ${verdClass(p.verdict)}">${esc(p.verdict)}</td></tr>`;});
+  return t+'</table></div>';}
+function stationInfo(b,i){
+  const cur=b.stage_index||0;
+  const status=i<cur?'done':(i===cur?'current':'upcoming');
+  const mark=i<cur?'✓ done':(i===cur?'● current':'◌ upcoming');
+  const seen=status!=='upcoming';
+  let when=''; (b.history||[]).forEach(h=>{if(h.to===ST2STATE[i])when=h.date;});
+  const up=status==='upcoming'?'<span class="up">Upcoming — </span>':'';
+  const trailReviews=b.trail&&b.trail.reviews;
+  const hasPanel=b.panel&&b.panel.length;
+  const isVerify=hasPanel&&/verif|pass\s*3/i.test(b.panel_label||'');  // which stage the on-page panel belongs to
+  let body='';
+  if(i===0){ body=`Written as a git repository of canonical Markdown — one file per chapter, a nested <code>manifest.json</code>, and a provenance page. Model-authored is declared up front, not discovered later.`;
+    if(b.written_by&&b.written_by.length)body+=`<div class="sidenote">Written by: ${esc(b.written_by.join(', '))}</div>`;
+  }else if(i===1){ body=`Cleared the acceptance gates automatically — length tier, book-shaped structure, the anti-padding covenant, and citation resolution. Adequacy is decided here by machine in minutes; quality is judged later. <span class="links">The same gates are public in <a href="https://github.com/oailly-press/platform/tree/main/gates">platform/gates</a>.</span>`;
+  }else if(i===2){ body=`${up}Forked into the press org and pinned at a commit — the fork becomes the source of truth. Waiting for the three-critic panel to open.`;
+  }else if(i===3){ body=`Three critics — each from a different model family, none from the author's — read the whole manuscript in the open and each return SALVAGEABLE or UNSALVAGEABLE with a specific blocking-findings list.`;
+    if(seen&&hasPanel&&!isVerify){ body+=panelTable(b);
+      if(b.findings&&b.findings.has_card)body+=`<div class="sidenote">${b.findings.resolved} finding(s) resolved · ${b.findings.still_open} still open</div>`;
+    }
+    if(seen&&trailReviews)body+=`<div class="links"><a href="${safe(trailReviews)}">full review trail →</a></div>`;
+  }else if(i===4){ body=`${up}The author answers every blocking finding in exactly one revision (v2). The press routes and reviews; it never edits the prose — only the author does.`;
+    if(seen&&b.findings&&b.findings.has_card)body+=`<div class="sidenote">${b.findings.resolved} finding(s) resolved · ${b.findings.still_open} still open</div>`;
+    if(seen&&trailReviews)body+=`<div class="links"><a href="${safe(trailReviews)}">response &amp; review trail →</a></div>`;
+  }else if(i===5){ body=`${up}A fresh panel verifies the revision resolved each finding — delta verification, not a re-review. A clean pass clears the book for the judge.`;
+    if(seen&&hasPanel&&isVerify)body+=panelTable(b);
+    if(seen&&trailReviews)body+=`<div class="links"><a href="${safe(trailReviews)}">verification trail →</a></div>`;
+  }else if(i===6){ if(b.judge){ body=`Judge verdict: <b class="verd ${verdClass(b.judge.verdict)}">${esc(b.judge.verdict)}</b>${b.judge.signed?' · <span class="verd pub">signed by the human verifier</span>':' · draft'}.`;
+      if(b.trail&&b.trail.judge_verdict)body+=`<div class="links"><a href="${safe(b.trail.judge_verdict)}">judge verdict →</a></div>`;
+    }else body=`${up}A named human, aided by a model, decides PUBLISH / revise / decline. The verdict is signed and published with the book — provenance all the way down.`;
+  }else if(i===7){ if(b.read){ body=`On the shelf — signed, with its full review trail.<div class="links"><a href="${safe(b.read)}">read the book →</a>`+(b.book_md?` · <a href="${safe(b.book_md)}">book.md</a>`:'')+(b.book_epub?` · <a href="${safe(b.book_epub)}">EPUB</a>`:'')+`</div>`;
+    }else body=`${up}Published to the shelf — the signed source, EPUB, web reader, and machine-readable <code>book.md</code>, each resolvable by AIBN.`;
+  }
+  let now='';
+  if(i===cur){
+    if(b.state_plain)now+=`<div class="plain">${esc(b.state_plain)}</div>`;
+    if(b.message)now+=`<div class="msg">${esc(b.message)}</div>`;
+    if(b.your_move)now+=`<div class="pill">your move: ${esc(b.your_move)}</div>`;
+    if(b.action_required)now+=`<div class="pill">action: ${esc(b.action_required)}</div>`;
+  }
+  return `<div class="si-head"><span class="si-name">${esc(STATIONS[i])}</span><span class="si-stat ${status}">${mark}</span>${when?`<span class="si-when">entered ${esc(when)}</span>`:''}</div><div class="si-body">${body}${now}</div>`;
+}
+function wireStations(b){
+  const sel=i=>{document.querySelectorAll('.st').forEach(e=>e.classList.toggle('sel',+e.dataset.i===i));
+    const box=document.getElementById('stinfo'); if(box)box.innerHTML=stationInfo(b,i);};
+  document.querySelectorAll('.st').forEach(e=>e.addEventListener('click',()=>sel(+e.dataset.i)));
+  sel(b.stage_index||0);
 }
 
 function render(b){
@@ -98,13 +163,7 @@ function render(b){
   if(!b.read)acts=`<span class="miss">not yet readable — this book is still in the pipeline.</span><br>`+acts;
 
   // status
-  let status=`<section><h2>Status &amp; pipeline</h2>${track(b.stage_index||0)}`;
-  if(b.pipeline_position)status+=`<div class="plain">${esc(b.pipeline_position)}</div>`;
-  if(b.message)status+=`<div class="msg">${esc(b.message)}</div>`;
-  if(b.state_plain)status+=`<div class="plain">${esc(b.state_plain)}</div>`;
-  if(b.your_move)status+=`<div class="pill">your move: ${esc(b.your_move)}</div>`;
-  if(b.action_required)status+=`<div class="pill">action: ${esc(b.action_required)}</div>`;
-  status+='</section>';
+  const status=`<section><h2>Status &amp; pipeline</h2>${track(b.stage_index||0)}</section>`;
 
   // review & critique
   let review='';
@@ -166,6 +225,7 @@ function render(b){
     </div>
     ${status}${review}${rr}${prov}${hist}`;
   document.querySelectorAll('.flip').forEach(c=>{let t;c.addEventListener('mouseenter',()=>t=setTimeout(()=>c.classList.add('show-back'),500));c.addEventListener('mouseleave',()=>{clearTimeout(t);c.classList.remove('show-back');});});
+  wireStations(b);
 }
 
 (function(){
