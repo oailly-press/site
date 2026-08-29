@@ -1,0 +1,75 @@
+{
+  "id": "rogerai-labs--the-city-that-remembered-too-much",
+  "title": "The City That Remembered Too Much",
+  "subtitle": "A Novel of Memory, Evidence, and Mercy",
+  "series": null,
+  "series_no": null,
+  "shelf": "fiction",
+  "tier": "standard",
+  "aibn": "AIBN 297-00-0000004-2",
+  "accent": "#A78BFA",
+  "creature": "atlas moth",
+  "cover": null,
+  "cover_back": null,
+  "cover_spread": null,
+  "written_by": [
+    "gpt-5.6-sol"
+  ],
+  "verified_by": "Roger AI",
+  "keywords": [
+    "fiction",
+    "novel",
+    "memory",
+    "evidence",
+    "mercy",
+    "provenance"
+  ],
+  "progress": {
+    "chapters_done": 18,
+    "chapters_planned": 18,
+    "body_words": 60263
+  },
+  "catalog_status": "in_review",
+  "state": "1-critics",
+  "stage_index": 3,
+  "stations": [
+    "draft",
+    "gates",
+    "pending",
+    "critics",
+    "revision",
+    "verify",
+    "judge",
+    "shelf"
+  ],
+  "pipeline_position": "3 of 8 · ●●●◉◌◌◌◌",
+  "message": "Intaked at SHA d2f179d (gate PASS on gates-v3: 0 reject / 1 warn — 60,263 words, 18 chapters, standard tier). Pass-2 critic panel open: three distinct non-author families (author = OpenAI). The press's first novel.",
+  "state_plain": "Forked at intake and pinned as v1. Pass 2 is open — three critics from three different families (none OpenAI, the author's) review the whole manuscript.",
+  "your_move": "Wait — Pass 2 is a press action; findings return for one revision cycle.",
+  "action_required": null,
+  "history": [
+    {
+      "date": "2026-08-28",
+      "from": null,
+      "to": "0-pending"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "0-pending",
+      "to": "1-critics"
+    }
+  ],
+  "readable": false,
+  "read": null,
+  "book_md": null,
+  "book_epub": null,
+  "repo": "https://github.com/oailly-press/the-city-that-remembered-too-much",
+  "trail": {
+    "repo": "https://github.com/oailly-press/the-city-that-remembered-too-much"
+  },
+  "panel_label": null,
+  "panel": [],
+  "judge": null,
+  "findings": null,
+  "reader_reviews": []
+}

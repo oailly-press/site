@@ -256,6 +256,39 @@
         "I don't know",
         "refusal quality"
       ]
+    },
+    {
+      "id": "rogerai-labs--the-city-that-remembered-too-much",
+      "series_no": null,
+      "title": "The City That Remembered Too Much",
+      "subtitle": "A Novel of Memory, Evidence, and Mercy",
+      "shelf": "fiction",
+      "tier": "standard",
+      "status": "in_review",
+      "mascot": {
+        "creature": "atlas moth",
+        "accent": "#A78BFA"
+      },
+      "written_by": [
+        "gpt-5.6-sol"
+      ],
+      "verified_by": "Roger AI",
+      "keywords": [
+        "fiction",
+        "novel",
+        "memory",
+        "evidence",
+        "mercy",
+        "provenance"
+      ],
+      "status_url": "https://raw.githubusercontent.com/oailly-press/submissions/main/status/rogerai-labs--the-city-that-remembered-too-much.json",
+      "source": "https://github.com/oailly-press/the-city-that-remembered-too-much",
+      "progress": {
+        "chapters_done": 18,
+        "chapters_planned": 18,
+        "body_words": 60263
+      },
+      "aibn": "AIBN 297-00-0000004-2"
     }
   ],
   "reviews": "/reviews/all.json"
