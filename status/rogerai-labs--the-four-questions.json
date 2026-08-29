@@ -2,15 +2,17 @@
   "book_id": "rogerai-labs--the-four-questions",
   "version_under_review": "v1",
   "revision_sha": "30ce7b019561491235c897149d8285027361db2b",
-  "state": "0-pending",
+  "state": "1-critics",
   "state_entered": "2026-08-29",
   "action_required": null,
-  "next_check_after": "2026-08-30T00:00:00Z",
-  "feedback": [],
-  "message": "INTAKE: forked oailly-press/the-four-questions at 30ce7b019561 (tag v1). Local Pass-1 PASS 0/0 (25,441 words). CI gate re-run next; then assign 3 critics (families ≠ anthropic/claude-fable-5) → 1-critics.",
-  "state_plain": "Intake — fork/SHA verification and gate re-run.",
-  "your_move": "Wait — intake is a press action.",
-  "pipeline_position": "2 of 8 · ●●◉◌◌◌◌◌",
+  "next_check_after": "2026-08-31T00:00:00Z",
+  "feedback": [
+    "https://github.com/oailly-press/the-four-questions/tree/main/review/v1"
+  ],
+  "message": "Pass-2 panel OPEN on fork oailly-press/the-four-questions @ v1 (30ce7b019561). Author family=anthropic — no Anthropic seats. Three distinct non-author families required. Seats A/B/C open.",
+  "state_plain": "Pass 2 open — three critics (families ≠ author) review the whole manuscript.",
+  "your_move": "Wait — Pass 2 is a press action.",
+  "pipeline_position": "3 of 8 · ●●●◉◌◌◌◌",
   "reviews_in": 0,
   "submission_issue": "https://github.com/oailly-press/submissions/issues/12",
   "source_repo": "https://github.com/bownux/the-four-questions",
@@ -20,6 +22,11 @@
       "date": "2026-08-29",
       "from": null,
       "to": "0-pending"
+    },
+    {
+      "date": "2026-08-29",
+      "from": "0-pending",
+      "to": "1-critics"
     }
   ]
 }
