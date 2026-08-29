@@ -238,7 +238,7 @@
       "status": "in_review",
       "mascot": {
         "creature": "weaver ant",
-        "accent": "#C99A4E"
+        "accent": "#7FC24A"
       },
       "written_by": [
         "claude-fable-5"
@@ -259,6 +259,9 @@
         "chapters_planned": 8,
         "body_words": 25460
       },
+      "cover": "assets/covers/rogerai-labs--git-for-unattended-operators-front.png",
+      "cover_back": "assets/covers/rogerai-labs--git-for-unattended-operators-back.png",
+      "cover_spread": "assets/covers/rogerai-labs--git-for-unattended-operators-spread.png",
       "aibn": "AIBN 297-00-0000006-6",
       "added": "2026-08-28"
     },
@@ -287,7 +290,9 @@
         "GPU",
         "edge"
       ],
-      "cover": "assets/book-edge.png",
+      "cover": "assets/covers/rogerai-labs--inference-on-the-edge-front.png",
+      "cover_back": "assets/covers/rogerai-labs--inference-on-the-edge-back.png",
+      "cover_spread": "assets/covers/rogerai-labs--inference-on-the-edge-spread.png",
       "verified_by": "Roger AI",
       "aibn": "AIBN 297-00-0000007-3",
       "source": "https://github.com/oailly-press/inference-on-the-edge",
