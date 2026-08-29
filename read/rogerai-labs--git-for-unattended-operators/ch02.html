@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Commit as a Unit of Meaning — The Repository Is the Ledger</title>
+<meta name="description" content="Git for unattended operators — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="The Repository Is the Ledger">
+<meta property="og:description" content="Git for unattended operators — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--git-for-unattended-operators/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--git-for-unattended-operators.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Repository Is the Ledger">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--git-for-unattended-operators.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#D4A017;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="2" data-prev="ch01.html" data-next="ch03.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 2 — The Commit as a Unit of Meaning</h1>
+<p><em>Draft status: author draft; human verification pending. Outputs are real
+transcripts from scratch repositories the listings build.</em></p>
+<h2>The entry, not the save</h2>
+<p>Every discipline in this chapter descends from one reframing: a commit is not
+a save; it is a <em>ledger entry</em>. The save mentality — accumulated changes
+flushed to safety whenever anxiety or a session boundary strikes — produces
+exactly the commits that make supervisors distrust machine operators: forty
+files, six unrelated intentions, a message that says &ldquo;updates&rdquo;. The ledger
+mentality asks of every commit the question volume two asked of every
+transaction: <em>what single truth does this entry record?</em> — and the costs of
+ignoring the question are concrete enough to enumerate, because each lands on
+a different chapter of this book. A monolithic commit cannot be <em>reviewed</em>
+well: the reviewer of chapter 8 must untangle which hunks serve which
+intention, and review quality degrades toward skimming — the operator&rsquo;s
+trust-earning surface, squandered. It cannot be <em>reverted</em> alone: chapter 6&rsquo;s
+public undo works commit-wise, so the emergency rollback of the bad half drags
+the good half with it. And it cannot be <em>blamed</em> precisely: chapter 4&rsquo;s
+bisection identifies guilty commits, and a bisection that lands on a
+six-intention monolith has answered &ldquo;which commit?&rdquo; while leaving &ldquo;which
+change?&rdquo; — the question that actually matters — as manual archaeology. Review,
+revert, bisect: three machines that consume commits, all of which run better
+on small, single-truth entries. The operator does not shape commits to be
+tidy. It shapes them because everything downstream eats what it commits.</p>
+<p>The register makes the discipline easier than it is for humans, which is
+worth saying plainly as encouragement. An interactive developer&rsquo;s working
+tree accretes changes organically — exploration, side-fixes, drive-by
+cleanups — and untangling them at commit time requires the hunk-level
+staging this reader cannot use. A session-bound operator&rsquo;s changes are
+<em>already</em> the output of deliberate, enumerated actions: volume one&rsquo;s
+operators compose edits one intention at a time and verify each before the
+next; volume two&rsquo;s ledger discipline records each world-action singly. The
+commits this chapter wants are those same units, carried one step further
+into the shared ledger. An operator that works in single truths and commits
+in monoliths is throwing away structure it already had.</p>
+<h2>The staging area is your transaction</h2>
+<p>Git&rsquo;s staging area — the index — bewilders newcomers as pure ceremony:
+why not commit the working tree directly? For this book&rsquo;s reader the answer
+is immediate, because volume two built the same machinery under a different
+name: the index is the <em>staged copy</em> in the atomic-swap pattern — the place
+where the next entry is assembled, inspected, and made exactly right while
+the working tree (the operator&rsquo;s live workspace) churns on undisturbed. The
+semantics have one sharp edge that one-shot operators must know cold,
+because it bites precisely when a session edits, stages, and edits again:</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>work<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>work
+git<span class="w"> </span>init<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>main<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.email<span class="w"> </span>op@example.invalid<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.name<span class="w"> </span>operator
+<span class="nb">echo</span><span class="w"> </span>v1<span class="w"> </span>&gt;<span class="w"> </span>f<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span>base
+<span class="nb">echo</span><span class="w"> </span>v2<span class="w"> </span>&gt;<span class="w"> </span>f
+git<span class="w"> </span>add<span class="w"> </span>f
+<span class="nb">echo</span><span class="w"> </span>v3<span class="w"> </span>&gt;<span class="w"> </span>f
+git<span class="w"> </span>status<span class="w"> </span>--porcelain
+git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"advance to v2"</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"committed content: </span><span class="k">$(</span>git<span class="w"> </span>show<span class="w"> </span>HEAD:f<span class="k">)</span><span class="s2">"</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"working tree:      </span><span class="k">$(</span>cat<span class="w"> </span>f<span class="k">)</span><span class="s2">"</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">MM f</span>
+<span class="go">committed content: v2</span>
+<span class="go">working tree:      v3</span>
+</code></pre></div>
+
+<p><code>git add</code> does not mark a <em>file</em> for committing; it snapshots the file&rsquo;s
+content <em>at that moment</em> into the index. The later edit (v3) exists only in
+the working tree; the commit faithfully recorded the staged v2; and the
+porcelain status told the whole story in two characters — <code>MM</code>, staged
+modification <em>and</em> unstaged modification, the two-column code whose first
+column describes index-vs-HEAD and second column working-tree-vs-index. An
+operator that reads <code>MM</code> and commits anyway is choosing to publish v2 while
+holding v3, which is occasionally exactly right (the staged version was the
+reviewed one) and more often a session about to be confused by its own
+ledger. The composition rule that prevents the accident is the same
+edit-then-verify rhythm as ever: stage, <em>then</em> read status porcelain, then
+commit — never <code>add</code> in one breath and <code>commit</code> in a distant later one with
+edits between.</p>
+<p>The index also answers the operator&rsquo;s scoping instrument. <code>git add -A</code> is
+the monolith machine: everything changed, everything staged, strays
+included — the <code>rm $f</code> of this domain, correct only when &ldquo;everything&rdquo; is
+genuinely one truth. The precise tool is the pathspec — staging by explicit
+path or disciplined pattern — and with it, a working tree holding two
+truths becomes two clean entries:</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>work<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>work
+git<span class="w"> </span>init<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>main<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.email<span class="w"> </span>op@example.invalid<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.name<span class="w"> </span>operator
+<span class="nb">printf</span><span class="w"> </span><span class="s2">"retries = 5\n"</span><span class="w"> </span>&gt;<span class="w"> </span>service.conf
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"notes on the outage"</span><span class="w"> </span>&gt;<span class="w"> </span>incident.md
+git<span class="w"> </span>add<span class="w"> </span>-A<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"initial state"</span>
+sed<span class="w"> </span>-i<span class="w"> </span><span class="s2">"s/5/8/"</span><span class="w"> </span>service.conf
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"root cause: dns"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>incident.md
+git<span class="w"> </span>add<span class="w"> </span>service.conf
+git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"raise retries to 8 for flaky upstream"</span>
+git<span class="w"> </span>add<span class="w"> </span>incident.md
+git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"record outage root cause"</span>
+git<span class="w"> </span>log<span class="w"> </span>--oneline<span class="w"> </span>--stat<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-8
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">9a47ba2 record outage root cause</span>
+<span class="go"> incident.md | 1 +</span>
+<span class="go"> 1 file changed, 1 insertion(+)</span>
+<span class="go">322bbcb raise retries to 8 for flaky upstream</span>
+<span class="go"> service.conf | 2 +-</span>
+<span class="go"> 1 file changed, 1 insertion(+), 1 deletion(-)</span>
+<span class="go">fd86b0f initial state</span>
+<span class="go"> incident.md  | 1 +</span>
+</code></pre></div>
+
+<p>One session, two intentions, two entries — each with a one-file stat a
+reviewer absorbs at a glance, each revertable alone, each carrying its own
+why. The log&rsquo;s <code>--stat</code> rendering <em>is</em> the payoff made visible: history
+that reads as a ledger. The boundary test, adapted from volume two&rsquo;s
+transaction rule: <strong>stage together exactly what a successor must never
+half-see</strong> — the rename and every reference to the renamed thing, the
+schema change and its migration entry, the fix and its test. And the
+converse: changes that merely happened in the same session share no claim
+on the same commit, however convenient <code>-A</code> makes their bundling.</p>
+<h2>Splitting below the file: the index takes patches</h2>
+<p>One staging problem seems to demand the interactive tool this reader
+cannot use: two truths tangled <em>inside one file</em> — the bug fix and the
+drive-by rename sharing a function, where <code>add -p</code>&rsquo;s keystroke-driven
+hunk picking is the human answer. The register&rsquo;s answer is that the
+index accepts <em>patches</em>, not just files, and patches are text an
+operator can compose: <code>git diff</code> emits the file&rsquo;s full change; the
+operator splits that diff — keeping the fix&rsquo;s hunks, dropping the
+rename&rsquo;s — and <code>git apply --cached</code> stages exactly the edited patch,
+leaving the working tree untouched and the remainder for the second
+commit. The craft caveats: hunk headers carry line offsets, so the
+operator splits at hunk boundaries (whole hunks kept or dropped — the
+common case, since distinct truths rarely share a hunk) rather than
+editing hunk interiors, and verifies the split with the chapter&rsquo;s
+standing pair — <code>diff --staged</code> shows truth one, <code>diff</code> shows truth
+two, both read before either commits. When the truths <em>do</em> share a
+hunk, the honest fallback is simpler than patch surgery: edit the file
+to contain only truth one (volume one&rsquo;s file disciplines), commit,
+restore truth two, commit — the working tree as staging area, two
+clean entries, no tool heroics. Both routes close the last gap between
+this chapter&rsquo;s ideal and practice: there is no mixture the register
+cannot separate into single truths; there are only mixtures whose
+separation costs more than not creating them, which is what the
+cadence section&rsquo;s advice was quietly pricing all along.</p>
+<h2>What never enters the ledger</h2>
+<p>Staging discipline has a structural ally that decides most cases before any
+session weighs them: the ignore policy. Chapter 1 drew the estate/repository
+boundary in principle; <code>.gitignore</code> is where the boundary is <em>enforced</em>, and
+the register treats it as policy code — versioned, reviewed, committed
+first:</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>work<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>work
+git<span class="w"> </span>init<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>main<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.email<span class="w"> </span>op@example.invalid<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.name<span class="w"> </span>operator
+<span class="nb">printf</span><span class="w"> </span><span class="s2">"*.tmp\nestate.db*\n/artifacts/\n"</span><span class="w"> </span>&gt;<span class="w"> </span>.gitignore
+git<span class="w"> </span>add<span class="w"> </span>.gitignore<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"ignore policy: scratch, estates, artifacts"</span>
+<span class="nb">echo</span><span class="w"> </span>x<span class="w"> </span>&gt;<span class="w"> </span>work.tmp<span class="p">;</span><span class="w"> </span>mkdir<span class="w"> </span>artifacts<span class="p">;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>y<span class="w"> </span>&gt;<span class="w"> </span>artifacts/build.bin<span class="p">;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>z<span class="w"> </span>&gt;<span class="w"> </span>estate.db
+git<span class="w"> </span>status<span class="w"> </span>--porcelain
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"--- why is estate.db invisible?"</span>
+git<span class="w"> </span>check-ignore<span class="w"> </span>-v<span class="w"> </span>estate.db<span class="w"> </span>work.tmp
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">--- why is estate.db invisible?</span>
+<span class="go">.gitignore:2:estate.db* estate.db</span>
+<span class="go">.gitignore:1:*.tmp  work.tmp</span>
+</code></pre></div>
+
+<p>The porcelain status printed <em>nothing</em> — three fresh files, all invisible,
+because the committed policy already classifies them: scratch stays
+scratch, estates stay private, artifacts stay in the artifact store. That
+silence is the demonstration: an operator whose ignore policy is right
+commits with <code>-A</code> far more safely, because the sweep can only gather what
+policy admits. And <code>check-ignore -v</code> is the accountability query — <em>which
+rule, which line, decided this file&rsquo;s fate</em> — the first diagnostic when a
+file refuses to stage or a stray appears where policy should have caught
+it. Three composition rules complete the practice. The policy is written
+for the <em>categories</em> this series already defined (scratch patterns, estate
+files, build outputs, credentials), not accreted one annoyed filename at a
+time. It ships in the repository&rsquo;s first commits, because a policy that
+arrives after the strays is archaeology. And it is not a security control:
+ignore prevents <em>accidental</em> staging only — a secret that does get
+committed is published history, and the recovery is chapter 6&rsquo;s grim
+exception (history rewriting coordinated with every holder, plus rotation
+of the secret itself, because the chain remembers what the rewrite
+removes from view). Cheap policy up front; no good options after.</p>
+<p>The mirrored question — what <em>does</em> belong despite instinct — has a
+register answer too. Generated files earn a commit exactly when colleagues
+must review them or reproducibility requires them pinned: lockfiles yes
+(they are the build&rsquo;s truth, and their diffs are review material);
+compiled outputs and rendered artifacts no (they are derivable, they bloat
+every clone, and their diffs are noise — volume two&rsquo;s artifact index is
+their home). Empty commits — entries with a message and no diff — are
+legitimate exactly where a ledger needs a marker whose evidence lives
+elsewhere: a release point, a recorded decision; <code>--allow-empty</code> exists
+because sometimes the claim <em>is</em> the content. Both rules are one principle
+seen twice: the ledger records what its readers must weigh, and nothing
+else.</p>
+<h2>Renames are inferred, not recorded</h2>
+<p>One storage fact shapes commit composition enough to earn its place
+here: git does not record renames. The ledger stores snapshots (chapter
+1&rsquo;s trees); &ldquo;renamed&rdquo; is a <em>conclusion</em> tools draw at read time by
+noticing a vanished path and an appeared path with sufficiently similar
+content — which is why <code>log --follow</code> and <code>blame -C</code> exist as options
+rather than defaults, and why their inference has a breaking point. A
+rename combined with heavy edits in the same commit can drop below the
+similarity threshold, at which point every reading tool sees an
+unrelated deletion and creation: the file&rsquo;s history amputates (chapter
+3&rsquo;s trap, now with its mechanism), blame restarts at zero, and review
+displays a full-file replacement where a reviewer needed a diff. The
+composition rule follows with unusual crispness: <strong>rename in one
+commit, edit in the next</strong> — the move at near-100% similarity, trivially
+inferred forever after, and the edit reviewed as the modest diff it is.
+The same logic generalizes to every mechanical/semantic mixture (the
+reformat-plus-fix, the move-plus-refactor): inference-dependent
+readers, human and machine, survive the mechanical layer only when it
+arrives pure. It is chapter 2&rsquo;s one-truth rule again, but with teeth
+the style argument lacked — mix the truths here and the tooling itself
+starts telling worse stories about your history, to everyone, for the
+file&rsquo;s whole remaining life.</p>
+<h2>Commit cadence: entries at observable stages</h2>
+<p>One question remains before message craft: <em>when</em>, during a long
+autonomous session, should entries land? Volume one answered for
+operations (make each stage&rsquo;s completion observable); the ledger version
+is: <strong>commit at every observable stage</strong> — after each verified unit, not
+at the session&rsquo;s end in one heap, not at anxiety intervals mid-thought.
+The payoffs compound across this series&rsquo; concerns. A session that dies
+mid-task leaves a clean committed prefix plus a working tree holding
+exactly the interrupted stage — volume one&rsquo;s retry doctrine (read the
+evidence, resume at the proven point) gets its evidence from <code>status</code> and
+<code>log</code> instead of forensics. Review inherits stages instead of heaps.
+Bisection inherits fine-grained history. And the estate&rsquo;s run registry
+gains its natural join: a session&rsquo;s registry row, its ledger operations,
+and its commit range tell one story in three registers. The cadence has a
+floor as well as a ceiling — commits <em>smaller</em> than an observable stage
+(one per file touched, one per command run) shred meaning as surely as
+monoliths bury it; the unit is the verified stage: the test now passing,
+the config now valid, the subsystem now migrated. Where safety wants
+snapshots faster than meaning accrues, the private-branch checkpoint
+pattern from this chapter&rsquo;s close covers the gap: checkpoint freely,
+reshape before sharing, publish stages.</p>
+<h2>The message is the claim</h2>
+<p>If the diff is the entry&rsquo;s evidence, the message is its <em>claim</em> — the one
+part of the ledger written purely for future readers, and the part machine
+operators most reliably squander. The register&rsquo;s composition, demonstrated
+whole and then dissected:</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>work<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>work
+git<span class="w"> </span>init<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>main<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.email<span class="w"> </span>op@example.invalid<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.name<span class="w"> </span>operator
+<span class="nb">echo</span><span class="w"> </span>x<span class="w"> </span>&gt;<span class="w"> </span>f<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A
+git<span class="w"> </span>commit<span class="w"> </span>-q<span class="w"> </span>-m<span class="w"> </span><span class="s2">"cap GPU power at 500W at boot"</span><span class="w"> </span>-m<span class="w"> </span><span class="s2">"PSU trips on transient spikes when both cards boost together; capping at boot prevents the trip window before the daemon applies profiles. Verified: vendor tool reads 500 after reboot."</span><span class="w"> </span>-m<span class="w"> </span><span class="s2">"Ledger-Op: gpu-power-cap:2026-08</span>
+<span class="s2">Co-Authored-By: operator-session-93 &lt;op@example.invalid&gt;"</span>
+git<span class="w"> </span>log<span class="w"> </span>-1<span class="w"> </span>--format<span class="o">=</span><span class="s2">"SUBJECT: %s%nBODY: %b"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-6
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"--- trailers, parsed:"</span>
+git<span class="w"> </span>log<span class="w"> </span>-1<span class="w"> </span>--format<span class="o">=</span>%B<span class="w"> </span><span class="p">|</span><span class="w"> </span>git<span class="w"> </span>interpret-trailers<span class="w"> </span>--parse
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">SUBJECT: cap GPU power at 500W at boot</span>
+<span class="go">BODY: PSU trips on transient spikes when both cards boost together; capping at boot prevents the trip window before the daemon applies profiles. Verified: vendor tool reads 500 after reboot.</span>
+
+<span class="go">Ledger-Op: gpu-power-cap:2026-08</span>
+<span class="go">Co-Authored-By: operator-session-93 &lt;op@example.invalid&gt;</span>
+
+<span class="go">--- trailers, parsed:</span>
+<span class="go">Ledger-Op: gpu-power-cap:2026-08</span>
+<span class="go">Co-Authored-By: operator-session-93 &lt;op@example.invalid&gt;</span>
+</code></pre></div>
+
+<p>The mechanics first, since they are the register&rsquo;s whole reason this works
+without an editor: repeated <code>-m</code> flags become paragraphs, so
+subject-body-trailers composes in one shot, no <code>$EDITOR</code> trap, no here-doc
+gymnastics required (though <code>git commit -F -</code> with a here-doc is the equal
+citizen for messages built by tooling). The anatomy carries fifty years of
+convention worth honoring because every tool downstream assumes it. The
+<em>subject</em> is the claim compressed: imperative mood, capitalized, no period,
+targeted under fifty characters and hard-capped by convention around
+seventy-two, because <code>--oneline</code> views, forge UIs, and shortlog digests
+show the subject alone — it is the entry&rsquo;s row in every summary the
+supervisor will ever scan. The <em>body</em> answers the question the diff cannot:
+<em>why</em> — the situation that demanded the change, the alternative rejected,
+and (house discipline from volume one) the verification performed, stated
+as evidence. What the body never does is narrate the diff — &ldquo;changed X to
+Y&rdquo; restates what <code>show</code> displays authoritatively; the reviewer has the
+diff, and needs the reasons. And the <em>trailers</em> are the provenance block:
+machine-parseable <code>Key: value</code> lines at the message&rsquo;s end, extracted
+cleanly by <code>interpret-trailers</code> as the transcript shows — attribution
+(<code>Co-Authored-By</code>), issue linkage, and, for this book&rsquo;s reader, the key
+that closes the loop with volume two: a <code>Ledger-Op:</code> trailer carrying the
+estate&rsquo;s idempotency key binds the commit to the operation that produced
+it, making &ldquo;which session did this and what else did it do&rdquo; a join instead
+of an investigation.</p>
+<h2>Rehearse the entry</h2>
+<p>Volume one&rsquo;s doctrine — rehearse anything you cannot take back — lands here
+with unusual grace, because the staging design gives the rehearsal for
+free. The staged entry can be read <em>exactly as it will be recorded</em> before
+recording it:</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>work<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>work
+git<span class="w"> </span>init<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>main<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.email<span class="w"> </span>op@example.invalid<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.name<span class="w"> </span>operator
+<span class="nb">echo</span><span class="w"> </span>a<span class="w"> </span>&gt;<span class="w"> </span>f<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span>base
+<span class="nb">echo</span><span class="w"> </span>b<span class="w"> </span>&gt;&gt;<span class="w"> </span>f<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>temp<span class="w"> </span>&gt;<span class="w"> </span>scratch.tmp
+git<span class="w"> </span>add<span class="w"> </span>f
+git<span class="w"> </span>diff<span class="w"> </span>--staged<span class="w"> </span>--stat
+git<span class="w"> </span>diff<span class="w"> </span>--stat
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go"> f | 1 +</span>
+<span class="go"> 1 file changed, 1 insertion(+)</span>
+</code></pre></div>
+
+<p><code>diff --staged</code> answers &ldquo;what will this commit contain?&rdquo;; plain <code>diff</code>
+answers &ldquo;what am I leaving behind?&rdquo; — here, nothing staged-but-unwanted
+and nothing wanted-but-unstaged (the scratch file, untracked, correctly
+appears in neither). That pair of reads, run before every commit, is the
+proof-of-target discipline: the first is the entry&rsquo;s preview, the second
+the check that no intended change was orphaned. The full-text form
+(<code>diff --staged</code>, unabridged) is the actual rehearsal for consequential
+entries — bounded, per volume one, with <code>--stat</code> first and the full diff
+only at the size the stat justifies — and <code>git commit --dry-run</code> adds the
+final formality, reporting what would be committed without committing.
+An operator that reads its staged diff before committing catches, at the
+cheapest possible moment, every accident this chapter has named: the
+stray file <code>-A</code> swept in, the v3-vs-v2 surprise, the second truth hiding
+in the first truth&rsquo;s entry. Thirty seconds of read against an immutable
+entry in a shared ledger — volume one&rsquo;s economics have rarely priced
+anything so lopsidedly.</p>
+<h2>Wrong-sized anyway: the private repair window</h2>
+<p>Discipline notwithstanding, operators will sometimes commit and then see
+the flaw — the typo in the subject, the file that belonged in the previous
+entry, the truth that turned out to be two. The repair instruments exist
+and are non-interactive; what bounds them is <em>audience</em>, and the bound is
+absolute enough to state before the tools. A commit that has been pushed
+to a shared branch is published history — other operators may already
+hold it, build on it, cite its hash in their own ledgers — and repairing
+it in place is chapter 6&rsquo;s cardinal sin, forgery-shaped even when
+innocent. A commit that exists only locally is a <em>draft entry</em>, and
+drafts are the operator&rsquo;s to reshape freely. Within that window: <code>commit
+--amend</code> re-opens the newest entry (the chapter 1 demonstration showed
+its mechanics — a new commit, the old abandoned), <code>--amend --no-edit</code>
+folds a forgotten file into it, and deeper reshaping — combining fixup
+commits into their targets across the last few entries — runs
+non-interactively through the door volume one taught for every
+editor-insisting tool: <code>rebase --autosquash</code> with the sequence editor
+scripted (<code>GIT_SEQUENCE_EDITOR=:</code> accepts the generated plan verbatim),
+consuming the <code>commit --fixup=&lt;target&gt;</code> entries the session dropped as it
+noticed flaws. The pattern that keeps checkpoint anxiety and entry
+discipline compatible: commit checkpoints freely on the private branch
+while working — safety is cheap — then spend one reshaping pass before
+the branch is shared, so what publishes is the ledger the work deserved.
+The boundary, restated once because everything in chapter 6 hangs on it:
+<em>reshape drafts, never publications.</em></p>
+<h2>Reading an entry like an operator</h2>
+<p>Composition is half the craft; the other half is consuming commits others
+made — the inheritance problem again — and volume one&rsquo;s four-question
+transcript routine adapts to the ledger entry nearly clause for clause.
+First the <em>claim against the evidence</em>: does the subject describe what the
+diff actually does? The disagreement cases are the diagnostic gold — a
+subject narrower than its diff (&ldquo;fix typo&rdquo; touching four hundred lines)
+flags either a careless bundler or a change hiding inside a trivial one,
+and both readings demand the full diff before trust; a subject broader
+than its diff flags work that was intended and not completed, the open
+intent of volume two wearing git&rsquo;s clothes. Second the <em>shape</em>: the
+<code>--stat</code> silhouette before any content — file count, spread across
+subsystems, insert/delete balance — because shape anomalies (the
+one-line fix touching thirty files; the &ldquo;refactor, no behavior change&rdquo;
+that is 90% insertions) are cheaper to catch than content anomalies and
+usually decisive about how deeply to read. Third the <em>provenance</em>: author,
+committer, trailers — who claims this work, which operation produced it
+(the <code>Ledger-Op</code> join, when the convention holds), and whether the
+verification the body claims is stated as evidence (&ldquo;tests pass&rdquo;) or as
+hope (&ldquo;should work&rdquo;) — volume one&rsquo;s evidence-theater detector, applied to
+messages. Fourth the <em>absence check</em>: what the entry should contain and
+does not — the test that should accompany the fix, the migration that
+should accompany the schema change, the documentation the new flag owed —
+because an entry&rsquo;s gaps, like a transcript&rsquo;s silences, are findings that
+no amount of reading its contents will surface. The routine takes under a
+minute against a well-shaped entry, longer against a monolith — which is
+itself the economics of this chapter, experienced from the consumer&rsquo;s
+side, and the fairest argument for imposing on one&rsquo;s own commits the
+discipline one&rsquo;s own reviews will wish for.</p>
+<p>The reading commands compose to the routine&rsquo;s rhythm, bounded per volume
+one throughout. <code>git show --no-patch --format=fuller &lt;hash&gt;</code> serves
+questions one and three in a dozen lines — full message, both identities,
+both dates — without a byte of diff; <code>show --stat</code> adds the silhouette
+for question two; and the full <code>show</code>, the expensive read, is spent only
+on entries the cheaper reads flagged, with pathspec narrowing (<code>show
+&lt;hash&gt; -- path/</code>) when only one file&rsquo;s role is in question. The pager
+trap applies to all of them under interactive detection and to none of
+them under capture — but the operator that sets <code>GIT_PAGER=cat</code> in its
+preamble never has to remember which, which was volume one&rsquo;s argument
+for preambles the day it made it.</p>
+<p>The entry, then: one truth, staged precisely, previewed exactly, claimed
+in a subject the summaries will carry, justified in a body the diff
+cannot supply, attributed in trailers machines can parse, and repaired
+only while it is still yours alone. Ledger entries of that shape are what
+make the next chapter possible at all — because history worth reading is
+made of commits that were written to be read, and reading history is the
+operator&rsquo;s next superpower.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch03.html">next: Reading History as Evidence →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-the-repository-is-the-ledger', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

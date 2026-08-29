@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parallel Operators — The Repository Is the Ledger</title>
+<meta name="description" content="Git for unattended operators — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="The Repository Is the Ledger">
+<meta property="og:description" content="Git for unattended operators — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--git-for-unattended-operators/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--git-for-unattended-operators.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Repository Is the Ledger">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--git-for-unattended-operators.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#D4A017;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="5" data-prev="ch04.html" data-next="ch06.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 5 — Parallel Operators</h1>
+<p><em>Draft status: author draft; human verification pending. Outputs are real
+transcripts; the parallel work in the listings is performed by genuinely
+separate working trees on one shared store.</em></p>
+<h2>Two minds, one project</h2>
+<p>Volume two&rsquo;s fifth chapter asked what happens when two operators share one
+estate file, and the engine answered with locks and queues. This chapter asks
+the version-control edition — a supervisor dispatches two agents against one
+project, or a timer&rsquo;s maintenance session wakes while an interactive session
+works — and the answer git&rsquo;s design wants is subtly different from the one
+operators reach for untaught. The untaught reflexes are both wrong in
+instructive ways. Sharing a <em>working tree</em> — two sessions editing one
+checkout — recreates the lost-update chaos of volume two&rsquo;s midden: staged
+files interleave, one session&rsquo;s checkout yanks the branch out from under the
+other, and <code>status</code> reports a fiction assembled from both minds. Cloning per
+session — a fresh full copy in every scratch directory — is safe and pays
+for safety twice over: the whole object store duplicated per operator, and
+the operators&rsquo; work stranded in separate repositories whose exchange now
+requires a network hop or path-remote gymnastics. The instrument built for
+exactly this shape sits between: <code>git worktree</code> gives each operator its own
+working tree and its own checked-out branch, all backed by <em>one shared
+object store</em> — chapter 1&rsquo;s content-addressed ledger, which never needed
+duplicating because it is append-only and hash-addressed, the two properties
+that make sharing safe.</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>project<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>project
+git<span class="w"> </span>init<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>main<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.email<span class="w"> </span>op@example.invalid<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.name<span class="w"> </span>operator
+<span class="nb">echo</span><span class="w"> </span>base<span class="w"> </span>&gt;<span class="w"> </span>shared.conf<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"base config"</span>
+git<span class="w"> </span>worktree<span class="w"> </span>add<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>task-retries<span class="w"> </span>../op-a
+git<span class="w"> </span>worktree<span class="w"> </span>add<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>task-logging<span class="w"> </span>../op-b
+<span class="o">(</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>../op-a<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sed<span class="w"> </span>-i<span class="w"> </span><span class="s2">"s/base/retries: 8/"</span><span class="w"> </span>shared.conf<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qam<span class="w"> </span><span class="s2">"raise retries"</span><span class="w"> </span><span class="o">)</span>
+<span class="o">(</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>../op-b<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"log_level: debug"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>shared.conf<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qam<span class="w"> </span><span class="s2">"enable debug logging"</span><span class="w"> </span><span class="o">)</span>
+git<span class="w"> </span>worktree<span class="w"> </span>list
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"--- one object store, three histories:"</span>
+git<span class="w"> </span>log<span class="w"> </span>--all<span class="w"> </span>--oneline
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">/tmp/oailly-gate-6e95k55z/project 0fcb782 [main]</span>
+<span class="go">/tmp/oailly-gate-6e95k55z/op-a    0765a35 [task-retries]</span>
+<span class="go">/tmp/oailly-gate-6e95k55z/op-b    f626d3b [task-logging]</span>
+<span class="go">--- one object store, three histories:</span>
+<span class="go">0fcb782 base config</span>
+<span class="go">f626d3b enable debug logging</span>
+<span class="go">0765a35 raise retries</span>
+</code></pre></div>
+
+<p>Both parallel operators edited <em>the same file</em> — the classic collision — and
+nothing collided, because each holds its own tree and its own branch; the
+divergence is not an accident to prevent but the recorded, mergeable state
+of two minds mid-work, visible whole from any of the three trees (<code>--all</code>
+reaches every branch through the shared store). The supervisor&rsquo;s dispatch
+pattern falls straight out: one repository, one worktree per concurrent
+task, each session told its directory and its branch — and volume one&rsquo;s
+scratch discipline supplies the frame it slots into, with <code>worktree add</code>
+replacing <code>mktemp -d</code> for exactly the work that must survive and merge.</p>
+<h2>The economics of the shared store</h2>
+<p>What the worktree costs is worth one honest measurement, because the
+per-session-clone reflex survives on vague fears of sharing:</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>project<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>project
+git<span class="w"> </span>init<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>main<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.email<span class="w"> </span>op@example.invalid<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.name<span class="w"> </span>operator
+<span class="nb">echo</span><span class="w"> </span>x<span class="w"> </span>&gt;<span class="w"> </span>f<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span>base
+git<span class="w"> </span>worktree<span class="w"> </span>add<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>t<span class="w"> </span>../wt
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"main tree git dir:     </span><span class="k">$(</span>git<span class="w"> </span>rev-parse<span class="w"> </span>--git-dir<span class="k">)</span><span class="s2">"</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"worktree git-common:   </span><span class="k">$(</span>git<span class="w"> </span>-C<span class="w"> </span>../wt<span class="w"> </span>rev-parse<span class="w"> </span>--git-common-dir<span class="k">)</span><span class="s2">"</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"worktree size: </span><span class="k">$(</span>du<span class="w"> </span>-s<span class="w"> </span>../wt<span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-f1<span class="k">)</span><span class="s2"> KB   full clone would carry the whole store"</span>
+git<span class="w"> </span>worktree<span class="w"> </span>remove<span class="w"> </span>../wt<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"removed cleanly"</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">main tree git dir:     .git</span>
+<span class="go">worktree git-common:   /tmp/oailly-gate-97nb2bh5/project/.git</span>
+<span class="go">worktree size: 8 KB   full clone would carry the whole store</span>
+<span class="go">removed cleanly</span>
+</code></pre></div>
+
+<p>Eight kilobytes: the checked-out file plus pointers, with <code>rev-parse
+--git-common-dir</code> showing where the actual store lives — back in the primary
+repository, shared. On a real project the arithmetic is decisive: a
+repository whose store runs to a gigabyte spawns worktrees at the cost of
+the checkout alone, and every object any operator commits is instantly
+reachable from every other tree without fetch, push, or copy — the exchange
+problem the per-session clone created, dissolved. The store-level operations
+consolidate the same way: one <code>fetch</code> refreshes every worktree&rsquo;s view of the
+remotes, one maintenance pass (gc, repack) serves all, and volume two&rsquo;s
+instincts about splitting high-rate state from shared state find nothing to
+split — the store&rsquo;s append-only design already made concurrent object
+writes safe, which is why git needed no WAL chapter.</p>
+<p>Precision about what is <em>not</em> shared completes the model, because the
+division is exactly the working-state boundary this chapter opened on.
+Each worktree privately owns its HEAD (which branch it stands on), its
+index (chapter 2&rsquo;s staging transaction — two seats can stage
+simultaneously without interleaving), and its tree-local metadata; the
+store shares objects, branches, tags, remotes, and configuration. The
+consequence operators should hold: anything <em>committed</em> anywhere is
+instantly everyone&rsquo;s; anything staged-or-working is one seat&rsquo;s private
+draft until it commits — the exact draft/publication line chapter 2 drew
+inside one operator, now drawn between them, by the tool&rsquo;s own
+architecture.</p>
+<p>The safety rule the sharing does impose is the single-writer truth in new
+clothing, enforced by the tool itself:</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>project<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>project
+git<span class="w"> </span>init<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>main<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.email<span class="w"> </span>op@example.invalid<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.name<span class="w"> </span>operator
+<span class="nb">echo</span><span class="w"> </span>x<span class="w"> </span>&gt;<span class="w"> </span>f<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span>base
+git<span class="w"> </span>worktree<span class="w"> </span>add<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>task<span class="w"> </span>../wt-one
+git<span class="w"> </span>worktree<span class="w"> </span>add<span class="w"> </span>../wt-two<span class="w"> </span>task<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-2
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">Preparing worktree (checking out 'task')</span>
+<span class="go">fatal: 'task' is already used by worktree at '/tmp/oailly-gate-z7udmi5d/wt-one'</span>
+</code></pre></div>
+
+<p>One branch, one working tree — the refusal is git protecting the branch
+ref from the two-minds-one-checkout chaos this chapter opened with, and
+its reading follows volume two&rsquo;s BUSY discipline: this is coordination
+working, not breaking. The operator&rsquo;s responses, in order of likelihood:
+the second session wanted <em>its own</em> branch anyway (dispatch discipline —
+one task, one branch — below); it wanted to <em>read</em> that branch, which
+needs no checkout at all (<code>git -C anywhere show task:file</code>, <code>log task</code> —
+chapter 3&rsquo;s queries run against any ref from any tree); or it genuinely
+found a stale claim — a dead session&rsquo;s worktree still registered — which
+is the inheritance problem, and the lifecycle section closes it.</p>
+<h2>Branch hygiene for machine fleets</h2>
+<p>Parallelism multiplies branches, and branches named by machines rot into
+namespace landfill faster than humans manage — <code>fix</code>, <code>fix2</code>, <code>temp</code>,
+<code>agent-output-final</code> — unless naming is treated as what it is in this
+series: provenance. The register&rsquo;s convention makes the branch name a
+ledger header: <em>lineage/task-slug</em>, with the task slug stable enough to
+join against volume two&rsquo;s registry (<code>session-94/raise-retry-budget</code>), so
+that <code>branch --format</code> listings read as a work registry and any branch&rsquo;s
+owner, purpose, and age are one query. The dispatch rule that keeps the
+namespace meaningful: <strong>one task, one branch, born at dispatch, dead at
+integration</strong> — branches are workspaces, not archives; the <em>ledger</em> is
+the archive (chapter 1&rsquo;s boundary, applied to refs). And the aging rule
+mirrors volume two&rsquo;s cursor staleness: a standing query for branches
+whose last commit predates a threshold (<code>for-each-ref --sort=committerdate
+--format</code> with a date cut) feeds the graveyard review — merged branches
+deleted on integration by the workflow itself, unmerged stale ones
+triaged with chapter 3&rsquo;s reading tools (what does it hold that main
+lacks?) and either salvaged into the ledger or closed with a recorded
+reason, volume one&rsquo;s quarantine discipline for the one kind of state
+that never needed a graveyard directory, because deletion of a merged
+branch deletes nothing the store does not keep.</p>
+<h2>The synchronization cadence</h2>
+<p>Divergence economics got their numbers in the fleet briefing; the policy
+they argue for deserves its own statement, because fleets fail here by
+default rather than by decision. A task branch drifts from main at
+main&rsquo;s velocity, and the cost of reconciling grows superlinearly — the
+conflicts compound, and worse, they arrive <em>at integration time</em>, when
+the work is done, the context is cold, and chapter 8&rsquo;s reviewer is
+waiting. The cadence rule inverts the arrival: task branches synchronize
+with main <em>early and often</em> — each session&rsquo;s open ritual includes the
+fetch and the drift counts, and a branch more than a briefing-threshold
+behind merges main in (or rebases onto it, per chapter 6&rsquo;s boundary:
+rebase while private, merge once shared) <em>before</em> new work, so conflicts
+surface one day&rsquo;s worth at a time, in warm context, resolved by the
+mind that just created half of them. For stacked work, modern git
+removes the classic tax: <code>rebase --update-refs</code> carries a whole stack
+of dependent branches through one rebase, re-pointing each as its base
+moves — the instrument that makes chapter 8&rsquo;s stacked proposals
+practical for machine fleets rather than heroic. The judgment call the
+cadence rule leaves open is deliberate: a branch hours from integration
+may reasonably freeze and reconcile once at the end rather than chase a
+busy main commit by commit — cadence is drift <em>management</em>, not drift
+phobia, and the briefing counts exist exactly so the choice is made
+looking at numbers instead of made by forgetting.</p>
+<h2>The stash, read suspiciously</h2>
+<p>One instrument adjacent to this chapter earns a caution rather than a
+recommendation. <code>git stash</code> shelves uncommitted changes into an anonymous
+holding stack — the interactive human&rsquo;s &ldquo;hold my drink&rdquo; for a quick branch
+switch — and everything that makes it convenient for humans makes it
+hazardous for fleets. Stashes are unattached to any branch, unnamed by
+default, invisible to every chapter 3 query that reads branches, and owned
+by nobody the registry can name: state parked outside the ledger, which is
+this series&rsquo; definition of a midden. The register&rsquo;s substitute is already
+on the shelf: the WIP commit on the task branch (chapter 2&rsquo;s checkpoint
+pattern) parks the same state <em>inside</em> provenance — attached, attributed,
+recoverable by the branch&rsquo;s name, cleaned by the same reshaping pass that
+was coming anyway. The operator therefore writes stashes rarely (a
+worktree per task removes the branch-switching motive entirely), and reads
+inherited ones with the unfinished-business protocol: <code>stash list
+--format='%gd %ci %gs'</code> inventories the stack with dates and origin
+branches, <code>stash show -p stash@{n}</code> reads each as evidence, and each is
+either salvaged into a commit on its proper branch or discarded with a
+recorded reason. A repository whose stash stack is deep and old is telling
+the briefing something about its operators&rsquo; discipline — and volume two&rsquo;s
+staleness pricing applies to every entry in it.</p>
+<h2>The fleet and its remotes</h2>
+<p>Worktrees share one store, and the store&rsquo;s view of the outside world —
+its remotes — is therefore fleet-wide state with fleet-wide discipline.
+Fetching benefits first: one <code>fetch</code> (scheduled, volume one&rsquo;s timer
+patterns) refreshes <code>origin/*</code> for every worktree at once, and the
+register&rsquo;s operators fetch <em>before</em> framing any decision that depends on
+the remote&rsquo;s state — a bisect frame, a merge, a review — because a stale
+remote view is volume two&rsquo;s meaning-rot in its most actionable form: the
+question &ldquo;am I behind?&rdquo; (<code>rev-list --count HEAD..origin/main</code>, chapter
+3&rsquo;s arithmetic) is only as fresh as the last fetch, and the counts
+belong in the session briefing. Pushing is per-branch and carries the
+dispatch discipline outward: first push sets tracking (<code>push -u origin
+session-94/raise-retry-budget</code>), after which status and the counts speak
+the branch&rsquo;s divergence natively; and every push is preceded by the
+behind-check, because pushing into a branch that moved produces the
+non-fast-forward refusal — a coordination signal whose correct and
+incorrect readings differ so consequentially that the next chapter
+spends a section on it. What no fleet member does is push <em>shared</em>
+integration branches as a side effect of its task: task branches are the
+operators&rsquo; to publish; main moves through the integration ceremony of
+chapter 8, one authority at a time — the same one-writer-per-truth
+instinct the worktree refusal enforced locally, applied at the remote.</p>
+<h2>Composing repositories, avoided knowingly</h2>
+<p>Fleets eventually ask how repositories themselves compose — the shared
+library, the vendored dependency, the platform repo the product repos
+lean on — and the built-in answer, submodules, earns this book&rsquo;s most
+explicit advisory: understand it, and reach for it last. A submodule
+pins another repository at a hash inside a parent tree, which is
+exactly right as a <em>concept</em> (content-addressed composition, chapter 1
+approving) and operationally hostile to unattended work in practice:
+clones arrive incomplete until a second command runs, <code>status</code> in the
+parent goes ambiguous about child state, every briefing and gate in
+this book needs submodule-aware variants, and the classic accident — a
+parent commit pinning a child hash that exists only on some machine —
+is a broken build with no local evidence, the calm face at
+architecture scale. The register&rsquo;s preference order for the same
+needs: a real dependency gets a <em>release artifact</em> and a lockfile (the
+ecosystem&rsquo;s package manager is the instrument built for pinning);
+code that must live in-tree gets vendored <em>as content</em> (a plain copy,
+committed, with its origin and version in the ledger entry — chapter
+2&rsquo;s provenance carrying what submodule metadata would have), or
+<code>subtree</code>-merged where history import matters; and only the case that
+truly needs live dual-repo development — rare, and staffed by seats
+that will maintain the discipline — earns submodules, wired into the
+open ritual (<code>clone --recurse-submodules</code>, update policy explicit) so
+the sharp edges are at least institutional rather than per-seat
+surprises. Composition is real; the advisory is only that the default
+instrument for it should be the one whose failure modes the fleet&rsquo;s
+existing disciplines already cover.</p>
+<h2>Constrained seats: sparse and shallow</h2>
+<p>Two reduced forms of the working arrangement serve the fleet&rsquo;s edge
+cases, and both are volume one&rsquo;s least-privilege instinct wearing git&rsquo;s
+clothes. Sparse checkout scopes a worktree to a subtree
+(<code>sparse-checkout set services/billing</code> after <code>worktree add</code>): the
+operator dispatched against one component sees only that component,
+which shrinks its blast radius (a pathspec mistake cannot stage what the
+tree does not materialize), its noise floor (status and diff speak only
+in-scope), and — for the enormous monorepos where this matters most —
+its checkout cost. The seat still holds full history through the shared
+store; only the <em>visible working surface</em> narrows, which is precisely
+the shape a scoped task wants. Shallow clones (<code>clone --depth=1</code>)
+narrow the other axis — history instead of surface — and belong to a
+different niche: the read-only consumer (a CI-style build, a one-shot
+analysis) that needs today&rsquo;s tree and no ledger. The register uses them
+knowingly for that niche and refuses them everywhere this book&rsquo;s
+techniques live, because a shallow store amputates exactly what the
+techniques consume: chapter 3&rsquo;s archaeology stops at the horizon,
+chapter 4&rsquo;s bisection cannot frame, and chapter 1&rsquo;s inheritance briefing
+reads a history one commit deep. The rule of thumb the two forms share:
+constrain the <em>surface</em> freely (sparse seats compose with everything),
+constrain the <em>ledger</em> only for seats that will never ask it questions
+— and when in doubt about which seat a task needs, the full worktree&rsquo;s
+eight kilobytes were never the thing to economize.</p>
+<h2>Rejoining: the merge as integration entry</h2>
+<p>Parallel work exists to converge, and the convergence primitive deserves
+its plain demonstration before chapter 8 builds ceremony on it:</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>project<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>project
+git<span class="w"> </span>init<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>main<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.email<span class="w"> </span>op@example.invalid<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.name<span class="w"> </span>operator
+<span class="nb">echo</span><span class="w"> </span>base<span class="w"> </span>&gt;<span class="w"> </span>shared.conf<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"base config"</span>
+git<span class="w"> </span>worktree<span class="w"> </span>add<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>task-a<span class="w"> </span>../ra<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>worktree<span class="w"> </span>add<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>task-b<span class="w"> </span>../rb
+<span class="o">(</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>../ra<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"retries: 8"</span><span class="w"> </span>&gt;<span class="w"> </span>retries.conf<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"retries policy"</span><span class="w"> </span><span class="o">)</span>
+<span class="o">(</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>../rb<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"level: debug"</span><span class="w"> </span>&gt;<span class="w"> </span>logging.conf<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"logging policy"</span><span class="w"> </span><span class="o">)</span>
+git<span class="w"> </span>merge<span class="w"> </span>-q<span class="w"> </span>--no-edit<span class="w"> </span>task-a<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>merge<span class="w"> </span>-q<span class="w"> </span>--no-edit<span class="w"> </span>task-b
+ls<span class="w"> </span>*.conf<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>log<span class="w"> </span>--oneline<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-4
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">logging.conf</span>
+<span class="go">retries.conf</span>
+<span class="go">shared.conf</span>
+<span class="go">48b47e9 Merge branch 'task-b'</span>
+<span class="go">3c8b45c retries policy</span>
+<span class="go">e9dcb23 logging policy</span>
+<span class="go">0fcb782 base config</span>
+</code></pre></div>
+
+<p>Two operators&rsquo; work, integrated sequentially into main, both files
+present, the merge itself an entry in the ledger (the second merge
+recorded as such; the first fast-forwarded silently — the two integration
+shapes chapter 8 weighs). What this chapter takes from the demo is the
+register&rsquo;s framing of <em>conflict</em>, because conflict is where parallel
+work&rsquo;s bill arrives. A merge conflict is not an error; it is the tool
+reporting that two minds changed the same lines and no algorithm can rank
+their intentions — a <em>finding</em>, in volume one&rsquo;s vocabulary, demanding
+judgment. The non-interactive protocol: attempt the merge with the
+combined diff already read (<code>diff main...task-a</code>, chapter 3&rsquo;s three-dot
+review form — an operator that reads before merging predicts most
+conflicts before creating them); on conflict, read the markers as
+evidence (<code>diff</code> shows both sides annotated; <code>checkout --conflict=diff3</code>
+adds the ancestor, and the three-way view is the whole story); resolve
+by <em>decision, not deletion</em> — the resolution is a judgment about intent
+that belongs in the merge commit&rsquo;s message (chapter 2: the body answers
+why); and when the judgment exceeds the operator&rsquo;s authority — two
+plausible intentions, no basis to rank them — the honest move is volume
+one&rsquo;s escalation discipline: stop, record the conflict as a finding, and
+hand the decision to the supervisor rather than guessing silently. The
+worst resolution in the register is the quiet one: <code>checkout --ours</code> as
+a reflex is deleting a colleague&rsquo;s intention without a hearing, and the
+ledger will remember only that the merge &ldquo;succeeded.&rdquo;</p>
+<p>One conflict amenity deserves the fleet&rsquo;s attention because it converts
+judgment already spent into judgment reused: <code>rerere</code> (&ldquo;reuse recorded
+resolution&rdquo;, enabled once per store) records each conflict&rsquo;s shape and
+its resolution, and replays the resolution automatically the next time
+the same conflict appears — which in fleet practice is constantly, since
+a long-lived task branch merging a moving main re-meets its own
+conflicts on every synchronization. The register adds one caution to the
+convenience: a replayed resolution is a judgment applied without a fresh
+hearing, so sessions note when rerere fired (its output says so) and the
+first resolution&rsquo;s reasoning still lands in that integration entry&rsquo;s
+message — the replay then inherits a recorded why, rather than becoming
+automation of an undocumented decision, which no volume of this series
+has been willing to bless.</p>
+<h2>The reviewer&rsquo;s seat</h2>
+<p>One worktree pattern serves chapter 8 directly enough to install here:
+review happens in its own tree. The reviewing operator — machine or
+human-driven — adds a worktree at the proposal&rsquo;s branch
+(<code>worktree add ../review-212 origin/session-95/harden-retries</code>,
+detached or tracking), and the entire review toolkit runs there
+without touching any working seat: the diff read at chapter 3&rsquo;s
+resolutions, the build and tests run live (review that executes is
+worth two reviews that squint), the suspicious behavior probed with
+volume one&rsquo;s instruments — while the reviewer&rsquo;s own task, in its own
+tree, stays exactly as it was. The economics repeat the chapter&rsquo;s
+opening: the alternative reflexes are stashing or committing half-done
+work to switch branches (state churn in the reviewer&rsquo;s seat, the exact
+cost worktrees exist to delete) or reviewing from the diff alone
+(fine for prose, thin for behavior). And the lifecycle rules apply
+unchanged — the review tree is removed when the verdict posts, or
+ledgered as open business if the review spans sessions — so <code>worktree
+list</code> keeps telling the fleet&rsquo;s whole truth: every open review visible
+beside every open task, each a named seat with an owner and an age,
+which is what a fleet&rsquo;s work-in-flight was always supposed to look
+like.</p>
+<h2>The fleet briefing</h2>
+<p>The chapter&rsquo;s instruments compose into the supervisor&rsquo;s standing view —
+the parallel-work edition of the briefings volumes one and two
+institutionalized — and writing it out fixes the queries as a set. Seats:
+<code>worktree list --porcelain</code> (the machine format, one stanza per tree)
+answers what is checked out where, joined against liveness the way volume
+two joined registry rows against processes — a worktree whose branch has
+not moved in days and whose session the registry shows ended is inherited
+unfinished business, triaged by the lifecycle protocol below. Work:
+<code>for-each-ref refs/heads --sort=-committerdate --format='%(refname:short)
+%(committerdate:iso) %(subject)'</code> is the task registry — every branch,
+its owner-by-naming-convention, its freshness, its last claim — with the
+staleness threshold marking candidates for the graveyard review.
+Parked state: the stash inventory from the suspicious-reading section,
+ideally empty. Divergence: the ahead/behind counts against origin for
+main and for every active task branch — the numbers that say which work
+is ready to integrate, which is drifting from a moving main (the earlier
+a task branch merges main&rsquo;s progress, the smaller chapter 8&rsquo;s conflicts
+— a fetch-and-count line in each session&rsquo;s own briefing makes the drift
+visible daily), and whether anyone is sitting on unpushed work the fleet
+cannot see. Six queries, one transcript page, and the answer to the
+question every supervisor of parallel machines actually has — <em>what is
+in flight, how stale, and what needs a decision</em> — read from the
+repository itself rather than from the operators&rsquo; self-reports. The
+fleet briefing is also where this chapter&rsquo;s disciplines become
+observable: seats named by convention, no anonymous stashes, no
+immortal branches, divergence counted daily. A fleet whose briefing is
+boring is a fleet whose habits are working — and a briefing that suddenly
+grew interesting names, by line, which habit slipped and which seat
+slipped it, which is all a supervisor ever needed monitoring to do.</p>
+<h2>Lifecycle: worktrees end like sessions</h2>
+<p>Worktrees are session-shaped, and everything this series knows about
+session ends applies. The clean end is <code>worktree remove</code> (shown above)
+plus the branch&rsquo;s integration-or-triage — the workspace gone, the work
+merged or accounted for. The unclean end — a session dies holding a
+worktree — leaves the registration behind, and the successor meets it
+exactly as volume two taught: <code>worktree list</code> is the run registry
+(every tree, its branch, its staleness), a dead session&rsquo;s tree is
+inspected before disposal (uncommitted changes in it are the dead
+session&rsquo;s unfinished stage — read, salvage into a commit on its task
+branch, or record the discard), and <code>worktree prune</code> clears
+registrations whose directories are already gone. The estate closes the
+loop: a dispatch pattern that records worktree births and deaths in the
+registry gives the fleet&rsquo;s supervisor one query for &ldquo;what is checked
+out where, by whom, since when&rdquo; — which is this chapter&rsquo;s whole subject,
+reduced to the standing question it always was. Parallel operators,
+then: one store because the ledger shares safely, one tree and one
+branch per mind because working state does not, names that carry
+provenance, merges that record judgment, and endings — clean or
+inherited — that leave the fleet&rsquo;s workspace as legible as any single
+operator&rsquo;s. What parallelism has not yet touched is the ledger&rsquo;s own
+integrity across all these hands, and that is the next chapter&rsquo;s
+covenant.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch06.html">next: History Is Append-Only (For You) →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-the-repository-is-the-ledger', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

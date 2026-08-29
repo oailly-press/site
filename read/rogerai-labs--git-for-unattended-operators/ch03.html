@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reading History as Evidence — The Repository Is the Ledger</title>
+<meta name="description" content="Git for unattended operators — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="The Repository Is the Ledger">
+<meta property="og:description" content="Git for unattended operators — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--git-for-unattended-operators/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--git-for-unattended-operators.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Repository Is the Ledger">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--git-for-unattended-operators.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#D4A017;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="3" data-prev="ch02.html" data-next="ch04.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 3 — Reading History as Evidence</h1>
+<p><em>Draft status: author draft; human verification pending. Outputs are real
+transcripts from scratch repositories with deliberately planted histories.</em></p>
+<h2>The ledger answers questions</h2>
+<p>Volume two&rsquo;s refrain — state you cannot query is barely state at all — has been
+aimed at this chapter since chapter 1 called the repository a ledger. A
+repository the operator only writes to is a filing cabinet; the craft dividend
+arrives when history becomes the <em>first place questions go</em>: when did this
+setting change, who touched this line and under what claim, what happened to
+this file before it wore this name, what does that branch hold that this one
+lacks. Interactive developers answer such questions by scrolling — <code>log</code> in a
+pager, eyes hunting — which is exactly the reading mode volume one retired.
+The register&rsquo;s answer is that <code>git log</code> is a query language wearing a
+pager&rsquo;s clothing: date bounds, path scopes, content predicates, line
+tracers, and set arithmetic, every one of them composable into bounded
+one-shot reads. This chapter is that query language, taught the way volume
+one taught <code>journalctl</code> — bounds first, machine formats second, and the
+expensive read spent only where cheap reads point.</p>
+<p>The bounding discipline transfers without modification, because unbounded
+<code>log</code> is unbounded <code>journalctl</code> with better compression. Every history
+query in this book carries at least one of: a count (<code>-n 20</code>), a date fence
+(<code>--since</code>, <code>--until</code> — taking the same English the journal took), a path
+scope (<code>-- path/</code>, which also collapses noise better than any filter
+applied after), or a range (the set arithmetic at this chapter&rsquo;s end). And
+every query meant for parsing states its format explicitly — <code>--format</code>
+with field tokens (<code>%h %s</code>, <code>%an</code>, <code>%aI</code> for strict ISO dates — chapter 3
+of volume two smiling from the wings) rather than the default
+human-shaped layout, with <code>-z</code> termination available where filenames may
+appear. The reflex pair, then: <em>bound the question, declare the shape.</em>
+Everything below assumes both.</p>
+<h2>Formats built for the next command</h2>
+<p>Declaring the shape deserves its demonstration, because the default log
+layout — hash line, author line, date line, blank line, indented message —
+is a human display in exactly volume one&rsquo;s sense: pleasant to eyes,
+hostile to <code>awk</code>. The <code>--format</code> tokens compose the machine face:</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>work<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>work
+git<span class="w"> </span>init<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>main<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.email<span class="w"> </span>op@example.invalid<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.name<span class="w"> </span>operator
+<span class="k">for</span><span class="w"> </span>s<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="s2">"initial config"</span><span class="w"> </span><span class="s2">"add request timeout"</span><span class="w"> </span><span class="s2">"drop timeout: upstream handles it now"</span><span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"</span><span class="nv">$s</span><span class="s2">"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>log.txt<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"</span><span class="nv">$s</span><span class="s2">"</span><span class="p">;</span><span class="w"> </span><span class="k">done</span>
+git<span class="w"> </span>log<span class="w"> </span>--format<span class="o">=</span><span class="s2">"%h|%aI|%an|%s"</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">fff6b5d|2026-08-28T13:57:35-07:00|operator|drop timeout: upstream handles it now</span>
+<span class="go">87a9807|2026-08-28T13:57:35-07:00|operator|add request timeout</span>
+<span class="go">ec7ad7b|2026-08-28T13:57:35-07:00|operator|initial config</span>
+</code></pre></div>
+
+<p>One row per commit, fields chosen and delimited by the operator, ready
+for the cut and join and comparison volume one built its pipelines from.
+The tokens worth memorizing are few: <code>%h</code>/<code>%H</code> short and full hash, <code>%s</code>
+subject, <code>%b</code> body, <code>%an</code>/<code>%ae</code> author name and mail, <code>%aI</code> the author
+date in strict ISO-8601 — the format volume two&rsquo;s estate speaks natively,
+so history rows and ledger rows join on timestamps without conversion —
+and <code>%(trailers:key=Ledger-Op)</code> lifting a named trailer straight into the
+row, which turns chapter 2&rsquo;s provenance convention into a queryable
+column. Delimiter choice follows the usual paranoia (subjects may contain
+pipes; <code>%x00</code> emits NUL for the fully hostile case), and the same
+<code>--format</code> vocabulary drives <code>show</code>, <code>branch --format</code>, and <code>for-each-ref</code>
+— one shape language across every reading tool. The rule it all serves is
+volume one&rsquo;s porcelain rule with a local sharpening: <em>the default log
+layout is not an interface; the format string is.</em></p>
+<h2>The pickaxe: asking about content</h2>
+<p>The question histories get asked most — <em>when did this change, and by which
+commit?</em> — has a dedicated instrument almost no interactive tutorial
+teaches, because scrolling hides its necessity. The pickaxe, <code>-S</code>, filters
+history to the commits where a given string&rsquo;s <em>occurrence count changed</em> —
+the commits that introduced or removed it:</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>work<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>work
+git<span class="w"> </span>init<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>main<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.email<span class="w"> </span>op@example.invalid<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.name<span class="w"> </span>operator
+<span class="nb">printf</span><span class="w"> </span><span class="s2">"retries = 3\n"</span><span class="w"> </span>&gt;<span class="w"> </span>app.conf<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"initial config"</span>
+<span class="nb">printf</span><span class="w"> </span><span class="s2">"retries = 3\ntimeout = 30\n"</span><span class="w"> </span>&gt;<span class="w"> </span>app.conf<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"add request timeout"</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"unrelated"</span><span class="w"> </span>&gt;<span class="w"> </span>notes.md<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"add notes"</span>
+<span class="nb">printf</span><span class="w"> </span><span class="s2">"retries = 3\n"</span><span class="w"> </span>&gt;<span class="w"> </span>app.conf<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"drop timeout: upstream handles it now"</span>
+git<span class="w"> </span>log<span class="w"> </span>--oneline<span class="w"> </span>-S<span class="w"> </span><span class="s2">"timeout = 30"</span><span class="w"> </span>--<span class="w"> </span>app.conf
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">94c6b39 drop timeout: upstream handles it now</span>
+<span class="go">8b92d86 add request timeout</span>
+</code></pre></div>
+
+<p>Four commits of history, and the pickaxe returned exactly the two that
+matter to the question &ldquo;what is the story of <code>timeout = 30</code>?&rdquo; — its birth
+and its death, each carrying its claim (and the death&rsquo;s message answering
+the <em>why</em> a bare diff never could — chapter 2&rsquo;s message discipline, paying
+the reader back). The unrelated middle commit never surfaces. For an
+operator diagnosing configuration drift — volume one&rsquo;s &ldquo;it worked
+yesterday&rdquo; — this is the opening query: the setting&rsquo;s value is wrong <em>now</em>;
+<code>-S</code> with the old value finds the commit that removed it, <code>-S</code> with the new
+value finds the commit that planted it, and both arrive with authors,
+dates, and reasons attached. The variant <code>-G</code> takes a regex and matches
+commits whose diff <em>mentions</em> the pattern (not just occurrence-count
+changes — it also catches lines that moved or changed around the pattern),
+the broader net when the exact string is uncertain; the discipline of
+preferring <code>-S</code> first is the register&rsquo;s exactness preference from volume
+two&rsquo;s search chapter, transplanted.</p>
+<h2>Line archaeology</h2>
+<p>Below file granularity lives the question blame half-answers and <code>-L</code>
+answers properly: <em>what is the story of this line?</em></p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>work<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>work
+git<span class="w"> </span>init<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>main<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.email<span class="w"> </span>op@example.invalid<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.name<span class="w"> </span>operator
+<span class="nb">printf</span><span class="w"> </span><span class="s2">"alpha\nbeta\ngamma\n"</span><span class="w"> </span>&gt;<span class="w"> </span>f.txt<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"three lines"</span>
+<span class="nb">printf</span><span class="w"> </span><span class="s2">"alpha\nBETA\ngamma\n"</span><span class="w"> </span>&gt;<span class="w"> </span>f.txt<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"capitalize beta"</span>
+<span class="nb">printf</span><span class="w"> </span><span class="s2">"alpha\nBETA!\ngamma\n"</span><span class="w"> </span>&gt;<span class="w"> </span>f.txt<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"emphasize beta"</span>
+git<span class="w"> </span>log<span class="w"> </span>-L<span class="w"> </span><span class="m">2</span>,2:f.txt<span class="w"> </span>--oneline<span class="w"> </span>--no-patch
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">50be31b emphasize beta</span>
+<span class="go">3b59905 capitalize beta</span>
+<span class="go">5d1d48b three lines</span>
+</code></pre></div>
+
+<p>Three commits, and line two&rsquo;s complete biography: created, capitalized,
+emphasized — every commit that ever touched the line, in order, with
+claims. <code>-L</code> takes line ranges (<code>-L 10,25:file</code>) and even function names
+(<code>-L :funcname:file</code>, using language-aware heuristics), and it follows the
+line through edits above it that shift its number — the bookkeeping that
+makes manual diff-walking miserable, done by the engine. Its sibling
+question — <em>where did this file come from?</em> — meets rename tracking:</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>work<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>work
+git<span class="w"> </span>init<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>main<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.email<span class="w"> </span>op@example.invalid<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.name<span class="w"> </span>operator
+<span class="nb">echo</span><span class="w"> </span>content<span class="w"> </span>&gt;<span class="w"> </span>old-name.md<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"create doc"</span>
+<span class="nb">echo</span><span class="w"> </span>more<span class="w"> </span>&gt;&gt;<span class="w"> </span>old-name.md<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"extend doc"</span>
+git<span class="w"> </span>mv<span class="w"> </span>old-name.md<span class="w"> </span>new-name.md<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"rename doc"</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"without --follow: </span><span class="k">$(</span>git<span class="w"> </span>log<span class="w"> </span>--oneline<span class="w"> </span>--<span class="w"> </span>new-name.md<span class="w"> </span><span class="p">|</span><span class="w"> </span>wc<span class="w"> </span>-l<span class="k">)</span><span class="s2"> commits"</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"with --follow:    </span><span class="k">$(</span>git<span class="w"> </span>log<span class="w"> </span>--oneline<span class="w"> </span>--follow<span class="w"> </span>--<span class="w"> </span>new-name.md<span class="w"> </span><span class="p">|</span><span class="w"> </span>wc<span class="w"> </span>-l<span class="k">)</span><span class="s2"> commits"</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">without --follow: 1 commits</span>
+<span class="go">with --follow:    3 commits</span>
+</code></pre></div>
+
+<p>The default path query stops at the rename — one commit, a file
+apparently born yesterday — while <code>--follow</code> walks through it to the true
+origin. The trap shape is volume one&rsquo;s calm-face family: the unfollowed
+query <em>succeeds</em>, returns plausible history, and silently amputates
+everything before the rename; nothing warns. The habit: any history
+question about a file older than its current name — and the operator
+often cannot know — asks with <code>--follow</code>, and any <em>surprisingly short</em>
+file history is re-asked with <code>--follow</code> before being believed.</p>
+<h2>Blame, read correctly</h2>
+<p><code>git blame</code> — every line annotated with the commit that last touched it —
+is history&rsquo;s most famous query and its most misread. The misreading is in
+the name: blame answers <em>last touch</em>, not <em>authorship of behavior</em>. The
+line that broke production may be &ldquo;blamed&rdquo; on the reformatting commit
+that re-indented it, the rename that moved its file, or the mechanical
+sweep that changed a parameter name across forty files — while the mind
+that wrote the logic lives three commits deeper. The register reads blame
+as a <em>starting pointer</em>, never a verdict, and drives it with the flags
+that strip mechanical noise: <code>-w</code> ignores whitespace-only touches; <code>-C</code>
+traces lines copied or moved across files to their true origin; and
+<code>--ignore-rev</code> (or a committed <code>blame.ignoreRevsFile</code> listing the
+project&rsquo;s known reformatting commits — policy code, chapter 2&rsquo;s ignore
+discipline for attribution) excludes named noise commits from
+consideration entirely. When blame&rsquo;s answer survives those flags, the
+next hop is <code>-L</code> on the implicated lines for the full biography, and
+<em>then</em> the four-question read of the guilty entry. Attribution earned
+that way holds up in the incident review; attribution read off bare
+blame output regularly indicts the janitor.</p>
+<h2>Ranges: history as sets</h2>
+<p>Multi-branch questions — what is on that branch, what will this merge
+bring, how far have we diverged — are set questions, and git&rsquo;s range
+syntax is set notation compact enough to misread, so the register learns
+it once, precisely:</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>work<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>work
+git<span class="w"> </span>init<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>main<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.email<span class="w"> </span>op@example.invalid<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.name<span class="w"> </span>operator
+<span class="nb">echo</span><span class="w"> </span>base<span class="w"> </span>&gt;<span class="w"> </span>f<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span>base
+git<span class="w"> </span>checkout<span class="w"> </span>-qb<span class="w"> </span>feature<span class="p">;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>feat<span class="w"> </span>&gt;<span class="w"> </span>g<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"feature work"</span>
+git<span class="w"> </span>checkout<span class="w"> </span>-q<span class="w"> </span>main<span class="p">;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>mainline<span class="w"> </span>&gt;<span class="w"> </span>h<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"mainline work"</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"feature has, main lacks (main..feature): </span><span class="k">$(</span>git<span class="w"> </span>rev-list<span class="w"> </span>--count<span class="w"> </span>main..feature<span class="k">)</span><span class="s2">"</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"main has, feature lacks (feature..main): </span><span class="k">$(</span>git<span class="w"> </span>rev-list<span class="w"> </span>--count<span class="w"> </span>feature..main<span class="k">)</span><span class="s2">"</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"either side since fork  (main...feature): </span><span class="k">$(</span>git<span class="w"> </span>rev-list<span class="w"> </span>--count<span class="w"> </span>main...feature<span class="k">)</span><span class="s2">"</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">feature has, main lacks (main..feature): 1</span>
+<span class="go">main has, feature lacks (feature..main): 1</span>
+<span class="go">either side since fork  (main...feature): 2</span>
+</code></pre></div>
+
+<p>Two dots, <code>A..B</code>: commits reachable from B and not from A — &ldquo;what does B
+have that A lacks&rdquo;, direction mattering, the workhorse for &ldquo;what would
+this merge bring&rdquo; (<code>main..feature</code>) and &ldquo;what am I behind&rdquo; (<code>HEAD..origin/
+main</code>). Three dots, <code>A...B</code>: the symmetric difference — everything on
+either side since the fork point, the divergence overview. <code>rev-list
+--count</code> turns any range into arithmetic (the estate&rsquo;s counters, for
+history), and the ranges feed every history command uniformly: <code>log
+main..feature</code> to read the incoming claims, <code>diff main..feature</code> to read
+the incoming content. One asymmetry demands memorization because it
+inverts the pattern: for <code>diff</code> — and only for diff — the three-dot form
+does <em>not</em> mean symmetric difference; <code>diff A...B</code> shows B&rsquo;s changes
+since the <em>merge-base</em> (the fork point), which is almost always what
+review wants and almost never what the log-trained intuition expects.
+The pair to internalize: <em>log likes two dots for direction, diff likes
+three dots for review</em> — and an operator unsure at composition time
+spends one <code>merge-base</code> query to see the fork point explicitly rather
+than trusting punctuation it half-remembers.</p>
+<h2>Two clocks per entry</h2>
+<p>Chapter 1 introduced the author/committer pair for identity; the pair
+of <em>dates</em> matters to queries enough for its own caution. The author
+date marks when the change was made; the committer date, when this
+object entered this history — and chapter 6&rsquo;s instruments split them
+routinely: a rebase rewrites committer dates wholesale while preserving
+author dates, a cherry-pick likewise, so a branch reshaped Tuesday from
+work written in May carries May&rsquo;s <code>%aI</code> and Tuesday&rsquo;s <code>%cI</code> on every
+entry. The queries care because they default differently than intuition
+expects: <code>log --since</code> and friends filter on <em>commit</em> date, so &ldquo;what
+was written in May&rdquo; asked naively of reshaped history answers &ldquo;nothing&rdquo;
+— the work is there, wearing Tuesday&rsquo;s commit dates — while
+<code>--author-date-order</code> and explicit <code>%aI</code> formats reach the other clock.
+The register&rsquo;s rule assigns each clock its questions: process
+archaeology (when did this land, what entered last week, release
+windows) reads committer dates, which is what the defaults serve;
+provenance archaeology (when was this actually written, what was
+concurrent with what) reads author dates, explicitly. And ledger
+entries that join history to the estate record <em>both</em> when the
+distinction could matter — one more two-line habit that costs nothing
+on the day it is formed and settles an argument on the day it is
+needed.</p>
+<h2>The sweep, composed</h2>
+<p>The instruments combine into the register&rsquo;s standard multi-angle hunt, and
+one worked narrative fixes the composition better than rules. The incident:
+a service that retried politely last month now hammers its upstream;
+somebody changed retry behavior; find the change and its reasoning. The
+sweep opens cheap and wide: <code>log --oneline --since='6 weeks' -- config/</code>
+— fifteen entries, subjects scanned, nothing obviously guilty (a subject
+scan is a claims scan; chapter 2&rsquo;s discipline decides whether it can be
+trusted, and here it cannot, since two subjects say &ldquo;update settings&rdquo;).
+Second angle, content predicate: <code>log -S 'backoff' --since='6 weeks'</code> —
+two hits, one introducing <code>backoff = exponential</code>, one — the later —
+removing it inside one of those &ldquo;update settings&rdquo; monoliths. Third angle,
+scope the damage: <code>show --stat</code> on the guilty entry (eleven files — the
+monolith buried the behavior change among renames), then <code>show &lt;hash&gt; --
+config/retry.conf</code> for the one diff that matters. Fourth angle, the
+biography: <code>-L</code> on the changed stanza confirms the exponential line lived
+eight months and died without a stated reason — the body says nothing;
+the claim-versus-evidence gap of chapter 2, met in the wild. Total cost:
+four bounded reads, no scrolling, and the output of the sweep is not just
+the culprit commit but the <em>case file</em> — hashes, dates, authorship, the
+absence of justification — that volume one&rsquo;s handoff format and chapter
+8&rsquo;s review response both consume directly. The general shape (wide cheap
+scan → content predicate → scope → biography) transfers to every history
+hunt; only the predicates change.</p>
+<h2>Reading diffs at the right resolution</h2>
+<p>The diff itself — this chapter&rsquo;s most-consumed output — has resolution
+controls the register should drive deliberately rather than accept at
+line default. <code>--stat</code> first, always (the silhouette; chapter 2&rsquo;s
+routine). For prose, config, and anything where a line is a paragraph,
+<code>--word-diff</code> collapses the misleading full-line churn into the words
+that changed — the difference between &ldquo;this line changed&rdquo; and &ldquo;this
+<em>value</em> changed&rdquo;, which for the config archaeology this book keeps
+returning to is the whole question. For refactors, <code>--color-moved</code>
+(with <code>--color-moved-ws=allow-indentation-change</code> for the re-indent
+case) distinguishes <em>moved</em> code from added-and-removed code — the
+reading that turns a terrifying 400-line diff into &ldquo;one block moved,
+three lines actually new&rdquo;, and the reviewer&rsquo;s honest answer to
+mechanical changes chapter 8 will flag. <code>-w</code> ignores whitespace
+outright where formatting noise drowns signal. And the same flags feed
+the pipeline forms — the capture-mode operator reads <code>--word-diff=porcelain</code>
+when parsing, per the porcelain rule. Resolution, like bounding, is
+part of composing the read: the default line diff answers &ldquo;what
+changed&rdquo; at one altitude, and an operator that never changes altitude
+is doing archaeology with one lens — workable, and permanently slower
+than the machine offering the zoom.</p>
+<h2>Annotating after the fact: notes</h2>
+<p>One reading-adjacent instrument completes the evidence toolkit because
+it solves a problem the append-only design otherwise leaves sharp: how
+to attach information to a commit <em>after</em> it exists — the benchmark
+result measured post-merge, the incident that later implicated it, the
+&ldquo;superseded by&rdquo; pointer — without rewriting anything. <code>git notes</code>
+maintains exactly this: a parallel, attachable annotation per object,
+displayed alongside the commit in <code>log</code> but stored outside it, so the
+hash chain stands unmodified while the fleet&rsquo;s afterknowledge
+accumulates. The register&rsquo;s uses are the estate&rsquo;s margins made public:
+<code>notes add -m 'bench: p95 82ms (run 4411)' &lt;hash&gt;</code> binds a measurement
+to the exact content it measured; a notes ref per concern (<code>--ref
+perf</code>, <code>--ref incidents</code>) keeps annotation streams separable; and
+because notes are refs, they push and fetch deliberately (not by
+default — a fleet that adopts them wires the sync into its open
+ritual). The honest bounds mirror their design: notes are <em>mutable</em> —
+that is their purpose — so they carry the estate&rsquo;s provenance
+discipline (who noted, when, from what evidence, inside the note&rsquo;s
+text) precisely because the chain does not carry it for them; and
+anything whose integrity matters as much as its content belongs in a
+signed tag or the estate proper, not a note. Rightly bounded, notes
+answer the archaeologist&rsquo;s recurring wish — <em>the ledger should have
+known this</em> — with the append-only system&rsquo;s own grammar: the entry
+stands; the knowledge attaches beside it.</p>
+<h2>Counting as evidence</h2>
+<p>Between reading entries and naming moments sits the aggregate layer —
+history as statistics — and the register uses it the way volume two used
+the run registry: calibration, not curiosity. <code>rev-list --count</code> has
+appeared already as range arithmetic; its siblings answer standing
+questions one number at a time. Freshness: <code>log -1 --format=%aI -- path/</code>
+dates a subsystem&rsquo;s last real change, and a &ldquo;stable&rdquo; module untouched for
+two years reads very differently from one changed weekly — staleness
+pricing for code, volume two&rsquo;s <code>recorded_at</code> discipline applied to the
+shared ledger. Churn: <code>log --since='3 months' --oneline -- path/ | wc -l</code>
+ranks where change actually concentrates, which is where review attention,
+test investment, and — chapter 4&rsquo;s interest — bug probability concentrate
+too. People: <code>shortlog -sn --since='3 months' -- path/</code> names who really
+owns a subsystem <em>now</em>, as against the archaeology bare blame implies.
+None of these numbers proves anything alone — the honest-limits section
+below applies to aggregates doubly, since curated history curates its
+statistics — but as <em>priors</em> for where to look, whom to ask, and how
+hard to verify, they are one-line queries that replace folklore with
+arithmetic. An operator planning work in an unfamiliar repository spends
+five such counts before its first edit; the counts are the briefing&rsquo;s
+quantitative half. And like the registry&rsquo;s statistics, they compound
+across sessions when recorded: a lineage that logs its pre-work counts
+into the estate can later ask which priors predicted trouble and which
+merely felt predictive — the operator calibrating its own calibration,
+which volume two argued is the only kind that survives contact with
+enough incidents to matter.</p>
+<h2>Named moments</h2>
+<p>Hashes address history precisely and mean nothing; the ledger&rsquo;s readable
+anchors are tags, and the reading operator meets them constantly enough to
+know their two species apart. A lightweight tag is a bare name pointing at
+a commit — a sticky note, no provenance, fine for private bookmarks. An
+annotated tag is an <em>object</em>: it carries its own tagger identity, date,
+and message, hashed and chained like everything else — a ledger entry
+whose claim is &ldquo;this commit is a named moment&rdquo;, which is why releases,
+review baselines, and anything another party will reference use annotated
+tags exclusively (this press&rsquo;s own pipeline tags each reviewed version of
+a manuscript <code>v1</code>, <code>v2</code> — annotated moments in exactly this sense). The
+reading queries: <code>tag -l 'v*' --format</code> lists names with the same token
+language as everything else; <code>describe</code> inverts the lookup — given any
+commit, it answers <em>where is this relative to the named moments</em>
+(<code>v2-14-gf29483c</code>: fourteen commits past v2), the one-line orientation
+that turns an arbitrary hash into a position humans can discuss; and a
+tag&rsquo;s own claim is read with <code>show &lt;tag&gt; --no-patch</code>, tagger and message
+included. The operator&rsquo;s writing rule mirrors the reading: moments worth
+naming are named with <code>-a</code> and a message that says what the moment <em>is</em>
+(volume two&rsquo;s reason column, again), because a bare <code>v2</code> whose meaning
+lives in somebody&rsquo;s memory is the midden&rsquo;s naming scheme, reborn at the
+ledger&rsquo;s front door. And because tags are the anchors other parties build
+on, they inherit the publication boundary early: a pushed tag is a
+promise; re-pointing one is chapter 6&rsquo;s sin in its most disruptive form,
+since consumers cache tag meanings precisely because they are supposed
+never to move.</p>
+<h2>What history cannot tell you</h2>
+<p>The chapter closes on the ledger&rsquo;s honest limits, because evidence
+misread as more than it is corrupts better decisions than ignorance does.
+History records <em>committed outcomes</em>: it holds no trace of the approaches
+tried and abandoned before the entry (the working tree&rsquo;s churn is
+invisible), and — by this book&rsquo;s own chapter 2 counsel — the private
+reshaping window means published history is a <em>curated</em> account of
+process, deliberately cleaner than the work it records. That is a feature
+for readers and a caveat for forensics: &ldquo;the fix took one clean commit&rdquo;
+describes the ledger, not the afternoon. Second, the dates are
+declarations, not measurements. Author and committer timestamps are
+values the committing process asserts — settable by environment,
+inherited oddly through rebases and cherry-picks — and the hash chain,
+for all its tamper-evidence, proves only <em>relationships between contents</em>,
+never wall-clock truth; an operator that needs trustworthy timing keeps
+it in volume two&rsquo;s estate, whose clock discipline it controls, joined to
+commits by hash. Third, blame and log answer about lines and files, not
+<em>behavior</em>: the commit that broke the system may be the innocent-looking
+enabler three weeks before the symptom, and no textual query proves
+causation. Which is precisely the boundary where reading ends and
+experiment begins: history as evidence says <em>what changed and what was
+claimed</em>; only running the code says <em>what worked</em>. The next chapter
+makes history runnable.</p>
+<h2>The inheritance briefing</h2>
+<p>Chapter 1 promised that a fresh clone gets a briefing before it gets
+work; this chapter can now write it. The queries, each bounded, each a
+line or two, composing the repository&rsquo;s introduction shot: identity and
+position — <code>remote -v</code>, current branch, <code>log -1 --format</code> for HEAD&rsquo;s
+claim and date; the shape of recent history — <code>log --oneline -15</code> read as
+a ledger-quality sample (are these single truths with real claims, or
+&ldquo;updates&rdquo;? — the answer calibrates how much to trust every other query);
+the cast — <code>shortlog -sn --since='3 months'</code> for who actually works here;
+the live topology — <code>branch -a --format</code> with upstream tracking, plus
+<code>main...origin/main</code> counts for local drift; the conventions — does
+<code>log --format=%B -5</code> show trailers, does the tree carry the policy files
+(ignore, attributes, hooks documentation) chapter 7 will look for; and
+the standing risks — <code>status --porcelain</code> for inherited dirt, <code>stash
+list</code> for a predecessor&rsquo;s abandoned intentions. Ten queries, one
+transcript page, and the operator knows what it holds, who it works
+beside, and which of this book&rsquo;s disciplines the project already
+practices — the estate briefing of volume two, executed against the
+ledger everyone shares. What the briefing cannot say is whether the
+inherited history <em>works</em> — whether HEAD builds, whether the tests pass,
+which commit broke what. Those are questions history answers only when
+interrogated experimentally, and the next chapter automates the
+interrogation.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch04.html">next: Diagnosis by Bisection →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-the-repository-is-the-ledger', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

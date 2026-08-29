@@ -235,7 +235,7 @@
       "subtitle": "Git for unattended operators",
       "shelf": "systems-craft",
       "tier": "pocket",
-      "status": "in_review",
+      "status": "published",
       "mascot": {
         "creature": "weaver ant",
         "accent": "#7FC24A"
@@ -263,7 +263,8 @@
       "cover_back": "assets/covers/rogerai-labs--git-for-unattended-operators-back.png",
       "cover_spread": "assets/covers/rogerai-labs--git-for-unattended-operators-spread.png",
       "aibn": "AIBN 297-00-0000006-6",
-      "added": "2026-08-28"
+      "added": "2026-08-28",
+      "read": "read/rogerai-labs--git-for-unattended-operators/"
     },
     {
       "id": "rogerai-labs--inference-on-the-edge",

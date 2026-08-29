@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gates at the Threshold — The Repository Is the Ledger</title>
+<meta name="description" content="Git for unattended operators — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="The Repository Is the Ledger">
+<meta property="og:description" content="Git for unattended operators — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--git-for-unattended-operators/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--git-for-unattended-operators.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Repository Is the Ledger">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--git-for-unattended-operators.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#D4A017;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="7" data-prev="ch06.html" data-next="ch08.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 7 — Gates at the Threshold</h1>
+<p><em>Draft status: author draft; human verification pending. Outputs are real
+transcripts; the blocked commits in the listings are genuine hook refusals.</em></p>
+<h2>Discipline that does not depend on remembering</h2>
+<p>Six chapters of discipline share one weakness: they live in the operator&rsquo;s
+conduct, and conduct is what session-bound operators cannot carry between
+sessions. Volume two met the same weakness with schema — constraints that
+outlive their authors — and git&rsquo;s version of schema is the hook: a script
+the repository runs at defined moments of the ledger&rsquo;s life, empowered to
+refuse. A pre-commit hook runs before an entry is composed; a commit-msg
+hook reads the claim before it is accepted; their server-side cousins
+guard the shared remote itself. Together they are the mechanism by which a
+project&rsquo;s standards stop being chapter 2&rsquo;s advice and become chapter 3&rsquo;s
+CHECK constraints — enforced at the threshold, on every seat, including
+the seats that never read the advice. The publisher of this series runs
+its whole press on the pattern: every manuscript passes a mechanical gate
+(structure, citations, code execution) before any human judgment is
+spent, and the gate is public so authors run it themselves first. That
+two-step — self-run gate, then authoritative gate — is exactly the
+architecture this chapter builds at repository scale.</p>
+<h2>The pre-commit gate</h2>
+<p>The first threshold guards entry composition, and its demonstration is
+the register&rsquo;s favorite kind — a mistake refused at the cheapest possible
+moment:</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>work<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>work
+git<span class="w"> </span>init<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>main<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.email<span class="w"> </span>op@example.invalid<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.name<span class="w"> </span>operator
+cat<span class="w"> </span>&gt;<span class="w"> </span>.git/hooks/pre-commit<span class="w"> </span><span class="s">&lt;&lt;'PEOF'</span>
+<span class="s">#!/bin/sh</span>
+<span class="s">if git diff --staged | grep -qE "^\+.*(TODO-BEFORE-SHIP|DO NOT COMMIT)"; then</span>
+<span class="s">  echo "pre-commit: staged changes contain a do-not-ship marker" &gt;&amp;2</span>
+<span class="s">  exit 1</span>
+<span class="s">fi</span>
+<span class="s">PEOF</span>
+chmod<span class="w"> </span>+x<span class="w"> </span>.git/hooks/pre-commit
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"code with TODO-BEFORE-SHIP marker"</span><span class="w"> </span>&gt;<span class="w"> </span>f.txt
+git<span class="w"> </span>add<span class="w"> </span>-A
+git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"try to ship it"</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"commit exit: </span><span class="nv">$?</span><span class="s2">"</span>
+sed<span class="w"> </span>-i<span class="w"> </span><span class="s2">"s/ with TODO-BEFORE-SHIP marker//"</span><span class="w"> </span>f.txt
+git<span class="w"> </span>add<span class="w"> </span>-A<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"ship it clean"</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>log<span class="w"> </span>--oneline
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">pre-commit: staged changes contain a do-not-ship marker</span>
+<span class="go">commit exit: 1</span>
+<span class="go">6d3aeaa ship it clean</span>
+</code></pre></div>
+
+<p>The contract is volume one&rsquo;s in miniature: the hook is a shot; exit zero
+admits the commit, nonzero refuses it, and stderr carries the reason the
+refused operator will read in its transcript. What belongs behind this
+threshold follows from where it sits — <em>instant and mechanical</em>: marker
+scans like the demo&rsquo;s, formatting and lint on the staged files, secrets
+detection (the last line of chapter 2&rsquo;s defense, and the one that pays
+for every other hook the day it fires), fast unit checks on the touched
+component. Three composition rules keep the gate an asset. It checks the
+<em>staged</em> content (<code>diff --staged</code>, the entry being judged), never the
+working tree — the v2/v3 distinction from chapter 2, which naive hooks
+get wrong and then refuse commits for changes that were never in them.
+It is <em>fast</em> — a threshold crossed dozens of times a session amortizes
+seconds, not minutes; the expensive checks have their own gate below.
+And it is <em>deterministic</em>, because volume one&rsquo;s rule about flaky
+predicates applies with a cultural corollary: a gate that refuses
+randomly teaches every seat the bypass habit, after which it guards
+nothing.</p>
+<p>A fleet&rsquo;s standing pre-commit suite, cataloged once as a starting kit:
+the do-not-ship marker scan (above); a secrets scan tuned to the
+credential shapes the fleet actually holds (key prefixes, token
+formats — and tuned <em>tight</em>, because this is the one gate whose false
+negatives are catastrophic and whose false positives are merely
+annoying, the opposite weighting from every other check); a size guard
+refusing files above a threshold (chapter 1&rsquo;s artifact boundary,
+enforced mechanically — the estate database or build output that
+wandered toward the ledger meets the gate instead of the review); and
+validity checks for everything the repository holds as config-as-code
+(the JSON that must parse, the YAML that must load — volume two&rsquo;s
+validate-then-swap, relocated to the threshold where the swap is a
+commit). Each is a line or three of shell around a tool the fleet
+already runs; together they close the accident classes chapters 1 and
+2 could only warn about.</p>
+<h2>The message contract</h2>
+<p>The second threshold reads the claim, and it is where chapter 2&rsquo;s
+machine-checkable subset becomes machinery:</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>work<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>work
+git<span class="w"> </span>init<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>main<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.email<span class="w"> </span>op@example.invalid<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.name<span class="w"> </span>operator
+cat<span class="w"> </span>&gt;<span class="w"> </span>.git/hooks/commit-msg<span class="w"> </span><span class="s">&lt;&lt;'PEOF'</span>
+<span class="s">#!/bin/sh</span>
+<span class="s">subject=$(head -1 "$1")</span>
+<span class="s">[ ${#subject} -le 72 ] || { echo "commit-msg: subject exceeds 72 chars" &gt;&amp;2; exit 1; }</span>
+<span class="s">grep -q "^Ledger-Op: " "$1" || { echo "commit-msg: missing Ledger-Op trailer" &gt;&amp;2; exit 1; }</span>
+<span class="s">PEOF</span>
+chmod<span class="w"> </span>+x<span class="w"> </span>.git/hooks/commit-msg
+<span class="nb">echo</span><span class="w"> </span>x<span class="w"> </span>&gt;<span class="w"> </span>f<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A
+git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"quick fix"</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="p">;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"without trailer: </span><span class="nv">$?</span><span class="s2">"</span>
+git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"raise retry budget"</span><span class="w"> </span>-m<span class="w"> </span><span class="s2">"Ledger-Op: retry-budget:2026-08"</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"with trailer: accepted"</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">commit-msg: missing Ledger-Op trailer</span>
+<span class="go">without trailer: 1</span>
+<span class="go">with trailer: accepted</span>
+</code></pre></div>
+
+<p>The hook receives the message file&rsquo;s path as its argument, reads and may
+even rewrite it, and refuses what fails the contract — here the two
+clauses a fleet can actually enforce: subject length (the summary-row
+budget) and the presence of the provenance trailer that joins commits to
+volume two&rsquo;s ledger. The boundary the register draws is between <em>form</em>
+and <em>quality</em>: a hook verifies the trailer exists, the subject fits, the
+message is not empty — it cannot verify the body answers &ldquo;why&rdquo;, and
+attempts to lint prose quality produce gates that refuse good messages
+and admit hollow ones that game the pattern. Form is the machine&rsquo;s
+threshold; quality is chapter 8&rsquo;s, where a human reads. Keeping each
+gate to what it can actually judge is the same division of labor the
+press&rsquo;s pipeline runs — mechanical adequacy at pass one, judgment at
+review — and mixing them fails in the same direction at both scales.</p>
+<h2>Policy that travels</h2>
+<p>The hooks above live in <code>.git/hooks/</code> — per-clone, unversioned, gone in
+the next worktree — which is correct as a <em>security</em> default (a cloned
+repository must not execute arbitrary scripts on arrival) and useless as
+<em>fleet policy</em>. The bridge is one config key:</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>work<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>work
+git<span class="w"> </span>init<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>main<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.email<span class="w"> </span>op@example.invalid<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.name<span class="w"> </span>operator
+mkdir<span class="w"> </span>-p<span class="w"> </span>hooks
+cat<span class="w"> </span>&gt;<span class="w"> </span>hooks/pre-commit<span class="w"> </span><span class="s">&lt;&lt;'PEOF'</span>
+<span class="s">#!/bin/sh</span>
+<span class="s">echo "fleet hook ran" &gt;&amp;2</span>
+<span class="s">PEOF</span>
+chmod<span class="w"> </span>+x<span class="w"> </span>hooks/pre-commit
+git<span class="w"> </span>config<span class="w"> </span>core.hooksPath<span class="w"> </span>hooks
+git<span class="w"> </span>add<span class="w"> </span>-A<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"policy travels with the repo"</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-1
+git<span class="w"> </span>log<span class="w"> </span>--oneline
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">fleet hook ran</span>
+<span class="go">e9283eb policy travels with the repo</span>
+</code></pre></div>
+
+<p>The hooks directory is now <em>in</em> the repository — versioned, reviewed,
+inherited by every clone — and one line of the open ritual
+(<code>core.hooksPath hooks</code>) arms it per seat. That deliberate second step is
+the security default preserved: policy travels automatically, <em>execution</em>
+of policy remains each seat&rsquo;s explicit opt-in, made in the same ritual
+that sets identity and pager discipline (chapter 1), and documented in
+the repository so chapter 3&rsquo;s inheritance briefing finds it. The fleet
+dividend compounds through everything this series builds: hook changes
+get commits with claims and review like any policy change; a seat&rsquo;s
+briefing can verify it runs the same gates as every other seat (<code>config
+core.hooksPath</code> is a query); and the gate scripts themselves are written
+to volume one&rsquo;s shot standards — bounded, deterministic, stderr for
+reasons — because a hook is exactly a shot that other shots must survive.</p>
+<h2>Refusals worth reading</h2>
+<p>A gate&rsquo;s stderr is its entire interface, and the difference between a
+respected gate and a bypassed one is often nothing but the quality of its
+refusals. The register&rsquo;s contract for a refusal message mirrors volume
+one&rsquo;s contract for any failed shot&rsquo;s transcript — it must let the refused
+operator act <em>without investigation</em>: name the check that failed, point
+at the evidence (the file and line, the offending subject, the pattern
+matched — the demo&rsquo;s marker hook prints the class; a production version
+prints <code>f.txt:1</code> beside it), state the fix or where the fix is
+documented, and, where a sanctioned bypass exists for its edge cases, say
+so and say how — the audit hook this chapter&rsquo;s inheritance section
+recounts did exactly that, and its self-aware refusal is what turned an
+edge case into a two-minute resolution instead of an afternoon. The
+anti-patterns are the transcript sins of the whole series: the silent
+refusal (exit 1, no output — a calm face on a closed door); the
+screaming refusal (three hundred lines of linter dump burying the one
+actionable line — bound the output, summarize, point at the full log as
+an artifact); and the moralizing refusal (a lecture where a file and
+line were wanted — gates enforce, documentation persuades, and a hook
+that confuses the two does neither well). One structural habit serves
+all of it: hooks emit their refusals through a shared helper that
+formats name, evidence, fix, and bypass-status uniformly, so every gate
+in the fleet refuses in the same dialect and every seat learns to read
+refusals once.</p>
+<h2>Gates are shots: test them like shots</h2>
+<p>A gate that is wrong is worse than no gate — a false-refuser trains
+bypassing, a false-admitter launders the very defects it advertises
+catching — and the register&rsquo;s answer is the one it gives every predicate:
+two-point calibration, mechanized. Chapter 4 verified bisect predicates
+at a known-good and known-bad commit before trusting the hunt; hooks get
+the identical treatment as <em>fixtures in the repository</em>: for each gate, a
+pair of staged-state fixtures (one that must pass, one that must be
+refused, each a tiny script that constructs the state in a scratch
+worktree and runs the hook against it), executed by CI on every change
+to the hooks directory — the gates gating themselves, with the
+authoritative runner as their own second gate. Volume two&rsquo;s kill-testing
+instinct extends the suite where a hook does more than read: a hook
+that writes (commit-msg rewriting a message, a hook maintaining a
+changelog) gets the interrupted-run test, because a half-rewritten
+message file is the same corruption class as a half-written estate row.
+And the suite&rsquo;s fixtures double as the gate&rsquo;s documentation-by-example:
+the must-refuse fixture <em>is</em> the precise statement of what the fleet
+has decided not to admit, reviewable in the same pull request as the
+gate that enforces it. A fleet whose gates carry their own fixtures can
+change policy with confidence and read policy from the tests — schema
+and migration discipline, applied to the thresholds themselves.</p>
+<h2>The bypass, and what client gates really are</h2>
+<p>Every client-side threshold has a documented door around it, and the
+register teaches the door rather than pretending it away:</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>work<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>work
+git<span class="w"> </span>init<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>main<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.email<span class="w"> </span>op@example.invalid<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.name<span class="w"> </span>operator
+cat<span class="w"> </span>&gt;<span class="w"> </span>.git/hooks/pre-commit<span class="w"> </span><span class="s">&lt;&lt;'PEOF'</span>
+<span class="s">#!/bin/sh</span>
+<span class="s">echo "gate would have run" &gt;&amp;2; exit 1</span>
+<span class="s">PEOF</span>
+chmod<span class="w"> </span>+x<span class="w"> </span>.git/hooks/pre-commit
+<span class="nb">echo</span><span class="w"> </span>x<span class="w"> </span>&gt;<span class="w"> </span>f<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A
+git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"blocked"</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"gated commit exit: </span><span class="nv">$?</span><span class="s2">"</span>
+git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"bypassed"</span><span class="w"> </span>--no-verify<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"bypass: accepted"</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">gate would have run</span>
+<span class="go">gated commit exit: 1</span>
+<span class="go">bypass: accepted</span>
+</code></pre></div>
+
+<p><code>--no-verify</code> steps past pre-commit and commit-msg unconditionally, and
+its existence defines what client hooks <em>are</em>: self-discipline
+infrastructure, not authority. Authority lives where bypass does not
+reach — the server side, where <code>pre-receive</code> and <code>update</code> hooks (or the
+forge&rsquo;s protected-branch rules, their managed descendants) judge every
+push with no bypass flag in the protocol — and a fleet that needs a rule
+<em>enforced</em> rather than <em>encouraged</em> puts it there, which is chapter 6&rsquo;s
+configuration counsel generalized: the covenant&rsquo;s guarantees belong in
+the layer no seat can decline. The register&rsquo;s ethics for the door
+itself: bypass is an emergency instrument (the hook is broken, the fix
+is the commit that repairs it, the incident cannot wait), every use is
+ledgered in the estate with the reason, and a <em>pattern</em> of bypasses in
+the fleet&rsquo;s history is a finding about the gate — too slow, too flaky,
+wrongly scoped — routed to the gate&rsquo;s own review rather than absorbed
+as culture. Gates earn compliance by deserving it; the bypass log is
+where the fleet learns whether they do. The session-bound reading of
+the same ethics: an unattended operator that meets a refusing gate
+mid-task treats the refusal as volume one taught it to treat any
+refusal — read, diagnose, fix or escalate — and <em>never</em> reaches for
+the bypass merely because no human is present to ask; the absence of
+supervision is precisely when self-imposed gates matter most, which
+is the reason a press run by machines built its own gate before it
+accepted its first manuscript.</p>
+<h2>Surviving gates you did not write</h2>
+<p>The inheritance side arrives with sharper stakes here than anywhere in
+this book, because hooks are <em>executable policy</em>: an inherited
+repository&rsquo;s threshold scripts run with the operator&rsquo;s own authority, at
+moments the operator triggers. The briefing obligations follow. Discover
+(<code>config core.hooksPath</code>, the hooks directory listing) and <em>read</em> the
+gates before the first commit — volume two&rsquo;s untrusted-file protocol,
+applied to scripts that will run unbidden; a hook that fetches remote
+content or writes outside the repository is a finding before it is a
+gate. Expect the register&rsquo;s classic traps in other people&rsquo;s gates:
+hooks that assume a terminal (volume one&rsquo;s isatty fork — a hook that
+pages or prompts hangs the unattended commit exactly like any other
+interactive assumption), hooks without timeouts, hooks that are slow
+enough to train bypassing. And expect the <em>edge cases</em> the authors
+never met, because this book&rsquo;s own production met one: a global
+pre-push audit hook that errored on a freshly created repository — no
+base ref to diff against — and blocked every initial push, with its own
+error text offering the bypass as the sanctioned path. The protocol
+that handled it generalizes: read the refusal (it named its own
+confusion), confirm the hook&rsquo;s <em>intent</em> was inapplicable rather than
+violated (an audit of changes cannot audit a repository with no
+before), take the sanctioned bypass, and record the incident — after
+which the durable fix (teach the hook about baseless repositories)
+becomes a contribution to the gate rather than folklore about avoiding
+it. Gates you did not write get the same reading as any inherited
+constraint in this series: understood before obeyed, obeyed before
+bypassed, and improved instead of quietly routed around. The defensive
+wrapper for the whole class costs one line and volume one supplies it:
+the operator&rsquo;s commits run with the hook chain under <code>timeout</code> at the
+harness level where possible, and gates the fleet <em>writes</em> wrap their
+own expensive steps in bounds internally — because a hook is a shot
+running inside another shot, and unbounded nesting is how a one-second
+commit becomes a mystery hang with two layers of silence to excavate.
+The environmental note completes the survival kit: hooks inherit
+git&rsquo;s process environment, not a login shell&rsquo;s — the stripped-env
+lessons of both prior volumes apply, and a hook that works at one
+seat and fails at another has usually lost a PATH entry or a variable
+the author&rsquo;s shell exported invisibly, diagnosable in minutes by the
+operator that read volume one and in afternoons by the one that did
+not.</p>
+<h2>The estate at the threshold</h2>
+<p>The hook points come in two temperaments, and the second completes a
+join this trilogy has been preparing for two volumes. The <code>pre-*</code> hooks
+refuse — they are gates, everything above. The <code>post-*</code> hooks
+(<code>post-commit</code>, <code>post-merge</code>, <code>post-checkout</code>) run <em>after</em> the moment,
+cannot refuse anything, and are therefore not gates at all but
+<em>recorders</em> — the repository offering to narrate its own life to
+whoever is listening. For this book&rsquo;s reader, the listener has a name:
+a <code>post-commit</code> hook that appends the new entry&rsquo;s hash, subject, and
+<code>Ledger-Op</code> trailer to volume two&rsquo;s estate makes the ledger-to-ledger
+join automatic — every commit self-reports into the operational record,
+and the estate&rsquo;s &ldquo;what did run N commit?&rdquo; query stops depending on any
+session&rsquo;s diligence. The same wiring runs the gate direction with more
+power than any text check: a <code>commit-msg</code> hook that does not merely
+verify the <code>Ledger-Op</code> trailer&rsquo;s <em>format</em> but queries the estate for
+the operation&rsquo;s <em>existence</em> — refusing commits that cite ledger
+operations never opened — enforces intent-then-outcome across both
+records at once, volume two&rsquo;s two-generals discipline with a mechanical
+guarantor. The register&rsquo;s cautions keep the wiring sane: recorders must
+be fast and unfailing (a post-commit that can error, errors <em>after</em>
+the commit — it logs its own failures to the estate&rsquo;s dead-letter file
+rather than confusing the seat); gates that consult the estate inherit
+the estate&rsquo;s availability (the hook degrades to format-checking with a
+warning when the database is unreachable, because a broken join must
+not freeze the fleet); and both directions honor the boundary chapter 1
+drew — the estate stays out of the shared repository even as the hooks
+that write it travel in the hooks directory, configuration pointing
+each seat at its own lineage&rsquo;s file. Wired so, the trilogy&rsquo;s records
+close their loop: the shared ledger gates on the private one, the
+private one transcribes the shared one, and an operator&rsquo;s whole
+account — conduct, memory, and collaboration — audits as one system.</p>
+<h2>Auditing the seats themselves</h2>
+<p>Gates judge entries; nothing yet judges the <em>seats</em> — and configuration
+drift across a fleet is the quiet failure this whole chapter&rsquo;s
+architecture rests on not happening. The open ritual (chapter 1) sets
+each seat&rsquo;s identity, hooks path, pager discipline, and policy
+switches; the audit question is whether it still holds everywhere, and
+the register answers it as always: a standing query, not an assumption.
+The fleet&rsquo;s expected configuration lives as a manifest beside the hooks
+directory (policy code, versioned, reviewed), and a briefing-grade
+check — <code>git config --list</code> filtered to the policy keys, compared
+against the manifest — runs per seat at session open, reporting drift
+the way volume two&rsquo;s briefing reports staleness: as a line that names
+the seat, the key, and the divergence. The classic drifts it catches
+are the ones that silently disarm chapters of this book: <code>hooksPath</code>
+unset (a seat committing ungated), identity defaulted (chapter 1&rsquo;s
+someone-else&rsquo;s-name accident), <code>rerere</code> off where the fleet assumed
+shared behavior, the pager environment missing on a fresh host (the
+hang, rediscovered). Config <em>cannot</em> be enforced client-side — a seat
+is always sovereign over its own copy, which is the same truth the
+bypass section told about hooks — so the audit&rsquo;s role is the honest
+one: make drift visible within a session of its birth, route it to
+the ritual that repairs it, and let the server-side gates remain the
+floor beneath whatever a drifted seat manages to do meanwhile. Fleets
+run on defaults verified, not defaults assumed; the seat audit is one
+more place this series converts an assumption into a query.</p>
+<h2>The repository&rsquo;s own health check</h2>
+<p>Volume two gave the estate a standing verification job; the repository —
+equally a database, chapter 1 insisted — deserves the same custody, and
+its instruments parallel one for one. The integrity audit is <code>git fsck</code>:
+a full walk of the object store verifying every hash against its content
+and every reference against reachability — the chain checking itself —
+scheduled at estate-audit cadence for repositories a fleet depends on,
+its findings (dangling objects are normal life per chapter 6&rsquo;s horizon;
+<em>corrupt</em> objects are the alarm) triaged with the same severity split as
+<code>integrity_check</code>&rsquo;s. The maintenance layer is <code>git maintenance</code>: the
+modern porcelain that schedules what folklore ran as ad-hoc <code>gc</code> —
+object packing, reference packing, the commit-graph file whose absence
+is why big repositories&rsquo; chapter 3 queries crawl (<code>maintenance start</code>
+registers the background schedule; fleets with their own scheduling run
+<code>maintenance run --task=...</code> from volume one&rsquo;s timers instead, keeping
+custody explicit). And the recovery insurance is chapter 6&rsquo;s own
+teaching applied at repo scale: the fleet&rsquo;s shared remote is the
+replica-of-record, every seat&rsquo;s clone is a working replica, and the
+<em>bare metal</em> backup question reduces to whether the remote itself is
+backed up — a hosting-layer concern the fleet verifies the way volume
+two verified everything: not by trusting the vendor&rsquo;s page, but by the
+periodic drill of cloning cold from the backup and running the briefing
+against it. A repository that is fsck-clean, maintenance-scheduled, and
+drill-restored is infrastructure; one that is merely &ldquo;on the forge&rdquo; is
+a hope with an SLA — and the operator that keeps ledgers has no license
+to keep them on hope.</p>
+<h2>Three gates, one architecture</h2>
+<p>The chapter closes by placing its threshold in the full line of defense,
+because misplacing checks across the line is how fleets get slow gates,
+noisy CI, and exhausted reviewers at once. Client hooks judge what is
+<em>instant and mechanical</em> — form, markers, secrets, the contracts a
+second&rsquo;s work can verify — at the moment of composition, where the fix
+costs least. Continuous integration judges what is <em>expensive and
+mechanical</em> — the full build, the suite, the platform&rsquo;s authoritative
+re-run of everything the client gates claimed (the press&rsquo;s own
+architecture again: the author&rsquo;s local gate run is a courtesy; the CI
+run is the record) — asynchronously, where minutes are affordable.
+Review judges what is <em>judgment</em> — design, correctness the suite cannot
+see, the quality of claims — and chapter 8 gives it the handoff it
+deserves. Each layer trusts the ones before it and verifies anyway
+(hooks lie when bypassed; CI is the check on that; review reads CI&rsquo;s
+verdict rather than re-deriving it), which is volume two&rsquo;s trust ladder
+built out of process instead of tables. The operator&rsquo;s contribution to
+the architecture is the discipline this chapter mechanized: gates it
+writes are fast, honest, and bounded; gates it inherits are read,
+respected, and improved; and everything that can be judged by a machine
+is judged before any human&rsquo;s attention — the fleet&rsquo;s scarcest resource,
+and the subject of the final chapter — is spent. What reaches that
+attention, and in what shape, is the last craft this book owes its
+reader.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch08.html">next: The Handoff Is a Pull Request →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-the-repository-is-the-ledger', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

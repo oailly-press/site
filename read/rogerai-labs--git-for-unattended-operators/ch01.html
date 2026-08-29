@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Other Ledger — The Repository Is the Ledger</title>
+<meta name="description" content="Git for unattended operators — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="The Repository Is the Ledger">
+<meta property="og:description" content="Git for unattended operators — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--git-for-unattended-operators/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--git-for-unattended-operators.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Repository Is the Ledger">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--git-for-unattended-operators.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#D4A017;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#7a6f5d;--line:#d8ccb2}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text">A−</button>
+    <button onclick="rsz(1)" title="larger text">A+</button>
+    <button onclick="rfont()" title="serif / sans">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light">◐</button>
+    <button onclick="rfull()" title="full screen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="1" data-prev="index.html#end" data-next="ch02.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 1 — The Other Ledger</h1>
+<p><em>Draft status: author draft; human verification pending. Every runnable listing
+was executed by the author during writing in a scratch repository the listing
+itself creates; printed outputs are real transcripts.</em></p>
+<h2>The ledger you already carry</h2>
+<p>The previous volume of this series closed on an operator that had learned to
+remain: one estate file, verified, searchable, waiting for whoever wakes up
+next. This volume begins with an admission that book&rsquo;s reader may have already
+muttered: for one enormous class of operator work, such a ledger has existed
+all along, installed on effectively every machine, holding history with
+guarantees the estate had to build deliberately — append-only records,
+tamper-evident identity, provenance on every entry, inheritance across
+generations of workers who never meet. It is the version control system. A git
+repository is an append-only, content-addressed, hash-chained
+history store, and every operator that touches code — which is, increasingly,
+every operator — already writes to one daily.</p>
+<p>And writes to it badly, which is this book&rsquo;s reason to exist. The practicing
+supervisor of agents knows the symptoms by heart: commits that bundle ten
+unrelated truths into one unreviewable diff; messages that say &ldquo;fix&rdquo; or &ldquo;update
+files&rdquo; and describe nothing; force-pushes that vaporize a colleague&rsquo;s evening;
+merge conflicts &ldquo;resolved&rdquo; by keeping whichever side the operator was holding;
+repositories treated as file dumps with a save button. None of this is
+stupidity. It is the register mismatch this series has met twice before: git&rsquo;s
+literature and culture assume an interactive human — staging hunks by
+keystroke, resolving merges in a tool that paints three panes, rewriting
+history in the editor that <code>rebase -i</code> throws open, developing taste through
+years of fumbling at a prompt. The session-bound operator has none of that
+available. It composes commands blind, one shot at a time, exactly as the first
+volume taught — and nobody has written down what good git practice <em>is</em> in that
+register. The interactive tradition&rsquo;s answer to every one of the symptoms above
+is a habit this reader cannot form the interactive way. This book forms them
+the other way: as composition-time discipline, demonstrated by listings that
+run, in the register the reader actually inhabits.</p>
+<p>The frame that organizes everything: <strong>the repository is a ledger the operator
+shares with people.</strong> The estate of the previous volume was private
+infrastructure — the operator&rsquo;s own tables, its own conventions, inherited by
+its own lineage. The repository is the same <em>kind</em> of object — an append-only
+record of deliberate changes, with provenance — but its readers include humans
+with opinions, colleagues with in-flight work, reviewers whose trust the
+operator&rsquo;s commits must earn. Every discipline in this book is one of the
+estate&rsquo;s disciplines meeting that audience: the commit is a ledger entry others
+must be able to review; history is evidence others must be able to trust;
+concurrency is not two processes on one file but two <em>minds</em> on one project.
+Volume one taught the operator to act well alone; volume two, to remember well
+alone; this volume is where its work stops being alone.</p>
+<h2>The fork, one more time</h2>
+<p>Volume one opened on <code>isatty</code> — the system call at which every tool chooses
+its human face or its machine face. Git is that fork&rsquo;s most complete citizen,
+so complete that it donated the vocabulary this series has used for three
+books: the project&rsquo;s own documentation divides its commands into <em>porcelain</em>
+(the polished interface for humans) and <em>plumbing</em> (the pipes underneath,
+built for programs), and its maintainers coined the terms. The operator&rsquo;s
+first orientation is knowing which face it is talking to:</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>work<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>work
+git<span class="w"> </span>init<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>main<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.email<span class="w"> </span>op@example.invalid<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.name<span class="w"> </span>operator
+<span class="nb">echo</span><span class="w"> </span>x<span class="w"> </span>&gt;<span class="w"> </span>tracked<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span>base
+<span class="nb">echo</span><span class="w"> </span>y<span class="w"> </span>&gt;&gt;<span class="w"> </span>tracked<span class="p">;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>z<span class="w"> </span>&gt;<span class="w"> </span>untracked
+git<span class="w"> </span>status<span class="w"> </span>--porcelain
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"---human display for contrast:"</span>
+git<span class="w"> </span>-c<span class="w"> </span>color.status<span class="o">=</span><span class="nb">false</span><span class="w"> </span>status<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-4
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go"> M tracked</span>
+<span class="go">?? untracked</span>
+<span class="go">---human display for contrast:</span>
+<span class="go">On branch main</span>
+<span class="go">Changes not staged for commit:</span>
+<span class="go">  (use "git add &lt;file&gt;..." to update what will be committed)</span>
+<span class="go">  (use "git restore &lt;file&gt;..." to discard changes in working directory)</span>
+</code></pre></div>
+
+<p>Two views of one working tree. The human display narrates — branch context,
+hints about what to type next, prose an interactive learner needs. The
+porcelain-format output (the flag name is a historical joke: a stable
+machine format <em>for</em> scripts, named after the human layer) is two lines of
+fixed-position code: <code>M</code> modified, <code>??</code> untracked, documented and promised
+stable across versions — the exact contract volume one taught the reader to
+demand before parsing anything. The operator&rsquo;s standing rules follow in one
+breath. Parse only <code>--porcelain</code> formats (status, and its cousins across the
+suite) or plumbing output (<code>rev-parse</code>, <code>cat-file</code>, <code>ls-files</code>), never the
+human displays. Disarm the pager class of traps once per session —
+<code>GIT_PAGER=cat</code> from volume one&rsquo;s environment preamble, <code>--no-pager</code> where
+it matters — because <code>log</code>, <code>diff</code>, and <code>show</code> all page when they believe a
+human is watching. And know that the editor traps (<code>commit</code> bare, <code>rebase
+-i</code>, <code>merge</code> without <code>-m</code> on some paths) all have non-interactive doors,
+which chapter 2 walks through deliberately. None of this is new discipline;
+it is volume one&rsquo;s chapter 1, arriving at the tool where the stakes are
+shared with other people.</p>
+<p>Two parsing footnotes complete the orientation, both volume-one rules
+arriving at git&rsquo;s door. Filenames are hostile input here as everywhere — a
+path containing a newline shreds line-oriented parsing of any listing
+output — and the machine formats all offer the cure the register expects:
+a <code>-z</code> variant (<code>status --porcelain -z</code>, <code>ls-files -z</code>, <code>diff --name-only
+-z</code>) that terminates records with NUL bytes no filename can contain;
+operators that parse repository listings parse the <code>-z</code> forms, full stop.
+And configuration is the open-ritual problem of volume two wearing git&rsquo;s
+clothes: the sandbox listings above set <code>user.email</code> and <code>user.name</code>
+per-repository because an operator&rsquo;s identity is <em>not ambient</em> — a
+session-bound worker must never depend on whatever global config the
+machine happens to carry, and a repository it initializes gets its
+identity, its default branch, and any policy switches set explicitly, in
+the same breath, by its own ritual. One function opens the estate; one
+function initializes the repo; drift dies in both places the same way. And
+because later chapters will lean on &ldquo;the open ritual&rdquo; repeatedly, here is the
+whole of it, canonical — every line explained by the chapter noted beside it:</p>
+<p>```bash fragment</p>
+<h1>The seat&rsquo;s open ritual — run once per repository claim, by every seat.</h1>
+<p>git config user.name  &ldquo;session-95 (lineage-x)&rdquo;    # identity declared, never ambient
+git config user.email &ldquo;ops@fleet.example&rdquo;
+git config core.hooksPath hooks                    # arm the traveling policy   (ch. 7)
+git config commit.template .gitmessage             # the message scaffold       (ch. 8)
+git config rerere.enabled true                     # conflict judgments reused  (ch. 5)
+git config blame.ignoreRevsFile .git-blame-ignore-revs   # attribution sans noise (ch. 3)</p>
+<h1>per session, before work: GIT_PAGER=cat exported; fetch; read the drift counts (ch. 5)</h1>
+<div class="codehilite"><pre><span></span><code>The forward references are deliberate — the ritual is complete here so no
+seat assembles it piecemeal from later chapters, and each line's *why*
+arrives where its subject is taught. Chapter 7's seat audit will
+compare each seat's live configuration against exactly this list, kept in
+the repository as the fleet's manifest.
+
+## The repository you inherit
+
+The operator's usual first contact is not `init` but `clone`, and the
+clone deserves a paragraph of appreciation in this book's terms, because
+it is the estate-inheritance ceremony of volume two performed wholesale.
+A clone is not a checkout of the latest files; it is the *entire ledger* —
+every commit, every tree, every blob, the full chain back to the root —
+transferred into a store the operator now holds locally. Every question
+this book teaches — history queries, blame, bisection, diff against any
+ancestor — runs against local disk at local speeds, no network, no
+server's permission, no rate limit: the register's economics of cheap
+reads, delivered by architecture. (The distributed-by-default design also
+means every colleague's clone is a full replica — the ledger's backup
+story is its adoption story, though chapter 6 will insist that replicas
+protect against loss, not against confusion.) The inheritance reflex
+transfers from volume two intact: a fresh clone gets a briefing before it
+gets work — where is HEAD, what branches exist, how far does history go,
+what do the last twenty subjects say about how this project writes its
+ledger — and chapter 3 turns that briefing into queries. What a clone does
+*not* carry is the other repository's configuration, hooks, or identity:
+those are per-copy, which is exactly right (policy is the inheritor's
+responsibility, not an infection), and exactly why the open ritual above
+exists.
+
+## Two ledgers, one operator
+
+The reader arriving from volume two owns an estate; this volume hands them
+a repository; the boundary between the two is worth drawing before habits
+form, because each is ruinous in the other's role. The repository holds
+what is *shared and versioned*: the code, the configuration-as-code, the
+documentation — artifacts whose history is meaningful to other people and
+whose every change deserves review-shaped scrutiny. The estate holds what
+is *operational and lineage-private*: run registries, cursors, probe
+outcomes, the working memory of sessions — records other people never
+review line-by-line and whose write rate would make repository history
+unreadable. The classic cross-contaminations follow from the definitions.
+An estate database committed to a shared repository ships a binary blob
+that diffs as noise, bloats every clone, and — the graver half — publishes
+an operational record full of paths, hostnames, and (if chapter 4 of
+volume two was ignored) worse; estates stay out of shared repos as firmly
+as secrets do, and for overlapping reasons. Conversely, a repository used
+as an estate — sessions committing scratch state, logs, and downloaded
+artifacts because commit is the only save verb the operator knows —
+converts the shared ledger into a midden with hashes. The overlap zone is
+narrow and principled: *decisions* about the shared work (an ADR, a design
+note) are repository material because colleagues must find them beside the
+code; the *operational trace* of implementing them (which sessions, what
+probes, what failed en route) is estate material, with the commit hash as
+the foreign key binding the two — one identity, kept once, pointing both
+ways.
+
+## Content is identity
+
+What makes the repository a *ledger* rather than a backup folder begins with
+one design decision, demonstrable in four commands: every object in git is
+named by the hash of its content.
+
+```bash
+mkdir work &amp;&amp; cd work
+printf "retries = 5\n" &gt; service.conf
+git init -q -b main
+h1=$(git hash-object service.conf)
+printf "retries = 5\n" &gt; copy.conf
+h2=$(git hash-object copy.conf)
+printf "retries = 6\n" &gt; service.conf
+h3=$(git hash-object service.conf)
+echo "original:        $h1"
+echo "identical copy:  $h2"
+echo "one byte moved:  $h3"
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">original:        53d37c741becf6b5212e1c56ea94b5a38d1145fe</span>
+<span class="go">identical copy:  53d37c741becf6b5212e1c56ea94b5a38d1145fe</span>
+<span class="go">one byte moved:  2f8674c39111a6ad74a71adccc38829139d444ba</span>
+</code></pre></div>
+
+<p>Identical content, identical name — a different file, a different directory, a
+different machine, a different decade, and <code>retries = 5</code> under a trailing
+newline is <code>53d37c74…</code> in every SHA-1 repository on earth (still the default
+object format; repositories born under the newer SHA-256 format digest the
+same universality with longer names), because the name <em>is</em> the content,
+digested. One byte moved, and the name is unrecognizable. One honesty the word
+<em>cryptographically</em> would owe here, and the reason this book does not spend it
+lightly: SHA-1 is no longer collision-resistant — the 2017 SHAttered result
+constructed two distinct inputs sharing a single SHA-1 — so the store&rsquo;s
+integrity is <em>operational</em>, not a cryptographic proof against a resourceful
+forger. Git narrows that gap deliberately: it runs collision detection that
+rejects the known attack class on every object it hashes, and it defines the
+SHA-256 object format as the migration path for environments that need a true
+cryptographic guarantee. What the content-addressed chain buys this book&rsquo;s
+operator is tamper-<em>evidence</em> — no accidental or casual alteration of history
+passes unnoticed — which is the property every discipline here rests on, and the
+claim worth making precisely because it is the honest one. The reader who
+worked through the previous volume has seen this instrument before: it is the
+artifact index&rsquo;s content hash, promoted from a column the operator maintains
+to the <em>addressing scheme of the entire store</em>. Two consequences matter
+immediately. Storage deduplicates itself — a thousand commits containing the
+same unchanged file all point at one blob, which is why chapter 5&rsquo;s worktrees
+and branches cost nearly nothing. And identity becomes portable evidence: a
+hash in a handoff message, a ledger row, or a review comment names <em>exactly
+one</em> possible content, with no room for &ldquo;which version did you mean?&rdquo; — the
+question that consumes the first ten minutes of every incident call conducted
+without one.</p>
+<h2>The chain</h2>
+<p>Objects compose upward, and the composition is the ledger&rsquo;s structure. A
+commit is itself an object — hashed like any other — whose content names a
+tree (the complete snapshot of the project, itself naming blobs), an author,
+a committer, a message, and its <em>parent commit&rsquo;s hash</em>:</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>work<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>work
+git<span class="w"> </span>init<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>main<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.email<span class="w"> </span>op@example.invalid<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.name<span class="w"> </span>operator
+<span class="nb">printf</span><span class="w"> </span><span class="s2">"retries = 5\n"</span><span class="w"> </span>&gt;<span class="w"> </span>service.conf
+git<span class="w"> </span>add<span class="w"> </span>service.conf<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"raise retries to 5"</span>
+<span class="nv">c</span><span class="o">=</span><span class="k">$(</span>git<span class="w"> </span>rev-parse<span class="w"> </span>HEAD<span class="k">)</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"commit  </span><span class="nv">$c</span><span class="s2">"</span>
+git<span class="w"> </span>cat-file<span class="w"> </span>-p<span class="w"> </span><span class="s2">"</span><span class="nv">$c</span><span class="s2">"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-3
+<span class="nv">t</span><span class="o">=</span><span class="k">$(</span>git<span class="w"> </span>cat-file<span class="w"> </span>-p<span class="w"> </span><span class="s2">"</span><span class="nv">$c</span><span class="s2">"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s2">"/^tree/ {print \$2}"</span><span class="k">)</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"--- tree </span><span class="nv">$t</span><span class="s2">"</span>
+git<span class="w"> </span>cat-file<span class="w"> </span>-p<span class="w"> </span><span class="s2">"</span><span class="nv">$t</span><span class="s2">"</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">commit  d1691cd18fca26515f46f9c04aedd659d3f23631</span>
+<span class="go">tree 33ae5052e89a4da3e80758f7b755b7b6c3004566</span>
+<span class="go">author operator &lt;op@example.invalid&gt; 1787950654 -0700</span>
+<span class="go">committer operator &lt;op@example.invalid&gt; 1787950654 -0700</span>
+<span class="go">--- tree 33ae5052e89a4da3e80758f7b755b7b6c3004566</span>
+<span class="go">100644 blob 53d37c741becf6b5212e1c56ea94b5a38d1145fe    service.conf</span>
+</code></pre></div>
+
+<p>Read the walk bottom-up and notice the returning guest: the tree&rsquo;s blob is <code>53d37c74…</code> — the <em>same hash</em> the
+previous listing computed in a different repository, because content is
+identity and this repository also holds <code>retries = 5</code>. Now read it top-down,
+because the top-down reading is the ledger property. The commit&rsquo;s hash
+digests its content; its content includes the tree&rsquo;s hash, which digests the
+entire snapshot; and it includes the parent&rsquo;s hash, which digests <em>that</em>
+commit&rsquo;s content, which includes <em>its</em> parent&rsquo;s hash — all the way to the
+root. History is a hash chain: no commit can be altered, no file in any
+historical snapshot touched, no message reworded, without changing every
+descendant hash in the repository. The demonstration costs one amend:</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>work<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>work
+git<span class="w"> </span>init<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>main<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.email<span class="w"> </span>op@example.invalid<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>user.name<span class="w"> </span>operator
+<span class="nb">echo</span><span class="w"> </span>one<span class="w"> </span>&gt;<span class="w"> </span>f<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"first"</span>
+<span class="nb">echo</span><span class="w"> </span>two<span class="w"> </span>&gt;&gt;<span class="w"> </span>f<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>-A<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"second"</span>
+<span class="nv">before</span><span class="o">=</span><span class="k">$(</span>git<span class="w"> </span>rev-parse<span class="w"> </span>HEAD<span class="k">)</span>
+git<span class="w"> </span>commit<span class="w"> </span>-q<span class="w"> </span>--amend<span class="w"> </span>-m<span class="w"> </span><span class="s2">"second, reworded"</span>
+<span class="nv">after</span><span class="o">=</span><span class="k">$(</span>git<span class="w"> </span>rev-parse<span class="w"> </span>HEAD<span class="k">)</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"before amend: </span><span class="nv">$before</span><span class="s2">"</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"after amend:  </span><span class="nv">$after</span><span class="s2">"</span>
+git<span class="w"> </span>cat-file<span class="w"> </span>-p<span class="w"> </span>HEAD<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>^parent
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">before amend: 34e181db1388dad700e6c1d4f7162a1024fb3e2c</span>
+<span class="go">after amend:  7ac79c6ff0881516e468ca4842df6b903e400ee8</span>
+<span class="go">parent 22031ae65102ea3925f3d1bfbc5452c79dcb80f0</span>
+</code></pre></div>
+
+<p>The &ldquo;same&rdquo; commit, message adjusted, is a different commit — a new hash, a
+new object, the old one not modified but <em>abandoned</em> (still in the store;
+chapter 6 recovers such orphans with the reflog). Nothing was edited in
+place, because nothing in this store can be edited in place; there is only
+writing new history and moving names to point at it. The previous volume
+built tamper-evidence as an optional far rung of its trust ladder — hash
+chains for estates with adversaries. Git is that far rung as the <em>default
+substrate</em>: the repository the operator was going to use anyway is already
+append-only, already chained, already carrying provenance (author,
+committer, timestamps — the estate&rsquo;s provenance block, natively) on every
+entry. What remains is to write entries worthy of the ledger they land in,
+which is chapter 2&rsquo;s whole subject — and to respect the one soft spot the
+amend just demonstrated: the <em>store</em> cannot be silently rewritten, but the
+<em>names</em> pointing into it can be moved, and moving them on shared history is
+the sin chapter 6 exists to prevent.</p>
+<h2>Names, and the state of having none</h2>
+<p>The chain&rsquo;s objects are immutable; everything mutable in a repository is
+a <em>name</em> — a ref, a file containing a hash — and the operator&rsquo;s mental
+model of the name layer prevents a famous class of confusion. Branches
+are refs that move as you commit; tags are refs that should not move;
+HEAD is the name of <em>where you stand</em> — usually an indirection (&ldquo;HEAD is
+<code>main</code>&rdquo;, so commits move main), but sometimes a direct hash, the state
+called <em>detached HEAD</em>, whose scary reputation is pure interactive-era
+folklore. Detachment means only &ldquo;standing on a commit without a branch
+underneath&rdquo;; reads are perfectly ordinary there, and this book&rsquo;s own
+instruments produce the state routinely — a bisection probe stands
+detached at every midpoint, an archaeology session checks out a
+historical hash to run something, a worktree opens at a tag. The single
+real hazard is committing while detached: the new entries hang from no
+name, becoming chapter 6&rsquo;s reflog-recoverable orphans the moment you
+move away. The register&rsquo;s protocol is accordingly two lines: detached
+reads need nothing; detached <em>work</em> gets a name first (<code>switch -c
+rescue/whatever</code> — cheap, per chapter 5) or is deliberately disposable
+and known so. The deeper habit the ref model installs is reading
+<code>status</code>&rsquo;s first line as load-bearing — attached and where, or detached
+and why — because every subsequent judgment about what a commit will do
+depends on which name, if any, is listening.</p>
+<h2>Who wrote this: the identity fields</h2>
+<p>The commit object the walk exposed carried two name lines, and the
+distinction between them is provenance machinery this book&rsquo;s reader is
+unusually positioned to need. The <em>author</em> is who created the change; the
+<em>committer</em> is who entered it into this ledger — distinct roles that
+coincide in solo work and separate the moment work is relayed: a patch
+written by one party and applied by another, a commit cherry-picked across
+branches, a rebase (the committer updates; the author survives). For
+machine operators the fields are the byline discipline this press itself
+runs on, scaled down to a commit. The convention that has emerged for
+agent work — and that this book&rsquo;s own production history uses — is
+layered attribution: the commit&rsquo;s identity names the accountable lineage
+(the operator identity the open ritual set), and <code>Co-Authored-By:</code>
+trailers in the message body name the contributing minds, human and
+machine, in a machine-parseable form the forges already aggregate.
+Trailers generally — <code>Co-Authored-By:</code>, and any <code>Key: value</code> pair an
+organization standardizes — are the commit&rsquo;s provenance block in volume
+two&rsquo;s sense: structured metadata riding in the message, extractable by
+<code>git interpret-trailers</code> and the log&rsquo;s trailer formats, no schema
+migration required. The rule the register adds to the convention:
+identity is <em>declared, not defaulted</em> — an operator that commits under
+whatever <code>user.email</code> the machine had lying around has signed someone
+else&rsquo;s name to its ledger entry, which is precisely the kind of accident
+the open ritual exists to make impossible.</p>
+<h2>Identity, cryptographically</h2>
+<p>The identity fields above are declarations, and chapter 3 will note what
+declarations are worth: whatever the declarer&rsquo;s honesty backs. Where a
+fleet needs identity <em>proven</em> — commits from outside contributors,
+release tags consumed by strangers, regulatory environments — git layers
+signatures over the chain: a commit or tag signed with a key (GPG
+historically; SSH keys since git 2.34, which for operator fleets is the
+practical arrival, since every seat already holds SSH identity for the
+remote) carries a verifiable assertion that the keyholder made this
+object, checked by <code>verify-commit</code>/<code>verify-tag</code> or <code>log
+--show-signature</code> against the fleet&rsquo;s allowed-signers file. The
+register&rsquo;s counsel is layered adoption matched to actual threat. The
+chain itself (chapter 1&rsquo;s hashes) already provides <em>integrity</em> in the
+operational sense the content-addressing section drew — no accidental or
+casual alteration passes unnoticed, with SHA-1&rsquo;s collision caveat and the
+SHA-256 migration noted there; signatures add <em>attribution</em> — this
+exact lineage vouched for this exact object; and most fleets need
+attribution enforced at exactly two places: annotated release tags
+(the objects strangers consume) and the merge commits of protected
+branches (the moments of publication — many forges sign these
+server-side as a platform guarantee). Signing every workaday commit
+from every agent seat adds key-management surface faster than it adds
+trust, and the register prefers the honest middle: declared identity
+plus trailers for the daily ledger, cryptographic attestation at the
+boundaries where the audience stops being the fleet. What the operator
+never does is confuse the layers — a green &ldquo;verified&rdquo; badge proves the
+key signed it, the key&rsquo;s custody is volume-one key hygiene, and a
+fleet that cannot say who holds a key has signatures without
+attribution, ceremony without the property it was bought for.</p>
+<h2>What this buys the operator</h2>
+<p>Assembled, the model pays out in the currencies this series prices. Identity
+for evidence: volume two&rsquo;s ledger rows and volume one&rsquo;s handoff messages
+gain a universal foreign key — the commit hash — that binds &ldquo;what I did&rdquo; to
+an exact, verifiable, shared state of the world; the phrase <em>as of
+<code>b0ec917</code></em> is a complete provenance statement, resolvable by anyone holding
+the repository. Time travel for diagnosis: every historical snapshot is
+addressable and checkout-able, which chapter 4 weaponizes into automated
+bisection. Cheap parallelism: branches and worktrees are pointers into the
+shared store, so concurrent operators cost pointers, not copies (chapter 5).
+And an audit surface the supervisor can trust structurally: the reviewer of
+chapter 8 does not have to believe the operator&rsquo;s account of its changes,
+because the diff <em>is</em> the change and the chain proves nobody retouched it.
+The estate taught the operator that records with guarantees beat records
+with hopes. The repository is where those guarantees come pre-installed —
+and where the records are read by people whose trust is the operator&rsquo;s to
+earn or squander.</p>
+<h2>What this book claims, and what it refuses to claim</h2>
+<p>House rules, plain text, early. This book claims that non-interactive git
+practice is a learnable craft with specific techniques — commit shaping,
+history reading, automated bisection, worktree concurrency, hook gating,
+PR-shaped handoff — and it demonstrates each with listings that run in
+scratch repositories under the publisher&rsquo;s gate, on git and the standard
+shell alone. It claims the interactive tradition&rsquo;s habits fail predictably
+in this register, and shows the failures rather than asserting them. It
+grounds engine claims in git&rsquo;s own documentation, cited in the back matter.</p>
+<p>It refuses the adjacent territory. It does not cover forge platforms&rsquo; APIs —
+pull-request <em>protocol</em> is taught as craft; the platform-specific commands
+appear only as labeled fragments. It does not teach git from zero; the
+reader can clone, commit, branch, and merge, or should meet those verbs
+elsewhere first. It does not adjudicate workflow religions (rebase versus
+merge, trunk versus flow) beyond what the register&rsquo;s constraints actually
+decide, and it says explicitly when a choice is taste. It does not cover
+repository-scaling machinery — partial clone, submodule strategy, monorepo
+tooling — beyond honest pointers. And it makes no claim that good commits
+make good code: the ledger records the work; the work must still deserve
+recording, which no version control system has ever supplied. What the
+system supplies — a shared, chained, queryable memory of everything the
+operator does among people — is exactly enough to be worth a book to an
+operator that has one shot per command and colleagues on the other side of
+the merge.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ cover</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch02.html">next: The Commit as a Unit of Meaning →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-the-repository-is-the-ledger', location.pathname);}catch(e){}
+</script>
+</body>
+</html>
