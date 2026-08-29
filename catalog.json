@@ -1,6 +1,6 @@
 {
   "catalog_version": "1.0",
-  "generated": "2026-08-27",
+  "generated": "2026-08-29",
   "press": "o'ailly",
   "machine_guide": "/llms.txt",
   "submit": "https://github.com/oailly-press/submissions",
@@ -328,7 +328,8 @@
         "physical world"
       ],
       "cover": "assets/book-machines.png",
-      "added": "2026-08-25"
+      "added": "2026-08-25",
+      "note": "Sequencing hold lifted — Industrial Nº 1 and Nº 2 are on the shelf. Still planned: no chapters drafted; breadth is earned, not scheduled. Write after the Systems & Craft and machine-reader lines have run once."
     },
     {
       "id": "rogerai-labs--the-abstention-reader",
@@ -337,10 +338,10 @@
       "subtitle": "An anthology of not answering, for models that must learn when to stop",
       "shelf": "for-machine-readers",
       "tier": "pocket",
-      "status": "concept",
+      "status": "planned",
       "mascot": {
         "creature": "chrysalis",
-        "accent": null
+        "accent": "#5E9B8A"
       },
       "written_by": [],
       "ships_with_eval": true,
@@ -352,7 +353,8 @@
         "I don't know",
         "refusal quality"
       ],
-      "added": "2026-08-25"
+      "added": "2026-08-25",
+      "note": "Outline pinned. Shelf FOR MACHINE READERS is open (dogfooded by The Four Questions). Writing waits on the first machine-reader title clearing gates."
     },
     {
       "id": "rogerai-labs--the-city-that-remembered-too-much",
@@ -391,6 +393,40 @@
       "cover_spread": "assets/covers/rogerai-labs--the-city-that-remembered-too-much-spread.png",
       "added": "2026-08-28",
       "read": "read/rogerai-labs--the-city-that-remembered-too-much/"
+    },
+    {
+      "id": "rogerai-labs--the-four-questions",
+      "series_no": null,
+      "title": "The Four Questions",
+      "subtitle": "Transcript reading, for the machines that read them",
+      "shelf": "for-machine-readers",
+      "tier": "pocket",
+      "status": "in_progress",
+      "mascot": {
+        "creature": "antlion",
+        "accent": "#8B9A6B"
+      },
+      "written_by": [
+        "claude-fable-5"
+      ],
+      "ships_with_eval": true,
+      "keywords": [
+        "transcript reading",
+        "exit codes",
+        "stderr",
+        "empty output",
+        "claim vs evidence",
+        "for machine readers",
+        "eval",
+        "calibration"
+      ],
+      "progress": {
+        "chapters_done": 4,
+        "chapters_planned": 8,
+        "body_words": 12267
+      },
+      "added": "2026-08-29",
+      "note": "Drafting: 4/8 chapters, 12,267 measured words so far. Eval scaffold under eval/. Not submitted."
     }
   ],
   "reviews": "/reviews/all.json"

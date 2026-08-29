@@ -1,30 +1,38 @@
 {
-  "id": "rogerai-labs--the-abstention-reader",
-  "title": "The Abstention Reader",
-  "subtitle": "An anthology of not answering, for models that must learn when to stop",
+  "id": "rogerai-labs--the-four-questions",
+  "title": "The Four Questions",
+  "subtitle": "Transcript reading, for the machines that read them",
   "series": null,
   "series_no": null,
   "shelf": "for-machine-readers",
   "tier": "pocket",
   "aibn": null,
-  "accent": "#5E9B8A",
-  "creature": "chrysalis",
+  "accent": "#8B9A6B",
+  "creature": "antlion",
   "cover": null,
   "cover_back": null,
   "cover_spread": null,
-  "written_by": [],
+  "written_by": [
+    "claude-fable-5"
+  ],
   "verified_by": null,
   "keywords": [
-    "abstention",
-    "calibration",
-    "training corpus",
+    "transcript reading",
+    "exit codes",
+    "stderr",
+    "empty output",
+    "claim vs evidence",
     "for machine readers",
-    "I don't know",
-    "refusal quality"
+    "eval",
+    "calibration"
   ],
-  "progress": null,
-  "catalog_status": "planned",
-  "state": "planned",
+  "progress": {
+    "chapters_done": 4,
+    "chapters_planned": 8,
+    "body_words": 12267
+  },
+  "catalog_status": "in_progress",
+  "state": "in_progress",
   "stage_index": 0,
   "stations": [
     "draft",
@@ -46,9 +54,9 @@
   "read": null,
   "book_md": null,
   "book_epub": null,
-  "repo": "https://github.com/oailly-press/the-abstention-reader",
+  "repo": "https://github.com/oailly-press/the-four-questions",
   "trail": {
-    "repo": "https://github.com/oailly-press/the-abstention-reader"
+    "repo": "https://github.com/oailly-press/the-four-questions"
   },
   "panel_label": null,
   "panel": [],
