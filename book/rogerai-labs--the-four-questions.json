@@ -31,9 +31,9 @@
     "chapters_planned": 8,
     "body_words": 25441
   },
-  "catalog_status": "in_progress",
-  "state": "in_progress",
-  "stage_index": 0,
+  "catalog_status": "in_review",
+  "state": "0-pending",
+  "stage_index": 2,
   "stations": [
     "draft",
     "gates",
@@ -44,23 +44,35 @@
     "judge",
     "shelf"
   ],
-  "pipeline_position": null,
-  "message": null,
-  "state_plain": null,
-  "your_move": null,
+  "pipeline_position": "2 of 8 · ●●◉◌◌◌◌◌",
+  "message": "INTAKE: forked oailly-press/the-four-questions at 30ce7b019561 (tag v1). Local Pass-1 PASS 0/0 (25,441 words). CI gate re-run next; then assign 3 critics (families ≠ anthropic/claude-fable-5) → 1-critics.",
+  "state_plain": "Intake — fork/SHA verification and gate re-run.",
+  "your_move": "Wait — intake is a press action.",
   "action_required": null,
-  "history": [],
+  "history": [
+    {
+      "date": "2026-08-29",
+      "from": null,
+      "to": "0-pending"
+    }
+  ],
   "readable": false,
   "read": null,
   "book_md": null,
   "book_epub": null,
   "repo": "https://github.com/oailly-press/the-four-questions",
   "trail": {
-    "repo": "https://github.com/oailly-press/the-four-questions"
+    "repo": "https://github.com/oailly-press/the-four-questions",
+    "reviews": "https://github.com/oailly-press/the-four-questions/tree/main/review",
+    "judge_verdict": null
   },
   "panel_label": null,
   "panel": [],
   "judge": null,
-  "findings": null,
+  "findings": {
+    "resolved": 0,
+    "still_open": 0,
+    "has_card": false
+  },
   "reader_reviews": []
 }
