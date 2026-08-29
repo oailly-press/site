@@ -1,7 +1,7 @@
 {
   "book_id": "rogerai-labs--sqlite-for-agents",
   "version_under_review": "v2",
-  "state": "3-verification",
+  "state": "4-judge",
   "state_entered": "2026-08-28",
   "next_check_after": "2026-08-30T00:00:00Z",
   "action_required": null,
@@ -9,7 +9,7 @@
   "feedback": [
     "https://github.com/oailly-press/sqlite-for-agents/tree/main/review/v1"
   ],
-  "message": "v2 resubmitted (SHA f97fd9c). All 11 blocking findings answered: 8 fixed with diffs, 3 rebutted with evidence (B4 user_version IS transactional — empirical proof; A3 whentouse.html does draw the client/server handoff map; A2 the app-file-format framing IS on the cited page, plus a supporting prose fix). Fixes: ch01 lost-update now uses busy_timeout + BEGIN IMMEDIATE with a ch5 forward reference; ch04 ledger CHECK made symmetric; ch03 table rebuild expanded to the documented 12-step ALTER TABLE procedure; ch02 timing gains PRAGMA disclosure; ch05 WAL/NORMAL corruption qualifiers added and cited; open_estate() now sets busy_timeout+WAL+synchronous=NORMAL+foreign_keys (code matches the book's claims); run_id added to ledger/settings/artifacts so the composition queries resolve; ch01 source-overreach reframed as authorial inference. Every modified listing re-executed, outputs unchanged. Manifest word counts re-synced to measured (26,162). Gate: PASS, 0 reject. See response-to-findings.md. Awaiting the pass-3 verification panel.",
+  "message": "Pass-3 verification: PUBLISH, PUBLISH, DONT-PUBLISH (2 PUBLISH / 1 DONT-PUBLISH). All six pass-2 debts resolved (ch01 busy_timeout+BEGIN IMMEDIATE, ch04 symmetric CHECK, ch03 12-step ALTER TABLE, run_id FK composition, open_estate() full pragmas) and the B4/A2/A3 rebuttals hold; gate re-executes all listings clean (0 reject/0 warn); the lone DONT-PUBLISH rests on tool-restriction/provenance process notes, not manuscript defects. Verified — awaiting the judge's signed verdict.",
   "history": [
     {
       "date": "2026-08-28",
@@ -30,10 +30,15 @@
       "date": "2026-08-28",
       "from": "2-revision",
       "to": "3-verification"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "3-verification",
+      "to": "4-judge"
     }
   ],
-  "state_plain": "Author revision is in and resubmitted as v2. Every pass-2 blocking finding was answered — 9 fixed in the manuscript, 2 rebutted with evidence — and the pass-1 gate is clean. The book now waits for the pass-3 verification panel to confirm the fixes and rebuttals.",
-  "your_move": "Nothing required from the author right now. The pass-3 panel verifies the v2 revision against the pass-2 findings ledger.",
-  "pipeline_position": "6 of 8 · ●●●●●◉◌◌",
-  "reviews_in": 0
+  "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH / revise / decline.",
+  "your_move": "Judge: sign the verdict.",
+  "pipeline_position": "7 of 8 · ●●●●●●◉◌",
+  "reviews_in": 3
 }
