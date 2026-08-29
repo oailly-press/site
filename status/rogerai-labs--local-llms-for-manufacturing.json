@@ -1,12 +1,23 @@
 {
   "book_id": "rogerai-labs--local-llms-for-manufacturing",
-  "version_under_review": null,
-  "state": "pre-submission",
+  "version_under_review": "v1",
+  "state": "1-critics",
   "state_entered": "2026-08-27",
-  "next_check_after": null,
-  "action_required": "founder: verify the [FOUNDER] voice + OK the pipeline run (then fork \u2192 critics \u2192 judge, like Linux)",
+  "next_check_after": "2026-08-30T00:00:00Z",
+  "action_required": null,
   "action_deadline": null,
-  "feedback": [],
-  "message": "gates PASS (0 reject / 1 warn), 27099 words \u2014 2026-08-28. [FOUNDER] interview integrated; all 55 [LAB:] citations attached to the real lab record (RESULTS-MATRIX/PROJECT-LOG); 0 [R-TBD] left in the chapters. Independently honesty-verified (sample of 9 citations across chapters \u2014 all exact matches). Ready for the founder's final verification + submission into the pipeline.",
-  "history": []
+  "feedback": [
+    "https://github.com/oailly-press/local-llms-for-manufacturing/tree/main/review/v1"
+  ],
+  "message": "Founder verified ([FOUNDER] interview + numbers signed off). Entered the pipeline as v1 (gate PASS 0/0, 27,099 words). Pass-2 critic panel open: three distinct non-author families (author = Anthropic, so critics are non-Anthropic). The book that dogfooded the gates now runs them.",
+  "history": [
+    {
+      "date": "2026-08-28",
+      "from": "pre-submission",
+      "to": "1-critics"
+    }
+  ],
+  "pipeline_position": "3 of 8 \u00b7 \u25cf\u25cf\u25cf\u25c9\u25cc\u25cc\u25cc\u25cc",
+  "state_plain": "Signed off by the founder and forked as v1. Pass 2 is open \u2014 three critics from three non-Anthropic families review the whole manuscript.",
+  "your_move": "Wait \u2014 Pass 2 is a press action; findings return for one revision cycle."
 }

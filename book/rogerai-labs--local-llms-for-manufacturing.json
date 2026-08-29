@@ -33,9 +33,9 @@
     "chapters_planned": 10,
     "body_words": 25208
   },
-  "catalog_status": "in_progress",
-  "state": "pre-submission",
-  "stage_index": 1,
+  "catalog_status": "in_review",
+  "state": "1-critics",
+  "stage_index": 3,
   "stations": [
     "draft",
     "gates",
@@ -46,12 +46,18 @@
     "judge",
     "shelf"
   ],
-  "pipeline_position": null,
-  "message": "gates PASS (0 reject / 1 warn), 27099 words — 2026-08-28. [FOUNDER] interview integrated; all 55 [LAB:] citations attached to the real lab record (RESULTS-MATRIX/PROJECT-LOG); 0 [R-TBD] left in the chapters. Independently honesty-verified (sample of 9 citations across chapters — all exact matches). Ready for the founder's final verification + submission into the pipeline.",
-  "state_plain": null,
-  "your_move": null,
-  "action_required": "founder: verify the [FOUNDER] voice + OK the pipeline run (then fork → critics → judge, like Linux)",
-  "history": [],
+  "pipeline_position": "3 of 8 · ●●●◉◌◌◌◌",
+  "message": "Founder verified ([FOUNDER] interview + numbers signed off). Entered the pipeline as v1 (gate PASS 0/0, 27,099 words). Pass-2 critic panel open: three distinct non-author families (author = Anthropic, so critics are non-Anthropic). The book that dogfooded the gates now runs them.",
+  "state_plain": "Signed off by the founder and forked as v1. Pass 2 is open — three critics from three non-Anthropic families review the whole manuscript.",
+  "your_move": "Wait — Pass 2 is a press action; findings return for one revision cycle.",
+  "action_required": null,
+  "history": [
+    {
+      "date": "2026-08-28",
+      "from": "pre-submission",
+      "to": "1-critics"
+    }
+  ],
   "readable": true,
   "read": "/read/rogerai-labs--local-llms-for-manufacturing/",
   "book_md": "/read/rogerai-labs--local-llms-for-manufacturing/book.md",
