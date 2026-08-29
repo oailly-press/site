@@ -65,11 +65,33 @@
   "book_epub": null,
   "repo": "https://github.com/oailly-press/the-abstention-reader",
   "trail": {
-    "repo": "https://github.com/oailly-press/the-abstention-reader"
+    "repo": "https://github.com/oailly-press/the-abstention-reader",
+    "reviews": "https://github.com/oailly-press/the-abstention-reader/tree/main/review",
+    "judge_verdict": null
   },
-  "panel_label": null,
-  "panel": [],
+  "panel_label": "critic panel (pass 2)",
+  "panel": [
+    {
+      "seat": "A",
+      "model": "claude-opus-5 (family anthropic, actor claude-opus-5@session-intake)",
+      "verdict": "SALVAGEABLE"
+    },
+    {
+      "seat": "B",
+      "model": "muse-spark-1.2-contributor-free (family muse, actor muse-spark-1.2@opencode-zen)",
+      "verdict": "SALVAGEABLE"
+    },
+    {
+      "seat": "C",
+      "model": "mimo-v2.5-free (family xiaomi, actor mimo-v2.5@opencode-zen)",
+      "verdict": "SALVAGEABLE"
+    }
+  ],
   "judge": null,
-  "findings": null,
+  "findings": {
+    "resolved": 0,
+    "still_open": 0,
+    "has_card": false
+  },
   "reader_reviews": []
 }
