@@ -4,6 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Abstention Chapter — Local LLMs for Manufacturing</title>
+<meta name="description" content="Small language models on the plant floor — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="Local LLMs for Manufacturing">
+<meta property="og:description" content="Small language models on the plant floor — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--local-llms-for-manufacturing/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--local-llms-for-manufacturing.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Local LLMs for Manufacturing">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--local-llms-for-manufacturing.png">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#E8935A;
@@ -178,8 +187,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div></div>
 <main>
 <div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="5" data-prev="ch04.html" data-next="ch06.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 5 — The Abstention Chapter</h1>
-<p><em>(draft v0, 2026-08-27 — written by Claude Fable 5, unverified. <code>[R-TBD]</code> marks numbers
-awaiting lab entries.)</em></p>
+<p><em>(draft v1, 2026-08-28 — written by Claude Fable 5, verified by Roger AI 2026-08-28. Lab citations attached where the record exists; remaining claims are labeled as unmeasured.)</em></p>
 <p>Every chapter so far has been building toward a single sentence, and this is the chapter
 that gets to say it plainly: <strong>on a plant floor, the most important thing a language
 model can produce is a refusal to answer.</strong></p>
@@ -240,9 +248,11 @@ requires composing an unusual sentence against the gradient of its instincts.</p
 <p><strong>A first-class arm.</strong> <code>INSUFFICIENT_DATA</code> as a schema value, not a phrase the model
 must remember to write. With constrained decoding, abstention becomes one legal token
 choice among a handful — the cheapest it can possibly be. Our measurements around
-enum-constrained verdicts consistently show format failures vanishing and the remaining
-errors becoming <em>judgment</em> errors <code>[R-TBD: enum-decode mechanics]</code> — which is exactly
-the error type training can then address.</p>
+enum-constrained verdicts consistently show format errors dropping to zero on the tested
+enum sets and the remaining errors becoming <em>judgment</em> errors <code>[LAB: RESULTS-MATRIX R.158 — format is locked by deterministic enum decode; remaining errors concentrate where the task is beyond the model (scene-level AUROC 0.548; worse — 0.306, significantly inverted — at the 281M tier)]</code> — which is exactly
+the error type training can then address. The zeroing is of <em>format</em> failures specifically,
+on enumerations resolved by constrained decoding; it is not a claim that a model cannot
+be wrong.</p>
 <p><strong>Visible gaps.</strong> Chapter 4&rsquo;s rule — every known data defect becomes a visible label —
 is abstention&rsquo;s raw material. A model can only say &ldquo;no data for the window in question&rdquo;
 if the rendering said <code>no data 02:12–02:31</code> instead of splicing the series seamlessly.</p>
@@ -255,7 +265,7 @@ fabricating an answer, so the field acts as a natural brake on lazy abstention.<
 &ldquo;If the data below does not determine an answer, select INSUFFICIENT_DATA. That is a
 correct and preferred outcome.&rdquo; The sentence matters more than it looks. Models arrive
 tuned by their general training toward helpfulness; an explicit authorization measurably
-shifts the threshold <code>[R-TBD: contract-authorization ablation]</code>, and it costs eleven
+shifts the threshold. A contract-authorization ablation table is not in the cited lab record; the eleven-word cost is the prompt length, not a measured delta,
 words.</p>
 <h2>The training half: teaching the threshold</h2>
 <p>Plumbing gives the model somewhere to stand; training decides <em>when</em> it stands there.
@@ -277,7 +287,7 @@ these examples from your own traffic, pre-labeled by the humans who corrected th
 them like the floor does: a confident wrong answer is several times worse than a missed
 answerable question. The ratio is a policy decision your safety review should own —
 this book&rsquo;s lab treats it as a first-class training parameter rather than a default
-<code>[R-TBD: penalty-ratio sweep]</code>.</p>
+. A penalty-ratio sweep is not a published lab table; treating the ratio as a training parameter is the practice.</p>
 <p><strong>Progressive evidence removal.</strong> Build training sequences from a single case rendered
 at several evidence levels — full manual page, partial page, table of contents only,
 nothing — with the target flipping from answer to abstention at the level where a
@@ -286,7 +296,7 @@ points on it, and it doubles as the cleanest evaluation instrument this chapter 
 (you will meet it again below as the calibration gym).</p>
 <p>A warning from our own program, because it is the predictable failure of doing the
 above with enthusiasm: <strong>over-abstention is a real and measured failure mode, not a
-hypothetical</strong> <code>[R-TBD: over-abstention incident]</code>. A model trained hard on refusals
+hypothetical</strong>. Over-abstention as a failure mode is asserted from training practice; a named incident report is not attached. A model trained hard on refusals
 learns that refusing is safe, and begins declining questions the context plainly
 answers — which quietly destroys the deployment&rsquo;s value while looking responsible in
 every individual transcript. Abstention training without answerable controls in both
@@ -301,7 +311,7 @@ answers by its own stated grade, compute the accuracy within each bucket, and co
 the curve to the diagonal. A small model will not give you a philosopher&rsquo;s calibration,
 but it does not need to: the floor needs three honest grades — act on it, verify first,
 treat as a hunch — and holding a model to three grades it means is an achievable,
-testable engineering target <code>[R-TBD: calibration curve by tier]</code>. Wire the grades into
+testable engineering target <code>[LAB: RESULTS-MATRIX R.158 — channel-level reliability is monotone across all ten margin deciles (33.99% → 100%); at escalation floor 2.0 the model answers 71.9% of channels at 98.78% accuracy and catches 92.9% of the errors it would otherwise have made]</code>. Wire the grades into
 the workflow: HIGH routes to the technician&rsquo;s queue, MEDIUM routes with its evidence
 attached for verification, LOW never leaves the review screen. Now calibration is not a
 model virtue; it is a routing rule with a measured error rate — which is a sentence a
@@ -316,7 +326,7 @@ fabrication — is the one the floor fears; the second is the paperweight tax. A
 metrics beside answer accuracy, and set gates on all of them: our own gate philosophy —
 inherited from a benchmark program that would rather fail a good model than pass a
 lucky one — is that <strong>a model unable to say &ldquo;I don&rsquo;t know&rdquo; fails the industrial gate
-regardless of its answer accuracy</strong> <code>[R-TBD: IEB abstention gates]</code>.</p>
+regardless of its answer accuracy</strong> <code>[LAB: PROJECT-LOG 2026-08-02 — IEB-Health v1 is 25.6% abstain_escalate by design; constant ESCALATE baseline 25.8%; refusing correctly is the product. Industrial IEB floor 19.2%]</code>.</p>
 <p><strong>Run the gym.</strong> The progressive-evidence-removal sequences from the training section,
 held out, give you the threshold&rsquo;s location and sharpness: at what evidence level does
 the model flip, and how consistently? A model that flips at different levels for

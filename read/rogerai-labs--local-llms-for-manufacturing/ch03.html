@@ -4,6 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Why Small — Local LLMs for Manufacturing</title>
+<meta name="description" content="Small language models on the plant floor — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="Local LLMs for Manufacturing">
+<meta property="og:description" content="Small language models on the plant floor — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--local-llms-for-manufacturing/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--local-llms-for-manufacturing.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Local LLMs for Manufacturing">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--local-llms-for-manufacturing.png">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#E8935A;
@@ -178,8 +187,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div></div>
 <main>
 <div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="3" data-prev="ch02.html" data-next="ch04.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 3 — Why Small</h1>
-<p><em>(draft v0, 2026-08-27 — written by Claude Fable 5, unverified. <code>[R-TBD]</code> marks numbers
-awaiting lab entries.)</em></p>
+<p><em>(draft v1, 2026-08-28 — written by Claude Fable 5, verified by Roger AI 2026-08-28. Lab citations attached where the record exists; remaining claims are labeled as unmeasured.)</em></p>
 <p>Chapter 2 ended with a purchasing question: how small can the instrument be and still
 measure? This chapter answers it the way an engineer would want it answered — with a
 sizing procedure rather than a slogan. The slogan version of this field says &ldquo;bigger is
@@ -207,11 +215,10 @@ is a different book.</p>
 requires streaming the active weights past the processor. Small models are fast on
 modest hardware not because of any cleverness but because there is less to stream. When
 a vendor quotes tokens-per-second, you now know what they are mostly measuring: the
-memory system, at a given model size and precision <code>[R-TBD: tok/s by tier on reference
-hardware]</code>.</p>
+memory system, at a given model size and precision <code>[LAB: RESULTS-MATRIX §C — warm single-stream decode on 4× RTX PRO 4500 Blackwell (128 GB VRAM): DeepSeek-V4-Flash IQ3 ~26 tok/s, Q3-MTP 30.5 tok/s, Q8-MTP 26–27 tok/s; Qwen3.6-27B Q8_0 ~27 tok/s; gpt-oss-120b MXFP4 60 tok/s on vLLM TP=4. Same hardware, different recipes, different speeds]</code>.</p>
 <h2>The ladder, with honest rungs</h2>
 <p>Our lab maintains a working ladder of size classes, each earning its place by measured
-capability rather than by roadmap <code>[R-TBD: tier capability matrix]</code>. Names vary across
+capability rather than by roadmap <code>[LAB: RESULTS-MATRIX §C — MMLU 100-q sample and tool-eval-bench hardmode on the same box: IQ3 79.6 / 47; Q3-MTP 84.0 / 40–50; Q8-MTP 88.3 / mean 55; Qwen3.6-27B 79.0 / 67; Qwen3.6-35B-A3B 71.0 / 87; gpt-oss-120b 71.0 / 73. Tool-use and MMLU do not rank the same]</code>. Names vary across
 the industry; the classes do not.</p>
 <p><strong>Sub-billion (the &ldquo;pocket&rdquo; class).</strong> What it honestly does: classification, tagging,
 field extraction from consistent formats, enum-constrained verdicts of the Chapter 2
@@ -227,11 +234,10 @@ ability crosses it.</p>
 <p><strong>1-to-2 billion (the &ldquo;line side&rdquo; class).</strong> The smallest class where instruction-following
 becomes dependable enough to build on: it reads a prompt template it was not specifically
 trained on and mostly does what the template says. Extraction quality rises; abstention
-training (Chapter 5) starts genuinely working rather than being parroted <code>[R-TBD:
-abstention-by-tier]</code>. This is the class we reach for first when a task must run on the
+training (Chapter 5) starts genuinely working rather than being parroted <code>[LAB: PROJECT-LOG 2026-08-02 — Wave Micro-1B FailureSensorIQ 44.7 ±1.9 (0-shot loglik); the whole 350M class floors at ~random (nano 28.2, stock 29.0, qwen3-0.6b 28.6; floor 27.5). Abstention at 135M/Q4 stayed 5/5 while golden collapsed — the safety skill compressed further than the rest]</code>. This is the class we reach for first when a task must run on the
 plant&rsquo;s own modest hardware with no GPU budget.</p>
 <p><strong>7-to-8 billion (the &ldquo;engineer&rsquo;s assistant&rdquo; class).</strong> The knee of the curve in our
-measurements <code>[R-TBD]</code>. Multi-step behavior appears: read the fault table, then check
+measurements. We do not have a published 7–8B industrial walkthrough score; the claim that this is the knee is a working rule from serving those sizes, not a table. Multi-step behavior appears: read the fault table, then check
 the historian excerpt, then produce the schema-constrained verdict, without the seams
 showing. General knowledge is broad enough that the model degrades politely outside its
 specialty instead of collapsing. If the plant can afford one GPU box, this class is
@@ -242,6 +248,19 @@ fewer prompt-engineering hours per task, better recovery when inputs are messy, 
 judgment about its own uncertainty. Whether that robustness is worth roughly four times
 the hardware of the 8-billion class is a per-plant decision — Chapter 6&rsquo;s evaluation
 harness exists precisely so you can answer it with your own data instead of ours.</p>
+<p><strong>Where the evidence is strongest, stated plainly.</strong> The reader owed error bars is also
+owed the shape of our sample. Our hardest, most reproducible <code>[LAB:]</code> numbers cluster in
+the mid-to-large tiers — the 27B–175B configurations we serve in production and bench
+repeatedly (§C/§F, R.158&rsquo;s channel-level calibration). The pocket and line-side rungs the
+book leans on carry lighter and sometimes negative evidence: a 1B FailureSensorIQ point,
+a 350M class that floors near random, no published 7–8B industrial walkthrough. Those
+small-tier claims are therefore working rules drawn from serving those sizes, not settled
+tables, and we mark them as such at each rung. The mechanisms this book argues from —
+grounding, constrained decoding, abstention-as-routing, the gate — are tier-independent by
+design, but the specific capability of a sub-billion model on <em>your</em> text is exactly the
+thing Chapter 6&rsquo;s harness exists to measure, because our number for it is thinner than our
+number for the department class. This is a limitation of the sample, and stating it is
+part of the instrument.</p>
 <h2>The specialist trap</h2>
 <p>There is a tempting shortcut at every rung: tune the model so hard on your domain that it
 excels at your benchmark and nothing else. The trap is that &ldquo;nothing else&rdquo; includes the
@@ -250,7 +269,7 @@ handling a question phrased a way the training set never phrased it, writing a c
 sentence about an adjacent topic. A specialist that has lost its general footing fails
 strangely and often silently: it does not know that it has left its envelope, and neither
 does its output.</p>
-<p>Our lab&rsquo;s rule, learned by measuring the failure <code>[R-TBD: retention gate]</code>: <strong>every
+<p>Our lab&rsquo;s rule, learned by measuring the failure <code>[LAB: PROJECT-LOG — capability retention: 0% general replay produced the published cliff between 0% and 1%; v2.9 gates require retain ≥90% of base MMLU and IFEval]</code>: <strong>every
 specialized model must also hold a floor on general benchmarks, and that floor is a
 shipping gate.</strong> Specialization is supposed to be an addition, not an amputation. When a
 vendor shows you a domain benchmark, the question that exposes the trap is one sentence:
@@ -275,7 +294,7 @@ with a deployment for a while and different virtues dominate:</p>
 <li><strong>Small restarts fast.</strong> A model that loads in seconds changes maintenance windows,
   crash recovery, and how casually you can ship an update. Chapter 9&rsquo;s recovery drills
   assume load times measured in seconds to low minutes — realistic in the small classes,
-  fantasy above them <code>[R-TBD: load-time by tier]</code>.</li>
+  fantasy above them. Load time is recipe-dependent on this hardware (<code>[LAB: RESULTS-MATRIX §F]</code> records which configs even load); we have not published a per-tier seconds-to-ready table, so this sentence stays qualitative.</li>
 <li><strong>Small runs redundant.</strong> Two modest boxes running the same 2-billion model is a
   failover story a plant understands. One large shared model is a single point of
   failure with a queue in front of it.</li>
@@ -304,8 +323,7 @@ is cleaner than either model alone: every escalation is a logged decision with a
 reason, which is more than most human triage produces. When later chapters seem to force
 a choice between a model small enough to trust operationally and one large enough to
 handle the ugly cases, remember that the fork is usually false — the answer is a
-hierarchy, and the plant already runs everything else that way <code>[R-TBD: escalation-rate
-and cost split from lab deployment]</code>.</p>
+hierarchy, and the plant already runs everything else that way. We have not published an escalation-rate or cost-split table from a plant deployment; the hierarchy is the design, not a measured split.</p>
 <h2>The cost table you actually need</h2>
 <p>Cloud pricing and local hardware are quoted in units designed not to be compared, so
 build the comparison yourself; the arithmetic fits on an index card. A hosted model
@@ -325,8 +343,7 @@ owned box serves the second task and the third at zero marginal cost. The cloud 
 its advantage where usage is occasional, spiky, or exploratory: a monthly report, a
 one-off analysis, a prototype you have not committed to. This book&rsquo;s subject is the
 other kind of workload — the kind plants actually have — where something watches a
-stream all day, every day. For that shape of demand, the rental arithmetic never wins
-<code>[R-TBD: worked cost comparison at reference prices]</code>.</p>
+stream all day, every day. For that shape of demand, the rental arithmetic never wins. A worked dollar comparison at named cloud prices is not in the lab record, so this remains an argument, not a spreadsheet.</p>
 <p>There is also a cost the table cannot hold: the meter changes behavior. Teams ration a
 metered model — they ask it less, wire it into fewer places, and quietly stop
 experimenting. An owned model gets used the way an owned oscilloscope gets used:
@@ -339,8 +356,7 @@ is mid-conversation. Two facts change the sizing picture.</p>
 <p>First, serving engines batch. Multiple simultaneous requests share each pass through the
 weights, so a box that produces some number of tokens per second for one user produces
 far more <em>total</em> tokens per second for eight users — throughput scales much better than
-intuition expects, at modest cost to each individual response <code>[R-TBD: throughput vs
-concurrency on reference hardware]</code>. A single well-sized box genuinely can serve a
+intuition expects, at modest cost to each individual response <code>[LAB: RESULTS-MATRIX §B — llama.cpp PAR=4 on IQ3, isolated port: c=1 26.2 tok/s, c=4 46.1 aggregate; taco PAR=8 c=8 65.7 aggregate; gpt-oss-120b vLLM TP=4 c=1 60.2, c=8 489, c=16 888. Throughput rises with concurrency; per-stream speed does not]</code>. A single well-sized box genuinely can serve a
 department.</p>
 <p>Second, memory is the ceiling on that trick. Every concurrent conversation holds its own
 context in the KV cache, and long contexts multiplied by many users can outgrow the
@@ -358,7 +374,7 @@ few hundred per day, into the CMMS.</p>
 lead over two afternoons, with a scoring rule per field and an explicit abstention arm
 for illegible entries. Step two, start low: the pocket class, tuned on a few thousand
 historical orders. Suppose it lands high on machine and component but noticeably lower
-on symptom, where the prose gets idiosyncratic <code>[R-TBD: walkthrough numbers]</code>. Step
+on symptom, where the prose gets idiosyncratic. This walkthrough is illustrative; it is not a scored run. Step
 three, attribute before climbing: inspection shows half the symptom misses trace to
 technicians&rsquo; shorthand the tokenizer shatters, and a vocabulary adjustment plus a
 grounding tweak recovers most of it. The pocket model now passes every field but
@@ -381,8 +397,7 @@ recurs in every chapter ahead.</p>
 <li>Climb only on measured failure: move up a rung when the smaller class fails your gate
    for reasons more capability would fix — not for reasons better grounding, a tighter
    schema, or a matched tokenizer would fix. In our experience the majority of &ldquo;the model
-   is too small&rdquo; complaints dissolve at step three&rsquo;s inspection <code>[R-TBD: failure
-   attribution tally]</code>.</li>
+   is too small&rdquo; complaints dissolve at step three&rsquo;s inspection. We have not published a counted attribution tally; the three-step inspection is the method, not a percentage.</li>
 <li>Stop at the first rung that passes with margin, and record the margin: it is your
    early-warning gauge when the task drifts.</li>
 </ol>

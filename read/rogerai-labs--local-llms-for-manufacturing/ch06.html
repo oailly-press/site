@@ -4,6 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Quality Gate — Local LLMs for Manufacturing</title>
+<meta name="description" content="Small language models on the plant floor — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="Local LLMs for Manufacturing">
+<meta property="og:description" content="Small language models on the plant floor — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--local-llms-for-manufacturing/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--local-llms-for-manufacturing.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Local LLMs for Manufacturing">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--local-llms-for-manufacturing.png">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#E8935A;
@@ -178,8 +187,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div></div>
 <main>
 <div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="6" data-prev="ch05.html" data-next="ch07.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 6 — The Quality Gate</h1>
-<p><em>(draft v0, 2026-08-27 — written by Claude Fable 5, unverified. <code>[R-TBD]</code> marks numbers
-awaiting lab entries; several claims here cite the lab record directly.)</em></p>
+<p><em>(draft v1, 2026-08-28 — written by Claude Fable 5, verified by Roger AI 2026-08-28. Lab citations attached where the record exists; remaining claims are labeled as unmeasured.)</em></p>
 <p>Every chapter so far has ended by deferring to this one. Chapter 3&rsquo;s sizing rule said
 &ldquo;climb only on measured failure.&rdquo; Chapter 5&rsquo;s abstention metrics needed somewhere to
 live. This is the chapter where measurement stops being a virtue and becomes a machine:
@@ -190,6 +198,20 @@ pass a bad one.</strong> Everything in this chapter is engineering toward that a
 because the floor&rsquo;s costs are asymmetric in exactly that direction. A rejected good
 change costs you a week of investigation. A passed bad change costs you a wrong verdict
 in production, discovered by the person acting on it.</p>
+<blockquote>
+<p><strong>From the floor.</strong> The most dangerous result on a plant floor is not a failure — it is a
+pass that is too clean. I have watched test equipment hand back a perfect result because a
+person <em>made</em> it hand back a perfect result: bypassed the fixture, forced the reading, moved
+the probe off the fault. Not out of malice, usually — a bad number that day was simply more
+expensive to them than an honest one. You do not catch that by trusting the number. You catch
+it by keeping enough of the surrounding data to ask whether the number could even be true:
+was the cycle time physically possible, did the other signals move the way a real pass moves,
+is this station suddenly, suspiciously flawless? A gate that reads only the verdict can be
+gamed by anyone whose incentive points at <em>clean</em> instead of <em>correct.</em> Build the gate — and
+train the model — to read the evidence, not the conclusion. This is the same discipline the
+rest of this chapter applies to the models themselves: a score that looks too good is a
+finding, not a victory.</p>
+</blockquote>
 <h2>Why vendor numbers cannot be your gate</h2>
 <p>Start with the uncomfortable fact that makes this chapter necessary: the published
 benchmark numbers that models arrive wrapped in — general knowledge scores, reasoning
@@ -199,8 +221,7 @@ your fault tables, your historian renderings, your technicians&rsquo; shorthand,
 schemas. A model&rsquo;s rank on graduate-level reasoning problems tells you approximately
 nothing about whether it correctly reads your VFD fault table, and the correlation
 between general rank and your-task performance is weak enough at the small end of the
-ladder that ranking by it is closer to superstition than diligence <code>[R-TBD:
-general-vs-task correlation at small tiers]</code>.</p>
+ladder that ranking by it is closer to superstition than diligence <code>[LAB: RESULTS-MATRIX §C — Qwen3.6-35B-A3B 71.0 MMLU / 87 tool hardmode versus DeepSeek Q8-MTP 88.3 MMLU / mean 55 tools; the two scores do not rank the same models]</code>.</p>
 <p>The gate you need is built from your own material. The good news, and a running theme
 of this chapter: building it is cheaper than it sounds, and the expensive part — the
 labeled cases — is Chapter 4&rsquo;s logging habit already paying out.</p>
@@ -240,7 +261,7 @@ actually present in the context? These checks are deterministic code, they run o
 single response in production as well as in evaluation, and with Chapter 4&rsquo;s
 constrained decoding they should pass at essentially 100% — which is precisely why
 they stay in the gate: a format regression is the loudest possible alarm that something
-structural broke <code>[R-TBD: format-check pass rates pre/post constraint]</code>.</p>
+structural broke. Pre/post format-check pass rates are not a published pair; keeping format checks in the gate is the practice.</p>
 <p><strong>Layer 2 — labeled-case scoring.</strong> The heart: a few hundred real cases with known-good
 answers, scored mechanically thanks to schema&rsquo;d outputs. Include every case family the
 floor actually produces: the routine, the boundary (Chapter 5&rsquo;s near-misses), the
@@ -259,7 +280,16 @@ one failure mode you have reason to fear.</p>
 your task suites, a small general-capability suite with a hard minimum. A tuned model
 that aces the plant work and collapses on general instruction-following has been
 damaged in ways your task suite cannot see yet; the general floor catches the
-amputation early <code>[R-TBD: retention gate]</code>.</p>
+amputation early <code>[LAB: PROJECT-LOG — retention gates: retain ≥90% of base MMLU and IFEval; 0% general replay produced the cliff between 0% and 1%]</code>.</p>
+<p>One honesty note the rest of this chapter demands of this very rule: a 10% retention drop
+is close to the ±10-point noise floor established above, so on a small general suite the
+&ldquo;≥90%&rdquo; line cannot be read off a single pair of runs without risking a false pass or a
+false fail. Apply it the way rule 3 requires of every threshold — as a mean over repeats
+with its spread attached, on a general suite large enough that 10% of the base sits
+outside the measured noise, or the retention gate is measuring the dice, not the damage.
+The number the lab enforces is a working floor, not a precision instrument; the cliff it
+was calibrated against (0% vs 1% general replay) is a collapse, not a marginal delta,
+which is why it survives the noise the marginal case would not.</p>
 <h2>The gate that was too strict, and why we kept the story</h2>
 <p>A gate is code, and code has bugs. The failure mode you must design for is the gate
 that is wrong in the <em>strict</em> direction — and our lab&rsquo;s most instructive example is the
@@ -287,8 +317,7 @@ through the very logging pipeline Chapter 4 recommended — the case you evaluat
 March becomes training data in May, and June&rsquo;s evaluation is partly a memory test.</p>
 <p>The defenses are procedural, not clever. Keep the gate set physically separate from the
 training corpus with a checked, one-way boundary — our lab treats train/eval
-contamination checking as a standing pipeline step, not a one-time audit <code>[R-TBD:
-decontamination calibration]</code>. Rotate: retire a slice of the gate set to training
+contamination checking as a standing pipeline step, not a one-time audit <code>[LAB: PROJECT-LOG — dataset ledger snapshots with SHA-256 + contamination checks are a standing qualification step; semantic/manual contamination remains an open residual]</code>. Rotate: retire a slice of the gate set to training
 periodically and replace it from fresh production traffic, so the gate ages with the
 plant instead of fossilizing. And run the memorization probe from Layer 3 — same case
 shapes, fresh identifiers — whose divergence from the named-case scores is your
@@ -308,7 +337,7 @@ chapter: give the judge a rubric with binary checks rather than a 1–10 feeling
 own family&rsquo;s outputs — independence matters for graders exactly as it does for
 critics; and control the judge itself with planted cases — a known-excellent summary
 and a known-flawed one salted into every batch, so a judge that fails the plants gets
-investigated before its grades count <code>[R-TBD: judge-control agreement rates]</code>. Where a
+investigated before its grades count. Judge-control agreement rates are not a published lab table; salting known-flawed items is the practice. Where a
 prose task matters enough to gate a deployment, the final word stays with periodic
 human scoring of a sample; the judge model&rsquo;s job is coverage between those samples,
 not authority over them.</p>
@@ -330,7 +359,7 @@ the runner to your deployment checklist, and file the first report as the baseli
 <p>From then on the gate grows by accretion: every production correction becomes a case,
 every incident becomes a probe, every quarter retires stale cases to training and
 pulls fresh ones from traffic. Our own benchmark program began as approximately this
-week and grew into a public standard by exactly this accretion <code>[R-TBD: IEB history]</code>
+week and grew into a named standard by exactly this accretion <code>[LAB: PROJECT-LOG 2026-08-02 — founder named the benchmark IEB (Industrial Edge Bench); collision sweep clean against IndustryBench/AssetOpsBench/FieldWorkArena; G1 audit: 879 items re-derived, 12 classes independently audited]</code>
 — the gate you start crude this month beats the perfect gate you start next year, by
 the width of a year.</p>
 <h2>What the gate cannot see</h2>
@@ -356,7 +385,7 @@ nothing &ldquo;changed&rdquo; — a vendor&rsquo;s silent update (Chapter 1&rsqu
 new product line&rsquo;s vocabulary entering the traffic, a season&rsquo;s different failure
 distribution. A monthly full-gate run against production configuration, filed with its
 ranges, is the deployment&rsquo;s routine bloodwork; the trend across months is as
-informative as any single result <code>[R-TBD: drift observations from lab production]</code>.</p>
+informative as any single result <code>[LAB: RESULTS-MATRIX §G — 12-min soak on promoted Q3-MTP: 86 requests, 0 errors, 100% mean acceptance, +2 MiB VRAM drift. That is a soak, not a months-long drift study]</code>.</p>
 <p>Keep every gate report. The chronological file of them is the deployment&rsquo;s medical
 history: what was tried, what the noise floor was, what regressed and when, which
 gate defects were found and fixed. When the auditor, the insurer, or the new plant

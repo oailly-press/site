@@ -4,6 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Surviving Reality — Local LLMs for Manufacturing</title>
+<meta name="description" content="Small language models on the plant floor — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="Local LLMs for Manufacturing">
+<meta property="og:description" content="Small language models on the plant floor — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--local-llms-for-manufacturing/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--local-llms-for-manufacturing.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Local LLMs for Manufacturing">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--local-llms-for-manufacturing.png">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#E8935A;
@@ -178,8 +187,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div></div>
 <main>
 <div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="9" data-prev="ch08.html" data-next="ch10.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 9 — Surviving Reality</h1>
-<p><em>(draft v0, 2026-08-27 — written by Claude Fable 5, unverified. This chapter&rsquo;s evidence
-is unusually direct: our own lab&rsquo;s failure log, cited by date.)</em></p>
+<p><em>(draft v1, 2026-08-28 — written by Claude Fable 5, verified by Roger AI 2026-08-28. This
+chapter&rsquo;s evidence is unusually direct: our own lab&rsquo;s failure log, cited by date.)</em></p>
 <p>Every chapter before this one assumed the computer stays on. This one is about the week
 that assumption failed twice.</p>
 <p>Our lab runs language models the way this book proposes a plant should: continuously, on
@@ -318,6 +327,16 @@ this as alarm management; the AI box gets no exemption from it.</p>
 in the artifact trail — which means the <em>absence</em> of that line is itself detectable by
 the next layer up. Silence, as our monitoring rules put it, must never be mistakable
 for health.</p>
+<p>One boundary keeps that logging from quietly corrupting two other systems. Probe traffic
+is synthetic — a fixed request the box sends itself — so it must carry the
+stay-out-entirely clearance flag from Chapter 4 and land in the operational log, never in
+the corpus stream Chapter 7 trains on: a fine-tune that learns the plant&rsquo;s real question
+distribution must not be diluted by a heartbeat repeated every few seconds, and eval sets
+drawn from the corpus must never inherit a synthetic probe. The same flag keeps probes out
+of the request-log line item in Chapter 8&rsquo;s disk sizing; heartbeat lines belong to
+monitoring retention (short, rotated hard), not to the training-corpus budget that
+otherwise dominates the disk within a year. Mark it at write time and both problems never
+start.</p>
 <h2>Heat: the failure that arrives on schedule</h2>
 <p>Power loss is dramatic; heat is patient. A GPU in a sealed cabinet on a mezzanine in
 August does not crash — it <em>throttles</em>, quietly trading speed for temperature, and your

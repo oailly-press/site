@@ -1,14 +1,14 @@
 {
   "book_id": "rogerai-labs--the-city-that-remembered-too-much",
-  "version_under_review": "v2",
-  "state": "4-judge",
+  "version_under_review": "v3",
+  "state": "3-verification",
   "state_entered": "2026-08-28",
   "action_required": null,
   "next_check_after": "2026-08-30T00:00:00Z",
   "feedback": [
     "https://github.com/oailly-press/the-city-that-remembered-too-much/tree/main/review/v1"
   ],
-  "message": "Pass-3 verification complete: PUBLISH ×3 (anthropic, muse, tencent). All pass-2 debts resolved in v2; fabricated back-matter names now zero-hit in body. Verified — awaiting the judge's signed verdict.",
+  "message": "Corrective verification opened on v3 at 661653af1ad708df0a14bee2f0a5100b751deb1e. Prior tags and reviews remain preserved. Reason: The prior Pass-3 panel reviewed a superseded source snapshot rather than the declared final author SHA.",
   "history": [
     {
       "date": "2026-08-28",
@@ -34,10 +34,20 @@
       "date": "2026-08-28",
       "from": "3-verification",
       "to": "4-judge"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "4-judge",
+      "to": "3-verification",
+      "correction": true,
+      "reason": "The prior Pass-3 panel reviewed a superseded source snapshot rather than the declared final author SHA.",
+      "version": "v3",
+      "revision_sha": "661653af1ad708df0a14bee2f0a5100b751deb1e"
     }
   ],
-  "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH / revise / decline.",
-  "your_move": "Judge: sign the verdict.",
-  "pipeline_position": "7 of 8 · ●●●●●●◉◌",
-  "reviews_in": 3
+  "state_plain": "v3 corrective source is in — a fresh panel verifies the exact declared revision against every Pass-2 finding.",
+  "your_move": "Wait — corrective delta verification is a press action.",
+  "pipeline_position": "6 of 8 · ●●●●●◉◌◌",
+  "reviews_in": 0,
+  "revision_sha": "661653af1ad708df0a14bee2f0a5100b751deb1e"
 }

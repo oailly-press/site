@@ -4,6 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Deployment Shapes — Local LLMs for Manufacturing</title>
+<meta name="description" content="Small language models on the plant floor — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="Local LLMs for Manufacturing">
+<meta property="og:description" content="Small language models on the plant floor — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--local-llms-for-manufacturing/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--local-llms-for-manufacturing.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Local LLMs for Manufacturing">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--local-llms-for-manufacturing.png">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#E8935A;
@@ -178,8 +187,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div></div>
 <main>
 <div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="8" data-prev="ch07.html" data-next="ch09.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 8 — Deployment Shapes</h1>
-<p><em>(draft v0, 2026-08-27 — written by Claude Fable 5, unverified. <code>[R-TBD]</code> marks numbers
-awaiting lab entries.)</em></p>
+<p><em>(draft v1, 2026-08-28 — written by Claude Fable 5, verified by Roger AI 2026-08-28. Lab citations attached where the record exists; remaining claims are labeled as unmeasured.)</em></p>
 <p>The pipeline exists (Chapter 4), the model is honest (Chapter 5), the gate is armed
 (Chapter 6), maybe the weights are yours (Chapter 7). What remains is the question a
 plant asks about every system it adopts: what does this thing physically look like,
@@ -191,8 +199,7 @@ configuration traps we have collected the honest way, by falling into them.</p>
 weights file:</strong> one large file, checksummed, versioned like firmware. <strong>The inference
 engine:</strong> open-source serving software that loads the weights and speaks HTTP — the
 open engines are mature, actively maintained, and run everything this book discusses;
-our lab&rsquo;s production has run on one for its entire life <code>[R-TBD: engine/config
-lineage]</code>. <strong>The service wrapper:</strong> an init-system unit with restart policy, Chapter
+our lab&rsquo;s production has run on one for its entire life <code>[LAB: RESULTS-MATRIX §A — engine lineage on the same UD-IQ3_XXS 102 GB model: pre-#25545 ~2 tok/s craters; mainline CUDA ~10.8 bimodal; taco 13.1 bimodal; pr25545 GPU indexer 26.2 stable (24.5–28.5), promoted 07-12]</code>. <strong>The service wrapper:</strong> an init-system unit with restart policy, Chapter
 9&rsquo;s condition gates, and a log destination. <strong>The gateway:</strong> the small application
 layer that owns Chapter 4&rsquo;s rendering and contracts — the only custom software in the
 building. <strong>The gate rig:</strong> Chapter 6&rsquo;s runner, on the same box or beside it. Nothing
@@ -225,7 +232,7 @@ between a service and an open socket.</p>
 the memory ceiling, where the honest failure is a fast &ldquo;server busy, retry&rdquo; rather
 than a hung request. Configure explicit concurrency limits below the measured ceiling,
 and surface queue depth as a metric; the day it trends upward is the day you size the
-next shape <code>[R-TBD: concurrency ceiling measurements]</code>.</p>
+next shape <code>[LAB: RESULTS-MATRIX §B — PAR=4 c=1 26.2 tok/s to c=4 46.1 aggregate; taco PAR=8 c=8 65.7 aggregate; a reproducible c=2/c=3 dip on llama.cpp PAR=4 is logged as unresolved scheduling, not cache churn]</code>.</p>
 <p><strong>Version discipline.</strong> With many clients, &ldquo;which model answered this?&rdquo; must be
 recorded, not remembered. The engine&rsquo;s version string, the weights checksum, the
 contract version, and the schema version ride along in every response&rsquo;s metadata.
@@ -281,7 +288,12 @@ plants this book&rsquo;s local-first argument was written for.</p>
 is a fraction of the cost of discovering its absence — and staple the worksheet to
 the deployment record. When the numbers came from measurements (the gate&rsquo;s throughput
 probes, the cache ceiling test), say so on the sheet; procurement respects an
-instrumented number and audits remember one <code>[R-TBD: reference sizing worksheet]</code>.</p>
+instrumented number and audits remember one <code>[LAB: RESULTS-MATRIX §F — fit recipes on the 128 GB VRAM box: IQ3_XXS 102 GB loads; blobfish Q4 175 GB needs --no-repack and mmap or it OOMs/segfaults; Q8-MTP 160 GB n-cpu-moe 14; Q3-MTP 143 GB prod n-cpu-moe 11]</code>. Note the honest asymmetry Chapter 3 flagged: these fit-recipe
+numbers are drawn from the 100–175 GB configurations the lab benches most, larger than
+the pocket and line-side classes much of this book&rsquo;s thesis leans on. The arithmetic in
+step 1 scales down cleanly, but the <em>measured</em> spine of the sizing evidence is the bigger
+tier; size your small-model box from Chapter 3&rsquo;s arithmetic and your own gate probes, not
+by scaling these specific footprints.</p>
 <h2>The security posture, stated plainly</h2>
 <p>A language-model service is one more networked application, and most of its security
 is the boring kind you already practice: network segmentation (the service sits with
@@ -336,8 +348,7 @@ with tensor-layout optimizations, producing configurations that run at a fractio
 their potential until one line in the load log explains why (Chapter 9&rsquo;s
 read-the-load-log rule, which was earned on exactly this class of mystery). The
 protocol: after any placement change, read the load log&rsquo;s placement summary in full,
-then re-run the gate&rsquo;s throughput probe before calling it done <code>[R-TBD: placement
-config matrix]</code>.</p>
+then re-run the gate&rsquo;s throughput probe before calling it done <code>[LAB: RESULTS-MATRIX §F failed configs — n-cpu-moe 14 VRAM-OOM, ≥18 without --no-repack segfault, --no-mmap host-OOM &gt;125 GB RAM; placement is a matrix you re-measure, not a flag you copy]</code>.</p>
 <p><strong>The restart that isn&rsquo;t clean.</strong> A serving process that dies mid-batch can leave the
 GPU in a state where the successor process fails to allocate. The watchdog&rsquo;s restart
 path must handle &ldquo;restart the process&rdquo; and &ldquo;reset the device&rdquo; as distinct rungs, and
@@ -370,8 +381,7 @@ answers, scored against what the humans actually did, is the cheapest large-scal
 evaluation you will ever run: production distribution, production load, zero
 production risk. Shadow mode also burns in the operational layer — the watchdogs,
 the log rotation, the thermal reality — while the stakes are nil. Most deployments
-discover their first three surprises here, which is the point <code>[R-TBD: shadow-phase
-findings from lab deployment]</code>.</p>
+discover their first three surprises here, which is the point <code>[LAB: RESULTS-MATRIX §G — production burn-in on promoted Q3-MTP: 12-min soak 86 requests, 0 errors, 100% mean acceptance, +2 MiB VRAM drift; correctness 3/3, concurrent dual-stream MTP, 28K-token long-context recall]</code>.</p>
 <p><strong>Advisory next.</strong> Outputs become visible, clearly badged as machine drafts, with
 Chapter 5&rsquo;s confidence grades and disposition buttons live. The crew&rsquo;s corrections
 start flowing (Chapter 7&rsquo;s corpus), the usefulness metrics start accumulating

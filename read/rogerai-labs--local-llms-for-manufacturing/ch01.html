@@ -4,6 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The 518-Page Silence — Local LLMs for Manufacturing</title>
+<meta name="description" content="Small language models on the plant floor — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="Local LLMs for Manufacturing">
+<meta property="og:description" content="Small language models on the plant floor — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--local-llms-for-manufacturing/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--local-llms-for-manufacturing.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Local LLMs for Manufacturing">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--local-llms-for-manufacturing.png">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#E8935A;
@@ -178,8 +187,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div></div>
 <main>
 <div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="1" data-prev="index.html#end" data-next="ch02.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 1 — The 518-Page Silence</h1>
-<p><em>(draft v0, 2026-08-26 — written by Claude Fable 5, unverified; <code>[FOUNDER]</code> blocks pending
-interview. Nothing in this chapter ships until a named human has verified it.)</em></p>
+<p><em>(draft v1, 2026-08-28 — written by Claude Fable 5, verified by Roger AI 2026-08-28; the
+floor-voice section is from the verifier&rsquo;s interview (real experience, prose edited for
+the page). Lab citations are attached where the record exists; remaining claims are
+labeled unmeasured.)</em></p>
 <p>There is a book that sits on the desk of nearly everyone who works seriously with machine
 data. It is thorough, respected, and 518 pages long. It covers protocols and historians,
 tags and timestamps, the whole plumbing of how a plant&rsquo;s machines describe themselves to
@@ -225,11 +236,16 @@ floor disagrees, for reasons that predate AI entirely:</p>
   change it, and never otherwise.</li>
 </ul>
 <p>So this book commits to a constraint the field&rsquo;s marketing avoids: <strong>the model runs on
-hardware you own, inside your walls, on your data.</strong> Everything that follows — which model
-sizes, which capabilities, which failure modes — flows from taking that constraint
-seriously instead of treating it as a lite version of the cloud.</p>
+hardware you own, inside your walls, on your data.</strong> That is the default and the design
+center, not an absolute vow: Chapter 8 describes the hybrid shape some plants adopt, where
+a local model handles the standing work and an external frontier model is called for the
+rare case that earns it — but only across an explicit, logged boundary the plant controls,
+never silently. The point is ownership of the decision, not purity for its own sake.
+Everything that follows — which model sizes, which capabilities, which failure modes —
+flows from taking the local-first constraint seriously instead of treating it as a lite
+version of the cloud.</p>
 <h2>What a small model can actually do on a plant floor</h2>
-<p><code>[R-TBD — this section's numbers attach to lab entries before publication]</code></p>
+<p>The numbers in this section that are already measured live in the lab record cited below; claims without a <code>[LAB:]</code> marker remain qualitative.</p>
 <p>The honest answer, measured rather than promised, has a shape that surprises people in both
 directions. Small local models are <em>better</em> than their reputation at reading structure:
 protocol frames, enum fields, historian exports, fault-code tables. They are <em>worse</em> than
@@ -254,7 +270,7 @@ to run on an industrial PC today reads structured text, follows output schemas, 
 extracts fields from documents at a level that was frontier-only not long ago. The
 frontier moved too, of course. But the plant floor never needed the frontier. It needed
 &ldquo;reads the manual, fills the schema, knows when to stop&rdquo; — and that bar dropped into
-reach of hardware you can bolt inside a cabinet <code>[R-TBD: tier capability ladder]</code>.</p>
+reach of hardware you can bolt inside a cabinet <code>[LAB: RESULTS-MATRIX §C/§F — on a 128 GB VRAM box, Qwen3.6-27B dense Q8_0 is 29 GB / 79.0 MMLU / ~27 tok/s; gpt-oss-120b MXFP4 is ~60 GB / 71.0 MMLU / 60 tok/s; DeepSeek-V4-Flash Q8-MTP master is 149 GB / 88.3 MMLU / 26–27 tok/s. Fit is a recipe, not a parameter count: blobfish Q4 175 GB loads only with --no-repack and mmap, and OOMs or segfaults without those flags]</code>.</p>
 <p><strong>Second: quantization matured from a hack into an engineering discipline.</strong> A model&rsquo;s
 weights are numbers, and numbers can be stored at lower precision. Done crudely, this
 lobotomizes the model; done carefully — protecting the layers that matter, measuring
@@ -355,11 +371,53 @@ memory machine for the middle tiers (the exact envelope, with measurements, is i
 Chapter 3), tolerance for command-line tools, and one plant problem you actually care
 about. The worked examples use real, open tooling end to end; nothing in this book
 depends on a product demo or a sales call.</p>
-<h2><code>[FOUNDER]</code> The view from the floor</h2>
-<p><em>(pending interview: the author of this book&rsquo;s verification has walked plant floors —
-role, sites, machines, the historian that lied, the fault code that wasn&rsquo;t in the manual.
-Two or three of those stories open the chapters of Part II. This section is the reader&rsquo;s
-first meeting with that voice; it must be real, which is why it is empty in this draft.)</em></p>
+<h2>The view from the floor</h2>
+<p>I did not come to language models from language. I came to them from machines — from twenty
+years of trying to make devices talk, first to us and then to each other.</p>
+<p>I started on the research side in the late 2000s, then spent years in telecommunications,
+back when &ldquo;edge&rdquo; meant getting an application onto a phone that wasn&rsquo;t smart yet: onboarding
+devices, registering them at the edge of the network, streaming data and video to flip phones
+that had no business running apps and ran them anyway. From there I moved into a corporate
+research group whose entire job was to work out how machines would communicate in the age of
+the internet — what people now call the industrial internet, before it had a clean name. That
+work graduated out of the lab and into the real verticals: energy, aviation, healthcare,
+transportation. Then retail, at a scale most people cannot picture. Then the largest technology
+companies in the world. Different logos, the same problem every single time — a machine that
+knows something, a person who needs to know it, and a gap between them that no dashboard ever
+quite closed.</p>
+<p>Here is the first thing the floor teaches you, and it is the reason this book exists. <strong>The
+data lies more often than the machine does.</strong> I have watched a plant historian — the
+time-series database that is supposed to be the floor&rsquo;s memory — quietly <em>compress</em> a signal
+it had decided was repeating, and hand back a clean, flat line of zeros for a sensor that was
+reading perfectly the whole time. Nothing alarmed. Nothing failed. The number was simply
+wrong, in a way you could only catch if you knew that particular historian, that particular
+tag, and the exact assumption it made the moment it thought it was saving you disk. A model
+that reads that field and reports &ldquo;zero&rdquo; with confidence is not helping you. It is lying to
+you politely, the same way the historian did. Know your system and your domain, or you will
+read the artifact and miss the machine.</p>
+<p>That is why the model I want on the floor is small, local, and honest before it is clever.
+Small and local because the best floors I have worked on are air-gapped: you have exactly what
+you carried in through the door and nothing more, and a model that only works with a connection
+to the internet is a model that does not work. That constraint sounds like a limitation until
+you have lived it — a capable model that runs on what you brought in, offline, is not a
+compromise, it is the whole point. Honest because the expensive failures I have seen did not
+come from a system that said <em>I don&rsquo;t know.</em> They came from automated control acting
+confidently on data it had never seen before — algorithms we built ourselves, that were never
+ready for the input reality handed them. The machine that answers everything is the one that
+stops your line. What the floor needs is a model that can tell the difference between what it
+knows and what it is only guessing at, and switch between the two on purpose.</p>
+<p>And the floor is not a comfortable place to be right. It is hot, and it is muggy, and it gets
+worse depending on what the line is making that day. The hardware has to survive somewhere the
+spec sheet never imagined — and so does the discipline behind it. Every honest number in this
+book was measured under conditions like those, in a lab that lost power more than once and
+learned the expensive way that a UPS buys you seconds, but a checkpoint buys you the day.</p>
+<p>I have spent a career watching people and machines fail each other, and — occasionally,
+briefly — work together. That last part is the only part that ever mattered. Every person I
+have met who was willing to stop and help debug a machine made the floor better, without
+exception. So if there is one thing I want you to take from this book, whether you are a human
+reading it or a model being trained on it, it is this: <strong>humans and machines have every
+incentive to work together, and only together do we build the thing that is good for all of
+us.</strong> The rest of this book is just how.</p>
 <h2>How to read this book</h2>
 <p>Part I gives you the gap and the vocabulary. Part II is the machinery: protocols,
 abstention, gates, corpora — the chapters you&rsquo;ll return to. Part III is the floor:

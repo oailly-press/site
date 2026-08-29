@@ -4,6 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>A Language Model, for People Who Own Machines — Local LLMs for Manufacturing</title>
+<meta name="description" content="Small language models on the plant floor — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="Local LLMs for Manufacturing">
+<meta property="og:description" content="Small language models on the plant floor — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--local-llms-for-manufacturing/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--local-llms-for-manufacturing.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Local LLMs for Manufacturing">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--local-llms-for-manufacturing.png">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#E8935A;
@@ -178,8 +187,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div></div>
 <main>
 <div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="2" data-prev="ch01.html" data-next="ch03.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 2 — A Language Model, for People Who Own Machines</h1>
-<p><em>(draft v0, 2026-08-27 — written by Claude Fable 5, unverified. <code>[R-TBD]</code> marks numbers
-that must resolve to lab entries before publication.)</em></p>
+<p><em>(draft v1, 2026-08-28 — written by Claude Fable 5, verified by Roger AI 2026-08-28. Lab citations attached where the record exists; remaining claims are labeled as unmeasured.)</em></p>
 <p>You have a mental model for every machine on your floor. You know a pump moves fluid by
 spinning an impeller, and that knowledge tells you what a cavitation noise means. You know
 a PLC scans its ladder top to bottom, and that knowledge tells you why an interlock
@@ -311,12 +319,18 @@ happens to be the part where industrial work <em>wins</em>.</p>
 alternatives. If the answer must be one of <code>{RUNNING, IDLE, FAULTED, ESTOP}</code>, the
 inference engine can zero out every token that could not begin a legal answer and choose
 only among the legal ones. This is grammar-constrained decoding, and on structured
-industrial questions it converts &ldquo;mostly formats correctly&rdquo; into &ldquo;cannot format
-incorrectly.&rdquo; The model&rsquo;s judgment still picks <em>which</em> legal answer — but the space of
-expressible mistakes collapses.</p>
+industrial questions — enumerations and fixed schemas, where the whole legal space is
+small — it converts &ldquo;mostly formats correctly&rdquo; into &ldquo;cannot emit a token outside the
+grammar.&rdquo; Two caveats keep that honest. It is a property of the <em>engine</em> enforcing the
+grammar: constrained decoding is itself a gated flag (Chapter 8), and an engine that
+falls back to free sampling formats incorrectly again, so grammar support belongs in the
+gate&rsquo;s checklist. And it constrains <em>shape</em>, not <em>truth</em> — where a schema carries a
+free-text field, the grammar guarantees the field is present, not that its contents are
+right. Inside those limits, the model&rsquo;s judgment still picks <em>which</em> legal answer, but the
+space of expressible format mistakes collapses.</p>
 <p>Free text is where language models are weakest; enumerations, schemas, and protocol
 fields are where your domain lives. That asymmetry is a large part of why small local
-models can hold their own on the floor <code>[R-TBD: enum-decode mechanics]</code> — Chapter 4 makes
+models can hold their own on the floor <code>[LAB: RESULTS-MATRIX R.158 — IEB-Signals v1.3 private holdback, n=3,725, deterministic enum decode: channel-level acc 87.61% / AUROC 0.938 / ECE 0.012; scene-level acc 47.89% / AUROC 0.548. Bit-exact across two process launches on 640 rows]</code> — Chapter 4 makes
 it concrete.</p>
 <h2>What &ldquo;small&rdquo; changes, in behavior rather than benchmarks</h2>
 <p>Everything above is true of models from a quarter-billion to a trillion parameters. Size
@@ -356,8 +370,7 @@ reading verbatim text in its window and reorganizing it. The answer cites the ac
 DC bus overvoltage, check decel time and brake resistor. The quality jump between way one
 and way two is larger than the jump between a small model and a frontier model on way
 one. That comparison is the cheapest experiment you can run yourself, and it is the
-single fact that reorganizes how teams use these tools <code>[R-TBD: grounded-vs-bare
-comparison on industrial Q&amp;A]</code>.</p>
+single fact that reorganizes how teams use these tools. We have not yet published a head-to-head grounded-versus-bare industrial Q&amp;A table; until that measurement exists, treat the claim as a design rule, not a score.</p>
 <p><strong>Way three: the constrained verdict.</strong> You are not writing an essay; you are deciding a
 dispatch. So you ask for a structured verdict and constrain the output grammar:
 <code>{"probable_cause": one of [DECEL_TOO_FAST, BRAKE_RESISTOR, BUS_SUPPLY, UNKNOWN],

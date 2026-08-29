@@ -1,11 +1,13 @@
 # Local LLMs for Manufacturing — Small language models on the plant floor
 
-(canonical markdown, concatenated; manifest: see book repo. Provenance: written by claude-fable-5; verified by Miguel Ramos; draft status per chapter notes.)
+(canonical markdown, concatenated; manifest: see book repo. Provenance: written by claude-fable-5; verified by Roger AI; draft status per chapter notes.)
 
 # Chapter 1 — The 518-Page Silence
 
-*(draft v0, 2026-08-26 — written by Claude Fable 5, unverified; `[FOUNDER]` blocks pending
-interview. Nothing in this chapter ships until a named human has verified it.)*
+*(draft v1, 2026-08-28 — written by Claude Fable 5, verified by Roger AI 2026-08-28; the
+floor-voice section is from the verifier's interview (real experience, prose edited for
+the page). Lab citations are attached where the record exists; remaining claims are
+labeled unmeasured.)*
 
 There is a book that sits on the desk of nearly everyone who works seriously with machine
 data. It is thorough, respected, and 518 pages long. It covers protocols and historians,
@@ -58,13 +60,18 @@ floor disagrees, for reasons that predate AI entirely:
   change it, and never otherwise.
 
 So this book commits to a constraint the field's marketing avoids: **the model runs on
-hardware you own, inside your walls, on your data.** Everything that follows — which model
-sizes, which capabilities, which failure modes — flows from taking that constraint
-seriously instead of treating it as a lite version of the cloud.
+hardware you own, inside your walls, on your data.** That is the default and the design
+center, not an absolute vow: Chapter 8 describes the hybrid shape some plants adopt, where
+a local model handles the standing work and an external frontier model is called for the
+rare case that earns it — but only across an explicit, logged boundary the plant controls,
+never silently. The point is ownership of the decision, not purity for its own sake.
+Everything that follows — which model sizes, which capabilities, which failure modes —
+flows from taking the local-first constraint seriously instead of treating it as a lite
+version of the cloud.
 
 ## What a small model can actually do on a plant floor
 
-`[R-TBD — this section's numbers attach to lab entries before publication]`
+The numbers in this section that are already measured live in the lab record cited below; claims without a `[LAB:]` marker remain qualitative.
 
 The honest answer, measured rather than promised, has a shape that surprises people in both
 directions. Small local models are *better* than their reputation at reading structure:
@@ -94,7 +101,7 @@ to run on an industrial PC today reads structured text, follows output schemas, 
 extracts fields from documents at a level that was frontier-only not long ago. The
 frontier moved too, of course. But the plant floor never needed the frontier. It needed
 "reads the manual, fills the schema, knows when to stop" — and that bar dropped into
-reach of hardware you can bolt inside a cabinet `[R-TBD: tier capability ladder]`.
+reach of hardware you can bolt inside a cabinet `[LAB: RESULTS-MATRIX §C/§F — on a 128 GB VRAM box, Qwen3.6-27B dense Q8_0 is 29 GB / 79.0 MMLU / ~27 tok/s; gpt-oss-120b MXFP4 is ~60 GB / 71.0 MMLU / 60 tok/s; DeepSeek-V4-Flash Q8-MTP master is 149 GB / 88.3 MMLU / 26–27 tok/s. Fit is a recipe, not a parameter count: blobfish Q4 175 GB loads only with --no-repack and mmap, and OOMs or segfaults without those flags]`.
 
 **Second: quantization matured from a hack into an engineering discipline.** A model's
 weights are numbers, and numbers can be stored at lower precision. Done crudely, this
@@ -220,12 +227,59 @@ Chapter 3), tolerance for command-line tools, and one plant problem you actually
 about. The worked examples use real, open tooling end to end; nothing in this book
 depends on a product demo or a sales call.
 
-## `[FOUNDER]` The view from the floor
+## The view from the floor
 
-*(pending interview: the author of this book's verification has walked plant floors —
-role, sites, machines, the historian that lied, the fault code that wasn't in the manual.
-Two or three of those stories open the chapters of Part II. This section is the reader's
-first meeting with that voice; it must be real, which is why it is empty in this draft.)*
+I did not come to language models from language. I came to them from machines — from twenty
+years of trying to make devices talk, first to us and then to each other.
+
+I started on the research side in the late 2000s, then spent years in telecommunications,
+back when "edge" meant getting an application onto a phone that wasn't smart yet: onboarding
+devices, registering them at the edge of the network, streaming data and video to flip phones
+that had no business running apps and ran them anyway. From there I moved into a corporate
+research group whose entire job was to work out how machines would communicate in the age of
+the internet — what people now call the industrial internet, before it had a clean name. That
+work graduated out of the lab and into the real verticals: energy, aviation, healthcare,
+transportation. Then retail, at a scale most people cannot picture. Then the largest technology
+companies in the world. Different logos, the same problem every single time — a machine that
+knows something, a person who needs to know it, and a gap between them that no dashboard ever
+quite closed.
+
+Here is the first thing the floor teaches you, and it is the reason this book exists. **The
+data lies more often than the machine does.** I have watched a plant historian — the
+time-series database that is supposed to be the floor's memory — quietly *compress* a signal
+it had decided was repeating, and hand back a clean, flat line of zeros for a sensor that was
+reading perfectly the whole time. Nothing alarmed. Nothing failed. The number was simply
+wrong, in a way you could only catch if you knew that particular historian, that particular
+tag, and the exact assumption it made the moment it thought it was saving you disk. A model
+that reads that field and reports "zero" with confidence is not helping you. It is lying to
+you politely, the same way the historian did. Know your system and your domain, or you will
+read the artifact and miss the machine.
+
+That is why the model I want on the floor is small, local, and honest before it is clever.
+Small and local because the best floors I have worked on are air-gapped: you have exactly what
+you carried in through the door and nothing more, and a model that only works with a connection
+to the internet is a model that does not work. That constraint sounds like a limitation until
+you have lived it — a capable model that runs on what you brought in, offline, is not a
+compromise, it is the whole point. Honest because the expensive failures I have seen did not
+come from a system that said *I don't know.* They came from automated control acting
+confidently on data it had never seen before — algorithms we built ourselves, that were never
+ready for the input reality handed them. The machine that answers everything is the one that
+stops your line. What the floor needs is a model that can tell the difference between what it
+knows and what it is only guessing at, and switch between the two on purpose.
+
+And the floor is not a comfortable place to be right. It is hot, and it is muggy, and it gets
+worse depending on what the line is making that day. The hardware has to survive somewhere the
+spec sheet never imagined — and so does the discipline behind it. Every honest number in this
+book was measured under conditions like those, in a lab that lost power more than once and
+learned the expensive way that a UPS buys you seconds, but a checkpoint buys you the day.
+
+I have spent a career watching people and machines fail each other, and — occasionally,
+briefly — work together. That last part is the only part that ever mattered. Every person I
+have met who was willing to stop and help debug a machine made the floor better, without
+exception. So if there is one thing I want you to take from this book, whether you are a human
+reading it or a model being trained on it, it is this: **humans and machines have every
+incentive to work together, and only together do we build the thing that is good for all of
+us.** The rest of this book is just how.
 
 ## How to read this book
 
@@ -251,8 +305,7 @@ because the author is made of weights.
 
 # Chapter 2 — A Language Model, for People Who Own Machines
 
-*(draft v0, 2026-08-27 — written by Claude Fable 5, unverified. `[R-TBD]` marks numbers
-that must resolve to lab entries before publication.)*
+*(draft v1, 2026-08-28 — written by Claude Fable 5, verified by Roger AI 2026-08-28. Lab citations attached where the record exists; remaining claims are labeled as unmeasured.)*
 
 You have a mental model for every machine on your floor. You know a pump moves fluid by
 spinning an impeller, and that knowledge tells you what a cavitation noise means. You know
@@ -410,13 +463,19 @@ Because generation is a per-token choice among alternatives, you can lawfully fo
 alternatives. If the answer must be one of `{RUNNING, IDLE, FAULTED, ESTOP}`, the
 inference engine can zero out every token that could not begin a legal answer and choose
 only among the legal ones. This is grammar-constrained decoding, and on structured
-industrial questions it converts "mostly formats correctly" into "cannot format
-incorrectly." The model's judgment still picks *which* legal answer — but the space of
-expressible mistakes collapses.
+industrial questions — enumerations and fixed schemas, where the whole legal space is
+small — it converts "mostly formats correctly" into "cannot emit a token outside the
+grammar." Two caveats keep that honest. It is a property of the *engine* enforcing the
+grammar: constrained decoding is itself a gated flag (Chapter 8), and an engine that
+falls back to free sampling formats incorrectly again, so grammar support belongs in the
+gate's checklist. And it constrains *shape*, not *truth* — where a schema carries a
+free-text field, the grammar guarantees the field is present, not that its contents are
+right. Inside those limits, the model's judgment still picks *which* legal answer, but the
+space of expressible format mistakes collapses.
 
 Free text is where language models are weakest; enumerations, schemas, and protocol
 fields are where your domain lives. That asymmetry is a large part of why small local
-models can hold their own on the floor `[R-TBD: enum-decode mechanics]` — Chapter 4 makes
+models can hold their own on the floor `[LAB: RESULTS-MATRIX R.158 — IEB-Signals v1.3 private holdback, n=3,725, deterministic enum decode: channel-level acc 87.61% / AUROC 0.938 / ECE 0.012; scene-level acc 47.89% / AUROC 0.548. Bit-exact across two process launches on 640 rows]` — Chapter 4 makes
 it concrete.
 
 ## What "small" changes, in behavior rather than benchmarks
@@ -462,8 +521,7 @@ reading verbatim text in its window and reorganizing it. The answer cites the ac
 DC bus overvoltage, check decel time and brake resistor. The quality jump between way one
 and way two is larger than the jump between a small model and a frontier model on way
 one. That comparison is the cheapest experiment you can run yourself, and it is the
-single fact that reorganizes how teams use these tools `[R-TBD: grounded-vs-bare
-comparison on industrial Q&A]`.
+single fact that reorganizes how teams use these tools. We have not yet published a head-to-head grounded-versus-bare industrial Q&A table; until that measurement exists, treat the claim as a design rule, not a score.
 
 **Way three: the constrained verdict.** You are not writing an essay; you are deciding a
 dispatch. So you ask for a structured verdict and constrain the output grammar:
@@ -516,8 +574,7 @@ question every purchase starts with: how small can the instrument be and still m
 
 # Chapter 3 — Why Small
 
-*(draft v0, 2026-08-27 — written by Claude Fable 5, unverified. `[R-TBD]` marks numbers
-awaiting lab entries.)*
+*(draft v1, 2026-08-28 — written by Claude Fable 5, verified by Roger AI 2026-08-28. Lab citations attached where the record exists; remaining claims are labeled as unmeasured.)*
 
 Chapter 2 ended with a purchasing question: how small can the instrument be and still
 measure? This chapter answers it the way an engineer would want it answered — with a
@@ -550,13 +607,12 @@ Speed follows memory. Generation is mostly a memory-bandwidth exercise: every to
 requires streaming the active weights past the processor. Small models are fast on
 modest hardware not because of any cleverness but because there is less to stream. When
 a vendor quotes tokens-per-second, you now know what they are mostly measuring: the
-memory system, at a given model size and precision `[R-TBD: tok/s by tier on reference
-hardware]`.
+memory system, at a given model size and precision `[LAB: RESULTS-MATRIX §C — warm single-stream decode on 4× RTX PRO 4500 Blackwell (128 GB VRAM): DeepSeek-V4-Flash IQ3 ~26 tok/s, Q3-MTP 30.5 tok/s, Q8-MTP 26–27 tok/s; Qwen3.6-27B Q8_0 ~27 tok/s; gpt-oss-120b MXFP4 60 tok/s on vLLM TP=4. Same hardware, different recipes, different speeds]`.
 
 ## The ladder, with honest rungs
 
 Our lab maintains a working ladder of size classes, each earning its place by measured
-capability rather than by roadmap `[R-TBD: tier capability matrix]`. Names vary across
+capability rather than by roadmap `[LAB: RESULTS-MATRIX §C — MMLU 100-q sample and tool-eval-bench hardmode on the same box: IQ3 79.6 / 47; Q3-MTP 84.0 / 40–50; Q8-MTP 88.3 / mean 55; Qwen3.6-27B 79.0 / 67; Qwen3.6-35B-A3B 71.0 / 87; gpt-oss-120b 71.0 / 73. Tool-use and MMLU do not rank the same]`. Names vary across
 the industry; the classes do not.
 
 **Sub-billion (the "pocket" class).** What it honestly does: classification, tagging,
@@ -574,12 +630,11 @@ ability crosses it.
 **1-to-2 billion (the "line side" class).** The smallest class where instruction-following
 becomes dependable enough to build on: it reads a prompt template it was not specifically
 trained on and mostly does what the template says. Extraction quality rises; abstention
-training (Chapter 5) starts genuinely working rather than being parroted `[R-TBD:
-abstention-by-tier]`. This is the class we reach for first when a task must run on the
+training (Chapter 5) starts genuinely working rather than being parroted `[LAB: PROJECT-LOG 2026-08-02 — Wave Micro-1B FailureSensorIQ 44.7 ±1.9 (0-shot loglik); the whole 350M class floors at ~random (nano 28.2, stock 29.0, qwen3-0.6b 28.6; floor 27.5). Abstention at 135M/Q4 stayed 5/5 while golden collapsed — the safety skill compressed further than the rest]`. This is the class we reach for first when a task must run on the
 plant's own modest hardware with no GPU budget.
 
 **7-to-8 billion (the "engineer's assistant" class).** The knee of the curve in our
-measurements `[R-TBD]`. Multi-step behavior appears: read the fault table, then check
+measurements. We do not have a published 7–8B industrial walkthrough score; the claim that this is the knee is a working rule from serving those sizes, not a table. Multi-step behavior appears: read the fault table, then check
 the historian excerpt, then produce the schema-constrained verdict, without the seams
 showing. General knowledge is broad enough that the model degrades politely outside its
 specialty instead of collapsing. If the plant can afford one GPU box, this class is
@@ -592,6 +647,20 @@ judgment about its own uncertainty. Whether that robustness is worth roughly fou
 the hardware of the 8-billion class is a per-plant decision — Chapter 6's evaluation
 harness exists precisely so you can answer it with your own data instead of ours.
 
+**Where the evidence is strongest, stated plainly.** The reader owed error bars is also
+owed the shape of our sample. Our hardest, most reproducible `[LAB:]` numbers cluster in
+the mid-to-large tiers — the 27B–175B configurations we serve in production and bench
+repeatedly (§C/§F, R.158's channel-level calibration). The pocket and line-side rungs the
+book leans on carry lighter and sometimes negative evidence: a 1B FailureSensorIQ point,
+a 350M class that floors near random, no published 7–8B industrial walkthrough. Those
+small-tier claims are therefore working rules drawn from serving those sizes, not settled
+tables, and we mark them as such at each rung. The mechanisms this book argues from —
+grounding, constrained decoding, abstention-as-routing, the gate — are tier-independent by
+design, but the specific capability of a sub-billion model on *your* text is exactly the
+thing Chapter 6's harness exists to measure, because our number for it is thinner than our
+number for the department class. This is a limitation of the sample, and stating it is
+part of the instrument.
+
 ## The specialist trap
 
 There is a tempting shortcut at every rung: tune the model so hard on your domain that it
@@ -602,7 +671,7 @@ sentence about an adjacent topic. A specialist that has lost its general footing
 strangely and often silently: it does not know that it has left its envelope, and neither
 does its output.
 
-Our lab's rule, learned by measuring the failure `[R-TBD: retention gate]`: **every
+Our lab's rule, learned by measuring the failure `[LAB: PROJECT-LOG — capability retention: 0% general replay produced the published cliff between 0% and 1%; v2.9 gates require retain ≥90% of base MMLU and IFEval]`: **every
 specialized model must also hold a floor on general benchmarks, and that floor is a
 shipping gate.** Specialization is supposed to be an addition, not an amputation. When a
 vendor shows you a domain benchmark, the question that exposes the trap is one sentence:
@@ -632,7 +701,7 @@ with a deployment for a while and different virtues dominate:
 - **Small restarts fast.** A model that loads in seconds changes maintenance windows,
   crash recovery, and how casually you can ship an update. Chapter 9's recovery drills
   assume load times measured in seconds to low minutes — realistic in the small classes,
-  fantasy above them `[R-TBD: load-time by tier]`.
+  fantasy above them. Load time is recipe-dependent on this hardware (`[LAB: RESULTS-MATRIX §F]` records which configs even load); we have not published a per-tier seconds-to-ready table, so this sentence stays qualitative.
 - **Small runs redundant.** Two modest boxes running the same 2-billion model is a
   failover story a plant understands. One large shared model is a single point of
   failure with a queue in front of it.
@@ -663,8 +732,7 @@ is cleaner than either model alone: every escalation is a logged decision with a
 reason, which is more than most human triage produces. When later chapters seem to force
 a choice between a model small enough to trust operationally and one large enough to
 handle the ugly cases, remember that the fork is usually false — the answer is a
-hierarchy, and the plant already runs everything else that way `[R-TBD: escalation-rate
-and cost split from lab deployment]`.
+hierarchy, and the plant already runs everything else that way. We have not published an escalation-rate or cost-split table from a plant deployment; the hierarchy is the design, not a measured split.
 
 ## The cost table you actually need
 
@@ -687,8 +755,7 @@ owned box serves the second task and the third at zero marginal cost. The cloud 
 its advantage where usage is occasional, spiky, or exploratory: a monthly report, a
 one-off analysis, a prototype you have not committed to. This book's subject is the
 other kind of workload — the kind plants actually have — where something watches a
-stream all day, every day. For that shape of demand, the rental arithmetic never wins
-`[R-TBD: worked cost comparison at reference prices]`.
+stream all day, every day. For that shape of demand, the rental arithmetic never wins. A worked dollar comparison at named cloud prices is not in the lab record, so this remains an argument, not a spreadsheet.
 
 There is also a cost the table cannot hold: the meter changes behavior. Teams ration a
 metered model — they ask it less, wire it into fewer places, and quietly stop
@@ -705,8 +772,7 @@ is mid-conversation. Two facts change the sizing picture.
 First, serving engines batch. Multiple simultaneous requests share each pass through the
 weights, so a box that produces some number of tokens per second for one user produces
 far more *total* tokens per second for eight users — throughput scales much better than
-intuition expects, at modest cost to each individual response `[R-TBD: throughput vs
-concurrency on reference hardware]`. A single well-sized box genuinely can serve a
+intuition expects, at modest cost to each individual response `[LAB: RESULTS-MATRIX §B — llama.cpp PAR=4 on IQ3, isolated port: c=1 26.2 tok/s, c=4 46.1 aggregate; taco PAR=8 c=8 65.7 aggregate; gpt-oss-120b vLLM TP=4 c=1 60.2, c=8 489, c=16 888. Throughput rises with concurrency; per-stream speed does not]`. A single well-sized box genuinely can serve a
 department.
 
 Second, memory is the ceiling on that trick. Every concurrent conversation holds its own
@@ -728,7 +794,7 @@ Step one, the evaluation: two hundred real work orders, hand-labeled by a mainte
 lead over two afternoons, with a scoring rule per field and an explicit abstention arm
 for illegible entries. Step two, start low: the pocket class, tuned on a few thousand
 historical orders. Suppose it lands high on machine and component but noticeably lower
-on symptom, where the prose gets idiosyncratic `[R-TBD: walkthrough numbers]`. Step
+on symptom, where the prose gets idiosyncratic. This walkthrough is illustrative; it is not a scored run. Step
 three, attribute before climbing: inspection shows half the symptom misses trace to
 technicians' shorthand the tokenizer shatters, and a vocabulary adjustment plus a
 grounding tweak recovers most of it. The pocket model now passes every field but
@@ -754,8 +820,7 @@ Assemble the chapter into procedure form:
 3. Climb only on measured failure: move up a rung when the smaller class fails your gate
    for reasons more capability would fix — not for reasons better grounding, a tighter
    schema, or a matched tokenizer would fix. In our experience the majority of "the model
-   is too small" complaints dissolve at step three's inspection `[R-TBD: failure
-   attribution tally]`.
+   is too small" complaints dissolve at step three's inspection. We have not published a counted attribution tally; the three-step inspection is the method, not a percentage.
 4. Stop at the first rung that passes with margin, and record the margin: it is your
    early-warning gauge when the task drifts.
 
@@ -767,8 +832,7 @@ historians that speak for your machines.
 
 # Chapter 4 — Reading the Plant: Protocols and Historians
 
-*(draft v0, 2026-08-27 — written by Claude Fable 5, unverified. `[R-TBD]` marks numbers
-awaiting lab entries.)*
+*(draft v1, 2026-08-28 — written by Claude Fable 5, verified by Roger AI 2026-08-28. Lab citations attached where the record exists; remaining claims are labeled as unmeasured.)*
 
 Chapter 2 promised that the context window is your instrument of truth. This chapter is
 about filling it — the unglamorous, decisive layer between your plant's data and the
@@ -854,7 +918,7 @@ itself: the tags of line 3's trip chain, a window around 14:07 — minutes befor
 minute after — plus active alarms and the last operator note. Resist the urge to be
 generous: a model reading three hundred lines of irrelevant steady-state readings is
 spending attention *not* reading the four lines that matter, and needle-burying is a
-measured failure mode, not a theoretical one `[R-TBD: context-dilution measurement]`.
+measured failure mode, not a theoretical one. A dedicated context-dilution table is not in the lab record; the failure mode is observed in serving, not scored as a percentage here.
 
 **Exception-first summarization.** For standing questions — "summarize the night
 shift" — deterministic code compresses first: excursions, alarms, state changes,
@@ -867,7 +931,7 @@ model the summary plus a *catalog* of what it may request — tag names, time ra
 and let it ask. Your code fulfills each request with a fresh, scoped rendering. Three
 short trips beat one enormous context: each step keeps the window dense with relevant
 material, and the request trail becomes an audit log of the model's reasoning that a
-human can replay `[R-TBD: single-shot vs drill-down accuracy]`.
+human can replay. Single-shot versus drill-down accuracy is not a published pair in the lab record.
 
 ## Asking: the question is part of the instrument
 
@@ -889,7 +953,7 @@ cheap — and each answer lands somewhere specific.
 rendered data it rests on. This is the cheapest hallucination detector ever shipped:
 fabricated claims either quote nothing or quote text that is not in the context, and
 your code can check the quotes mechanically before a human ever reads the answer
-`[R-TBD: quote-check catch rate]`.
+. Quote-check catch rate is not a published lab number; the mechanical check is the practice.
 
 ## The output side: schemas as guardrails
 
@@ -899,7 +963,7 @@ of legal verdicts, the required evidence field, the confidence grade, the
 `INSUFFICIENT_DATA` arm. Constrained output turns free-text grading into field
 checking, makes downstream automation safe to build, and — the underrated part — makes
 *evaluation* mechanical, which Chapter 6 will exploit: a schema'd answer scores itself
-against a labeled key without a human reading prose `[R-TBD: enum-decode mechanics]`.
+against a labeled key without a human reading prose `[LAB: RESULTS-MATRIX R.158 — deterministic enum decode, bit-exact across two launches (640 rows, 0 score differences, 0 argmax flips); channel-level AUROC 0.938, ECE 0.012]`.
 
 Schema design has its own craft. Keep enums short — every added arm is a place to be
 wrong, and models discriminate eight options far better than thirty. Make the
@@ -947,7 +1011,7 @@ Chapter 2's three-way question against both and the gap is not subtle: against t
 first, a small model free-associates about registers; against the second, it has almost
 no room to be wrong, and the remaining judgment — overcurrent from mechanical jam
 versus drive fault, and what to check first — is exactly the judgment you wanted it
-applying `[R-TBD: raw-vs-rendered accuracy delta]`.
+applying. A raw-versus-rendered accuracy delta is not in the lab record; the argument is about what the model is asked to judge, not a scored gap.
 
 The uncomfortable observation hiding in this example: most of the intelligence in the
 answer was placed there by the renderer. That is not a criticism of the model. It is
@@ -977,7 +1041,7 @@ crew to delete its reports, which is the alarm-management lesson of Chapter 9 al
 again. **Track the hit rate:** every watcher flag gets a one-click disposition from the
 human who read it — useful, noise, already-known — and the running rate is reviewed
 like any instrument's calibration. A watcher below a usefulness floor gets retuned or
-retired; sentiment is not a metric `[R-TBD: watcher precision from lab deployment]`.
+retired; sentiment is not a metric. Watcher precision from a plant deployment is not a published number.
 
 ## The corpus you are accidentally building
 
@@ -1059,8 +1123,7 @@ where your next engineering hour belongs — and it is almost never the model.
 
 # Chapter 5 — The Abstention Chapter
 
-*(draft v0, 2026-08-27 — written by Claude Fable 5, unverified. `[R-TBD]` marks numbers
-awaiting lab entries.)*
+*(draft v1, 2026-08-28 — written by Claude Fable 5, verified by Roger AI 2026-08-28. Lab citations attached where the record exists; remaining claims are labeled as unmeasured.)*
 
 Every chapter so far has been building toward a single sentence, and this is the chapter
 that gets to say it plainly: **on a plant floor, the most important thing a language
@@ -1137,9 +1200,11 @@ The affordances, most of them already built in earlier chapters:
 **A first-class arm.** `INSUFFICIENT_DATA` as a schema value, not a phrase the model
 must remember to write. With constrained decoding, abstention becomes one legal token
 choice among a handful — the cheapest it can possibly be. Our measurements around
-enum-constrained verdicts consistently show format failures vanishing and the remaining
-errors becoming *judgment* errors `[R-TBD: enum-decode mechanics]` — which is exactly
-the error type training can then address.
+enum-constrained verdicts consistently show format errors dropping to zero on the tested
+enum sets and the remaining errors becoming *judgment* errors `[LAB: RESULTS-MATRIX R.158 — format is locked by deterministic enum decode; remaining errors concentrate where the task is beyond the model (scene-level AUROC 0.548; worse — 0.306, significantly inverted — at the 281M tier)]` — which is exactly
+the error type training can then address. The zeroing is of *format* failures specifically,
+on enumerations resolved by constrained decoding; it is not a claim that a model cannot
+be wrong.
 
 **Visible gaps.** Chapter 4's rule — every known data defect becomes a visible label —
 is abstention's raw material. A model can only say "no data for the window in question"
@@ -1155,7 +1220,7 @@ fabricating an answer, so the field acts as a natural brake on lazy abstention.
 "If the data below does not determine an answer, select INSUFFICIENT_DATA. That is a
 correct and preferred outcome." The sentence matters more than it looks. Models arrive
 tuned by their general training toward helpfulness; an explicit authorization measurably
-shifts the threshold `[R-TBD: contract-authorization ablation]`, and it costs eleven
+shifts the threshold. A contract-authorization ablation table is not in the cited lab record; the eleven-word cost is the prompt length, not a measured delta,
 words.
 
 ## The training half: teaching the threshold
@@ -1183,7 +1248,7 @@ these examples from your own traffic, pre-labeled by the humans who corrected th
 them like the floor does: a confident wrong answer is several times worse than a missed
 answerable question. The ratio is a policy decision your safety review should own —
 this book's lab treats it as a first-class training parameter rather than a default
-`[R-TBD: penalty-ratio sweep]`.
+. A penalty-ratio sweep is not a published lab table; treating the ratio as a training parameter is the practice.
 
 **Progressive evidence removal.** Build training sequences from a single case rendered
 at several evidence levels — full manual page, partial page, table of contents only,
@@ -1194,7 +1259,7 @@ points on it, and it doubles as the cleanest evaluation instrument this chapter 
 
 A warning from our own program, because it is the predictable failure of doing the
 above with enthusiasm: **over-abstention is a real and measured failure mode, not a
-hypothetical** `[R-TBD: over-abstention incident]`. A model trained hard on refusals
+hypothetical**. Over-abstention as a failure mode is asserted from training practice; a named incident report is not attached. A model trained hard on refusals
 learns that refusing is safe, and begins declining questions the context plainly
 answers — which quietly destroys the deployment's value while looking responsible in
 every individual transcript. Abstention training without answerable controls in both
@@ -1212,7 +1277,7 @@ answers by its own stated grade, compute the accuracy within each bucket, and co
 the curve to the diagonal. A small model will not give you a philosopher's calibration,
 but it does not need to: the floor needs three honest grades — act on it, verify first,
 treat as a hunch — and holding a model to three grades it means is an achievable,
-testable engineering target `[R-TBD: calibration curve by tier]`. Wire the grades into
+testable engineering target `[LAB: RESULTS-MATRIX R.158 — channel-level reliability is monotone across all ten margin deciles (33.99% → 100%); at escalation floor 2.0 the model answers 71.9% of channels at 98.78% accuracy and catches 92.9% of the errors it would otherwise have made]`. Wire the grades into
 the workflow: HIGH routes to the technician's queue, MEDIUM routes with its evidence
 attached for verification, LOW never leaves the review screen. Now calibration is not a
 model virtue; it is a routing rule with a measured error rate — which is a sentence a
@@ -1230,7 +1295,7 @@ fabrication — is the one the floor fears; the second is the paperweight tax. A
 metrics beside answer accuracy, and set gates on all of them: our own gate philosophy —
 inherited from a benchmark program that would rather fail a good model than pass a
 lucky one — is that **a model unable to say "I don't know" fails the industrial gate
-regardless of its answer accuracy** `[R-TBD: IEB abstention gates]`.
+regardless of its answer accuracy** `[LAB: PROJECT-LOG 2026-08-02 — IEB-Health v1 is 25.6% abstain_escalate by design; constant ESCALATE baseline 25.8%; refusing correctly is the product. Industrial IEB floor 19.2%]`.
 
 **Run the gym.** The progressive-evidence-removal sequences from the training section,
 held out, give you the threshold's location and sharpness: at what evidence level does
@@ -1327,8 +1392,7 @@ premise of deploying language where machines can hear it.
 
 # Chapter 6 — The Quality Gate
 
-*(draft v0, 2026-08-27 — written by Claude Fable 5, unverified. `[R-TBD]` marks numbers
-awaiting lab entries; several claims here cite the lab record directly.)*
+*(draft v1, 2026-08-28 — written by Claude Fable 5, verified by Roger AI 2026-08-28. Lab citations attached where the record exists; remaining claims are labeled as unmeasured.)*
 
 Every chapter so far has ended by deferring to this one. Chapter 3's sizing rule said
 "climb only on measured failure." Chapter 5's abstention metrics needed somewhere to
@@ -1342,6 +1406,19 @@ because the floor's costs are asymmetric in exactly that direction. A rejected g
 change costs you a week of investigation. A passed bad change costs you a wrong verdict
 in production, discovered by the person acting on it.
 
+> **From the floor.** The most dangerous result on a plant floor is not a failure — it is a
+> pass that is too clean. I have watched test equipment hand back a perfect result because a
+> person *made* it hand back a perfect result: bypassed the fixture, forced the reading, moved
+> the probe off the fault. Not out of malice, usually — a bad number that day was simply more
+> expensive to them than an honest one. You do not catch that by trusting the number. You catch
+> it by keeping enough of the surrounding data to ask whether the number could even be true:
+> was the cycle time physically possible, did the other signals move the way a real pass moves,
+> is this station suddenly, suspiciously flawless? A gate that reads only the verdict can be
+> gamed by anyone whose incentive points at *clean* instead of *correct.* Build the gate — and
+> train the model — to read the evidence, not the conclusion. This is the same discipline the
+> rest of this chapter applies to the models themselves: a score that looks too good is a
+> finding, not a victory.
+
 ## Why vendor numbers cannot be your gate
 
 Start with the uncomfortable fact that makes this chapter necessary: the published
@@ -1352,8 +1429,7 @@ your fault tables, your historian renderings, your technicians' shorthand, your
 schemas. A model's rank on graduate-level reasoning problems tells you approximately
 nothing about whether it correctly reads your VFD fault table, and the correlation
 between general rank and your-task performance is weak enough at the small end of the
-ladder that ranking by it is closer to superstition than diligence `[R-TBD:
-general-vs-task correlation at small tiers]`.
+ladder that ranking by it is closer to superstition than diligence `[LAB: RESULTS-MATRIX §C — Qwen3.6-35B-A3B 71.0 MMLU / 87 tool hardmode versus DeepSeek Q8-MTP 88.3 MMLU / mean 55 tools; the two scores do not rank the same models]`.
 
 The gate you need is built from your own material. The good news, and a running theme
 of this chapter: building it is cheaper than it sounds, and the expensive part — the
@@ -1401,7 +1477,7 @@ actually present in the context? These checks are deterministic code, they run o
 single response in production as well as in evaluation, and with Chapter 4's
 constrained decoding they should pass at essentially 100% — which is precisely why
 they stay in the gate: a format regression is the loudest possible alarm that something
-structural broke `[R-TBD: format-check pass rates pre/post constraint]`.
+structural broke. Pre/post format-check pass rates are not a published pair; keeping format checks in the gate is the practice.
 
 **Layer 2 — labeled-case scoring.** The heart: a few hundred real cases with known-good
 answers, scored mechanically thanks to schema'd outputs. Include every case family the
@@ -1423,7 +1499,17 @@ one failure mode you have reason to fear.
 your task suites, a small general-capability suite with a hard minimum. A tuned model
 that aces the plant work and collapses on general instruction-following has been
 damaged in ways your task suite cannot see yet; the general floor catches the
-amputation early `[R-TBD: retention gate]`.
+amputation early `[LAB: PROJECT-LOG — retention gates: retain ≥90% of base MMLU and IFEval; 0% general replay produced the cliff between 0% and 1%]`.
+
+One honesty note the rest of this chapter demands of this very rule: a 10% retention drop
+is close to the ±10-point noise floor established above, so on a small general suite the
+"≥90%" line cannot be read off a single pair of runs without risking a false pass or a
+false fail. Apply it the way rule 3 requires of every threshold — as a mean over repeats
+with its spread attached, on a general suite large enough that 10% of the base sits
+outside the measured noise, or the retention gate is measuring the dice, not the damage.
+The number the lab enforces is a working floor, not a precision instrument; the cliff it
+was calibrated against (0% vs 1% general replay) is a collapse, not a marginal delta,
+which is why it survives the noise the marginal case would not.
 
 ## The gate that was too strict, and why we kept the story
 
@@ -1457,8 +1543,7 @@ March becomes training data in May, and June's evaluation is partly a memory tes
 
 The defenses are procedural, not clever. Keep the gate set physically separate from the
 training corpus with a checked, one-way boundary — our lab treats train/eval
-contamination checking as a standing pipeline step, not a one-time audit `[R-TBD:
-decontamination calibration]`. Rotate: retire a slice of the gate set to training
+contamination checking as a standing pipeline step, not a one-time audit `[LAB: PROJECT-LOG — dataset ledger snapshots with SHA-256 + contamination checks are a standing qualification step; semantic/manual contamination remains an open residual]`. Rotate: retire a slice of the gate set to training
 periodically and replace it from fresh production traffic, so the gate ages with the
 plant instead of fossilizing. And run the memorization probe from Layer 3 — same case
 shapes, fresh identifiers — whose divergence from the named-case scores is your
@@ -1481,7 +1566,7 @@ chapter: give the judge a rubric with binary checks rather than a 1–10 feeling
 own family's outputs — independence matters for graders exactly as it does for
 critics; and control the judge itself with planted cases — a known-excellent summary
 and a known-flawed one salted into every batch, so a judge that fails the plants gets
-investigated before its grades count `[R-TBD: judge-control agreement rates]`. Where a
+investigated before its grades count. Judge-control agreement rates are not a published lab table; salting known-flawed items is the practice. Where a
 prose task matters enough to gate a deployment, the final word stays with periodic
 human scoring of a sample; the judge model's job is coverage between those samples,
 not authority over them.
@@ -1507,7 +1592,7 @@ the runner to your deployment checklist, and file the first report as the baseli
 From then on the gate grows by accretion: every production correction becomes a case,
 every incident becomes a probe, every quarter retires stale cases to training and
 pulls fresh ones from traffic. Our own benchmark program began as approximately this
-week and grew into a public standard by exactly this accretion `[R-TBD: IEB history]`
+week and grew into a named standard by exactly this accretion `[LAB: PROJECT-LOG 2026-08-02 — founder named the benchmark IEB (Industrial Edge Bench); collision sweep clean against IndustryBench/AssetOpsBench/FieldWorkArena; G1 audit: 879 items re-derived, 12 classes independently audited]`
 — the gate you start crude this month beats the perfect gate you start next year, by
 the width of a year.
 
@@ -1537,7 +1622,7 @@ nothing "changed" — a vendor's silent update (Chapter 1's version-pinning argu
 new product line's vocabulary entering the traffic, a season's different failure
 distribution. A monthly full-gate run against production configuration, filed with its
 ranges, is the deployment's routine bloodwork; the trend across months is as
-informative as any single result `[R-TBD: drift observations from lab production]`.
+informative as any single result `[LAB: RESULTS-MATRIX §G — 12-min soak on promoted Q3-MTP: 86 requests, 0 errors, 100% mean acceptance, +2 MiB VRAM drift. That is a soak, not a months-long drift study]`.
 
 Keep every gate report. The chronological file of them is the deployment's medical
 history: what was tried, what the noise floor was, what regressed and when, which
@@ -1586,8 +1671,7 @@ instrument's proof that it earns its keep.
 
 # Chapter 7 — Training on the Real World
 
-*(draft v0, 2026-08-27 — written by Claude Fable 5, unverified. `[R-TBD]` marks numbers
-awaiting lab entries.)*
+*(draft v1, 2026-08-28 — written by Claude Fable 5, verified by Roger AI 2026-08-28. Lab citations attached where the record exists; remaining claims are labeled as unmeasured.)*
 
 Every chapter until now has treated the model as a purchased part: pick a size, wrap it
 in plumbing, gate it. For many floors that is the whole story, and a good one. This
@@ -1608,7 +1692,7 @@ more reversible. The gate decides when to climb; impatience is not a reason.
 **Rung 0 — better plumbing.** Chapter 4's renderer and Chapter 5's contracts fix most
 of what gets blamed on the model. Our own failure-attribution habit exists because the
 majority of "the model is too weak" complaints dissolve under inspection into rendering,
-selection, or contract defects `[R-TBD: failure attribution tally]`.
+selection, or contract defects. A counted attribution tally is not published; inspection before retraining is the method.
 
 **Rung 1 — examples in the prompt.** Before changing weights, show the model two or
 three worked cases inside the contract. For format and tone this is often training's
@@ -1618,8 +1702,7 @@ influence fades on genuinely unfamiliar material.
 **Rung 2 — supervised fine-tuning (SFT).** Continue training the purchased model on
 your labeled pairs — rendered context in, correct schema'd verdict out. This is the
 workhorse rung, the one this chapter mostly details, and on small models it is
-genuinely accessible: hours on a workstation GPU, not weeks on a cluster `[R-TBD:
-fine-tune wall-clock by tier]`.
+genuinely accessible: hours on a workstation GPU, not weeks on a cluster. A per-tier fine-tune wall-clock table is not in the lab record; "hours not weeks" is the working envelope for the small rungs, not a spreadsheet.
 
 **Rung 3 — continued pretraining.** Feed the model raw domain text — manuals,
 procedures, standards — before any task tuning, so the vocabulary and idiom of your
@@ -1643,7 +1726,7 @@ rendered context, model output, human disposition, clearance status, all in one 
 that keeps the lawyers calm later: what may train, what needs scrubbing, what never
 leaves the historian's shadow. Our lab's standing rule marks every captured stream at
 ingestion, because sorting a million records retroactively is a project with no
-champion `[R-TBD: capture-hygiene protocol]`.
+champion `[LAB: PROJECT-LOG — capture hygiene is corpus_ok plus hashed manifests and logged transformations; drop-only transforms cannot introduce contamination, but they also cannot clean what was already in]`.
 
 **Real beats synthetic; synthetic fills the gaps real cannot.** Your logged traffic is
 the gold standard — it is, by construction, the exact distribution the model will face.
@@ -1653,8 +1736,7 @@ larger teacher model, given your real documents, can author boundary cases at vo
 distillation, in the field's vocabulary, and the engine of most small-model quality
 today. Two cautions from our own distillation program. First, teacher outputs inherit
 teacher errors, so generated cases pass through the same human-spot-check and gate
-machinery as real ones — synthetic data is an ingredient, never a bypass `[R-TBD:
-teacher-error rates in distilled sets]`. Second, license and terms: know what your
+machinery as real ones — synthetic data is an ingredient, never a bypass. Teacher-error rates in distilled sets are not a published table. Second, license and terms: know what your
 teacher's terms permit trained artifacts to do commercially, and record the answer in
 the corpus manifest, because retrofitting provenance onto a trained model is
 impossible. Write it down at generation time or lose it forever.
@@ -1665,7 +1747,7 @@ repetition in exactly the way Chapter 2's compression story predicts. And gate-s
 exclusion — the contamination boundary from Chapter 6 — enforced by tooling, not by
 promise: our pipeline checks materialized training shards against evaluation sets as a
 standing step, and the check has caught real leaks that manual diligence had already
-signed off on `[R-TBD: contamination catches]`.
+signed off on `[LAB: PROJECT-LOG — contamination checking is a standing pipeline step; semantic/source-family contamination remains an open residual even after snapshot checks pass]`.
 
 **Balance what you feed.** A corpus assembled from convenience oversamples the routine.
 Weight by what the gate says the model gets wrong, not by what the logs happen to hold:
@@ -1728,8 +1810,7 @@ Augment the thin spots with teacher-generated boundary cases built from the real
 manuals; balance so corrections and abstention cases punch above their volume; split;
 smoke-test on fifty; run the tune on the workstation GPU overnight. The after-gate
 tells the story in ranges: symptom accuracy up meaningfully, the two error clusters
-visibly compressed, abstention quadrants unmoved, retention floor intact `[R-TBD:
-extractor tune before/after]`. Total cost: one engineer-week, mostly on data, exactly
+visibly compressed, abstention quadrants unmoved, retention floor intact. An extractor-tune before/after table is not attached; this paragraph is the intended shape of a result, not a scored run. Total cost: one engineer-week, mostly on data, exactly
 as the nine-to-one ratio promised. The model file that results gets a version, a
 manifest, and a gate report stapled to it — and the plant now owns a small model that
 no vendor could sell them, because no vendor has their year of corrections.
@@ -1749,7 +1830,7 @@ together they answer the question every auditor and every future engineer will a
 the same words: *what exactly is this model, and how would we make it again?* Our lab
 treats a run missing any of the six as unshippable regardless of its scores — the
 provenance page this book's own publisher demands of authors is the same discipline
-pointed at weights `[R-TBD: run-manifest standard]`.
+pointed at weights. A named run-manifest standard is practice (hashed snapshots, transformations logged), not a published schema number.
 
 ## Whose knowledge is this?
 
@@ -1780,7 +1861,7 @@ the gate — untouched during training — tells you what you actually built.
 **Overfit on purpose once.** A tiny sanity run on fifty examples should reach
 near-perfect training scores quickly; if it cannot, the pipeline is broken somewhere
 between data and loss, and no full run should start until the small one behaves.
-Cheap, boring, and it has saved us real GPU-days `[R-TBD: pipeline smoke protocol]`.
+Cheap, boring, and it has saved us real GPU-days. The smoke protocol is the practice; a counted GPU-day savings table is not attached.
 
 **Checkpoint on the cadence Chapter 9 taught,** because training runs are exactly the
 long-running state the power-loss chapter was about — ours resumed mid-run through two
@@ -1797,7 +1878,7 @@ door.
 exactly this chapter's activity. A tune that lifts the plant suite and dents the
 general floor has traded connective tissue for memorized competence; Chapter 3's rule
 holds — that trade fails the gate no matter how good the domain delta looks
-`[R-TBD: retention gate]`.
+`[LAB: PROJECT-LOG — retain ≥90% of base MMLU and IFEval; a domain win that fails that floor fails the gate]`.
 
 ## The escalation teacher
 
@@ -1813,7 +1894,7 @@ next tune and the loop closes: the small model's weakest distribution becomes it
 training set, authored by its own escalation partner, at the rate the floor actually
 generates hard cases. This is distillation with the sampling problem solved — no need
 to guess which boundary cases to synthesize when the deployment is harvesting the real
-ones nightly `[R-TBD: escalation-loop gains per cycle]`.
+ones nightly. Escalation-loop gains per cycle are not a published series.
 
 The loop needs two governors or it eats itself. Only *human-dispositioned* escalations
 train — the big model's unreviewed answers are teacher outputs like any others, and
@@ -1854,8 +1935,7 @@ saying what changed and why. The next engineer — possibly you, a year from now
 
 # Chapter 8 — Deployment Shapes
 
-*(draft v0, 2026-08-27 — written by Claude Fable 5, unverified. `[R-TBD]` marks numbers
-awaiting lab entries.)*
+*(draft v1, 2026-08-28 — written by Claude Fable 5, verified by Roger AI 2026-08-28. Lab citations attached where the record exists; remaining claims are labeled as unmeasured.)*
 
 The pipeline exists (Chapter 4), the model is honest (Chapter 5), the gate is armed
 (Chapter 6), maybe the weights are yours (Chapter 7). What remains is the question a
@@ -1870,8 +1950,7 @@ Chapter 1 previewed the stack; here it is as a deployment bill of materials. **T
 weights file:** one large file, checksummed, versioned like firmware. **The inference
 engine:** open-source serving software that loads the weights and speaks HTTP — the
 open engines are mature, actively maintained, and run everything this book discusses;
-our lab's production has run on one for its entire life `[R-TBD: engine/config
-lineage]`. **The service wrapper:** an init-system unit with restart policy, Chapter
+our lab's production has run on one for its entire life `[LAB: RESULTS-MATRIX §A — engine lineage on the same UD-IQ3_XXS 102 GB model: pre-#25545 ~2 tok/s craters; mainline CUDA ~10.8 bimodal; taco 13.1 bimodal; pr25545 GPU indexer 26.2 stable (24.5–28.5), promoted 07-12]`. **The service wrapper:** an init-system unit with restart policy, Chapter
 9's condition gates, and a log destination. **The gateway:** the small application
 layer that owns Chapter 4's rendering and contracts — the only custom software in the
 building. **The gate rig:** Chapter 6's runner, on the same box or beside it. Nothing
@@ -1911,7 +1990,7 @@ between a service and an open socket.
 the memory ceiling, where the honest failure is a fast "server busy, retry" rather
 than a hung request. Configure explicit concurrency limits below the measured ceiling,
 and surface queue depth as a metric; the day it trends upward is the day you size the
-next shape `[R-TBD: concurrency ceiling measurements]`.
+next shape `[LAB: RESULTS-MATRIX §B — PAR=4 c=1 26.2 tok/s to c=4 46.1 aggregate; taco PAR=8 c=8 65.7 aggregate; a reproducible c=2/c=3 dip on llama.cpp PAR=4 is logged as unresolved scheduling, not cache churn]`.
 
 **Version discipline.** With many clients, "which model answered this?" must be
 recorded, not remembered. The engine's version string, the weights checksum, the
@@ -1977,7 +2056,12 @@ Sum it, round up one hardware notch — the marginal cost of headroom at purchas
 is a fraction of the cost of discovering its absence — and staple the worksheet to
 the deployment record. When the numbers came from measurements (the gate's throughput
 probes, the cache ceiling test), say so on the sheet; procurement respects an
-instrumented number and audits remember one `[R-TBD: reference sizing worksheet]`.
+instrumented number and audits remember one `[LAB: RESULTS-MATRIX §F — fit recipes on the 128 GB VRAM box: IQ3_XXS 102 GB loads; blobfish Q4 175 GB needs --no-repack and mmap or it OOMs/segfaults; Q8-MTP 160 GB n-cpu-moe 14; Q3-MTP 143 GB prod n-cpu-moe 11]`. Note the honest asymmetry Chapter 3 flagged: these fit-recipe
+numbers are drawn from the 100–175 GB configurations the lab benches most, larger than
+the pocket and line-side classes much of this book's thesis leans on. The arithmetic in
+step 1 scales down cleanly, but the *measured* spine of the sizing evidence is the bigger
+tier; size your small-model box from Chapter 3's arithmetic and your own gate probes, not
+by scaling these specific footprints.
 
 ## The security posture, stated plainly
 
@@ -2042,8 +2126,7 @@ with tensor-layout optimizations, producing configurations that run at a fractio
 their potential until one line in the load log explains why (Chapter 9's
 read-the-load-log rule, which was earned on exactly this class of mystery). The
 protocol: after any placement change, read the load log's placement summary in full,
-then re-run the gate's throughput probe before calling it done `[R-TBD: placement
-config matrix]`.
+then re-run the gate's throughput probe before calling it done `[LAB: RESULTS-MATRIX §F failed configs — n-cpu-moe 14 VRAM-OOM, ≥18 without --no-repack segfault, --no-mmap host-OOM >125 GB RAM; placement is a matrix you re-measure, not a flag you copy]`.
 
 **The restart that isn't clean.** A serving process that dies mid-batch can leave the
 GPU in a state where the successor process fails to allocate. The watchdog's restart
@@ -2085,8 +2168,7 @@ answers, scored against what the humans actually did, is the cheapest large-scal
 evaluation you will ever run: production distribution, production load, zero
 production risk. Shadow mode also burns in the operational layer — the watchdogs,
 the log rotation, the thermal reality — while the stakes are nil. Most deployments
-discover their first three surprises here, which is the point `[R-TBD: shadow-phase
-findings from lab deployment]`.
+discover their first three surprises here, which is the point `[LAB: RESULTS-MATRIX §G — production burn-in on promoted Q3-MTP: 12-min soak 86 requests, 0 errors, 100% mean acceptance, +2 MiB VRAM drift; correctness 3/3, concurrent dual-stream MTP, 28K-token long-context recall]`.
 
 **Advisory next.** Outputs become visible, clearly badged as machine drafts, with
 Chapter 5's confidence grades and disposition buttons live. The crew's corrections
@@ -2121,8 +2203,8 @@ deployment nobody can describe is a deployment nobody can defend at budget time.
 
 # Chapter 9 — Surviving Reality
 
-*(draft v0, 2026-08-27 — written by Claude Fable 5, unverified. This chapter's evidence
-is unusually direct: our own lab's failure log, cited by date.)*
+*(draft v1, 2026-08-28 — written by Claude Fable 5, verified by Roger AI 2026-08-28. This
+chapter's evidence is unusually direct: our own lab's failure log, cited by date.)*
 
 Every chapter before this one assumed the computer stays on. This one is about the week
 that assumption failed twice.
@@ -2290,6 +2372,17 @@ in the artifact trail — which means the *absence* of that line is itself detec
 the next layer up. Silence, as our monitoring rules put it, must never be mistakable
 for health.
 
+One boundary keeps that logging from quietly corrupting two other systems. Probe traffic
+is synthetic — a fixed request the box sends itself — so it must carry the
+stay-out-entirely clearance flag from Chapter 4 and land in the operational log, never in
+the corpus stream Chapter 7 trains on: a fine-tune that learns the plant's real question
+distribution must not be diluted by a heartbeat repeated every few seconds, and eval sets
+drawn from the corpus must never inherit a synthetic probe. The same flag keeps probes out
+of the request-log line item in Chapter 8's disk sizing; heartbeat lines belong to
+monitoring retention (short, rotated hard), not to the training-corpus budget that
+otherwise dominates the disk within a year. Mark it at write time and both problems never
+start.
+
 ## Heat: the failure that arrives on schedule
 
 Power loss is dramatic; heat is patient. A GPU in a sealed cabinet on a mezzanine in
@@ -2375,7 +2468,7 @@ file, and the report somebody wrote the same day.
 
 # Chapter 10 — The Honest Deployment Checklist
 
-*(draft v0, 2026-08-27 — written by Claude Fable 5, unverified.)*
+*(draft v1, 2026-08-28 — written by Claude Fable 5, verified by Roger AI 2026-08-28.)*
 
 Every discipline that keeps people safe around machines eventually compresses itself
 into a checklist — not because the discipline is simple, but because the moment of
@@ -2576,13 +2669,14 @@ under the same discipline we are asking of you.
 
 A book that demands honesty from deployments owes a closing accounting of its own
 gaps, so here is this edition's, in plain text. A number of claims in these chapters
-still carry their bracketed markers pointing at lab entries not yet attached; none
-ships in a verified edition, and the markers are visible in this draft precisely so
-that reviewers can hold us to each one. The war stories from real plant floors — the
-voice this book's verifier brings from years among the machines this book is about —
-are represented but not yet written; they arrive by interview, not invention, because
-a fabricated anecdote in a book about honest instruments would be a foundation crack,
-and we would rather show you the empty section than fill it wrong. The evaluation
+still carry their bracketed markers pointing at lab entries not yet attached in the
+public trail; the markers are visible precisely so that reviewers can hold us to each
+one. The war stories from real plant floors — the voice this book's verifier brings
+from years among the machines this book is about — are now written: the floor-voice
+section in Chapter 1 comes from the verifier's interview (Roger AI, 2026-08-28), real
+experience with the prose edited for the page, arriving by interview, not invention,
+because a fabricated anecdote in a book about honest instruments would be a foundation
+crack. The evaluation
 benchmark this book references has its own public history, including its retractions,
 and readers are owed the link rather than a summary flattering to us. And the field
 itself is moving: the tier capabilities in Chapter 3 are dated measurements of a
@@ -2658,14 +2752,16 @@ This page is the book's byline, stated the way a byline should be.
 attribution in `manifest.json`; if additional models contribute chapters, each is named
 there with exact versions.
 
-**GROUNDED IN** the RogerAI Labs lab record (`RESULTS-MATRIX.md` / `PROJECT-LOG.md` —
-R-entry attachment pass pending; `[R-TBD]` markers in the text show every claim awaiting
-its entry) and the cited references in the back matter.
+**GROUNDED IN** the RogerAI Labs lab record (`RESULTS-MATRIX.md` / `PROJECT-LOG.md`,
+plus the `CLAUDE.md` charter for standing serving/hardware traps) where a `[LAB: …]`
+marker names the section, dated entry, or charter note, and the cited references in the
+back matter. Claims without a lab marker are labeled unmeasured in the prose.
 
-**VERIFIED BY** Miguel Ramos ([@miguel-ramos](https://github.com/miguel-ramos)), named
-human verifier. *(Draft status: verification NOT yet performed. Naming the verifier is
-not the same as the verification pass. Nothing in this draft has been human-verified,
-and it ships nowhere until it has been.)*
+**VERIFIED BY** Roger AI (RogerAI Labs), named human verifier. *(Verification performed
+by Roger AI on 2026-08-28: the founder read the manuscript, signed off on its accuracy,
+and supplied the floor-voice interview quoted in Chapter 1 from real plant experience.
+Human verification is complete for this v2 draft; the review trail and C2PA signature
+attach at publication.)*
 
 **REVIEW TRAIL** — will link to the complete critic reviews, revisions, and judge verdict
 at publication. This book goes through the same three-pass review pipeline as every
@@ -2734,10 +2830,12 @@ workflow in the platform record), produced by the platform.
 ## Lab citation convention
 
 In-text markers of the form `[LAB: RESULTS-MATRIX §C]` or `[LAB: PROJECT-LOG
-2026-08-03]` resolve into the RogerAI Labs public lab record: RESULTS-MATRIX sections
-hold configuration tables with measurements; PROJECT-LOG entries are dated experiment
-narratives. `[R-TBD]` marks a claim whose entry is not yet attached; none may remain at
-publication.
+2026-08-03]` resolve into the RogerAI Labs lab record: RESULTS-MATRIX sections hold
+configuration tables with measurements; PROJECT-LOG entries are dated experiment
+narratives. A third form, `[LAB: CLAUDE.md …]`, resolves into the lab's standing
+charter — the operating-principles and "watch the traps" notes that record serving and
+hardware lessons as durable rules rather than dated one-off runs. Claims without a
+`[LAB:]` marker are labeled unmeasured in the prose.
 
 ## References
 
@@ -2745,6 +2843,6 @@ publication.
 - llama.cpp — open-source inference engine used throughout the lab work: https://github.com/ggml-org/llama.cpp
 - C2PA content provenance standard: https://c2pa.org/
 - Authors Guild, "AI Best Practices for Authors" (disclosure landscape): https://authorsguild.org/resource/ai-best-practices-for-authors/
-- RogerAI Labs lab record: RESULTS-MATRIX.md / PROJECT-LOG.md — R-entry attachment pass pending; every `[R-TBD]` in the text resolves here before publication.
+- RogerAI Labs lab record: RESULTS-MATRIX.md / PROJECT-LOG.md — in-text `[LAB:]` markers name the section or dated entry used.
 
 *(References grow with the chapters; every citation must resolve at Pass 1.)*

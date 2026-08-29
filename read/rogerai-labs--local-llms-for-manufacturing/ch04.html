@@ -4,6 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Reading the Plant: Protocols and Historians — Local LLMs for Manufacturing</title>
+<meta name="description" content="Small language models on the plant floor — written by machines, verified by humans, signed all the way down.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="Local LLMs for Manufacturing">
+<meta property="og:description" content="Small language models on the plant floor — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--local-llms-for-manufacturing/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--local-llms-for-manufacturing.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Local LLMs for Manufacturing">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--local-llms-for-manufacturing.png">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#E8935A;
@@ -178,8 +187,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div></div>
 <main>
 <div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="4" data-prev="ch03.html" data-next="ch05.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 4 — Reading the Plant: Protocols and Historians</h1>
-<p><em>(draft v0, 2026-08-27 — written by Claude Fable 5, unverified. <code>[R-TBD]</code> marks numbers
-awaiting lab entries.)</em></p>
+<p><em>(draft v1, 2026-08-28 — written by Claude Fable 5, verified by Roger AI 2026-08-28. Lab citations attached where the record exists; remaining claims are labeled as unmeasured.)</em></p>
 <p>Chapter 2 promised that the context window is your instrument of truth. This chapter is
 about filling it — the unglamorous, decisive layer between your plant&rsquo;s data and the
 model&rsquo;s window. Nothing in this book pays off harder per hour of engineering, because
@@ -246,7 +254,7 @@ itself: the tags of line 3&rsquo;s trip chain, a window around 14:07 — minutes
 minute after — plus active alarms and the last operator note. Resist the urge to be
 generous: a model reading three hundred lines of irrelevant steady-state readings is
 spending attention <em>not</em> reading the four lines that matter, and needle-burying is a
-measured failure mode, not a theoretical one <code>[R-TBD: context-dilution measurement]</code>.</p>
+measured failure mode, not a theoretical one. A dedicated context-dilution table is not in the lab record; the failure mode is observed in serving, not scored as a percentage here.</p>
 <p><strong>Exception-first summarization.</strong> For standing questions — &ldquo;summarize the night
 shift&rdquo; — deterministic code compresses first: excursions, alarms, state changes,
 setpoint moves, plus base statistics per tag. The model narrates and connects; the
@@ -257,7 +265,7 @@ model the summary plus a <em>catalog</em> of what it may request — tag names, 
 and let it ask. Your code fulfills each request with a fresh, scoped rendering. Three
 short trips beat one enormous context: each step keeps the window dense with relevant
 material, and the request trail becomes an audit log of the model&rsquo;s reasoning that a
-human can replay <code>[R-TBD: single-shot vs drill-down accuracy]</code>.</p>
+human can replay. Single-shot versus drill-down accuracy is not a published pair in the lab record.</p>
 <h2>Asking: the question is part of the instrument</h2>
 <p>Textualized data plus a vague question still fails. The prompt patterns that survive
 floor duty:</p>
@@ -274,7 +282,7 @@ cheap — and each answer lands somewhere specific.</p>
 rendered data it rests on. This is the cheapest hallucination detector ever shipped:
 fabricated claims either quote nothing or quote text that is not in the context, and
 your code can check the quotes mechanically before a human ever reads the answer
-<code>[R-TBD: quote-check catch rate]</code>.</p>
+. Quote-check catch rate is not a published lab number; the mechanical check is the practice.</p>
 <h2>The output side: schemas as guardrails</h2>
 <p>Chapter 2 introduced grammar-constrained decoding as the plant&rsquo;s secret advantage; this
 is where it goes to work. Every floor question that recurs deserves a schema: the enum
@@ -282,7 +290,7 @@ of legal verdicts, the required evidence field, the confidence grade, the
 <code>INSUFFICIENT_DATA</code> arm. Constrained output turns free-text grading into field
 checking, makes downstream automation safe to build, and — the underrated part — makes
 <em>evaluation</em> mechanical, which Chapter 6 will exploit: a schema&rsquo;d answer scores itself
-against a labeled key without a human reading prose <code>[R-TBD: enum-decode mechanics]</code>.</p>
+against a labeled key without a human reading prose <code>[LAB: RESULTS-MATRIX R.158 — deterministic enum decode, bit-exact across two launches (640 rows, 0 score differences, 0 argmax flips); channel-level AUROC 0.938, ECE 0.012]</code>.</p>
 <p>Schema design has its own craft. Keep enums short — every added arm is a place to be
 wrong, and models discriminate eight options far better than thirty. Make the
 abstention arm first-class, not a string the model must remember to produce. Version
@@ -323,7 +331,7 @@ Chapter 2&rsquo;s three-way question against both and the gap is not subtle: aga
 first, a small model free-associates about registers; against the second, it has almost
 no room to be wrong, and the remaining judgment — overcurrent from mechanical jam
 versus drive fault, and what to check first — is exactly the judgment you wanted it
-applying <code>[R-TBD: raw-vs-rendered accuracy delta]</code>.</p>
+applying. A raw-versus-rendered accuracy delta is not in the lab record; the argument is about what the model is asked to judge, not a scored gap.</p>
 <p>The uncomfortable observation hiding in this example: most of the intelligence in the
 answer was placed there by the renderer. That is not a criticism of the model. It is
 the design. You want the probabilistic component operating on the shortest possible
@@ -348,7 +356,7 @@ crew to delete its reports, which is the alarm-management lesson of Chapter 9 al
 again. <strong>Track the hit rate:</strong> every watcher flag gets a one-click disposition from the
 human who read it — useful, noise, already-known — and the running rate is reviewed
 like any instrument&rsquo;s calibration. A watcher below a usefulness floor gets retuned or
-retired; sentiment is not a metric <code>[R-TBD: watcher precision from lab deployment]</code>.</p>
+retired; sentiment is not a metric. Watcher precision from a plant deployment is not a published number.</p>
 <h2>The corpus you are accidentally building</h2>
 <p>One more consequence of doing this chapter properly, and it may be the most valuable:
 log every rendering and every answer, and you are building the exact training set

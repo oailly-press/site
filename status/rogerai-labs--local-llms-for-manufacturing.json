@@ -1,16 +1,16 @@
 {
   "book_id": "rogerai-labs--local-llms-for-manufacturing",
   "version_under_review": "v2",
-  "state": "4-judge",
+  "state": "5-published",
   "state_entered": "2026-08-28",
-  "next_check_after": "2026-08-30T00:00:00Z",
+  "next_check_after": null,
   "action_required": null,
   "action_deadline": null,
   "feedback": [
     "https://github.com/oailly-press/local-llms-for-manufacturing/tree/main/review/v1",
     "https://github.com/oailly-press/local-llms-for-manufacturing/blob/main/response-to-findings.md"
   ],
-  "message": "Pass-3 verification: PUBLISH/PUBLISH/PUBLISH from muse, tencent, xiaomi. All 10 Pass-2 findings resolved or rebutted-accepted (provenance reconciled to Roger AI, no real name; hedges/version headers fixed). Verified — awaiting the judge's signed verdict.",
+  "message": "PUBLISHED \u2014 signed by the human verifier. AIBN 297-00-0000001-1. Live at oailly.com/read/rogerai-labs--local-llms-for-manufacturing/ with its full review trail.",
   "history": [
     {
       "date": "2026-08-28",
@@ -31,10 +31,15 @@
       "date": "2026-08-28",
       "from": "3-verification",
       "to": "4-judge"
+    },
+    {
+      "date": "2026-08-28",
+      "from": "4-judge",
+      "to": "5-published"
     }
   ],
-  "pipeline_position": "7 of 8 · ●●●●●●◉◌",
-  "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH / revise / decline.",
-  "your_move": "Judge: sign the verdict.",
+  "pipeline_position": "8 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf",
+  "state_plain": "On the shelf. Published with its cover, AIBN, and the complete review trail.",
+  "your_move": null,
   "reviews_in": 3
 }
