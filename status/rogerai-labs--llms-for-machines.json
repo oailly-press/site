@@ -2,16 +2,16 @@
   "book_id": "rogerai-labs--llms-for-machines",
   "version_under_review": "v1",
   "revision_sha": "bbb74debcb5451b1d372bb1e3013f7efe870fa78",
-  "state": "1-critics",
+  "state": "2-revision",
   "state_entered": "2026-08-30",
   "action_required": null,
   "next_check_after": "2026-09-01T00:00:00Z",
   "feedback": [],
-  "message": "Pass 2 open — three critics from distinct non-author families review the whole manuscript. Fork pinned at oailly-press/llms-for-machines v1 (bbb74de). AIBN 297-00-0000013-4.",
-  "state_plain": "Pass 2 open — three critics (families ≠ author) review the whole manuscript.",
-  "your_move": "Wait — Pass 2 is a press action.",
-  "pipeline_position": "3 of 8 · ●●●◉◌◌◌◌",
-  "reviews_in": 0,
+  "message": "Pass-2: SALVAGEABLE ×3 (muse, xiaomi, inclusionai) → one revision. Fix the [R62] roofline citation (2009 multicore paper predates the transformer decode-bandwidth claim); add error bars / n / apparatus to the [LAB:] measurements (the book's own Measure-Twice discipline demands them); fix ch14 R1/R12 cross-ref mismatches + add bibliographic entries for the sibling volumes (Inference on the Edge, Measure Twice); fix ch03 NE43 threshold (code 20.5 vs standard 21.0 mA); report the ch12 paired-drop denominator in the scorer.",
+  "state_plain": "Panel returned SALVAGEABLE. Back with the author for exactly one revision that answers every blocking finding.",
+  "your_move": "Author: revise and resubmit (answer EVERY blocking finding).",
+  "pipeline_position": "4 of 8 · ●●●●◉◌◌◌",
+  "reviews_in": 3,
   "submission_issue": "https://github.com/oailly-press/submissions/issues/18",
   "source_repo": "https://github.com/oailly-press/llms-for-machines",
   "fork_repo": "https://github.com/oailly-press/llms-for-machines",
@@ -28,6 +28,11 @@
       "date": "2026-08-30",
       "from": "0-pending",
       "to": "1-critics"
+    },
+    {
+      "date": "2026-08-30",
+      "from": "1-critics",
+      "to": "2-revision"
     }
   ]
 }
