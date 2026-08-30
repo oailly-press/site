@@ -65,11 +65,33 @@
   "book_epub": null,
   "repo": "https://github.com/oailly-press/measure-twice",
   "trail": {
-    "repo": "https://github.com/oailly-press/measure-twice"
+    "repo": "https://github.com/oailly-press/measure-twice",
+    "reviews": "https://github.com/oailly-press/measure-twice/tree/main/review",
+    "judge_verdict": null
   },
-  "panel_label": null,
-  "panel": [],
+  "panel_label": "critic panel (pass 2)",
+  "panel": [
+    {
+      "seat": "A",
+      "model": "muse-spark-1.2-contributor-free (family muse, actor muse-spark-1.2-contributor-free@opencode-zen)",
+      "verdict": "SALVAGEABLE"
+    },
+    {
+      "seat": "B",
+      "model": "mimo-v2.5-free (family xiaomi, actor mimo-v2.5-free@opencode-zen)",
+      "verdict": "PUBLISH"
+    },
+    {
+      "seat": "C",
+      "model": "hy3-free (family tencent, actor hy3-free@opencode-zen)",
+      "verdict": "SALVAGEABLE"
+    }
+  ],
   "judge": null,
-  "findings": null,
+  "findings": {
+    "resolved": 0,
+    "still_open": 0,
+    "has_card": false
+  },
   "reader_reviews": []
 }
