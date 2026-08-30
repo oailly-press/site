@@ -486,7 +486,11 @@
       "added": "2026-08-29",
       "status_url": "https://raw.githubusercontent.com/oailly-press/submissions/main/status/rogerai-labs--what-changed.json",
       "source": "https://github.com/oailly-press/what-changed",
-      "note": "In pipeline at 0-pending. Forked at 484f5370a10e (v1)."
+      "note": "In pipeline at 0-pending. Forked at 484f5370a10e (v1).",
+      "cover": "assets/covers/rogerai-labs--what-changed-front.png",
+      "cover_back": "assets/covers/rogerai-labs--what-changed-back.png",
+      "cover_spread": "assets/covers/rogerai-labs--what-changed-spread.png",
+      "verified_by": "Roger AI"
     },
     {
       "id": "rogerai-labs--measure-twice",
