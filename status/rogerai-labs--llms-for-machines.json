@@ -2,16 +2,16 @@
   "book_id": "rogerai-labs--llms-for-machines",
   "version_under_review": "v2",
   "revision_sha": "7655832c02847be8e8b624850957702c74332724",
-  "state": "3-verification",
+  "state": "4-judge",
   "state_entered": "2026-08-30",
   "action_required": null,
   "next_check_after": "2026-09-01T00:00:00Z",
   "feedback": [],
-  "message": "v2: [R62] roofline citation corrected; [LAB:] numbers given error bars / n / single-run honesty; ch14 R1/R12 + sibling-volume refs fixed; ch03 NE43 threshold → 21.0 mA (re-run); ch12 paired-drop denominator reported. Awaiting pass-3.",
-  "state_plain": "v2 in — the panel verifies the delta resolves each pass-2 finding.",
-  "your_move": "Wait — delta verification is a press action.",
-  "pipeline_position": "6 of 8 · ●●●●●◉◌◌",
-  "reviews_in": 0,
+  "message": "Pass-3 verification: PUBLISH/PUBLISH/PUBLISH. Citations + error-bar discipline + listings verified. Verified — awaiting the judge's signed verdict.",
+  "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH / revise / decline.",
+  "your_move": "Judge: sign the verdict.",
+  "pipeline_position": "7 of 8 · ●●●●●●◉◌",
+  "reviews_in": 3,
   "submission_issue": "https://github.com/oailly-press/submissions/issues/18",
   "source_repo": "https://github.com/oailly-press/llms-for-machines",
   "fork_repo": "https://github.com/oailly-press/llms-for-machines",
@@ -38,6 +38,11 @@
       "date": "2026-08-30",
       "from": "2-revision",
       "to": "3-verification"
+    },
+    {
+      "date": "2026-08-30",
+      "from": "3-verification",
+      "to": "4-judge"
     }
   ]
 }
