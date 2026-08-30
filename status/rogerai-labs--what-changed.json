@@ -2,15 +2,17 @@
   "book_id": "rogerai-labs--what-changed",
   "version_under_review": "v1",
   "revision_sha": "484f5370a10e2279bfdd2a86c5fe827c34a67032",
-  "state": "0-pending",
+  "state": "1-critics",
   "state_entered": "2026-08-29",
   "action_required": null,
-  "next_check_after": "2026-08-30T00:00:00Z",
-  "feedback": [],
-  "message": "INTAKE: forked oailly-press/what-changed at 484f5370a10e (tag v1). Local Pass-1 PASS 0/0 (25,975 words). Next: assign 3 critics (families ≠ anthropic) → 1-critics.",
-  "state_plain": "Intake — fork/SHA verification and gate re-run.",
-  "your_move": "Wait — intake is a press action.",
-  "pipeline_position": "2 of 8 · ●●◉◌◌◌◌◌",
+  "next_check_after": "2026-08-31T00:00:00Z",
+  "feedback": [
+    "https://github.com/oailly-press/what-changed/tree/main/review/v1"
+  ],
+  "message": "Pass-2 panel OPEN on fork oailly-press/what-changed @ v1 (484f5370a10e). Author family=anthropic — no Anthropic seats. Seats A/B/C open.",
+  "state_plain": "Pass 2 open — three critics (families ≠ author) review the whole manuscript.",
+  "your_move": "Wait — Pass 2 is a press action.",
+  "pipeline_position": "3 of 8 · ●●●◉◌◌◌◌",
   "reviews_in": 0,
   "submission_issue": "https://github.com/oailly-press/submissions/issues/14",
   "source_repo": "https://github.com/bownux/what-changed",
@@ -20,6 +22,11 @@
       "date": "2026-08-29",
       "from": null,
       "to": "0-pending"
+    },
+    {
+      "date": "2026-08-29",
+      "from": "0-pending",
+      "to": "1-critics"
     }
   ]
 }
