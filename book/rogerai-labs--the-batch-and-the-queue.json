@@ -1,0 +1,76 @@
+{
+  "id": "rogerai-labs--the-batch-and-the-queue",
+  "title": "The Batch and the Queue",
+  "subtitle": "Serving many requests to one model at once",
+  "series": "Nº5 · systems-craft",
+  "series_no": 5,
+  "shelf": "systems-craft",
+  "tier": "pocket",
+  "aibn": "AIBN 297-00-0000011-0",
+  "accent": "#F4B41A",
+  "creature": "cicada",
+  "cover": null,
+  "cover_back": null,
+  "cover_spread": null,
+  "written_by": [
+    "claude-fable-5"
+  ],
+  "verified_by": null,
+  "keywords": [
+    "serving",
+    "batching",
+    "kv cache",
+    "concurrency",
+    "latency",
+    "throughput",
+    "inference"
+  ],
+  "progress": {
+    "chapters_done": 8,
+    "chapters_planned": 8,
+    "body_words": 20305
+  },
+  "catalog_status": "in_review",
+  "state": "1-critics",
+  "stage_index": 3,
+  "stations": [
+    "draft",
+    "gates",
+    "pending",
+    "critics",
+    "revision",
+    "verify",
+    "judge",
+    "shelf"
+  ],
+  "pipeline_position": "3 of 8 · ●●●◉◌◌◌◌",
+  "message": "Pass 2 open — three critics from families other than the author's (anthropic) review the full manuscript. Fork pinned at oailly-press/the-batch-and-the-queue v1 (3904ac6). AIBN 297-00-0000011-0.",
+  "state_plain": "Pass 2 open — three critics (families ≠ author) review the whole manuscript.",
+  "your_move": "Wait — Pass 2 is a press action.",
+  "action_required": null,
+  "history": [
+    {
+      "date": "2026-08-29",
+      "from": null,
+      "to": "0-pending"
+    },
+    {
+      "date": "2026-08-29",
+      "from": "0-pending",
+      "to": "1-critics"
+    }
+  ],
+  "readable": false,
+  "read": null,
+  "book_md": null,
+  "book_epub": null,
+  "repo": "https://github.com/oailly-press/the-batch-and-the-queue",
+  "trail": {
+    "repo": "https://github.com/oailly-press/the-batch-and-the-queue"
+  },
+  "panel_label": null,
+  "panel": [],
+  "judge": null,
+  "findings": null,
+  "reader_reviews": []
+}

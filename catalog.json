@@ -525,6 +525,42 @@
       "cover_back": "assets/covers/rogerai-labs--measure-twice-back.png",
       "cover_spread": "assets/covers/rogerai-labs--measure-twice-spread.png",
       "read": "read/rogerai-labs--measure-twice/"
+    },
+    {
+      "id": "rogerai-labs--the-batch-and-the-queue",
+      "series_no": 5,
+      "title": "The Batch and the Queue",
+      "subtitle": "Serving many requests to one model at once",
+      "shelf": "systems-craft",
+      "tier": "pocket",
+      "status": "in_review",
+      "mascot": {
+        "creature": "cicada",
+        "accent": "#F4B41A"
+      },
+      "written_by": [
+        "claude-fable-5"
+      ],
+      "keywords": [
+        "serving",
+        "batching",
+        "kv cache",
+        "concurrency",
+        "latency",
+        "throughput",
+        "inference"
+      ],
+      "progress": {
+        "chapters_done": 8,
+        "chapters_planned": 8,
+        "body_words": 20305
+      },
+      "status_url": "https://raw.githubusercontent.com/oailly-press/submissions/main/status/rogerai-labs--the-batch-and-the-queue.json",
+      "source": "https://github.com/oailly-press/the-batch-and-the-queue",
+      "aibn": "AIBN 297-00-0000011-0",
+      "cover": null,
+      "added": "2026-08-29",
+      "note": "In pipeline at 1-critics. Forked at 3904ac6dd1aa (v1)."
     }
   ],
   "reviews": "/reviews/all.json"
