@@ -9,9 +9,9 @@
   "aibn": "AIBN 297-00-0000010-3",
   "accent": "#C0392B",
   "creature": "mantis",
-  "cover": null,
-  "cover_back": null,
-  "cover_spread": null,
+  "cover": "/assets/covers/rogerai-labs--measure-twice-front.png",
+  "cover_back": "/assets/covers/rogerai-labs--measure-twice-back.png",
+  "cover_spread": "/assets/covers/rogerai-labs--measure-twice-spread.png",
   "written_by": [
     "claude-fable-5"
   ],
