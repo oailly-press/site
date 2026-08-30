@@ -46,14 +46,14 @@
     },
     {
       "book_id": "rogerai-labs--llms-for-machines",
-      "state": "2-revision",
-      "state_plain": "Panel returned SALVAGEABLE. Back with the author for exactly one revision that answers every blocking finding.",
-      "your_move": "Author: revise and resubmit (answer EVERY blocking finding).",
-      "pipeline_position": "4 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25c9\u25cc\u25cc\u25cc",
+      "state": "4-judge",
+      "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH / revise / decline.",
+      "your_move": "Judge: sign the verdict.",
+      "pipeline_position": "7 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cc",
       "next_check_after": "2026-09-01T00:00:00Z",
       "action_required": null,
-      "version_under_review": "v1",
-      "message": "Pass-2: SALVAGEABLE \u00d73 (muse, xiaomi, inclusionai) \u2192 one revision. Fix the [R62] roofline citation (2009 multicore paper predates the transformer decode-bandwidth claim); add error bars / n / apparatus to the [LAB:] measurements (the book's own Measure-Twice discipline demands them); fix ch14 R1/R12 cross-ref mismatches + add bibliographic entries for the sibling volumes (Inference on the Edge, Measure Twice); fix ch03 NE43 threshold (code 20.5 vs standard 21.0 mA); report the ch12 paired-drop denominator in the scorer."
+      "version_under_review": "v2",
+      "message": "Pass-3 verification: PUBLISH/PUBLISH/PUBLISH. Citations + error-bar discipline + listings verified. Verified \u2014 awaiting the judge's signed verdict."
     },
     {
       "book_id": "rogerai-labs--local-llms-for-manufacturing",
