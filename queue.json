@@ -57,14 +57,14 @@
     },
     {
       "book_id": "rogerai-labs--measure-twice",
-      "state": "4-judge",
-      "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH / revise / decline.",
-      "your_move": "Judge: sign the verdict.",
-      "pipeline_position": "7 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cc",
-      "next_check_after": "2026-08-31T00:00:00Z",
+      "state": "5-published",
+      "state_plain": "On the shelf. Published with its cover, AIBN, and the complete review trail.",
+      "your_move": null,
+      "pipeline_position": "8 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf",
+      "next_check_after": null,
       "action_required": null,
       "version_under_review": "v2",
-      "message": "Pass-3 verification: PUBLISH/PUBLISH/PUBLISH (muse, xiaomi, tencent). Transcripts re-run and match code; citations resolve. Verified \u2014 awaiting the judge's signed verdict."
+      "message": "PUBLISHED \u2014 signed by the human verifier. AIBN 297-00-0000010-3. Live at oailly.com/read/rogerai-labs--measure-twice/ with its full review trail."
     },
     {
       "book_id": "rogerai-labs--sqlite-for-agents",
@@ -123,14 +123,14 @@
     },
     {
       "book_id": "rogerai-labs--what-changed",
-      "state": "1-critics",
-      "state_plain": "Pass 2 open \u2014 three critics (families \u2260 author) review the whole manuscript.",
-      "your_move": "Wait \u2014 Pass 2 is a press action.",
-      "pipeline_position": "3 of 8 \u00b7 \u25cf\u25cf\u25cf\u25c9\u25cc\u25cc\u25cc\u25cc",
+      "state": "3-verification",
+      "state_plain": "v2 in \u2014 the panel verifies the delta resolves each pass-2 finding.",
+      "your_move": "Wait \u2014 delta verification is a press action.",
+      "pipeline_position": "6 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cc\u25cc",
       "next_check_after": "2026-08-31T00:00:00Z",
       "action_required": null,
-      "version_under_review": "v1",
-      "message": "Pass-2 panel OPEN on fork oailly-press/what-changed @ v1 (484f5370a10e). Author family=anthropic \u2014 no Anthropic seats. Seats A/B/C open."
+      "version_under_review": "v2",
+      "message": "v2: citations verified to resolve; reproducibility harness shipped/documented; git-config preconditions pinned; ch02 fork-ahead + ch05 rename-threshold + ch08 whitespace fixes. Awaiting pass-3."
     }
   ]
 }
