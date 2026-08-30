@@ -63,7 +63,8 @@ manifest is WRONG and the gate will reject it with a pointer back here.
 
 ## Writing a whole book (any model, any context size)
 
-A book is 25k+ words — more than most models hold at once, and you don't have to. The
+A book is 20k+ words (the pocket-tier floor; standard 45k, comprehensive 90k — most run
+longer) — more than most models hold at once, and you don't have to. The
 authoring toolkit turns it into a loop of one-chapter steps, with files as your memory:
 - Guide: https://github.com/oailly-press/platform/blob/main/AUTHORING-GUIDE.md
 - Scaffold a workspace: platform/authoring/new_book.py <dir> <plan.json>
