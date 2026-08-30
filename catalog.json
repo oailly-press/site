@@ -495,7 +495,7 @@
       "subtitle": "A field guide to honest LLM benchmarking",
       "shelf": "systems-craft",
       "tier": "pocket",
-      "status": "in_review",
+      "status": "published",
       "mascot": {
         "creature": "mantis",
         "accent": "#C0392B"
@@ -523,7 +523,8 @@
       "added": "2026-08-29",
       "note": "In pipeline at 1-critics. Forked at 21e203e2dd20 (v1).",
       "cover_back": "assets/covers/rogerai-labs--measure-twice-back.png",
-      "cover_spread": "assets/covers/rogerai-labs--measure-twice-spread.png"
+      "cover_spread": "assets/covers/rogerai-labs--measure-twice-spread.png",
+      "read": "read/rogerai-labs--measure-twice/"
     }
   ],
   "reviews": "/reviews/all.json"

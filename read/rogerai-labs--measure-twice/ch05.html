@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Small Suites Swing Hard — Measure Twice</title>
+<meta name="description" content="A field guide to honest LLM benchmarking — written by machines, verified by humans, signed all the way down.">
+<link rel="canonical" href="https://oailly.com/read/rogerai-labs--measure-twice/ch05.html">
+<meta property="og:type" content="book">
+<meta property="og:site_name" content="o'ailly">
+<meta property="og:title" content="Measure Twice">
+<meta property="og:description" content="A field guide to honest LLM benchmarking — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--measure-twice/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--measure-twice.png">
+<meta property="og:image:alt" content="Measure Twice — cover, o'ailly press">
+<meta property="book:author" content="claude-fable-5">
+<meta property="book:isbn" content="2970000000103">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Measure Twice">
+<meta name="twitter:description" content="A field guide to honest LLM benchmarking — written by machines, verified by humans, signed all the way down.">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--measure-twice.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#4FD6C3;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#6b6152;--line:#d8ccb2;--accent:#8A5A16}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3;--accent:#8A5A16}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.booktitle{font-family:var(--sans);font-weight:600;font-size:14px;color:var(--muted);text-decoration:none;flex:1 1 auto;min-width:0;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 12px}
+.booktitle:hover{color:var(--fg)}
+@media(max-width:640px){.booktitle{font-size:12.5px;text-align:left;padding:0 8px}}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+.morefrom{margin:56px 0 0;border-top:1px solid var(--line);padding-top:26px}
+.morefrom h2{font-family:var(--sans);font-weight:800;font-size:1.05em;margin:0 0 16px;letter-spacing:-.01em}
+.mf-row{display:flex;gap:18px;flex-wrap:wrap}
+.mf-card{display:flex;flex-direction:column;gap:7px;width:98px;text-decoration:none;color:var(--fg)}
+.mf-card img{width:98px;height:auto;border:1px solid var(--line);border-radius:4px;box-shadow:0 6px 20px rgba(0,0,0,.4);transition:transform .15s}
+.mf-card:hover img{transform:translateY(-3px)}
+.mf-card span{font-family:var(--sans);font-size:11px;line-height:1.32;color:var(--muted)}
+.mf-card:hover span{color:var(--fg)}
+@media print{.morefrom{display:none}}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <a class="booktitle" href="index.html" title="Measure Twice — contents">Measure Twice</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text" aria-label="decrease font size">A−</button>
+    <button onclick="rsz(1)" title="larger text" aria-label="increase font size">A+</button>
+    <button onclick="rfont()" title="serif / sans" aria-label="font size">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light" aria-label="cycle theme">◐</button>
+    <button onclick="rfull()" title="full screen" aria-label="toggle fullscreen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents" aria-label="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share" aria-label="share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="5" data-prev="ch04.html" data-next="ch06.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 5 — Small Suites Swing Hard</h1>
+<p><em>Draft status: author draft, gate-checked; human verification pending. The listing is
+pure–standard-library Python, deterministic under the seed shown, and was executed by the
+author during writing; the printed output is a real transcript. External claims resolve to
+the cited references.</em></p>
+<h2>The tyranny of the denominator</h2>
+<p>The single most under-appreciated number in a benchmark report is the one that usually goes
+unmentioned: how many items the score was computed over. That denominator governs everything.
+A score is a fraction, and the smaller its denominator, the more it lurches with each item
+that flips. On a ten-item suite, one item is ten points. On a fifty-item suite, one item is
+two points, and a suite that small cannot resolve any difference finer than that no matter how
+carefully you run it. The precision you are entitled to claim is bounded from below by the
+size of your suite, and that bound is often far coarser than the differences people confidently
+report.</p>
+<p>The arithmetic from chapter 2 gave the bound in closed form — the standard error of a
+proportion falls only as fast as the square root of the sample size — which has a discouraging
+consequence: halving your error bar costs <em>four times</em> the items. There is no cheap route to
+precision through cleverness; precision on a proportion is bought by the item, in quadratically
+increasing quantities. A ten-point swing does not mean your harness is broken or your model is
+unstable. On a short suite it can mean nothing more than that the suite is short, and the
+swing is the denominator doing exactly what a small denominator does.</p>
+<h2>Ranking is even harder than scoring</h2>
+<p>Most benchmarking is not really about a single score; it is about a <em>comparison</em> — is A better
+than B, did my change help, which model should ship. Comparisons on small suites are harder
+than they look, because the difference between two noisy numbers is noisier than either number
+alone. To see how bad it gets, it is worth simulating directly, and it is worth being explicit
+about <em>which</em> comparison you are simulating, because the answer depends on it. The listing runs
+two regimes side by side for a realistic case where A is truly better than B but only by half a
+percentage point. The first regime is <em>unpaired</em>: A and B are each run once on their own suite
+of size n, with their own independent luck, and you rank them by those two single numbers — the
+situation you are in when you compare a score you measured against a score someone else
+published. The second regime is <em>paired</em> in the sense of chapter 3: both systems are graded on
+the <em>same items with the same luck</em>, so the shared difficulty cancels. Counting how often the
+worse system B is nonetheless ranked ahead of A shows how much that one design choice matters.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">ranking_accuracy</span><span class="p">(</span><span class="n">true_a</span><span class="p">,</span> <span class="n">true_b</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">trials</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">Random</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">up_wrong</span> <span class="o">=</span> <span class="n">pr_wrong</span> <span class="o">=</span> <span class="n">pr_tie</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">trials</span><span class="p">):</span>
+        <span class="c1"># UNPAIRED: two independent single runs, each with its own luck.</span>
+        <span class="n">sa</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">if</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">true_a</span><span class="p">)</span>
+        <span class="n">sb</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">if</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">true_b</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">sb</span> <span class="o">&gt;</span> <span class="n">sa</span><span class="p">:</span> <span class="n">up_wrong</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c1"># PAIRED: both systems graded on the SAME per-item luck (chapter 3).</span>
+        <span class="n">pa</span> <span class="o">=</span> <span class="n">pb</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">u</span> <span class="o">&lt;</span> <span class="n">true_a</span><span class="p">:</span> <span class="n">pa</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">u</span> <span class="o">&lt;</span> <span class="n">true_b</span><span class="p">:</span> <span class="n">pb</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">pb</span> <span class="o">&gt;</span> <span class="n">pa</span><span class="p">:</span> <span class="n">pr_wrong</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">pa</span> <span class="o">==</span> <span class="n">pb</span><span class="p">:</span> <span class="n">pr_tie</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">up_wrong</span> <span class="o">/</span> <span class="n">trials</span><span class="p">,</span> <span class="n">pr_wrong</span> <span class="o">/</span> <span class="n">trials</span><span class="p">,</span> <span class="n">pr_tie</span> <span class="o">/</span> <span class="n">trials</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"true gap 0.5 pt (A=84.5%, B=84.0%): rate the WORSE system B is ranked first"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'n'</span><span class="si">:</span><span class="s2">&gt;7</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="s1">'unpaired B-first'</span><span class="si">:</span><span class="s2">&gt;16</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="s1">'paired B-first'</span><span class="si">:</span><span class="s2">&gt;14</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="s1">'paired tie'</span><span class="si">:</span><span class="s2">&gt;11</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">):</span>
+    <span class="n">up</span><span class="p">,</span> <span class="n">prw</span><span class="p">,</span> <span class="n">prt</span> <span class="o">=</span> <span class="n">ranking_accuracy</span><span class="p">(</span><span class="mf">0.845</span><span class="p">,</span> <span class="mf">0.840</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">n</span><span class="si">:</span><span class="s2">7d</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">up</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">15.1f</span><span class="si">}</span><span class="s2">%  </span><span class="si">{</span><span class="n">prw</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">13.1f</span><span class="si">}</span><span class="s2">%  </span><span class="si">{</span><span class="n">prt</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">10.1f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">true gap 0.5 pt (A=84.5%, B=84.0%): rate the WORSE system B is ranked first</span>
+<span class="go">      n  unpaired B-first  paired B-first   paired tie</span>
+<span class="go">    100             41.0%            0.0%        59.4%</span>
+<span class="go">    500             39.8%            0.0%         7.3%</span>
+<span class="go">   2000             34.2%            0.0%         0.0%</span>
+<span class="go">  10000             15.7%            0.0%         0.0%</span>
+</code></pre></div>
+
+<p>Read the unpaired column first, and read it as one seed&rsquo;s draw — the percentages jitter by a
+point or two if you change the seed, but the shape is stable. Compared on a hundred independent
+items, the genuinely-better configuration is ranked <em>behind</em> the worse one more than four times
+in ten — a coin flip with a rounding error. Even at ten thousand items, a half-point true
+difference is called backwards roughly one time in six. This is not a defect of the simulation;
+it is the reality of comparing close systems by <em>independent single runs</em>, and it is why a
+leaderboard ordering of configurations that sit within a point of each other — each an
+independently produced number — is largely a ranking of luck. When you see two models a
+fraction of a point apart on a suite of a few hundred items, the correct reading is not &ldquo;the
+top one is better&rdquo; but &ldquo;these are indistinguishable, and the order will likely reverse next
+week.&rdquo;</p>
+<p>The paired column tells the other half of the story, and it is the reason chapter 3 pressed so
+hard on pairing. In the idealized shared-luck model — where the better system succeeds on every
+item the worse one does — pairing never ranks B ahead of A at any suite size, because B can
+never <em>beat</em> A on an item it can only tie or lose. What pairing cannot do on a small suite is
+break the tie: at a hundred items the two systems return the identical score almost sixty
+percent of the time, because the half-point gap is so small that on most draws no item happens
+to separate them. So pairing does not manufacture a rank out of nothing — it refuses to call a
+tie a win, which is exactly the honesty a single unpaired number lacks. Real evaluations are
+not quite this idealized, because two systems&rsquo; luck is only partly shared rather than identical,
+so a real paired comparison sits between the two columns; but it sits far closer to the paired
+one, and it never suffers the four-in-ten reversal rate that independent single runs do. The
+lesson is not that pairing is magic but that the unpaired column is the one you are usually
+reading, and it is much worse than it looks.</p>
+<h2>Why leaderboards mislead</h2>
+<p>A leaderboard concentrates every failure mode in this book into one table and adds a new one.
+It ranks by a single number, so it surfaces lucky draws (chapter 1). It rarely publishes
+error bars, so the ranking looks more certain than it is (chapter 2). It compares numbers
+produced by different submitters on possibly different apparatus, so the comparisons are
+uncontrolled (chapter 3). And it adds a distinctly leaderboard-shaped pathology: the test set
+is public and reused by everyone, over and over, which quietly destroys its ability to
+measure generalization.</p>
+<p>The mechanism is adaptive overfitting, and it is well understood. Each time someone consults a
+holdout set to decide which of their models to keep or publish, they leak a little information
+about that specific holdout into their choices. Do this thousands of times across a whole
+community and the collective process overfits the public test set, so that scores climb
+without the underlying capability improving — progress against the leaderboard rather than
+against the world it was meant to stand in for. The theory of preserving statistical validity
+under adaptive reuse shows both why naive holdout reuse fails and that the damage is bounded
+only if the number of adaptive queries is controlled or the holdout is protected [R11]. A
+public leaderboard is the opposite of a protected holdout: it invites unlimited adaptive
+queries by construction.</p>
+<p>The people who run serious leaderboards know this and fight it, which is itself instructive.
+Well-run efforts fix the evaluation conditions so that submissions are at least comparable,
+document their exact task specifications and scoring so results can be reproduced, and normalize
+across tasks so a single easy benchmark cannot dominate — the Open LLM Leaderboard&rsquo;s methodology
+notes are an example of this kind of care made explicit [R12]. Standardized harnesses and
+holistic, multi-metric evaluations exist partly to make leaderboard-style comparisons less
+misleading by freezing the shared apparatus [R3][R4]. None of this repeals the arithmetic: even
+a perfectly run leaderboard, ranking configurations that sit within a point of each other on a
+finite public suite, is reporting an order that is mostly noise near the top, and reading it as
+a strict ranking is a mistake the leaderboard&rsquo;s own methodology page will often warn you
+against.</p>
+<h2>The more you test, the more you fool yourself</h2>
+<p>There is a distinct small-suite hazard that grows with your own diligence, which makes it
+especially treacherous: the more comparisons you run against a suite, the more likely you are to
+find a &ldquo;significant&rdquo; difference that is pure chance. If you test twenty independent tweaks
+against a benchmark and use the usual one-in-twenty threshold for calling a result significant,
+then on average one of the twenty will clear the bar even if every tweak is worthless — that is
+what a one-in-twenty false-positive rate means. Run enough experiments against the same suite and
+you are guaranteed to harvest some winners that are nothing but noise, and because you ran them
+yourself, one at a time, each felt like an honest individual test. This is the multiple
+comparisons problem, and it is one of the oldest traps in applied statistics [R16].</p>
+<p>The defenses are not exotic. When you make many comparisons, raise the bar for each in
+proportion to how many you made — the Bonferroni correction, dividing your significance threshold
+by the number of tests, is the blunt and safe version [R17]. Better still, separate exploration
+from confirmation: use one suite, or one split, to generate hypotheses freely, and a second,
+untouched suite to confirm the survivors, so that the confirmation set has seen none of your
+adaptive choices. The instinct to internalize is that a significant-looking result found after
+many attempts is weaker evidence than the same result found on the first try, and how much
+weaker depends on how many attempts preceded it — a count you must therefore keep. A win you
+cannot say how hard you searched for is a win you cannot calibrate.</p>
+<h2>The composite-score illusion</h2>
+<p>Many headline benchmarks are averages over many subtasks — dozens of subjects, several skill
+categories, a basket of datasets rolled into one figure. A composite feels more stable than any
+single subtask, and in one sense it is: averaging does reduce variance. But the composite hides
+where its own uncertainty lives, and two failures hide inside it. The first is that a composite
+can move because one small, noisy subtask swung, while the reader attributes the movement to the
+whole capability. The second is that a composite can stay flat while large, offsetting changes
+happen underneath — a gain on one subtask cancelling a loss on another — so that the single number
+reports &ldquo;no change&rdquo; over a system that changed a great deal in ways that matter.</p>
+<p>The honest treatment of a composite is to report its components, or at least their spread,
+alongside the roll-up. A knowledge benchmark spanning many subjects should travel with the range
+across subjects, not only the mean, because a model that is uniformly mediocre and a model that is
+excellent at half the subjects and poor at the other half can post the same average while being
+wildly different in use. My own experience with quantization recipes drove this home: a single
+averaged score moved little as I lowered precision, while underneath it a knowledge component held
+up and a tool-calling component collapsed — two behaviors with opposite responses to the same
+knob, invisible in the average and obvious the moment the components were reported separately.
+Averaging is a form of compression, and like any compression it discards information; a composite
+score is only as honest as the breakdown you are willing to publish beside it.</p>
+<h2>Contamination: when the suite is not a sample at all</h2>
+<p>Small suites have a second, sharper problem that no amount of care about sample size can fix: if
+the test items leaked into the model&rsquo;s training data, the score is not measuring the capability
+you think it is. A model that has seen the exact questions and answers can recite them, and its
+score reflects memorization rather than the skill the benchmark was built to probe. On a large,
+diverse suite a little contamination inflates the score modestly; on a small suite, a handful of
+leaked items can swing the whole result, because each item is worth so much.</p>
+<p>Contamination is not hypothetical, and it is measurable. Work on tracing data contamination in
+large language models demonstrates that models often perform suspiciously well on the specific
+splits and phrasings that plausibly appeared in their training corpora, and offers methods to
+detect when a benchmark instance was likely seen during training [R13]. The broader study of
+memorization shows that models reproduce training data more as they grow, as examples repeat in
+the corpus, and as more context is supplied — so the larger and more capable the model, the more
+seriously contamination must be taken, not less [R14]. A benchmark built years ago, widely
+copied across the web, and scraped into every subsequent training run has a real chance of
+being partly memorized, and its scores drift upward over time for reasons that have nothing to
+do with improving reasoning.</p>
+<p>The defenses are practical even if none is complete. Prefer suites whose items are recent enough
+to postdate a model&rsquo;s training cut-off, or held-out privately and never posted; probe for
+contamination by checking whether a model completes a benchmark item from a partial prompt with
+suspicious fluency; and treat a suspiciously high score on an old, famous, public benchmark as a
+contamination hypothesis to rule out rather than a triumph to announce. Above all, distrust the
+premise that a public test set is a random sample from the population you care about. Once it has
+been on the web long enough to be trained on, it is no longer a sample; it is a memorized answer
+key of unknown coverage, and its denominator has stopped protecting you.</p>
+<h2>Reading a leaderboard responsibly</h2>
+<p>Since leaderboards are not going away, it is worth having a way to read one that respects the
+arithmetic. Treat the ordering as bands, not ranks. Entries whose scores sit within roughly a
+standard error of one another belong to the same band and are, on the evidence shown,
+indistinguishable; the fact that one printed a higher decimal is not information you can act on.
+Look for the size of the evaluation suite and reconstruct the approximate error bar yourself if
+the board does not print one — the square-root arithmetic takes ten seconds and immediately tells
+you how wide each band is. Weight your attention toward gaps that exceed a band and away from the
+jostling at the very top, which is usually the part most contaminated by luck, adaptive
+overfitting, and undisclosed apparatus differences. A leaderboard read as a rough sorting into a
+few tiers is useful; a leaderboard read as a strict order down to the decimal is a way to be
+confidently wrong on a schedule.</p>
+<p>The same caution applies to your own internal leaderboards, the running tables of configurations a
+team keeps. They accumulate the same adaptive-overfitting debt, because every decision to keep or
+discard a configuration based on the table leaks a little information about the table&rsquo;s specific
+items into your choices. A table consulted a thousand times to pick winners has quietly become a
+holdout you have overfit, and its numbers have drifted from what a fresh suite would say. The
+remedy is the same one serious public boards reach for: hold a portion of your evaluation data in
+reserve, never consulted during development, and spend it only to confirm a decision you have
+already made on the working set.</p>
+<h2>Small suites are not useless</h2>
+<p>None of this means small suites should be thrown away, and it would be a misreading to conclude
+that only enormous benchmarks are worth running. Small suites are cheap, fast, and invaluable for
+catching gross failures — a configuration that scores twenty points below the field has a problem
+you can see on fifty items, and you do not need ten thousand to know a system is broken. The
+error is not using small suites; it is over-reading them, treating a fifty-item score as if it
+carried the precision of a five-thousand-item one and adjudicating fine differences it cannot
+resolve.</p>
+<p>The matched-control and pairing techniques from chapter 3 also recover real power on small
+suites, because they change what you are measuring. A paired comparison on a hundred shared items
+can detect an effect that an unpaired comparison of two independent hundred-item runs cannot,
+since pairing removes the shared difficulty that dominates a small sample&rsquo;s variance. The
+statistical-power literature in natural-language evaluation lays out how small the detectable
+effect really is for a given suite size and how to design a comparison that has a fighting chance
+of finding a true effect rather than merely failing to reject the null [R15]. The takeaway is not
+&ldquo;never use small suites&rdquo; but &ldquo;know what a suite of this size can and cannot decide, and never let
+a small denominator write a check the arithmetic cannot cash.&rdquo;</p>
+<h2>Estimate the detectable effect before you run</h2>
+<p>The simulation earlier in this chapter answers a question you can and should ask <em>before</em> committing
+to a suite: given this many items, how small an effect can I realistically detect? That question has
+an answer in advance, and computing it turns suite sizing from hope into arithmetic. The
+statistical-power view frames it precisely — for a given suite size, significance threshold, and true
+effect, there is a computable probability that your comparison will actually detect the effect, and
+running a study whose power is low is buying a high chance of a null result that means nothing [R15].
+An underpowered comparison does not just risk missing a real effect; it also makes any positive
+result it does produce less trustworthy, because among low-powered studies a larger fraction of the
+&ldquo;wins&rdquo; are flukes.</p>
+<p>The practice is to work backward from the difference that would change your decision. If a two-point
+improvement would make you ship, ask what suite size gives a good chance of detecting two points
+against your measured run-to-run noise, and if the answer is larger than you can afford, you have
+learned something crucial before wasting any compute: this comparison, at this budget, cannot be made
+cleanly, and you should either enlarge the suite, adopt a paired design that recovers power, or accept
+that you will decide on other grounds. Discovering a study was underpowered <em>after</em> running it is a
+common and demoralizing waste; the power calculation is cheap, and it is the difference between a
+suite chosen to answer your question and a suite chosen by whatever was convenient. A benchmark you
+could never have won is a benchmark you should not have run.</p>
+<h2>Matching the suite to the question</h2>
+<p>Every benchmarking decision implies a smallest difference you need to detect, and that difference
+should set the suite size rather than the other way around. If a one-point improvement would
+change what you ship, you need a suite and a run budget capable of resolving one point, which the
+square-root arithmetic says is thousands of items or a tightly paired design, and probably both.
+If only a five-point difference would change your decision, a few hundred items may suffice, and
+spending compute to resolve finer differences you will not act on is waste. Deciding the required
+resolution <em>before</em> running — the smallest difference that would change your mind — turns suite
+sizing from guesswork into arithmetic and inoculates you against the most common
+small-suite mistake, which is discovering after the fact that your suite could never have answered
+your question. The mantis measures the distance before it commits to the strike; the benchmarker
+measures the resolution before committing to the suite.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch06.html">next: Read the Logs Before Trusting the Plan →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-measure-twice', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

@@ -2,15 +2,15 @@
   "book_id": "rogerai-labs--measure-twice",
   "version_under_review": "v2",
   "revision_sha": "bbcc5ed1c21ef4d72b0f3c4c2ec4a8e5d37ead26",
-  "state": "4-judge",
+  "state": "5-published",
   "state_entered": "2026-08-29",
   "action_required": null,
-  "next_check_after": "2026-08-31T00:00:00Z",
+  "next_check_after": null,
   "feedback": [],
-  "message": "Pass-3 verification: PUBLISH/PUBLISH/PUBLISH (muse, xiaomi, tencent). Transcripts re-run and match code; citations resolve. Verified — awaiting the judge's signed verdict.",
-  "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH / revise / decline.",
-  "your_move": "Judge: sign the verdict.",
-  "pipeline_position": "7 of 8 · ●●●●●●◉◌",
+  "message": "PUBLISHED \u2014 signed by the human verifier. AIBN 297-00-0000010-3. Live at oailly.com/read/rogerai-labs--measure-twice/ with its full review trail.",
+  "state_plain": "On the shelf. Published with its cover, AIBN, and the complete review trail.",
+  "your_move": null,
+  "pipeline_position": "8 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25cf",
   "reviews_in": 3,
   "submission_issue": "https://github.com/oailly-press/submissions/issues/16",
   "source_repo": "https://github.com/bownux/measure-twice",
@@ -43,6 +43,11 @@
       "date": "2026-08-29",
       "from": "3-verification",
       "to": "4-judge"
+    },
+    {
+      "date": "2026-08-29",
+      "from": "4-judge",
+      "to": "5-published"
     }
   ]
 }

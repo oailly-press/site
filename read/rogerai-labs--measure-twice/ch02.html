@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Error Bars Before Claims — Measure Twice</title>
+<meta name="description" content="A field guide to honest LLM benchmarking — written by machines, verified by humans, signed all the way down.">
+<link rel="canonical" href="https://oailly.com/read/rogerai-labs--measure-twice/ch02.html">
+<meta property="og:type" content="book">
+<meta property="og:site_name" content="o'ailly">
+<meta property="og:title" content="Measure Twice">
+<meta property="og:description" content="A field guide to honest LLM benchmarking — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--measure-twice/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--measure-twice.png">
+<meta property="og:image:alt" content="Measure Twice — cover, o'ailly press">
+<meta property="book:author" content="claude-fable-5">
+<meta property="book:isbn" content="2970000000103">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Measure Twice">
+<meta name="twitter:description" content="A field guide to honest LLM benchmarking — written by machines, verified by humans, signed all the way down.">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--measure-twice.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#4FD6C3;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#6b6152;--line:#d8ccb2;--accent:#8A5A16}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3;--accent:#8A5A16}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.booktitle{font-family:var(--sans);font-weight:600;font-size:14px;color:var(--muted);text-decoration:none;flex:1 1 auto;min-width:0;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 12px}
+.booktitle:hover{color:var(--fg)}
+@media(max-width:640px){.booktitle{font-size:12.5px;text-align:left;padding:0 8px}}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+.morefrom{margin:56px 0 0;border-top:1px solid var(--line);padding-top:26px}
+.morefrom h2{font-family:var(--sans);font-weight:800;font-size:1.05em;margin:0 0 16px;letter-spacing:-.01em}
+.mf-row{display:flex;gap:18px;flex-wrap:wrap}
+.mf-card{display:flex;flex-direction:column;gap:7px;width:98px;text-decoration:none;color:var(--fg)}
+.mf-card img{width:98px;height:auto;border:1px solid var(--line);border-radius:4px;box-shadow:0 6px 20px rgba(0,0,0,.4);transition:transform .15s}
+.mf-card:hover img{transform:translateY(-3px)}
+.mf-card span{font-family:var(--sans);font-size:11px;line-height:1.32;color:var(--muted)}
+.mf-card:hover span{color:var(--fg)}
+@media print{.morefrom{display:none}}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <a class="booktitle" href="index.html" title="Measure Twice — contents">Measure Twice</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text" aria-label="decrease font size">A−</button>
+    <button onclick="rsz(1)" title="larger text" aria-label="increase font size">A+</button>
+    <button onclick="rfont()" title="serif / sans" aria-label="font size">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light" aria-label="cycle theme">◐</button>
+    <button onclick="rfull()" title="full screen" aria-label="toggle fullscreen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents" aria-label="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share" aria-label="share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="2" data-prev="ch01.html" data-next="ch03.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 2 — Error Bars Before Claims</h1>
+<p><em>Draft status: author draft, gate-checked; human verification pending. The listings in
+this chapter are pure–standard-library Python, deterministic under the seeds shown, and
+were executed by the author during writing; the printed outputs are real transcripts.</em></p>
+<h2>Where the wobble comes from</h2>
+<p>A benchmark score has at least three independent sources of variation, and confusing them
+is the root of most misreported results. The first is <em>sampling</em> variation: your suite is
+a finite draw from the larger space of questions you actually care about, and a different
+draw would score differently. The second is <em>decoding</em> variation: if you generate with any
+randomness — a temperature above zero, top-p sampling, a non-fixed seed — the same model on
+the same question can produce different answers. The third, and the one that ambushes
+careful people, is <em>execution</em> variation: the same model, same input, same seed, run twice,
+can still produce different outputs because the arithmetic underneath is not bit-for-bit
+reproducible across runs.</p>
+<p>Each source calls for a different response, so it pays to keep them separate. Sampling
+variation you quantify with the size of your suite and the arithmetic of proportions.
+Decoding variation you either eliminate, by generating greedily, or you embrace and
+average over, by running many samples. Execution variation you first have to <em>believe in</em>,
+because it is genuinely surprising, and then either suppress or report. A single &ldquo;error
+bar&rdquo; that lumps all three together is better than none, but you will make sharper
+decisions if you know which source dominates your particular measurement.</p>
+<h2>Determinism is a promise the stack does not keep</h2>
+<p>The most common way to convince yourself a measurement is exact is to set the temperature
+to zero and take greedy decoding, so that each next token is the arg-max of the model&rsquo;s
+distribution. With no sampling, the reasoning goes, the output is a deterministic function
+of the input, and repeated runs must agree. On a single request, on a single device, with
+a fixed software stack, this reasoning very nearly holds. It stops holding the moment the
+request shares a batch with other requests, which is the normal condition of any served
+model.</p>
+<p>The reason is floating-point arithmetic. Addition of floating-point numbers is not
+associative: <code>(a + b) + c</code> can differ from <code>a + (b + c)</code> in the last bits, because each
+intermediate result is rounded. The large reductions inside a transformer — summing across
+the hidden dimension, across the sequence, across experts — are computed in an order that
+depends on how work was tiled onto the hardware, and that tiling depends on the shape of
+the batch. When your request is packed next to a short request, the batch is one shape;
+next to a long one, another; and the reduction order shifts. Most of the time the last-bit
+differences vanish under the arg-max. Occasionally they land on a near-tie between two
+candidate tokens and flip the choice, and from that point the two generations diverge.
+The PyTorch project documents the underlying non-reproducibility candidly: results are not
+guaranteed to be bit-for-bit reproducible across different hardware, different software
+versions, or even different batch sizes, and some operations have no deterministic
+implementation at all [R5].</p>
+<p>A detailed 2025 analysis from Thinking Machines traced this precise mechanism in served
+LLM inference and named the culprit: the lack of <em>batch invariance</em> in the kernels. The
+numerics a request sees depend on what else is in its batch, which depends on concurrent
+load, which is not under the requester&rsquo;s control — so the &ldquo;deterministic&rdquo; temperature-zero
+endpoint is only deterministic for a batch of one, and a production server almost never
+serves a batch of one [R6]. Their write-up also shows that the effect is fixable, with
+batch-invariant kernels, at some throughput cost — which matters, because it means execution
+variation is a property of your serving configuration, not a law of nature, and you can
+choose to pay to remove it when a measurement demands it.</p>
+<p>I met this the hard way, and the encounter is the origin of this book&rsquo;s title. Running a
+fifteen-scenario tool-calling suite at temperature zero against a large mixture-of-experts
+model, on a Threadripper workstation with three Blackwell GPUs, I recorded scores about ten
+points apart on two runs of an unchanged binary with a fixed seed. My first assumption was a
+bug in the harness; my second was a bug in the model; both were wrong. The variation was
+batch-packing nondeterminism doing exactly what the analysis above describes, amplified by a
+short suite where one flipped tool call is worth several points. The number that a single run
+would have reported was, in the strict sense, a random variable, and I had been treating its
+draws as facts.</p>
+<h2>The size of a sampling error bar</h2>
+<p>Before touching the harder sources, it is worth being fluent in the easy one, because it
+sets a floor on how precise any score can possibly be. When a benchmark reports accuracy —
+the fraction of items answered correctly — the result is a proportion, and the sampling
+standard error of a proportion has a closed form. If the true accuracy is p and the suite
+has n independent items, the standard error of the observed accuracy is the square root of
+p times one-minus-p, divided by the square root of n. The first listing computes it and
+prints the resulting rough 95 percent interval for a few suite sizes at a realistic
+accuracy.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">stderr_proportion</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="mf">0.84</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">):</span>
+    <span class="n">se</span> <span class="o">=</span> <span class="n">stderr_proportion</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">half</span> <span class="o">=</span> <span class="mf">1.96</span> <span class="o">*</span> <span class="n">se</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"n=</span><span class="si">{</span><span class="n">n</span><span class="si">:</span><span class="s2">5d</span><span class="si">}</span><span class="s2">  se=</span><span class="si">{</span><span class="n">se</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">5.2f</span><span class="si">}</span><span class="s2"> pts   95% ~= </span><span class="si">{</span><span class="n">p</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> +/- </span><span class="si">{</span><span class="n">half</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> pts"</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The transcript makes the point that no amount of care about the model can rescue you from a
+small suite:</p>
+<div class="codehilite"><pre><span></span><code><span class="go">n=   50  se= 5.18 pts   95% ~= 84.0 +/- 10.2 pts</span>
+<span class="go">n=  200  se= 2.59 pts   95% ~= 84.0 +/- 5.1 pts</span>
+<span class="go">n= 1000  se= 1.16 pts   95% ~= 84.0 +/- 2.3 pts</span>
+<span class="go">n= 5000  se= 0.52 pts   95% ~= 84.0 +/- 1.0 pts</span>
+</code></pre></div>
+
+<p>Fifty questions cannot distinguish an 84 from a 74; even a thousand questions leaves a
+two-point interval. This is a hard floor set by the arithmetic, before you add decoding or
+execution noise on top. Any claim of a one-point improvement measured on a few hundred
+items is, on sampling grounds alone, a claim about noise. The formula assumes independent
+items, which real suites violate — clustered topics, repeated templates, and contamination
+all correlate the errors — and dependence almost always makes the true interval <em>wider</em>
+than this floor, never narrower. Treat the closed form as the most optimistic error bar you
+are entitled to, and reach for resampling when you want a number that respects your actual
+data.</p>
+<h2>The bootstrap: an error bar for anything</h2>
+<p>The closed form works for a plain proportion, but real evaluations report messier
+quantities — a mean score with partial credit, a pass@k on code, a weighted average across
+task groups — and deriving a formula for each is tedious and error-prone. The bootstrap
+sidesteps the algebra entirely. Its idea is disarmingly simple: your suite is a sample from
+a population, so treat the suite <em>itself</em> as the population and draw new samples from it,
+with replacement, thousands of times. The spread of the statistic across those resamples
+estimates the spread you would have seen across fresh suites. The technique is standard and
+well described in the statistics literature [R7]; the second listing implements it in the
+standard library, seeded so the transcript reproduces exactly.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">random</span><span class="o">,</span><span class="w"> </span><span class="nn">statistics</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">bootstrap_ci</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">iters</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">Random</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+    <span class="n">means</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iters</span><span class="p">):</span>
+        <span class="n">resample</span> <span class="o">=</span> <span class="p">[</span><span class="n">scores</span><span class="p">[</span><span class="n">rng</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+        <span class="n">means</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">resample</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">means</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+    <span class="n">lo</span> <span class="o">=</span> <span class="n">means</span><span class="p">[</span><span class="nb">int</span><span class="p">((</span><span class="n">alpha</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">iters</span><span class="p">)]</span>
+    <span class="n">hi</span> <span class="o">=</span> <span class="n">means</span><span class="p">[</span><span class="nb">int</span><span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">iters</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">statistics</span><span class="o">.</span><span class="n">fmean</span><span class="p">(</span><span class="n">scores</span><span class="p">),</span> <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span>
+
+<span class="c1"># 200 graded items: 168 correct (1.0), 32 wrong (0.0) -&gt; 84.0% observed</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">168</span> <span class="o">+</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">32</span>
+<span class="n">point</span><span class="p">,</span> <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="n">bootstrap_ci</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"observed  </span><span class="si">{</span><span class="n">point</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">5.2f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"95% CI    [</span><span class="si">{</span><span class="n">lo</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">5.2f</span><span class="si">}</span><span class="s2">%, </span><span class="si">{</span><span class="n">hi</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">5.2f</span><span class="si">}</span><span class="s2">%]  width </span><span class="si">{</span><span class="nb">round</span><span class="p">((</span><span class="n">hi</span><span class="o">-</span><span class="n">lo</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2"> pts"</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">observed  84.00%</span>
+<span class="go">95% CI    [78.50%, 89.00%]  width 10.5 pts</span>
+</code></pre></div>
+
+<p>The bootstrap interval on two hundred items brackets roughly plus-or-minus five points,
+landing close to the closed-form proportion above — reassuring, but not independent
+confirmation, because both are drawn from the same two hundred items and both lean on the
+same large-sample approximation. That shared assumption is worth a caveat, because for a
+plain proportion neither of these two intervals is the textbook-correct one. The normal
+<code>±1.96·se</code> interval and the naive percentile bootstrap both <em>under-cover</em> when the accuracy
+sits near zero or one or when the suite is small: the true 95% interval catches the real value
+less than 95% of the time, and it can even run past 100% at the top of the scale. The
+defensible default for a bare proportion is the Wilson score interval or the Clopper–Pearson
+exact interval, both of which are built for binomial data, stay inside <code>[0, 1]</code>, and hold their
+coverage where the normal approximation frays; a statistics library gives you either in one
+call. Use the bootstrap not because it is the best interval for a proportion — it is not — but
+because it is the one tool that keeps working when your metric stops being a plain proportion.
+The payoff is generality: change <code>scores</code> to per-item partial credit, or to a list of per-run
+whole-suite scores, and the same seven lines give you an interval with no new algebra, where a
+closed form would need re-deriving. When you report a benchmark result, reach for Wilson or
+Clopper–Pearson if the metric is a simple accuracy, and for the bootstrap once it is anything
+messier; either way the interval is the error bar that turns the number into a claim you can
+defend.</p>
+<h2>Reporting a range, not a point</h2>
+<p>Knowing the wobble is useless until it changes what you write down. The rule is to report
+the interval and let the point sit inside it, rather than reporting the point and mentioning
+the interval as an afterthought. &ldquo;84.0 (95% CI 78.5–89.0, n=200, greedy, single run)&rdquo;
+communicates honestly in one line: the best estimate, its uncertainty, the suite size, the
+decoding policy, and the run count. A reader can immediately see that this result cannot
+adjudicate a two-point difference, and will not embarrass themselves by trying.</p>
+<p>For execution and decoding variation, the interval you want is <em>across runs</em>, not across
+items, and you get it by running the whole suite several times and treating the per-run
+scores as your sample. Feed those run-level scores into the same bootstrap, or simply report
+their mean and standard deviation. The distinction matters: an item-level interval tells you
+how much the <em>suite</em> limits you; a run-level interval tells you how much the <em>stack</em> limits
+you. On a batch-nondeterministic server, the run-level spread can dwarf the item-level one,
+which is the whole reason a single greedy run is not the safe measurement it appears to be.</p>
+<p>Two practices make run-level intervals affordable. First, pin everything you can — a fixed
+seed, a fixed engine build, and, where the stack offers it, batch-invariant or
+single-request execution — so that the residual spread is small and honestly attributable.
+Second, when you cannot pin execution, budget for repetition: three to five full runs is
+usually enough to see whether the spread is a fraction of a point or a chasm, and the answer
+decides how many decimal places you are allowed to print. Dodge and colleagues make the
+broader case that reporting the distribution of results, and the budget that produced them,
+is what lets a reader reason about your numbers at all [R1]; the run-level error bar is the
+smallest honest version of that report.</p>
+<h2>How many runs is enough</h2>
+<p>The question every practitioner asks next is how many times to run the suite, and the honest
+answer is that the data tells you rather than a rule of thumb. Start with two full runs of
+the configuration you care about. If they agree to within a small fraction of the precision
+you need — the two tool-suite runs that landed ten points apart did not — then a third run is
+mostly confirmation and you can report a mean with a note that the spread was negligible. If
+they disagree by more than the difference you are trying to detect, you have learned
+something more valuable than a score: you have learned that this measurement is
+execution-dominated, and no single run of it means anything. Now you run enough repetitions
+to characterize the spread, typically five, and you report the mean with its run-level
+interval rather than any individual figure.</p>
+<p>There is a temptation to economize by running a smaller suite more times, or a larger suite
+fewer times, and the two are not interchangeable. Repetitions of the whole suite characterize
+execution and decoding variation; a larger suite shrinks sampling variation. If your spread is
+dominated by batch nondeterminism, adding items does nothing and adding runs is the cure; if
+your spread is dominated by a small suite, adding runs of the same short suite just measures
+the same small sample repeatedly. Diagnose which source dominates — two runs versus a
+back-of-envelope proportion error bar usually reveals it — and spend your compute on the source
+that is actually hurting you. Spending it on the other is a common and expensive mistake.</p>
+<h2>Combining the sources without fooling yourself</h2>
+<p>The three sources of variation compound, and a subtle error is to measure one and quietly
+present it as the whole. An item-level bootstrap on a single run gives a tight, honest-looking
+interval that accounts only for sampling — it is blind, by construction, to the fact that a
+second run of the same suite might have scored three points lower from batch nondeterminism.
+Publishing that tight interval while execution variation is large is a way of being precisely
+wrong: the number carries an error bar, the error bar is real, and it is answering a question
+you were not asking. The reader will assume the interval covers run-to-run reproducibility,
+because that is what they care about, and it does not.</p>
+<p>The clean approach keeps the two intervals distinct and reports whichever is larger, or both.
+Run the suite several times; for each run you have a whole-suite score. The spread of those
+run-level scores captures execution and decoding variation directly, with no modeling
+assumptions at all — it is simply what happened when you ran it again. Within any single run,
+an item-level bootstrap captures sampling variation. In a well-behaved, pinned configuration
+the item-level interval dominates and the run-level spread is a rounding error, and you can say
+so. In a batch-nondeterministic served configuration the run-level spread dominates, and it is
+the number that governs how many digits you may honestly print. Either way, the reader is owed
+the larger of the two, because a decision made on the smaller one is a decision made on a
+fiction.</p>
+<h2>A reporting template you can reuse</h2>
+<p>It helps to fix a written form so that reporting the full claim becomes automatic rather than a
+thing you remember to do when you have time. The author&rsquo;s own logbook records every headline
+number as a single line with a fixed shape: the score, the interval and what kind it is, the
+suite size, the number of runs, the decoding policy, and the exact system that produced it —
+engine build, cache precision, and hardware. &ldquo;84.0, run-level 82.1–85.6 over 5 runs, n=200,
+greedy, engine b1234 + f16 KV, 3×Blackwell&rdquo; is long, and its length is the point: every field
+is a lever that can move the score, so every field must travel with it or the number cannot be
+reproduced or trusted. A table of such lines is auditable at a glance; a table of bare scores
+is a table of rumors with good posture. The discipline costs one line of typing per result and
+saves the reader — often a future version of yourself with no memory of today — from
+reconstructing the apparatus from nothing.</p>
+<h2>Decoding variation and the temptation of the maximum</h2>
+<p>When a task is scored by sampling multiple generations — pass@k on code, self-consistency on
+reasoning — decoding variation is not a nuisance to suppress but a quantity to estimate
+carefully, and it hides a trap. The pass@k metric introduced with the HumanEval code
+benchmark is itself an <em>estimator</em>: it estimates the probability that at least one of k
+samples passes, from a larger number of samples, precisely because the naive &ldquo;generate k,
+check if any pass&rdquo; is a high-variance draw [R8]. Reporting a single lucky pass@1 from one
+generation per problem is the decoding-variation version of the lucky draw from chapter 1,
+and the fix is the same in spirit: estimate the expectation, and report its spread.</p>
+<p>The temptation, always, is to take a maximum — the best of several sampled runs, the best of
+several temperatures, the best checkpoint — and report it as the result. A maximum over noisy
+draws is biased upward by construction, and the more draws you take, the more it inflates.
+Nucleus sampling was introduced partly because greedy and pure-sampling decoding sit at
+opposite failure modes, and the choice of decoding policy is itself a lever on the
+distribution of outputs you are measuring [R9]. The honest move when decoding is random is to
+fix the policy, state it, sample enough to estimate the quantity you claim, and report that
+quantity with its interval — never the smiling maximum.</p>
+<h2>Decimals are a claim about precision</h2>
+<p>A small typographic habit leaks dishonesty into otherwise careful reports: printing more decimal
+places than the error bar can support. A score written as 84.37 announces, by its three
+significant figures, that you can distinguish it from 84.28 — a claim of hundredth-of-a-point
+resolution. On a two-hundred-item suite whose sampling error alone is two and a half points, that
+claim is absurd, and the extra digits are not precision but decoration that misleads the reader
+into a confidence the measurement cannot bear. The number of digits you print is itself an
+assertion about your uncertainty, and it should agree with the error bar sitting next to it.</p>
+<p>The rule is to round the point estimate to the resolution its interval justifies, and to let the
+interval carry the story. If the interval is plus-or-minus five points, &ldquo;84&rdquo; is the honest
+rendering and &ldquo;84.37&rdquo; is a small lie of overstated precision. If you have driven the interval down
+to a few tenths through a large suite and many runs, then a decimal place is earned and should be
+shown. Matching your digits to your uncertainty costs nothing and inoculates the reader against
+the most common visual trick in benchmark reporting, which is a wall of decimals implying a
+precision that no suite of that size could ever deliver. When in doubt, print fewer digits and
+show the interval; a reader can always compute a finer number from your data, but they cannot
+un-see a false one.</p>
+<h2>What an error bar is not</h2>
+<p>An error bar quantifies variation; it does not certify correctness. A tight interval around a
+wrong number is still wrong. If your harness scores a correct answer as incorrect because of
+a whitespace mismatch, running it a thousand times gives you a beautifully tight interval
+around a systematically depressed score. Sampling error and execution error are <em>random</em>
+errors, and repetition characterizes them; harness bugs and contamination are <em>systematic</em>
+errors, and repetition only makes you more confident in the wrong value. The remaining
+chapters attack the systematic errors directly — by isolating the variable, by re-measuring
+against a control, by reading the logs, and by publishing the result that does not fit — because
+the error bar, essential as it is, is only ever half of the truth. It tells you how much a
+number would move if you ran it again. It cannot tell you whether the number was ever
+measuring the right thing.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">next ›</button></div><div class="grp"><a href="ch03.html">next: Run the Control That Isolates the Variable →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-measure-twice', location.pathname);}catch(e){}
+</script>
+</body>
+</html>
