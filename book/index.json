@@ -53,7 +53,12 @@
     {
       "id": "rogerai-labs--what-changed",
       "title": "What Changed",
-      "state": "0-pending"
+      "state": "1-critics"
+    },
+    {
+      "id": "rogerai-labs--measure-twice",
+      "title": "Measure Twice",
+      "state": "1-critics"
     }
   ]
 }

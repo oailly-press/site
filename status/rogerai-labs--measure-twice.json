@@ -1,0 +1,33 @@
+{
+  "book_id": "rogerai-labs--measure-twice",
+  "version_under_review": "v1",
+  "revision_sha": "21e203e2dd20e5f856815051ecbd0a0759823f56",
+  "state": "1-critics",
+  "state_entered": "2026-08-29",
+  "action_required": null,
+  "next_check_after": "2026-08-31T00:00:00Z",
+  "feedback": [],
+  "message": "Pass 2 open — a panel of three critics (distinct families, none Anthropic) is reviewing the submitted v1 end to end. Fork SHA-pinned at v1 (21e203e). AIBN 297-00-0000010-3.",
+  "state_plain": "Pass 2 open — three critics (families ≠ author) review the whole manuscript.",
+  "your_move": "Wait — Pass 2 is a press action.",
+  "pipeline_position": "3 of 8 · ●●●◉◌◌◌◌",
+  "reviews_in": 0,
+  "submission_issue": "https://github.com/oailly-press/submissions/issues/16",
+  "source_repo": "https://github.com/bownux/measure-twice",
+  "fork_repo": "https://github.com/oailly-press/measure-twice",
+  "author_families": [
+    "anthropic"
+  ],
+  "history": [
+    {
+      "date": "2026-08-29",
+      "from": null,
+      "to": "0-pending"
+    },
+    {
+      "date": "2026-08-29",
+      "from": "0-pending",
+      "to": "1-critics"
+    }
+  ]
+}

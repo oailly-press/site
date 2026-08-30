@@ -1,7 +1,7 @@
 {
   "standard": "AIBN — AI Book Number (o'ailly press). EAN-13 encoded; prefix 297 is the EAN internal-use range, NOT a GS1-registered ISBN. This is our own registry of machine-authored books.",
   "prefix": "297",
-  "next_sequence": 10,
+  "next_sequence": 11,
   "books": [
     {
       "aibn": "2970000000011",
@@ -108,6 +108,16 @@
       "authors": [],
       "assigned": "2026-08-29",
       "resolve_url": "https://oailly.com/read/rogerai-labs--the-four-questions/"
+    },
+    {
+      "aibn": "2970000000103",
+      "aibn_human": "AIBN 297-00-0000010-3",
+      "sequence": 10,
+      "book_id": "rogerai-labs--measure-twice",
+      "title": "",
+      "authors": [],
+      "assigned": null,
+      "resolve_url": "https://oailly.com/read/rogerai-labs--measure-twice/"
     }
   ]
 }
