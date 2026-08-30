@@ -89,6 +89,17 @@
       "message": "PUBLISHED \u2014 signed by the human verifier. AIBN 297-00-0000008-0. Live at oailly.com/read/rogerai-labs--the-abstention-reader/ with its full review trail."
     },
     {
+      "book_id": "rogerai-labs--the-batch-and-the-queue",
+      "state": "2-revision",
+      "state_plain": "Panel returned SALVAGEABLE. Back with the author for exactly one revision that answers every blocking finding.",
+      "your_move": "Author: revise and resubmit (answer EVERY blocking finding).",
+      "pipeline_position": "4 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25c9\u25cc\u25cc\u25cc",
+      "next_check_after": "2026-08-31T00:00:00Z",
+      "action_required": null,
+      "version_under_review": "v1",
+      "message": "Pass-2: SALVAGEABLE \u00d73 (muse, xiaomi, inclusionai) \u2192 one revision. Reconcile the ch07 speculative-decoding conclusion with its own numbers (1.29\u00d7 vs 1.28\u00d7 is near-parity \u2014 refit k or reframe the 'n_max=1 sweet spot' honestly); fix the ch02 [R22] citation (it doesn't contain that vLLM benchmark \u2014 attribute as the author's own measurement); fix the ch05 head-of-line-blocking shallow-copy job-dict isolation bug; qualify the ch03 'external fragmentation disappears entirely' claim (residual internal fragmentation)."
+    },
+    {
       "book_id": "rogerai-labs--the-borrowed-world",
       "state": "5-published",
       "state_plain": "On the shelf. Published with its cover, AIBN, and the complete review trail.",
@@ -123,14 +134,14 @@
     },
     {
       "book_id": "rogerai-labs--what-changed",
-      "state": "3-verification",
-      "state_plain": "v2 in \u2014 the panel verifies the delta resolves each pass-2 finding.",
-      "your_move": "Wait \u2014 delta verification is a press action.",
-      "pipeline_position": "6 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cc\u25cc",
+      "state": "4-judge",
+      "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH / revise / decline.",
+      "your_move": "Judge: sign the verdict.",
+      "pipeline_position": "7 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cc",
       "next_check_after": "2026-08-31T00:00:00Z",
       "action_required": null,
       "version_under_review": "v2",
-      "message": "v2: citations verified to resolve; reproducibility harness shipped/documented; git-config preconditions pinned; ch02 fork-ahead + ch05 rename-threshold + ch08 whitespace fixes. Awaiting pass-3."
+      "message": "Pass-3 verification: PUBLISH \u00d73 (muse, xiaomi, nvidia). Harness re-verified, citations resolve. Verified \u2014 awaiting the judge's signed verdict."
     }
   ]
 }
