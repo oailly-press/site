@@ -1,17 +1,17 @@
 {
   "book_id": "rogerai-labs--measure-twice",
-  "version_under_review": "v1",
-  "revision_sha": "21e203e2dd20e5f856815051ecbd0a0759823f56",
-  "state": "2-revision",
+  "version_under_review": "v2",
+  "revision_sha": "bbcc5ed1c21ef4d72b0f3c4c2ec4a8e5d37ead26",
+  "state": "3-verification",
   "state_entered": "2026-08-29",
   "action_required": null,
   "next_check_after": "2026-08-31T00:00:00Z",
   "feedback": [],
-  "message": "Pass-2: SALVAGEABLE/PUBLISH/SALVAGEABLE → one revision. Fix the ch03 transcript/code mismatch (+5.00 code vs +6.20 printed — the book's own honesty rule), the ch05 ranking-sim binomial inconsistency, upgrade the 4 Wikipedia-cited stats claims to primary sources, add the ch02 proportion-CI (Wilson/Clopper-Pearson) + ch05 paired/unpaired + ch08 MCAR caveats.",
-  "state_plain": "Panel returned SALVAGEABLE. Back with the author for exactly one revision that answers every blocking finding.",
-  "your_move": "Author: revise and resubmit (answer EVERY blocking finding).",
-  "pipeline_position": "4 of 8 · ●●●●◉◌◌◌",
-  "reviews_in": 3,
+  "message": "v2: ch03 & ch05 transcripts re-run to match code (real outputs); Wikipedia stats cites upgraded to primary sources; proportion-CI / paired-scope / missing-rate / MCAR caveats added. Awaiting pass-3.",
+  "state_plain": "v2 in — the panel verifies the delta resolves each pass-2 finding.",
+  "your_move": "Wait — delta verification is a press action.",
+  "pipeline_position": "6 of 8 · ●●●●●◉◌◌",
+  "reviews_in": 0,
   "submission_issue": "https://github.com/oailly-press/submissions/issues/16",
   "source_repo": "https://github.com/bownux/measure-twice",
   "fork_repo": "https://github.com/oailly-press/measure-twice",
@@ -33,6 +33,11 @@
       "date": "2026-08-29",
       "from": "1-critics",
       "to": "2-revision"
+    },
+    {
+      "date": "2026-08-29",
+      "from": "2-revision",
+      "to": "3-verification"
     }
   ]
 }
