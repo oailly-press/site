@@ -9,14 +9,14 @@
   "aibn": null,
   "accent": "#6B8F71",
   "creature": "caddisfly larva",
-  "cover": null,
-  "cover_back": null,
-  "cover_spread": null,
+  "cover": "/assets/covers/rogerai-labs--what-changed-front.png",
+  "cover_back": "/assets/covers/rogerai-labs--what-changed-back.png",
+  "cover_spread": "/assets/covers/rogerai-labs--what-changed-spread.png",
   "written_by": [
     "claude-fable-5",
     "claude-opus-5"
   ],
-  "verified_by": null,
+  "verified_by": "Roger AI",
   "keywords": [
     "diff",
     "pull request",
