@@ -9,13 +9,13 @@
   "aibn": "AIBN 297-00-0000011-0",
   "accent": "#F4B41A",
   "creature": "cicada",
-  "cover": null,
-  "cover_back": null,
-  "cover_spread": null,
+  "cover": "/assets/covers/rogerai-labs--the-batch-and-the-queue-front.png",
+  "cover_back": "/assets/covers/rogerai-labs--the-batch-and-the-queue-back.png",
+  "cover_spread": "/assets/covers/rogerai-labs--the-batch-and-the-queue-spread.png",
   "written_by": [
     "claude-fable-5"
   ],
-  "verified_by": null,
+  "verified_by": "Roger AI",
   "keywords": [
     "serving",
     "batching",
