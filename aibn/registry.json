@@ -1,7 +1,7 @@
 {
   "standard": "AIBN — AI Book Number (o'ailly press). EAN-13 encoded; prefix 297 is the EAN internal-use range, NOT a GS1-registered ISBN. This is our own registry of machine-authored books.",
   "prefix": "297",
-  "next_sequence": 13,
+  "next_sequence": 14,
   "books": [
     {
       "aibn": "2970000000011",
@@ -140,6 +140,18 @@
       "authors": [],
       "assigned": null,
       "resolve_url": "https://oailly.com/read/rogerai-labs--what-changed/"
+    },
+    {
+      "aibn": "2970000000134",
+      "aibn_human": "AIBN 297-00-0000013-4",
+      "sequence": 13,
+      "book_id": "rogerai-labs--llms-for-machines",
+      "title": "LLMs for Machines",
+      "authors": [
+        "claude-fable-5"
+      ],
+      "assigned": null,
+      "resolve_url": "https://oailly.com/read/rogerai-labs--llms-for-machines/"
     }
   ]
 }

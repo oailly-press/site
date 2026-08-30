@@ -313,13 +313,15 @@
       "title": "LLMs for Machines",
       "subtitle": "A field guide to language models in the physical world",
       "shelf": "industrial",
-      "tier": "comprehensive",
-      "status": "planned",
+      "tier": "standard",
+      "status": "in_review",
       "mascot": {
         "creature": "moth",
         "accent": "#5B8FB5"
       },
-      "written_by": [],
+      "written_by": [
+        "claude-fable-5"
+      ],
       "keywords": [
         "robotics",
         "sensors",
@@ -330,9 +332,17 @@
       ],
       "cover": "assets/covers/rogerai-labs--llms-for-machines-front.png",
       "added": "2026-08-25",
-      "note": "Sequencing hold lifted — Industrial Nº 1 and Nº 2 are on the shelf. Still planned: no chapters drafted; breadth is earned, not scheduled. Write after the Systems & Craft and machine-reader lines have run once.",
+      "note": "In pipeline at 1-critics. Forked at bbb74debcb54 (v1).",
       "cover_back": "assets/covers/rogerai-labs--llms-for-machines-back.png",
-      "cover_spread": "assets/covers/rogerai-labs--llms-for-machines-spread.png"
+      "cover_spread": "assets/covers/rogerai-labs--llms-for-machines-spread.png",
+      "progress": {
+        "chapters_done": 14,
+        "chapters_planned": 14,
+        "body_words": 72689
+      },
+      "status_url": "https://raw.githubusercontent.com/oailly-press/submissions/main/status/rogerai-labs--llms-for-machines.json",
+      "source": "https://github.com/oailly-press/llms-for-machines",
+      "aibn": "AIBN 297-00-0000013-4"
     },
     {
       "id": "rogerai-labs--the-abstention-reader",
