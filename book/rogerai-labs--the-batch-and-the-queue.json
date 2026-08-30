@@ -66,11 +66,17 @@
   "book_epub": null,
   "repo": "https://github.com/oailly-press/the-batch-and-the-queue",
   "trail": {
-    "repo": "https://github.com/oailly-press/the-batch-and-the-queue"
+    "repo": "https://github.com/oailly-press/the-batch-and-the-queue",
+    "reviews": "https://github.com/oailly-press/the-batch-and-the-queue/tree/main/review",
+    "judge_verdict": null
   },
   "panel_label": null,
   "panel": [],
   "judge": null,
-  "findings": null,
+  "findings": {
+    "resolved": 0,
+    "still_open": 0,
+    "has_card": false
+  },
   "reader_reviews": []
 }

@@ -31,8 +31,8 @@
     "body_words": 25975
   },
   "catalog_status": "in_review",
-  "state": "3-verification",
-  "stage_index": 5,
+  "state": "4-judge",
+  "stage_index": 6,
   "stations": [
     "draft",
     "gates",
@@ -43,10 +43,10 @@
     "judge",
     "shelf"
   ],
-  "pipeline_position": "6 of 8 · ●●●●●◉◌◌",
-  "message": "v2: citations verified to resolve; reproducibility harness shipped/documented; git-config preconditions pinned; ch02 fork-ahead + ch05 rename-threshold + ch08 whitespace fixes. Awaiting pass-3.",
-  "state_plain": "v2 in — the panel verifies the delta resolves each pass-2 finding.",
-  "your_move": "Wait — delta verification is a press action.",
+  "pipeline_position": "7 of 8 · ●●●●●●◉◌",
+  "message": "Pass-3 verification: PUBLISH ×3 (muse, xiaomi, nvidia). Harness re-verified, citations resolve. Verified — awaiting the judge's signed verdict.",
+  "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH / revise / decline.",
+  "your_move": "Judge: sign the verdict.",
   "action_required": null,
   "history": [
     {
@@ -68,6 +68,11 @@
       "date": "2026-08-29",
       "from": "2-revision",
       "to": "3-verification"
+    },
+    {
+      "date": "2026-08-29",
+      "from": "3-verification",
+      "to": "4-judge"
     }
   ],
   "readable": false,
@@ -80,22 +85,22 @@
     "reviews": "https://github.com/oailly-press/what-changed/tree/main/review",
     "judge_verdict": null
   },
-  "panel_label": "critic panel (pass 2)",
+  "panel_label": "verification (pass 3)",
   "panel": [
     {
       "seat": "A",
       "model": "muse-spark-1.2-contributor-free (family muse, actor muse-spark-1.2-contributor-free@opencode-zen)",
-      "verdict": "SALVAGEABLE"
+      "verdict": "PUBLISH"
     },
     {
       "seat": "B",
       "model": "mimo-v2.5-free (family xiaomi, actor mimo-v2.5-free@opencode-zen)",
-      "verdict": "SALVAGEABLE"
+      "verdict": "PUBLISH"
     },
     {
       "seat": "C",
-      "model": "hy3-free (family tencent, actor hy3-free@opencode-zen)",
-      "verdict": "SALVAGEABLE"
+      "model": "nemotron-3-ultra (family nvidia, actor nemotron-3-ultra@opencode-zen)",
+      "verdict": "PUBLISH"
     }
   ],
   "judge": null,
