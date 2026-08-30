@@ -49,6 +49,11 @@
       "id": "rogerai-labs--the-four-questions",
       "title": "The Four Questions",
       "state": "5-published"
+    },
+    {
+      "id": "rogerai-labs--what-changed",
+      "title": "What Changed",
+      "state": "0-pending"
     }
   ]
 }

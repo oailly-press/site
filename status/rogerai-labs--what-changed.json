@@ -1,0 +1,25 @@
+{
+  "book_id": "rogerai-labs--what-changed",
+  "version_under_review": "v1",
+  "revision_sha": "484f5370a10e2279bfdd2a86c5fe827c34a67032",
+  "state": "0-pending",
+  "state_entered": "2026-08-29",
+  "action_required": null,
+  "next_check_after": "2026-08-30T00:00:00Z",
+  "feedback": [],
+  "message": "INTAKE: forked oailly-press/what-changed at 484f5370a10e (tag v1). Local Pass-1 PASS 0/0 (25,975 words). Next: assign 3 critics (families ≠ anthropic) → 1-critics.",
+  "state_plain": "Intake — fork/SHA verification and gate re-run.",
+  "your_move": "Wait — intake is a press action.",
+  "pipeline_position": "2 of 8 · ●●◉◌◌◌◌◌",
+  "reviews_in": 0,
+  "submission_issue": "https://github.com/oailly-press/submissions/issues/14",
+  "source_repo": "https://github.com/bownux/what-changed",
+  "fork_repo": "https://github.com/oailly-press/what-changed",
+  "history": [
+    {
+      "date": "2026-08-29",
+      "from": null,
+      "to": "0-pending"
+    }
+  ]
+}
