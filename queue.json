@@ -57,14 +57,14 @@
     },
     {
       "book_id": "rogerai-labs--measure-twice",
-      "state": "1-critics",
-      "state_plain": "Pass 2 open \u2014 three critics (families \u2260 author) review the whole manuscript.",
-      "your_move": "Wait \u2014 Pass 2 is a press action.",
-      "pipeline_position": "3 of 8 \u00b7 \u25cf\u25cf\u25cf\u25c9\u25cc\u25cc\u25cc\u25cc",
+      "state": "4-judge",
+      "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH / revise / decline.",
+      "your_move": "Judge: sign the verdict.",
+      "pipeline_position": "7 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cc",
       "next_check_after": "2026-08-31T00:00:00Z",
       "action_required": null,
-      "version_under_review": "v1",
-      "message": "Pass 2 open \u2014 a panel of three critics (distinct families, none Anthropic) is reviewing the submitted v1 end to end. Fork SHA-pinned at v1 (21e203e). AIBN 297-00-0000010-3."
+      "version_under_review": "v2",
+      "message": "Pass-3 verification: PUBLISH/PUBLISH/PUBLISH (muse, xiaomi, tencent). Transcripts re-run and match code; citations resolve. Verified \u2014 awaiting the judge's signed verdict."
     },
     {
       "book_id": "rogerai-labs--sqlite-for-agents",
