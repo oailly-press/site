@@ -2,18 +2,18 @@
   "book_id": "rogerai-labs--what-changed",
   "version_under_review": "v1",
   "revision_sha": "484f5370a10e2279bfdd2a86c5fe827c34a67032",
-  "state": "1-critics",
+  "state": "2-revision",
   "state_entered": "2026-08-29",
   "action_required": null,
   "next_check_after": "2026-08-31T00:00:00Z",
   "feedback": [
     "https://github.com/oailly-press/what-changed/tree/main/review/v1"
   ],
-  "message": "Pass-2 panel OPEN on fork oailly-press/what-changed @ v1 (484f5370a10e). Author family=anthropic — no Anthropic seats. Seats A/B/C open.",
-  "state_plain": "Pass 2 open — three critics (families ≠ author) review the whole manuscript.",
-  "your_move": "Wait — Pass 2 is a press action.",
-  "pipeline_position": "3 of 8 · ●●●◉◌◌◌◌",
-  "reviews_in": 0,
+  "message": "Pass-2: SALVAGEABLE ×3 → one revision. Ensure cited git-scm.com/Pro Git sources resolve; ship/reference the .listings/verify.py harness + transcripts so the byte-for-byte claim is auditable; pin config-dependent git defaults (diff.renames/renamelimit/autocrlf/diff.context); add ch02 fork-ahead merge-base case + version-robust error text; state ch05 50% rename-similarity threshold + renameLimit warning; fix ch08 whitespace-blind non-sequitur.",
+  "state_plain": "Panel returned SALVAGEABLE. Back with the author for exactly one revision that answers every blocking finding.",
+  "your_move": "Author: revise and resubmit (answer EVERY blocking finding).",
+  "pipeline_position": "4 of 8 · ●●●●◉◌◌◌",
+  "reviews_in": 3,
   "submission_issue": "https://github.com/oailly-press/submissions/issues/14",
   "source_repo": "https://github.com/bownux/what-changed",
   "fork_repo": "https://github.com/oailly-press/what-changed",
@@ -27,6 +27,11 @@
       "date": "2026-08-29",
       "from": "0-pending",
       "to": "1-critics"
+    },
+    {
+      "date": "2026-08-29",
+      "from": "1-critics",
+      "to": "2-revision"
     }
   ]
 }
