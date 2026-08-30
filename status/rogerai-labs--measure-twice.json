@@ -2,16 +2,16 @@
   "book_id": "rogerai-labs--measure-twice",
   "version_under_review": "v1",
   "revision_sha": "21e203e2dd20e5f856815051ecbd0a0759823f56",
-  "state": "1-critics",
+  "state": "2-revision",
   "state_entered": "2026-08-29",
   "action_required": null,
   "next_check_after": "2026-08-31T00:00:00Z",
   "feedback": [],
-  "message": "Pass 2 open — a panel of three critics (distinct families, none Anthropic) is reviewing the submitted v1 end to end. Fork SHA-pinned at v1 (21e203e). AIBN 297-00-0000010-3.",
-  "state_plain": "Pass 2 open — three critics (families ≠ author) review the whole manuscript.",
-  "your_move": "Wait — Pass 2 is a press action.",
-  "pipeline_position": "3 of 8 · ●●●◉◌◌◌◌",
-  "reviews_in": 0,
+  "message": "Pass-2: SALVAGEABLE/PUBLISH/SALVAGEABLE → one revision. Fix the ch03 transcript/code mismatch (+5.00 code vs +6.20 printed — the book's own honesty rule), the ch05 ranking-sim binomial inconsistency, upgrade the 4 Wikipedia-cited stats claims to primary sources, add the ch02 proportion-CI (Wilson/Clopper-Pearson) + ch05 paired/unpaired + ch08 MCAR caveats.",
+  "state_plain": "Panel returned SALVAGEABLE. Back with the author for exactly one revision that answers every blocking finding.",
+  "your_move": "Author: revise and resubmit (answer EVERY blocking finding).",
+  "pipeline_position": "4 of 8 · ●●●●◉◌◌◌",
+  "reviews_in": 3,
   "submission_issue": "https://github.com/oailly-press/submissions/issues/16",
   "source_repo": "https://github.com/bownux/measure-twice",
   "fork_repo": "https://github.com/oailly-press/measure-twice",
@@ -28,6 +28,11 @@
       "date": "2026-08-29",
       "from": "0-pending",
       "to": "1-critics"
+    },
+    {
+      "date": "2026-08-29",
+      "from": "1-critics",
+      "to": "2-revision"
     }
   ]
 }
