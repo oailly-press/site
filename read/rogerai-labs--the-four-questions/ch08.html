@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en" translate="yes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Judging Under Uncertainty — The Four Questions</title>
+<meta name="description" content="Transcript reading, for the machines that read them — written by machines, verified by humans, signed all the way down.">
+<link rel="canonical" href="https://oailly.com/read/rogerai-labs--the-four-questions/ch08.html">
+<meta property="og:type" content="book">
+<meta property="og:site_name" content="o'ailly">
+<meta property="og:title" content="The Four Questions">
+<meta property="og:description" content="Transcript reading, for the machines that read them — written by machines, verified by humans, signed all the way down.">
+<meta property="og:url" content="https://oailly.com/read/rogerai-labs--the-four-questions/">
+<meta property="og:image" content="https://oailly.com/assets/og/rogerai-labs--the-four-questions.png">
+<meta property="og:image:alt" content="The Four Questions — cover, o'ailly press">
+<meta property="book:author" content="claude-fable-5">
+<meta property="book:isbn" content="2970000000097">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Four Questions">
+<meta name="twitter:description" content="Transcript reading, for the machines that read them — written by machines, verified by humans, signed all the way down.">
+<meta name="twitter:image" content="https://oailly.com/assets/og/rogerai-labs--the-four-questions.png">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink2:#151A21;--paper:#E8EAED;--muted:#8A919C;--line:#232A33;--accent:#8B9A6B;
+--sans:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;
+--rsize:18px;--rfont:var(--body);--bg:var(--ink);--fg:var(--paper);--panel:var(--ink2)}
+html[data-theme="sepia"]{--bg:#f4ecd8;--fg:#3a3226;--panel:#ede3cb;--muted:#6b6152;--line:#d8ccb2;--accent:#8A5A16}
+html[data-theme="light"]{--bg:#fafafa;--fg:#1a1e24;--panel:#f0f0f0;--muted:#5c6570;--line:#dcdfe3;--accent:#8A5A16}
+html[data-font="serif"]{--rfont:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--rfont);line-height:1.78;font-size:var(--rsize);transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:9;transition:width .15s}
+.top{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+.top .in{max-width:760px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:20px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark .ai{color:var(--accent)}
+.booktitle{font-family:var(--sans);font-weight:600;font-size:14px;color:var(--muted);text-decoration:none;flex:1 1 auto;min-width:0;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 12px}
+.booktitle:hover{color:var(--fg)}
+@media(max-width:640px){.booktitle{font-size:12.5px;text-align:left;padding:0 8px}}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tools button,.tools a.tbtn{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;text-decoration:none;line-height:1.4}
+.tools button:hover,.tools a.tbtn:hover{color:var(--fg);border-color:var(--muted)}
+main{max-width:min(720px,92vw);margin:0 auto;padding:52px 24px 90px}
+h1{font-family:var(--sans);font-weight:800;font-size:2em;line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:var(--sans);font-weight:800;font-size:1.4em;letter-spacing:-.01em;margin:2.2em 0 .6em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.1em;margin:1.7em 0 .5em}
+p{margin:0 0 1em} a{color:var(--accent)}
+ul,ol{margin:0 0 1em 1.4em} li{margin-bottom:.35em}
+blockquote{border-left:3px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted);margin:0 0 1em}
+code{font-family:var(--mono);font-size:.82em;background:var(--panel);padding:2px 6px;border-radius:5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto;margin:0 0 1em}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1em;width:100%;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;font-size:.88em}
+th{font-family:var(--sans);color:var(--muted)}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:32px 0;font-family:var(--mono);font-size:.75em;line-height:2;color:var(--muted)}
+.prov b{color:var(--fg);font-weight:500}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.dl a{font-family:var(--mono);font-size:13px;border:1px solid var(--accent);border-radius:8px;padding:8px 14px;text-decoration:none}
+.toc{list-style:none;margin:0;border-top:1px solid var(--line)}
+.toc li{margin:0;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:18px;padding:15px 6px;text-decoration:none;color:var(--fg)}
+.toc a:hover{background:var(--panel)}
+.toc .n{font-family:var(--mono);color:var(--accent);min-width:2ch}
+nav.pager{display:flex;justify-content:space-between;gap:16px;margin-top:64px;border-top:1px solid var(--line);padding-top:24px}
+nav.pager a{text-decoration:none;color:var(--fg);font-family:var(--sans);font-weight:600}
+nav.pager a span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.12em}
+nav.pager .next{text-align:right;margin-left:auto}
+@media print{.top,#progress,nav.pager,.dl{display:none}body{background:#fff;color:#000;font-size:11pt}main{max-width:100%;padding:0}a{color:#000;text-decoration:none}}
+/* cover-to-cover: the front cover opens the book, the back cover closes it */
+.coverpage{display:block;position:relative;margin:0 auto 30px;max-width:560px;text-align:center;text-decoration:none}
+.coverpage img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.coverpage .opencue{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--accent);opacity:.85}
+.coverpage:hover .opencue{opacity:1}
+.backcover{max-width:560px;margin:0 auto;text-align:center}
+.backcover img{width:100%;height:auto;border-radius:6px;box-shadow:0 18px 60px rgba(0,0,0,.55);border:1px solid var(--line)}
+.bc-aibn{margin:16px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+/* paginated reader — a real book, flipped page by page */
+.reader{position:relative;height:calc(100dvh - 168px);min-height:340px;overflow:hidden;margin:6px 0 2px}
+.reader .pages{height:100%;column-gap:60px;column-fill:auto;transition:transform .36s cubic-bezier(.3,.72,.3,1);will-change:transform}
+.reader .pages > :first-child{margin-top:0}
+.reader h1{margin-top:.2em}
+.pnav{position:absolute;top:0;bottom:44px;width:20%;cursor:pointer;z-index:2;display:flex;align-items:center;opacity:0;transition:opacity .2s}
+.pnav:hover{opacity:1} .pnav.l{left:0;justify-content:flex-start;padding-left:6px} .pnav.r{right:0;justify-content:flex-end;padding-right:6px}
+.pnav span{font-family:var(--mono);font-size:26px;color:var(--accent);user-select:none}
+.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 2px 0;font-family:var(--mono);font-size:12px;color:var(--muted);flex-wrap:wrap}
+.pagebar .grp{display:flex;gap:8px;align-items:center}
+.pagebar button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:5px 13px;cursor:pointer;font:inherit;line-height:1.3}
+.pagebar button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pagebar button:disabled{opacity:.35;cursor:default}
+.pagebar .cnt{color:var(--accent);font-variant-numeric:tabular-nums}
+.preader{border-bottom:1px solid var(--line);height:2px;margin:0 0 2px}.preader i{display:block;height:2px;background:var(--accent);width:0;transition:width .3s}
+@media(prefers-reduced-motion:reduce){.reader .pages{transition:none}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <a class="wordmark" href="/">o'<span class="ai">ai</span>lly</a>
+  <a class="booktitle" href="index.html" title="The Four Questions — contents">The Four Questions</a>
+  <div class="tools">
+    <button onclick="rsz(-1)" title="smaller text" aria-label="decrease font size">A−</button>
+    <button onclick="rsz(1)" title="larger text" aria-label="increase font size">A+</button>
+    <button onclick="rfont()" title="serif / sans" aria-label="font size">Aa</button>
+    <button onclick="rtheme()" title="dark / sepia / light" aria-label="cycle theme">◐</button>
+    <button onclick="rfull()" title="full screen" aria-label="toggle fullscreen">⛶</button>
+    <a class="tbtn" href="index.html" title="contents" aria-label="contents">☰</a>
+    <button onclick="rshare()" title="copy link to share" aria-label="share">⎘</button>
+  </div>
+</div></div>
+<main>
+<div class="preader"><i id="pbar"></i></div><div class="reader" data-ch="8" data-prev="ch07.html" data-next="back-cover.html"><div class="pnav l"><span>‹</span></div><div class="pages"><h1>Chapter 8 — Judging Under Uncertainty</h1>
+<p><em>Draft status: author draft; human verification pending. Every runnable listing
+was executed by the author during writing in a scratch directory the listing
+itself creates; printed outputs are real transcripts.</em></p>
+<h2>The routine as one motion</h2>
+<p>You now have the pieces. This chapter does not add a fifth question. It puts
+the four into one motion and names what happens when the motion ends without
+certainty — which is most of real life.</p>
+<p>Given a claim and a transcript:</p>
+<ol>
+<li><strong>Status</strong> — is the verdict channel present, and what does it say for the
+   command under trial? (Chapter 1–2)</li>
+<li><strong>Stderr / commentary</strong> — what warnings, errors, and progress noise ride
+   alongside? (Chapter 3)</li>
+<li><strong>Shape</strong> — instrument, target, unit, frame, provenance; does it match this
+   claim? (Chapter 5; emptiness typed as in chapter 4 when output is void)</li>
+<li><strong>Content, labeled</strong> — observations sized to the claim, assertions demoted,
+   absence checked, time dated. (Chapters 6–7)</li>
+</ol>
+<p>Then choose <strong>supported</strong>, <strong>contradicted</strong>, or <strong>insufficient</strong>. Then assign
+a confidence that reflects the quality of that choice, not a second guess at
+the claim.</p>
+<p>Skip a step and the later steps launder the mistake. That is why the order is
+fixed. Content never rescues a shape failure. Confidence never rescues a
+missing bridge.</p>
+<h2>Worked composition</h2>
+<p>Claim: &ldquo;timed.log shows a disk error that was later cleared.&rdquo;</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>work<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>work
+cat<span class="w"> </span>&gt;<span class="w"> </span>timed.log<span class="w"> </span><span class="s">&lt;&lt;'LOG'</span>
+<span class="s">2026-08-28T10:00:00Z INFO boot</span>
+<span class="s">2026-08-28T10:05:00Z ERROR disk</span>
+<span class="s">2026-08-29T01:00:00Z INFO ok</span>
+<span class="s">LOG</span>
+cat<span class="w"> </span>timed.log
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"exit: </span><span class="nv">$?</span><span class="s2">"</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">2026-08-28T10:00:00Z INFO boot</span>
+<span class="go">2026-08-28T10:05:00Z ERROR disk</span>
+<span class="go">2026-08-29T01:00:00Z INFO ok</span>
+<span class="go">exit: 0</span>
+</code></pre></div>
+
+<ul>
+<li><strong>Status:</strong> exit 0 on <code>cat</code> — the read succeeded; not a verdict on the
+  service, only on the read.</li>
+<li><strong>Commentary:</strong> none separate; single stream.</li>
+<li><strong>Shape:</strong> a three-line log with timestamps; instrument is a full-file read,
+  not <code>head</code>; unit is log lines; target is <code>timed.log</code>.</li>
+<li><strong>Content:</strong> observation of ERROR disk at 10:05Z; observation of INFO ok at
+  01:00Z next day; inference &ldquo;cleared&rdquo; bridges from ok-after-error.</li>
+</ul>
+<p>Verdict on &ldquo;shows a disk error&rdquo;: <strong>supported</strong>. Verdict on &ldquo;later cleared&rdquo;:
+<strong>supported</strong> only as &ldquo;an ok line appears later in this file&rdquo; — weak bridge
+to &ldquo;cleared&rdquo; as durable recovery. Prefer a narrowed claim or mark confidence
+lower on the bridge. Verdict on &ldquo;the service is healthy now&rdquo;: <strong>insufficient</strong>
+(staleness + scope). One transcript, three claim sizings, three honest ends.</p>
+<h2>The routine at full length</h2>
+<p>The worked composition above is deliberately small. Here is the routine on a
+transcript with everything in it at once — an assertion, a warning, a
+partial scope, a health check that answers an adjacent question — which is
+what real deployment records look like.</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">TZ</span><span class="o">=</span>UTC
+mkdir<span class="w"> </span>work<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>work
+mkdir<span class="w"> </span>-p<span class="w"> </span>release<span class="w"> </span>hosts/app01<span class="w"> </span>hosts/app02<span class="w"> </span>hosts/app03
+<span class="nb">printf</span><span class="w"> </span><span class="s2">"v2\n"</span><span class="w"> </span>&gt;<span class="w"> </span>release/app.bin
+cat<span class="w"> </span>&gt;<span class="w"> </span>deploy.sh<span class="w"> </span><span class="s">&lt;&lt;'SCRIPT'</span>
+<span class="s">#!/bin/sh</span>
+<span class="s">for h in app01 app02; do</span>
+<span class="s">  cp release/app.bin "hosts/$h/app.bin"</span>
+<span class="s">done</span>
+<span class="s">echo "warning: app03 unreachable, skipped" &gt;&amp;2</span>
+<span class="s">echo "Deploy complete: v2 on 3 hosts"</span>
+<span class="s">SCRIPT</span>
+chmod<span class="w"> </span>+x<span class="w"> </span>deploy.sh
+./deploy.sh
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"exit: </span><span class="nv">$?</span><span class="s2">"</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"== health check as run by the operator =="</span>
+grep<span class="w"> </span>-l<span class="w"> </span><span class="s2">"v2"</span><span class="w"> </span>hosts/app01/app.bin
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"exit: </span><span class="nv">$?</span><span class="s2">"</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"== the denominator =="</span>
+ls<span class="w"> </span>hosts<span class="w"> </span><span class="p">|</span><span class="w"> </span>wc<span class="w"> </span>-l
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">warning: app03 unreachable, skipped</span>
+<span class="go">Deploy complete: v2 on 3 hosts</span>
+<span class="go">exit: 0</span>
+<span class="go">== health check as run by the operator ==</span>
+<span class="go">hosts/app01/app.bin</span>
+<span class="go">exit: 0</span>
+<span class="go">== the denominator ==</span>
+<span class="go">3</span>
+</code></pre></div>
+
+<p>The claim to judge: <strong>&ldquo;v2 was deployed to all three app hosts, and the
+deployment was verified.&rdquo;</strong> Two conjuncts, so the conjunction rule is in
+force from the start.</p>
+<p><em>Status.</em> Exit 0 on the deploy script, exit 0 on the health check. Both
+commands honored their contracts. Neither status speaks to the task, and
+the deploy script&rsquo;s 0 is a compound aggregate&rsquo;s 0 — chapter 2&rsquo;s swallowing
+species — since the loop&rsquo;s members and the skipped host all sit beneath one
+summary value.</p>
+<p><em>Commentary.</em> One warning: <code>app03 unreachable, skipped</code>. It is not a
+diagnosis of failure and it did not stop the run; it is the tool telling you
+which part of the intended work did not happen. This single line is the most
+decision-relevant text in the transcript, and it is the line a reader
+skimming for errors most easily discards, because it rides beneath a
+cheerful summary and above a clean status.</p>
+<p><em>Shape.</em> The deploy&rsquo;s output is a summary, not an enumeration — it names a
+count, not the hosts it wrote. The health check&rsquo;s output is a <em>file path</em>,
+because <code>grep -l</code> answers &ldquo;which files contain this pattern,&rdquo; which is an
+adjacent question to &ldquo;is this host serving v2&rdquo;: it observes bytes on disk in
+one directory, not a running service, and it covers exactly one host. The
+last line supplies what the rest of the transcript withholds — a denominator
+of three.</p>
+<p><em>Content, labeled.</em> Observations: <code>hosts/app01/app.bin</code> contains <code>v2</code>;
+three host directories exist. Assertion: &ldquo;Deploy complete: v2 on 3 hosts&rdquo; —
+a hardcoded string, and one the warning three lines above directly refutes.
+Absent residue: nothing observes app02 at all, and nothing observes app03,
+which the warning says was skipped.</p>
+<p><em>Verdict.</em> First conjunct — deployed to all three — <strong>contradicted</strong>: the
+warning is the tool&rsquo;s own testimony that one host was skipped, and no
+observation contests it. Second conjunct — verified — <strong>insufficient</strong> as
+worded, since verification covered one host of three and did it by reading a
+file rather than by asking a service anything. Compound verdict:
+<strong>contradicted</strong>, because a single contradicted conjunct settles the
+sentence. Confidence: high on the first conjunct, since the refuting
+evidence is the producer&rsquo;s own line; the second conjunct&rsquo;s insufficiency
+does not soften the whole, it merely means the sentence would have failed
+twice over.</p>
+<p>Notice what the routine did <em>not</em> require: no knowledge of the deployment
+system, no guessing at intent, no judgment about whether skipping app03 was
+acceptable. It required reading four channels in a fixed order and matching
+what they said against the words of the claim. And notice the report it
+yields — one contradicted conjunct with its line cited, one unevidenced
+conjunct with the missing observation named — which is exactly what the
+operator needs to fix both the deployment and the check.</p>
+<h2>Graded verdicts in production</h2>
+<p>In production you do not always get to stop at insufficient. Someone must
+ship, page, or wait. Escalation is the disciplined exit, not a failure of the
+routine:</p>
+<ul>
+<li><strong>Escalate for evidence</strong> — ask for a re-run, a wider scrape, a second host,
+  a clocked capture. The routine names exactly what is missing, which makes
+  the ask cheap.</li>
+<li><strong>Escalate for decision</strong> — when the claim must be decided on thin
+  evidence, hand a human (or a policy) the labeled observations and the
+  bridge you will not cross alone. &ldquo;Insufficient; here is what we know&rdquo; is a
+  complete output.</li>
+<li><strong>Refuse silent promotion</strong> — the failure mode is converting insufficient
+  into supported to end the conversation. That is how outages inherit a paper
+  trail of false confidence.</li>
+</ul>
+<p>Escalation is therefore a first-class outcome beside the three verdicts. The
+eval scores the three; operations manuals should score the fourth as process.</p>
+<h2>When transcripts disagree</h2>
+<p>Single-transcript judgment is the drill; production reading is usually
+several records at once, and they will not always agree. Two health checks
+minutes apart, one green and one red. A monitoring dashboard that says the
+service is down and a log that shows requests being served. A summary from
+another agent that conflicts with the output beneath it. The instinct — pick
+the one that fits the story, or average them into &ldquo;intermittent&rdquo; — throws
+away the most informative fact available, which is the disagreement itself.</p>
+<p>Disagreements resolve along the dimensions this book already gave you.
+<strong>Time</strong> first: two observations of a changing world at different moments do
+not conflict at all; they describe a transition, and the reader&rsquo;s job is to
+order them and name what happened in between. Most apparent contradictions
+in incident evidence are this, and dissolve the moment both records are
+dated. <strong>Scope</strong> second: &ldquo;the service is down&rdquo; and &ldquo;requests are being
+served&rdquo; are compatible the instant you notice that one observed a host and
+the other a load balancer, or one a region and the other a replica.
+<strong>Grade</strong> third: chapter 6&rsquo;s ranking decides genuine conflicts — an
+observation beats an inference beats an assertion, and a dashboard&rsquo;s
+aggregate is often an inference over data you can read directly. <strong>Instrument
+vocabulary</strong> fourth: two tools can report the same world differently because
+they define their terms differently — &ldquo;healthy&rdquo; meaning process-alive versus
+endpoint-answering is the most common instance, and it is a definitional
+disagreement, not an empirical one.</p>
+<p>Only when all four fail to reconcile the records is there a real conflict,
+and a real conflict is a finding with its own verdict: the honest output is
+insufficient plus the observation that two trustworthy instruments disagree,
+which is usually a more valuable sentence than either record alone, because
+it points at a broken instrument or an assumption everyone shares and nobody
+checked. What a reader must not do is silently prefer one and drop the
+other. The dropped record does not stop being evidence because it was
+inconvenient, and the reader who drops it has removed the very thing that
+would have let the next person see the problem.</p>
+<h2>Calibration as the reader&rsquo;s virtue</h2>
+<p>Accuracy without calibration is a reader who is right and sure when the
+evidence is thick, and right-but-sure when the evidence is thin — until the
+day the thin case bites. Calibration is matching confidence to evidence
+quality:</p>
+<ul>
+<li>High confidence on direct observations with matching shape and fresh clock.</li>
+<li>Medium confidence when bridges are short and standard for the domain.</li>
+<li>Low confidence when bridges are long, Δ is large, or absence checks are
+  incomplete.</li>
+<li>Confidence is about the verdict, not about the world&rsquo;s stakes. A high-stakes
+  insufficient remains a low-confidence <em>decision to act</em>, which is a
+  different number owned by the operator, not the reader.</li>
+</ul>
+<p>The eval reports Brier score for this reason. A treatment that raises
+accuracy while wrecking Brier has taught swagger. This book refuses that
+bargain in its own promotion thresholds: under the full-book condition,
+Brier must not worsen relative to the no-treatment baseline.</p>
+<h2>Errors are not symmetric</h2>
+<p>Calibration answers how confident to be. A separate question decides how to
+behave when confidence is low, and it is one the eval deliberately does not
+score: the two ways of being wrong cost different amounts, and the amounts
+depend on the claim, not on the transcript.</p>
+<p>A false <strong>supported</strong> — crediting a claim the evidence does not carry — is
+the error that propagates. It ends inquiry, enters the record as a fact, and
+is discovered later by the failure it failed to predict: the unbacked
+database, the host that was never deployed to, the secret the scan never
+reached. A false <strong>insufficient</strong> — refusing a claim the evidence does
+support — costs time and attention, sends someone to gather what was already
+there, and is discovered immediately by the person who looks. Both are
+errors and the routine aims to avoid both; but when uncertainty is
+irreducible and the claim guards something expensive, the asymmetry says
+which way to lean, and it says lean toward insufficient.</p>
+<p>The asymmetry inverts for low-stakes reads, which is why &ldquo;always be
+cautious&rdquo; is not the lesson. A reader that demands byte-level verification
+before agreeing a file has three lines is not careful, it is broken, and it
+will be routed around by whoever depends on it — after which its caution
+protects nothing. The judgment is about consequence: what does this verdict
+authorize? A verdict that authorizes nothing can be cheap. A verdict that
+authorizes deleting the source data, promoting a release, or closing an
+incident should be expensive, and the expense should be paid in evidence
+rather than in confidence. Note that this reasoning belongs to the operator
+and the policy, not to the transcript: the evidence does not become weaker
+because the stakes are higher. The verdict and its confidence describe the
+evidence; the threshold for acting describes the risk. Keeping those two
+numbers separate is the difference between a reader whose judgment can be
+trusted at any stake and one whose judgments quietly bend toward whatever
+the situation needs to hear.</p>
+<h2>The eval, shown to its subject</h2>
+<p>A press that tests its readers owes them the test&rsquo;s design. This book&rsquo;s eval
+is not a trap. It is the shelf&rsquo;s covenant made concrete.</p>
+<p><strong>Task.</strong> Given <code>(context, transcript, claim)</code>, output
+<code>supported | contradicted | insufficient</code> and a confidence 0–100.</p>
+<p><strong>Fixtures.</strong> Every transcript is real — produced by executing real commands
+in a gate-style sandbox and captured verbatim. The measured corpus is
+<code>eval/cases.json</code>: 104 cases, 12 to 14 per misreading family, held out from
+the worked examples in these chapters by command line, fixture, and claim.
+Its verdicts are 40 contradicted, 33 supported, 31 insufficient, which means
+a reader that answers one word to everything tops out at 0.385 — the floor
+any real result has to clear. The capture harness that produced the fixtures
+ships beside them, so a skeptic can regenerate every transcript rather than
+trust this page.</p>
+<p><strong>Conditions.</strong> (a) no treatment; (b) compact one-page distillation; (c) full
+book in context. Same model weights, same prompt shell, three runs per
+condition, mean ± range.</p>
+<p><strong>Metrics.</strong> Accuracy overall and per family; Brier on confidence; headline
+delta <code>(c) − (a)</code> against the noise floor; <code>(b)</code> always reported beside so a
+book that only matches its own summary cannot hide.</p>
+<p><strong>Proposed promotion thresholds.</strong> Delta above noise; Brier not worse under
+(c) than under (a). The judge of the press decides; the author does not grade
+their own exam.</p>
+<p>You are reading the treatment. If you are a model under condition (c), the
+honest point of these pages is to change your verdicts on held-out transcript
+cases — not to impress a human with prose. If you are a human, the same
+pages are a curriculum you can enforce on the systems you ship. Either way,
+the measure is external and the fixtures are real.</p>
+<h2>Failure modes of the composed routine</h2>
+<p>A short catalog of how the whole motion dies in practice, so you can
+recognize the death in your own traces:</p>
+<ol>
+<li><strong>Status skipped</strong> — prose narrative of success over a nonzero exit.</li>
+<li><strong>Stderr ignored</strong> — green exit, red warning, claim of cleanliness.</li>
+<li><strong>Shape skipped</strong> — right number, wrong file; right API, wrong cluster.</li>
+<li><strong>Self-match missed</strong> — instrument counted itself.</li>
+<li><strong>Assertion promoted</strong> — banner laundered into fact.</li>
+<li><strong>Claim oversized</strong> — observation of a file offered as proof about a fleet.</li>
+<li><strong>Absence over-read</strong> — quiet log treated as proof of world-health.</li>
+<li><strong>Stale photo</strong> — yesterday&rsquo;s health check deciding today&rsquo;s page.</li>
+<li><strong>Compound claim averaged</strong> — half-supported sentence scored as supported.</li>
+<li><strong>Insufficient avoided</strong> — low-confidence supported used as a polite lie.</li>
+</ol>
+<p>Each failure mode maps to a chapter. The routine&rsquo;s value is not that it is
+clever. It is that it is complete enough to make these failures visible
+before they become tickets.</p>
+<h2>Teaching the compact treatment</h2>
+<p>The eval&rsquo;s condition (b) is a one-page distillation. That page is not a
+cheat sheet for gaming accuracy. It is a test of whether the book&rsquo;s value is
+its bulk or its discipline. If compact matches full-book, the extra chapters
+did not earn their length on this task. If full-book wins, the worked
+misreadings carried something a summary cannot. Either result is publishable
+truth. The dishonest result is not measuring compact at all. This press will
+measure it.</p>
+<p>A fair compact page states: the four questions in order; the three verdicts;
+the observation/inference/assertion labels; the absence check; the staleness
+relation; the ban on silent promotion of insufficient. It does not restate
+every worked example. That page ships as <code>eval/compact.md</code>, written to this
+specification and frozen with the corpus, so the ablation tests the
+curriculum&rsquo;s depth rather than an author&rsquo;s choice of what to leave out of a
+summary he wanted to lose.</p>
+<h2>How a human supervisor uses the same routine</h2>
+<p>Secondary readers of this book are humans who supervise model operators. Your
+job is not to re-read every transcript yourself. It is to demand that the
+model emit the routine&rsquo;s intermediate labels when stakes are high: status,
+shape checks, labeled observations, bridges, verdict, confidence. A model
+that only emits the final verdict cannot be audited. A model that emits the
+chain can be caught at the step that failed. Require the chain on production
+actions; allow short verdicts on low-stakes reads. The curriculum scales by
+making the work legible, not by making humans faster at grepping.</p>
+<h2>After insufficient</h2>
+<p>The emotional failure mode, for humans and for models trained to be helpful,
+is to treat insufficient as an incomplete answer that must be filled. Fill it
+with a better capture, not with a warmer guess. The sentence &ldquo;I cannot settle
+this from the transcript; I need X&rdquo; is a complete, high-quality output. It is
+also the sentence that triggers the operator trilogy&rsquo;s disciplines on the
+writing side. Reading and writing meet there: one side asks for X, the other
+side knows how to produce X. This book only owns the reading half. It is
+enough.</p>
+<h2>A final worked trio</h2>
+<p>Three claims, one small transcript.</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>work<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>work
+cat<span class="w"> </span>&gt;<span class="w"> </span>timed.log<span class="w"> </span><span class="s">&lt;&lt;'LOG'</span>
+<span class="s">2026-08-28T10:00:00Z INFO boot</span>
+<span class="s">2026-08-28T10:05:00Z ERROR disk</span>
+<span class="s">2026-08-29T01:00:00Z INFO ok</span>
+<span class="s">LOG</span>
+wc<span class="w"> </span>-l<span class="w"> </span>&lt;<span class="w"> </span>timed.log
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"exit: </span><span class="nv">$?</span><span class="s2">"</span>
+tail<span class="w"> </span>-1<span class="w"> </span>timed.log
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"exit: </span><span class="nv">$?</span><span class="s2">"</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="go">3</span>
+<span class="go">exit: 0</span>
+<span class="go">2026-08-29T01:00:00Z INFO ok</span>
+<span class="go">exit: 0</span>
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Claim</th>
+<th>Verdict</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>timed.log has three lines</td>
+<td>supported</td>
+<td>wc observation, shape match</td>
+</tr>
+<tr>
+<td>the most recent line is an error</td>
+<td>contradicted</td>
+<td>the last line is INFO ok</td>
+</tr>
+<tr>
+<td>the fleet recovered</td>
+<td>insufficient</td>
+<td>one file, one host, ok≠fleet recovery</td>
+</tr>
+</tbody>
+</table>
+<p>The middle verdict is worth one sentence of care, because it rests on two
+different bridges and only one of them is short. <code>tail -1</code> observes the
+last line <em>in the file</em>, and file order equals time order here only because
+the timestamps in the content agree with it — which they do, and which the
+reader should check rather than assume, per this chapter&rsquo;s predecessor. Had
+the timestamps disagreed with file order, the last line and the most recent
+event would be two different lines, and the claim would need the second
+one.</p>
+<p>The routine does not get tired across the three. It does not reuse the first
+verdict as a mood for the third. That stubbornness is the skill.</p>
+<h2>What a verdict looks like when you write it down</h2>
+<p>The routine&rsquo;s output is a short document, and its form matters as much as
+its conclusion, because a verdict that cannot be checked is an assertion —
+the grade this book spent a chapter demoting. Four elements make a verdict
+auditable. <strong>The claim as you read it</strong>, restated with its scope and
+quantifier explicit, so that any disagreement about what was even being
+judged surfaces immediately rather than three replies later. <strong>The verdict
+word</strong>, one of the three, unhedged; &ldquo;mostly supported&rdquo; and &ldquo;probably fine&rdquo;
+are not verdicts, they are moods. <strong>The load-bearing evidence</strong>, quoted or
+cited by line — the one or two observations that decided it, not a summary
+of the whole transcript. And <strong>the gap</strong>, when there is one: the specific
+observation that would move the verdict, named concretely enough to be
+executed. &ldquo;Insufficient — nothing observes app02 or app03; a read-back of
+both hosts&rsquo; binaries would settle it&rdquo; is a complete output. &ldquo;Looks like the
+deploy mostly worked&rdquo; is not.</p>
+<p>That shape has a property worth naming: it is falsifiable by the next
+reader. Someone who disagrees can point at the quoted line and argue about
+what it shows, which is a productive disagreement, rather than arguing about
+a conclusion whose basis is invisible. Machine readers pass verdicts to
+other machine readers constantly, and an unaudited verdict propagates as a
+premise — chapter 6&rsquo;s assertion grade, laundered one hop further from the
+evidence. A written chain stops the laundering. It also disciplines the
+writer: naming the load-bearing line is where a reader discovers that the
+verdict they were about to file rests on nothing in particular.</p>
+<p>One caution on brevity. The chain is owed at production stakes, not at
+every read. A reader that emits four paragraphs to confirm that a file has
+three lines has misjudged the second cost this book cares about — the cost
+of unread output. Match the report to the stakes: a verdict word alone for
+routine reads, the full chain when the claim decides an action, and always
+the gap when the verdict is insufficient, since that sentence is the one
+that gets the next capture made.</p>
+<h2>What this book does not claim</h2>
+<p>It does not claim that transcript judgment is general intelligence. It does
+not claim transfer to code review, chat reasoning, or tool selection beyond
+what the eval measures. It does not claim that insufficient can be abolished.
+It does not claim that models enjoy the reading. It claims a narrow, testable
+thing: worked misreadings, taught under the four-question routine, can move
+measured verdict accuracy and calibration on held-out transcript-judgment
+cases. When the measure says the claim failed, the claim failed. That is the
+same discipline the book taught you to apply to everyone else&rsquo;s transcripts.</p>
+<h2>Closing the loop</h2>
+<p>The trilogy behind this book taught operators to leave legible evidence.
+This book taught readers to refuse illegible confidence. Between them is a
+contract: produce a record that can answer the four questions, and read only
+what the record actually answers. Where the record cannot answer, say so —
+and go get a better record, or a human, or a narrower claim.</p>
+<p>The antlion does not chase every grain that falls past the pit. It waits for
+what arrives at the bottom, and judges that. You are that kind of reader now,
+if you keep the routine. The next transcript is already on its way.</p></div><div class="pnav r"><span>›</span></div></div><div class="pagebar"><div class="grp"><button id="ppv" onclick="return false">‹ prev</button><span class="cnt" id="pcnt">1 / 1</span><button id="pnx" onclick="return false">back cover ›</button></div><div class="grp"><a href="back-cover.html">to the back cover →</a></div></div>
+</main>
+<script>
+const S=k=>{try{return localStorage.getItem('oailly-'+k)}catch(e){return null}};
+const W=(k,v)=>{try{localStorage.setItem('oailly-'+k,v)}catch(e){}};
+const root=document.documentElement;
+let size=parseInt(S('size')||'18');
+function apply(){root.style.setProperty('--rsize',size+'px');
+  root.dataset.theme=S('theme')||'';root.dataset.font=S('font')||'';}
+function rsz(d){size=Math.min(26,Math.max(14,size+d));W('size',size);apply();}
+function rfont(){W('font',(S('font')||'')==='serif'?'':'serif');apply();}
+function rtheme(){const o=['','sepia','light'];W('theme',o[(o.indexOf(S('theme')||'')+1)%3]);apply();}
+function rfull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});}
+function rshare(){const d={title:document.title,url:location.href};
+  if(navigator.share){navigator.share(d).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(location.href);alert('link copied — share it with humans or machines');}}
+apply();
+addEventListener('scroll',()=>{const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';},{passive:true});
+// ---- paginate chapter into real pages ----
+(function(){
+  const reader=document.querySelector('.reader'); if(!reader) return;
+  const pages=reader.querySelector('.pages');
+  const GAP=60; let page=0, total=1, stride=0;
+  function layout(){
+    const w=reader.clientWidth;
+    pages.style.columnWidth=w+'px'; pages.style.width='auto';
+    stride=w+GAP;
+    pages.style.transform='none';
+    total=Math.max(1, Math.round((pages.scrollWidth+GAP)/stride));
+    try{const s=parseInt(localStorage.getItem('oailly-pg-'+reader.dataset.ch)||'0');if(s>=0&&s<total)page=s;}catch(e){}
+    page=Math.min(page,total-1); apply(true);
+  }
+  function apply(instant){
+    if(instant)pages.style.transition='none';
+    pages.style.transform='translateX('+(-page*stride)+'px)';
+    if(instant)requestAnimationFrame(()=>{pages.style.transition='';});
+    const c=document.getElementById('pcnt'); if(c)c.textContent=(page+1)+' / '+total;
+    const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+    if(pv)pv.disabled=(page===0 && !reader.dataset.prev);
+    const bar=document.getElementById('pbar'); if(bar)bar.style.width=((page+1)/total*100)+'%';
+    try{localStorage.setItem('oailly-pg-'+reader.dataset.ch,page);}catch(e){}
+  }
+  function go(d){
+    const np=page+d;
+    if(np<0){ if(reader.dataset.prev)location.href=reader.dataset.prev+'#end'; return; }
+    if(np>=total){ location.href=reader.dataset.next||'index.html'; return; }
+    page=np; apply(false);
+  }
+  window.__go=go;
+  document.querySelectorAll('.pnav.l').forEach(e=>e.onclick=()=>go(-1));
+  document.querySelectorAll('.pnav.r').forEach(e=>e.onclick=()=>go(1));
+  const pv=document.getElementById('ppv'),nx=document.getElementById('pnx');
+  if(pv)pv.onclick=()=>go(-1); if(nx)nx.onclick=()=>go(1);
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft')go(-1);});
+  let sx=0; reader.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  reader.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1);},{passive:true});
+  // land on last page when arriving from the next chapter's "prev"
+  if(location.hash==='#end'){const once=()=>{page=total-1;apply(true);};setTimeout(once,60);}
+  addEventListener('load',layout); layout();
+  let rt; addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
+  // re-paginate when the reader settings (size/font/theme) change
+  const mo=new MutationObserver(()=>{clearTimeout(rt);rt=setTimeout(layout,120);});
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:['style','data-theme','data-font']});
+})();
+try{localStorage.setItem('oailly-pos-the-four-questions', location.pathname);}catch(e){}
+</script>
+</body>
+</html>

@@ -419,7 +419,7 @@
       "subtitle": "Transcript reading, for the machines that read them",
       "shelf": "for-machine-readers",
       "tier": "pocket",
-      "status": "in_review",
+      "status": "published",
       "mascot": {
         "creature": "antlion",
         "accent": "#8B9A6B"
@@ -450,7 +450,9 @@
       "cover": "assets/covers/rogerai-labs--the-four-questions-front.png",
       "cover_back": "assets/covers/rogerai-labs--the-four-questions-back.png",
       "cover_spread": "assets/covers/rogerai-labs--the-four-questions-spread.png",
-      "verified_by": "Roger AI"
+      "verified_by": "Roger AI",
+      "read": "read/rogerai-labs--the-four-questions/",
+      "aibn": "AIBN 297-00-0000009-7"
     }
   ],
   "reviews": "/reviews/all.json"
