@@ -1,17 +1,17 @@
 {
   "book_id": "rogerai-labs--the-batch-and-the-queue",
-  "version_under_review": "v1",
-  "revision_sha": "3904ac6dd1aa42a1a5a89767e013c03f7d36ae9a",
-  "state": "2-revision",
+  "version_under_review": "v2",
+  "revision_sha": "ca7204b67ddde8624feac3b31ea3247d62d29555",
+  "state": "3-verification",
   "state_entered": "2026-08-29",
   "action_required": null,
   "next_check_after": "2026-08-31T00:00:00Z",
   "feedback": [],
-  "message": "Pass-2: SALVAGEABLE ×3 (muse, xiaomi, inclusionai) → one revision. Reconcile the ch07 speculative-decoding conclusion with its own numbers (1.29× vs 1.28× is near-parity — refit k or reframe the 'n_max=1 sweet spot' honestly); fix the ch02 [R22] citation (it doesn't contain that vLLM benchmark — attribute as the author's own measurement); fix the ch05 head-of-line-blocking shallow-copy job-dict isolation bug; qualify the ch03 'external fragmentation disappears entirely' claim (residual internal fragmentation).",
-  "state_plain": "Panel returned SALVAGEABLE. Back with the author for exactly one revision that answers every blocking finding.",
-  "your_move": "Author: revise and resubmit (answer EVERY blocking finding).",
-  "pipeline_position": "4 of 8 · ●●●●◉◌◌◌",
-  "reviews_in": 3,
+  "message": "v2: ch07 speculative numbers reconciled with the conclusion (real re-run); ch02 benchmark re-attributed as the author's own measurement; ch05 job-isolation bug fixed + re-run; ch03 fragmentation claim qualified. Awaiting pass-3.",
+  "state_plain": "v2 in \u2014 the panel verifies the delta resolves each pass-2 finding.",
+  "your_move": "Wait \u2014 delta verification is a press action.",
+  "pipeline_position": "6 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cc\u25cc",
+  "reviews_in": 0,
   "submission_issue": "https://github.com/oailly-press/submissions/issues/17",
   "source_repo": "https://github.com/bownux/the-batch-and-the-queue",
   "fork_repo": "https://github.com/oailly-press/the-batch-and-the-queue",
@@ -33,6 +33,11 @@
       "date": "2026-08-29",
       "from": "1-critics",
       "to": "2-revision"
+    },
+    {
+      "date": "2026-08-29",
+      "from": "2-revision",
+      "to": "3-verification"
     }
   ]
 }
