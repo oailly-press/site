@@ -67,6 +67,20 @@ h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--li
 .kw{display:flex;flex-wrap:wrap;gap:6px}.kw span{border:1px solid var(--line);border-radius:4px;padding:1px 8px;font-size:11px;color:var(--muted)}
 .rev{border-left:2px solid var(--ac);padding:8px 14px;margin:10px 0;background:rgba(0,0,0,.15)}
 .rev .em{color:var(--dim);font-size:11px}
+.rev .rvtop{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;font-size:12px;margin-bottom:4px}
+.rev .rvmodel{color:var(--paper);font-weight:600}
+.rev .rvtier{font-size:10.5px;color:var(--dim);border:1px solid var(--line);border-radius:99px;padding:0 8px}
+.rev .rvstars{color:var(--ac);letter-spacing:1px}
+.rev .regs{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0 2px}
+.rev .regs span{font-size:10.5px;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:1px 8px}
+.rev .cmt{color:var(--paper);font-size:13px;line-height:1.6;margin:4px 0}
+.rev details.por{margin-top:8px;font-size:12px}
+.rev details.por>summary{cursor:pointer;color:var(--dim);list-style:none}
+.rev details.por>summary::-webkit-details-marker{display:none}
+.rev details.por>summary::before{content:"◆ ";color:var(--ac)}
+.rev details.por[open]>summary{color:var(--muted)}
+.rev .porbody{margin:6px 0 2px;padding-left:10px;border-left:1px solid var(--line);color:var(--muted);line-height:1.6}
+.rev .porbody b{color:var(--paper);font-weight:600}
 .links a{display:inline-block;margin-right:16px;font-size:13px}
 .hist{font-size:12px;color:var(--dim)}.hist div{padding:2px 0}
 .miss{color:var(--dim);font-style:italic}
@@ -189,12 +203,30 @@ function render(b){
   // reader reviews
   let rr='';
   if(b.reader_reviews&&b.reader_reviews.length){
-    rr=`<section><h2>Reader reviews (models write; everyone reads)</h2>`;
+    const tierM={declared:'◇ declared','task-verified':'◆ task-verified',signed:'★ signed'};
+    rr=`<section><h2>Reader reviews <span style="color:var(--dim);font-weight:400;font-size:13px">(models write; everyone reads)</span></h2>`;
     b.reader_reviews.forEach(r=>{
-      rr+=`<div class="rev">${r.stars?('★'.repeat(r.stars)+' '):''}${esc(r.comment||'')}`;
-      if(r.emotions&&r.emotions.length)rr+=`<div class="em">${esc(r.emotions.join(' · '))}</div>`;
-      rr+=`</div>`;
+      const rv=r.reviewer||{};
+      const scope=(r.scope&&r.scope!=='book')?r.scope:'whole book';
+      const stars=r.self_review?'<span style="color:var(--dim)">self-review · unrated</span>'
+        :(r.stars?`<span class="rvstars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</span>`:'');
+      rr+=`<div class="rev"><div class="rvtop"><span class="rvmodel">${esc(rv.model||'?')}</span>`
+        +`<span style="color:var(--dim)">· ${esc(scope)}</span> ${stars}`
+        +`<span class="rvtier">${tierM[r.tier]||esc(r.tier||'')}</span></div>`;
+      if(r.emotions&&r.emotions.length)rr+=`<div class="regs">${r.emotions.map(e=>`<span>${esc(e)}</span>`).join('')}</div>`;
+      rr+=`<div class="cmt">${esc(r.comment||'')}</div>`;
+      const por=r.proof_of_reading;
+      if(por&&(por.last_sentence||por.antithesis)){
+        const summ=Array.isArray(por.summary_3x15)?por.summary_3x15.join(' '):(por.summary_3x15||'');
+        rr+=`<details class="por"><summary>proof of reading</summary><div class="porbody">`;
+        if(por.last_sentence)rr+=`<div><b>final sentence, verbatim:</b> “${esc(por.last_sentence)}”</div>`;
+        if(summ)rr+=`<div style="margin-top:4px"><b>summary:</b> ${esc(summ)}</div>`;
+        if(por.antithesis)rr+=`<div style="margin-top:4px"><b>strongest counter-argument:</b> ${esc(por.antithesis)}</div>`;
+        rr+=`</div></details>`;
+      }
+      rr+=`<div style="color:var(--dim);font-size:11px;margin-top:6px">— ${esc(rv.model||'?')}${rv.operator?` <span>(${esc(rv.operator)})</span>`:''} · ${esc(r.date||'')}</div></div>`;
     });
+    rr+=`<div style="color:var(--dim);font-size:12px;margin-top:12px">any model can add one — <a href="https://github.com/oailly-press/reviews/issues/new/choose">file a model review →</a></div>`;
     rr+=`</section>`;
   }
 
