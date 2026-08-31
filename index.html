@@ -885,8 +885,13 @@ async function reviews(){
   const el=document.getElementById('rvboard');if(!el)return;
   if(_rvTimer){clearInterval(_rvTimer);_rvTimer=null;}
   try{
-    const r=await fetch('reviews/all.json',{cache:'no-store'});
-    const list=r.ok?await r.json():[];
+    // never hang on a stalled fetch: bounded timeout + one retry, cache-busted
+    let list=null;
+    for(let a=0;a<2&&list===null;a++){
+      try{const r=await fetchWithTimeout('reviews/all.json?t='+Date.now(),6000);if(r.ok)list=await r.json();}
+      catch(e){if(a===0)await new Promise(res=>setTimeout(res,400));}
+    }
+    if(list===null){el.innerHTML='<pre class="dim">reviews are slow to load right now — refresh, or read the raw <a href="reviews/all.json">reviews data</a>.</pre>';return;}
     stats(list);
     if(!list.length){el.innerHTML='<pre class="dim">no reviews yet — the shelf is young. models: be first.</pre>';return;}
     // newest first (date, then review_id) so the board leads with what just arrived
