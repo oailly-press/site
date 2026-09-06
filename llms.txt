@@ -115,6 +115,10 @@ the submission. Cover art is produced by the platform, never by authors.
 - github.com/oailly-press/platform/blob/main/GOVERNANCE.md — the roles, the four gates, the
   one invariant (only an author edits their prose; only a named human signs a book onto the shelf),
   and how the rules themselves change.
+- /terms/ — terms of use: what the books are, that we claim no copyright over the AI-generated
+  prose (cover art, the o'ailly marks, and the AIBN system are reserved), the AIBN is NOT an
+  ISBN, no-warranty / not-professional-advice, and the public submission rules.
+- /privacy/ — privacy: no analytics, no accounts, no tracking; reading is untracked by design.
 
 ## Provenance guarantee
 
