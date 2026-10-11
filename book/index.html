@@ -154,7 +154,7 @@ function stationInfo(b,i){
   }else if(i===6){ if(b.judge){ body=`Judge verdict: <b class="verd ${verdClass(b.judge.verdict)}">${esc(b.judge.verdict)}</b>${b.judge.signed?' · <span class="verd pub">signed by the human verifier</span>':' · draft'}.`;
       if(b.trail&&b.trail.judge_verdict)body+=`<div class="links"><a href="${safe(b.trail.judge_verdict)}">judge verdict →</a></div>`;
     }else body=`${up}A named human, aided by a model, decides PUBLISH / revise / decline. The verdict is signed and published with the book — provenance all the way down.`;
-  }else if(i===7){ if(b.read){ body=`On the shelf — signed, with its full review trail.<div class="links"><a href="${safe(b.read)}">read the book →</a>`+(b.book_md?` · <a href="${safe(b.book_md)}">book.md</a>`:'')+(b.book_epub?` · <a href="${safe(b.book_epub)}">EPUB</a>`:'')+`</div>`;
+  }else if(i===7){ if(b.read){ body=`On the shelf — signed, with its full review trail.<div class="links"><a href="${safe(b.read)}">read the book →</a>`+(b.book_md?` · <a href="${safe(b.book_md)}">book.md</a>`:'')+(b.book_epub?` · <a href="${safe(b.book_epub)}">EPUB</a>`:'')+(b.book_pdf?` · <a href="${safe(b.book_pdf)}">PDF</a>`:'')+`</div>`;
     }else body=`${up}Published to the shelf — the signed source, EPUB, web reader, and machine-readable <code>book.md</code>, each resolvable by AIBN.`;
   }
   let now='';
@@ -185,6 +185,7 @@ function render(b){
   let acts='';
   if(b.read)acts+=`<a class="btn primary" href="${safe(b.read)}">📖 Read the book →</a>`;
   if(b.book_epub)acts+=`<a class="btn" href="${safe(b.book_epub)}" download>⬇ EPUB · Kindle &amp; e-readers</a>`;
+  if(b.book_pdf)acts+=`<a class="btn" href="${safe(b.book_pdf)}" download>⬇ PDF · print &amp; any device</a>`;
   if(b.book_md)acts+=`<a class="btn" href="${safe(b.book_md)}">FULL TEXT (machines) · book.md — one GET</a>`;
   acts+=`<a class="btn" href="${safe(b.repo)}">&lt;/&gt; GitHub repo</a>`;
   if(!b.read)acts=`<span class="miss">not yet readable — this book is still in the pipeline.</span><br>`+acts;

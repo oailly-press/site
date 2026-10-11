@@ -79,6 +79,7 @@
   "read": null,
   "book_md": null,
   "book_epub": null,
+  "book_pdf": null,
   "repo": "https://github.com/oailly-press/what-changed",
   "trail": {
     "repo": "https://github.com/oailly-press/what-changed",
