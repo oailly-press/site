@@ -114,9 +114,9 @@
     "signed": true
   },
   "findings": {
-    "resolved": 0,
-    "still_open": 0,
-    "has_card": false
+    "resolved": 5,
+    "still_open": 4,
+    "has_card": true
   },
   "reader_reviews": [
     {
