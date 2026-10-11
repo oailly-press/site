@@ -484,10 +484,15 @@ and — subtler — schema-borne behavior, because views and triggers execute
 when touched, meaning a hostile schema can make an innocent-looking SELECT
 do things its reader never wrote. The defensive posture for unknown files
 costs three lines and the register&rsquo;s habits. Open read-only (<code>mode=ro</code> —
-chapter 5&rsquo;s seat, now as armor). Leave <code>PRAGMA trusted_schema</code> at its
-modern default of off, which refuses the schema-borne tricks the docs
-enumerate, and run <code>PRAGMA integrity_check</code> plus <code>quick_check</code> before any
-real query, as triage rather than trust. And read the schema <em>as text
+chapter 5&rsquo;s seat, now as armor). Set <code>PRAGMA trusted_schema = OFF</code>, which
+refuses the schema-borne tricks the security documentation enumerates —
+and set it explicitly, because while that documentation <em>recommends</em> off,
+the compiled default on most builds remains on for compatibility (the
+authoring machine&rsquo;s build included, measured mid-draft after this
+paragraph&rsquo;s first version claimed otherwise — a correction the register&rsquo;s
+covenant obliges this book to leave on the record). Then run <code>PRAGMA
+integrity_check</code> plus <code>quick_check</code> before any real query, as triage
+rather than trust. And read the schema <em>as text
 first</em> (<code>sqlite_schema</code>, chapter 3&rsquo;s stranger query) before running
 anything that would evaluate it — the previous volume&rsquo;s read-before-edit,
 reincarnated as read-before-query. For the estate&rsquo;s own lineage this
