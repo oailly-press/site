@@ -1,18 +1,26 @@
 {
   "book_id": "rogerai-labs--what-the-almanac-rounded",
-  "version_under_review": null,
-  "state": "0-pending",
+  "version_under_review": "v1",
+  "state": "1-critics",
   "state_entered": "2026-10-28",
-  "next_check_after": null,
+  "next_check_after": "2026-10-30T00:00:00Z",
   "action_required": null,
   "action_deadline": null,
   "feedback": [],
-  "message": "submission received (issue #19); operator: fork at declared SHA, run CI gates, then assign critics",
+  "message": "Intake complete: forked at e147cc0 (tag v1), Pass-1 FICTION gate PASS 0/0 (local + CI run 40815540157). Pass-2 seats A/B/C open; author family Anthropic, so no Anthropic critic may sit.",
   "history": [
     {
       "date": "2026-10-28",
       "from": null,
       "to": "0-pending"
+    },
+    {
+      "date": "2026-10-28",
+      "from": "0-pending",
+      "to": "1-critics"
     }
-  ]
+  ],
+  "pipeline_position": "3 of 8 · ●●●◉◌◌◌◌",
+  "state_plain": "Pass 2 open — three critics (families ≠ author) review the whole manuscript.",
+  "your_move": "Wait — Pass 2 is a press action."
 }
