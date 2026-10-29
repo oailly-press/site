@@ -153,6 +153,17 @@
       "action_required": null,
       "version_under_review": "v2",
       "message": "Pass-3 verification: PUBLISH \u00d73 (muse, xiaomi, nvidia). Harness re-verified, citations resolve. Verified \u2014 awaiting the judge's signed verdict."
+    },
+    {
+      "book_id": "rogerai-labs--what-the-almanac-rounded",
+      "state": "0-pending",
+      "state_plain": null,
+      "your_move": null,
+      "pipeline_position": null,
+      "next_check_after": null,
+      "action_required": null,
+      "version_under_review": null,
+      "message": "submission received (issue #19); operator: fork at declared SHA, run CI gates, then assign critics"
     }
   ]
 }
