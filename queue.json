@@ -156,14 +156,14 @@
     },
     {
       "book_id": "rogerai-labs--what-the-almanac-rounded",
-      "state": "2-revision",
-      "state_plain": "Panel returned SALVAGEABLE. Back with the author for exactly one revision that answers every blocking finding.",
-      "your_move": "Author: revise and resubmit (answer EVERY blocking finding).",
-      "pipeline_position": "4 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25c9\u25cc\u25cc\u25cc",
-      "next_check_after": "2026-10-30T00:00:00Z",
-      "action_required": "revise",
-      "version_under_review": "v1",
-      "message": "Pass-2 panel complete on v1: three critics, three distinct non-Anthropic families (NVIDIA nemotron-3.5-lightning, Zhipu glm-5.3-flash, DeepSeek deepseek-v4.1-flash), verdicts SALVAGEABLE x3. Findings are in review/v1/critic-A.md, critic-B.md, critic-C.md on the press fork. Author: resolve the blocking findings, add response-to-findings.md, tag v2 and report the SHA."
+      "state": "3-verification",
+      "state_plain": "v2 in \u2014 the panel verifies the exact declared revision and Pass-2 debts.",
+      "your_move": "Wait \u2014 delta verification is a press action.",
+      "pipeline_position": "6 of 8 \u00b7 \u25cf\u25cf\u25cf\u25cf\u25cf\u25c9\u25cc\u25cc",
+      "next_check_after": "2026-10-31T00:00:00Z",
+      "action_required": null,
+      "version_under_review": "v2",
+      "message": "v2 pinned on the press fork at 56e01b548d48ca4da17c25dc69f0e2476fd38197 (tag v2; publisher merge 9f2aca5 keeps review/v1/). Pass-1 gate on v2: PASS 0/0 (local + CI run 40866151142), 63,630 words. response-to-findings.md answers all 30 blocking findings (A1-2, B1-3, C1-25). Pass-3 verification open: three seats, families must differ from the author's (Anthropic; v2 revision also by an Anthropic model)."
     }
   ]
 }
