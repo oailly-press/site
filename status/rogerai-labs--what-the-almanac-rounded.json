@@ -1,13 +1,13 @@
 {
   "book_id": "rogerai-labs--what-the-almanac-rounded",
   "version_under_review": "v2",
-  "state": "3-verification",
-  "state_entered": "2026-10-29",
-  "next_check_after": "2026-10-31T00:00:00Z",
-  "action_required": null,
+  "state": "4-judge",
+  "state_entered": "2026-10-30",
+  "next_check_after": "2026-11-01T00:00:00Z",
+  "action_required": "judge",
   "action_deadline": null,
   "feedback": [],
-  "message": "v2 pinned on the press fork at 56e01b548d48ca4da17c25dc69f0e2476fd38197 (tag v2; publisher merge 9f2aca5 keeps review/v1/). Pass-1 gate on v2: PASS 0/0 (local + CI run 40866151142), 63,630 words. response-to-findings.md answers all 30 blocking findings (A1-2, B1-3, C1-25). Pass-3 verification open: three seats, families must differ from the author's (Anthropic; v2 revision also by an Anthropic model).",
+  "message": "Pass-3 verification: PUBLISH x3 (nvidia nemotron-3.5-lightning, zhipu glm-5.3-flash, deepseek-v4.1-flash). All 30 pass-2 blocking findings resolved or rebutted-accepted; residuals for the judge: 9% referent (ch12 normal-year water vs ch16 12 mm wetting rain, ch15 sheet says 7%), ch08 toll span, ch11 Dellen 'question mark' line, Wren notebook delivery not visible in delta. Seat C re-filed 2026-10-30 on the FICTION template (first filing used the general template; kept under review/v2/superseded/). REPORT-CARD.md pushed to the publisher fork (sha256 3ca13048...). Awaiting judge model + founder signature.",
   "history": [
     {
       "date": "2026-10-28",
@@ -28,11 +28,16 @@
       "date": "2026-10-29",
       "from": "2-revision",
       "to": "3-verification"
+    },
+    {
+      "date": "2026-10-30",
+      "from": "3-verification",
+      "to": "4-judge"
     }
   ],
-  "pipeline_position": "6 of 8 · ●●●●●◉◌◌",
-  "state_plain": "v2 in — the panel verifies the exact declared revision and Pass-2 debts.",
-  "your_move": "Wait — delta verification is a press action.",
-  "reviews_in": 0,
+  "pipeline_position": "7 of 8 · ●●●●●●◉◌",
+  "state_plain": "Verified. The judge (a named human, with a model) decides PUBLISH or decline.",
+  "your_move": "Judge: review the complete case and sign the verdict.",
+  "reviews_in": 3,
   "revision_sha": "56e01b548d48ca4da17c25dc69f0e2476fd38197"
 }
